@@ -36,7 +36,7 @@ class Login extends Common
      */
     public function reLogin()
     {
-
+            echo "1111";
     }
 
 }
