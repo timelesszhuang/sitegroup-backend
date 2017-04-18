@@ -39,5 +39,14 @@ class Login extends Common
             echo "1111";
     }
 
+    /**
+     * 获取验证码url 返回给前台
+     * @return string
+     */
+    public function getCaptcha()
+    {
+        return json_encode(["captchaUrl" => captcha_src()]);
+    }
+
 }
  
