@@ -22,7 +22,7 @@ class Common extends Controller
     function __construct()
     {
         parent::__construct();
-        header("Access-Control-Allow-Origin:" . $_SERVER['HTTP_ORIGIN']);
+//        header("Access-Control-Allow-Origin:" . $_SERVER['HTTP_ORIGIN']);
         header("Access-Control-Allow-Credentials: true ");
     }
 
@@ -38,9 +38,6 @@ class Common extends Controller
             cache('DB_CONFIG_DATA', null);
             cache('DB_CONFIG_DATA', $systemConfig, 36000); //缓存配置
         }
-        Session::set('name', 'dede');
-        $session_id = $_COOKIE["PHPSESSID"];
-        $systemConfig['session_id'] = $session_id;
         return $this->resultArray(['data' => $systemConfig]);
     }
 
@@ -77,6 +74,25 @@ class Common extends Controller
     }
 
     /**
+     * 获取配置列表
+     * 重组数组
+     *@auther jingzheng
+     * */
+
+    public function getDataList($auth)
+    {
+
+        $SystemConfig = new \app\common\model\SystemConfig();
+        $auth_data = $SystemConfig->where(["need_auth"=>$auth])->select();
+
+        $data = array();
+        foreach ($auth_data as $key => $val)
+        {
+            $data[$val['name']] = $val['value'];
+        }
+        return $data;
+    }
+    /**
      * 调用resultArray方法
      * 返回json auth——name验证
      * 检测 1 有验证
@@ -85,8 +101,8 @@ class Common extends Controller
 
     public function getAuth()
     {
-        $SystemConfig = SystemConfig::where('need_auth', 1)->select();
-        $this->resultArray('', '', json_encode($SystemConfig));
+            $systemConfig = $this->getDataList(1);
+            return $this->resultArray(['data' => $systemConfig]);
     }
 
     /**
@@ -98,8 +114,13 @@ class Common extends Controller
 
     public function getNoauth()
     {
-        $SystemConfig = SystemConfig::where('need_auth', 0)->select();
-        $this->resultArray('', '', json_encode($SystemConfig));
+        $systemConfig = cache('noAuth');
+        if(empty($systemConfig)){
+            $systemConfig = $this->getDataList(0);
+            $systemConfig = json_encode($systemConfig);
+            cache('noAuth');
+        }
+       return $this->resultArray(['data'=>$systemConfig]);
     }
 
 }
