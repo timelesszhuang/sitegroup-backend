@@ -23,7 +23,7 @@ class Common extends Controller
     function __construct()
     {
         parent::__construct();
-        header("Access-Control-Allow-Origin:" . $_SERVER['HTTP_ORIGIN']);
+//        header("Access-Control-Allow-Origin:" . $_SERVER['HTTP_ORIGIN']);
         header("Access-Control-Allow-Credentials: true ");
     }
 
@@ -63,12 +63,13 @@ class Common extends Controller
  */
     function resultArray($msg=0,$stat='',$data=0)
     {
+        header("Content-type: text/html; charset=utf-8");
         if(empty($stat)){
             $status="success";
         }else{
             $status="failed";
         }
-        exit(josn_encode([
+        exit(json_encode([
             'status' => $status,
             'data' => $data,
             'msg' => $msg
