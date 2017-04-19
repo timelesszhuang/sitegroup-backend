@@ -5,7 +5,7 @@
 // | Author: timelesszhuang <834916321@qq.com>
 // +----------------------------------------------------------------------
 
-namespace app\admin\controller;
+namespace app\common\controller;
 
 
 class Login extends Common
