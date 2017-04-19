@@ -27,7 +27,6 @@ class Login extends Common
             return $this->resultArray(['error' => $userModel->getError()]);
         }
         return $this->resultArray(['data' => $data]);
-
     }
 
     /**
