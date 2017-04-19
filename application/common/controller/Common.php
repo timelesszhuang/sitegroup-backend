@@ -116,7 +116,6 @@ class Common extends Controller
         $systemConfig = cache('noAuth');
         if(empty($systemConfig)){
             $systemConfig = $this->getDataList(0);
-            $systemConfig = json_encode($systemConfig);
             cache('noAuth');
         }
        return $this->resultArray('','',$systemConfig);
