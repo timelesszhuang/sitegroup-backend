@@ -22,8 +22,21 @@ class Common extends Controller
     function __construct()
     {
         parent::__construct();
-        header("Access-Control-Allow-Origin:" . $_SERVER['HTTP_ORIGIN']);
+//        header("Access-Control-Allow-Origin:" . $_SERVER['HTTP_ORIGIN']);
+        header("Access-Control-Allow-Origin:*");
+        header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
         header("Access-Control-Allow-Credentials: true ");
+/*        if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
+                // may also be using PUT, PATCH, HEAD etc
+                header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+
+            if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
+                header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
+
+            exit(0);
+        }*/
     }
 
     /**
@@ -59,7 +72,7 @@ class Common extends Controller
      * @return array
      * @auther guozhen
      */
-   public function resultArray($msg = 0, $stat = '', $data = 0)
+    public function resultArray($msg = 0, $stat = '', $data = 0)
     {
         if (empty($stat)) {
             $status = "success";
@@ -76,21 +89,21 @@ class Common extends Controller
     /**
      * 获取配置列表
      * 重组数组
-     *@auther jingzheng
+     * @auther jingzheng
      * */
 
     public function getDataList($auth)
     {
         $SystemConfig = new \app\common\model\SystemConfig();
-        $auth_data = $SystemConfig->where(["need_auth"=>$auth])->select();
+        $auth_data = $SystemConfig->where(["need_auth" => $auth])->select();
 
         $data = array();
-        foreach ($auth_data as $key => $val)
-        {
+        foreach ($auth_data as $key => $val) {
             $data[$val['name']] = $val['value'];
         }
         return $data;
     }
+
     /**
      * 调用resultArray方法
      * 返回json auth——name验证
@@ -100,8 +113,8 @@ class Common extends Controller
 
     public function getAuth()
     {
-            $systemConfig = $this->getDataList(1);
-            return $this->resultArray('','',$systemConfig);
+        $systemConfig = $this->getDataList(1);
+        return $this->resultArray('', '', $systemConfig);
     }
 
     /**
@@ -114,11 +127,11 @@ class Common extends Controller
     public function getNoauth()
     {
         $systemConfig = cache('noAuth');
-        if(empty($systemConfig)){
+        if (empty($systemConfig)) {
             $systemConfig = $this->getDataList(0);
             cache('noAuth');
         }
-       return $this->resultArray('','',$systemConfig);
+        return $this->resultArray('', '', $systemConfig);
     }
 
 }
