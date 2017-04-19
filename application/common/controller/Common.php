@@ -23,7 +23,7 @@ class Common extends Controller
     function __construct()
     {
         parent::__construct();
-//        header("Access-Control-Allow-Origin:" . $_SERVER['HTTP_ORIGIN']);
+        header("Access-Control-Allow-Origin:" . $_SERVER['HTTP_ORIGIN']);
         header("Access-Control-Allow-Credentials: true ");
     }
 
@@ -57,13 +57,20 @@ class Common extends Controller
 
 
     /**
+<<<<<<< HEAD
  * 返回对象  默认不填为success 否则是failed
  * @param $array 响应数据
  * @return array
  */
+=======
+     * 返回对象  默认不填为success 否则是failed
+     * @param $array 响应数据
+     * @return array
+     * @auther guozhen
+     */
+>>>>>>> a4821927f5ef9bb9d0165932fee516f045646d9f
     function resultArray($msg=0,$stat='',$data=0)
     {
-        header("Content-type: text/html; charset=utf-8");
         if(empty($stat)){
             $status="success";
         }else{

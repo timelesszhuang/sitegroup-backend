@@ -17,15 +17,16 @@ class User extends Model
      * @param $usrname
      * @param $pwd
      * @return array
+     * @auther guozhen
      */
-        public function checkUser($usrname,$pwd)
+        public function checkUser($username,$pwd)
         {
-            $user_info=$this->where(["user_name"=>$usrname])->find();
+            $user_info=$this->where(["user_name"=>$username])->find();
             $common=new Common();
             if(empty($user_info)){
                 return $common->resultArray("用户名错误","failed");
             }
-            if(md5($pwd)!=$user_info->getAttr("pwd")){
+            if(md5($pwd.$username)!=$user_info->getAttr("pwd")){
                 $common->resultArray("用户名或密码错误","failed");
             }
             unset($user_info["pwd"]);
