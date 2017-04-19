@@ -12,6 +12,12 @@ use think\Model;
 use app\common\controller\Common;
 class User extends Model
 {
+    /**
+     * 用户验证
+     * @param $usrname
+     * @param $pwd
+     * @return array
+     */
         public function checkUser($usrname,$pwd)
         {
             $user_info=$this->where(["user_name"=>$usrname])->find();
@@ -22,6 +28,7 @@ class User extends Model
             if(md5($pwd)!=$user_info->getAttr("pwd")){
                 $common->resultArray("用户名或密码错误","failed");
             }
-
+            unset($user_info["pwd"]);
+            $common->resultArray("登录成功!!","",$user_info);
         }
 }
