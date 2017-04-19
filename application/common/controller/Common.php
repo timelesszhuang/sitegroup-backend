@@ -11,7 +11,6 @@ namespace app\common\controller;
 use app\admin\model\SystemConfig;
 use think\Controller;
 use think\Session;
-use app\common\model\System;
 
 
 class Common extends Controller
@@ -23,7 +22,7 @@ class Common extends Controller
     function __construct()
     {
         parent::__construct();
-//        header("Access-Control-Allow-Origin:" . $_SERVER['HTTP_ORIGIN']);
+        header("Access-Control-Allow-Origin:" . $_SERVER['HTTP_ORIGIN']);
         header("Access-Control-Allow-Credentials: true ");
     }
 
@@ -80,6 +79,7 @@ class Common extends Controller
      * 调用resultArray方法
      * 返回json auth——name验证
      * 检测 1 有验证
+     * @auther jingzheng
      */
 
      public function getAuth()
@@ -92,6 +92,7 @@ class Common extends Controller
      * 调用resultArray方法
      * 返回json auth——name验证
      * 检测 0 无验证
+     * @auther jingzheng
      */
 
      public function getNoauth()
