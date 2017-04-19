@@ -11,7 +11,6 @@ namespace app\common\controller;
 use app\admin\model\SystemConfig;
 use think\Controller;
 use think\Session;
-use app\common\model\System;
 
 
 class Common extends Controller
@@ -57,24 +56,18 @@ class Common extends Controller
 
 
     /**
-<<<<<<< HEAD
- * 返回对象  默认不填为success 否则是failed
- * @param $array 响应数据
- * @return array
- */
-=======
      * 返回对象  默认不填为success 否则是failed
      * @param $array 响应数据
      * @return array
+     * @return array
      * @auther guozhen
      */
->>>>>>> a4821927f5ef9bb9d0165932fee516f045646d9f
-    function resultArray($msg=0,$stat='',$data=0)
+   public function resultArray($msg = 0, $stat = '', $data = 0)
     {
-        if(empty($stat)){
-            $status="success";
-        }else{
-            $status="failed";
+        if (empty($stat)) {
+            $status = "success";
+        } else {
+            $status = "failed";
         }
         exit(json_encode([
             'status' => $status,
@@ -83,16 +76,30 @@ class Common extends Controller
         ]));
     }
 
+    /**
+     * 调用resultArray方法
+     * 返回json auth——name验证
+     * 检测 1 有验证
+     * @auther jingzheng
+     */
 
-     public function getAuth()
-     {
-         $SystemConfig =SystemConfig::where('need_auth',1)->select();
-         $this->resultArray('','',json_encode($SystemConfig));
-     }
-     public function getNoauth()
-     {
-         $SystemConfig =SystemConfig::where('need_auth',0)->select();
-         $this->resultArray('','',json_encode($SystemConfig));
-     }
+    public function getAuth()
+    {
+        $SystemConfig = SystemConfig::where('need_auth', 1)->select();
+        $this->resultArray('', '', json_encode($SystemConfig));
+    }
+
+    /**
+     * 调用resultArray方法
+     * 返回json auth——name验证
+     * 检测 0 无验证
+     * @auther jingzheng
+     */
+
+    public function getNoauth()
+    {
+        $SystemConfig = SystemConfig::where('need_auth', 0)->select();
+        $this->resultArray('', '', json_encode($SystemConfig));
+    }
 
 }
