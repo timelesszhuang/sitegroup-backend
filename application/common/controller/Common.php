@@ -56,17 +56,18 @@ class Common extends Controller
 
 
     /**
- * 返回对象  默认不填为success 否则是failed
- * @param $array 响应数据
- * @return array
- */
-    function resultArray($msg=0,$stat='',$data=0)
+     * 返回对象  默认不填为success 否则是failed
+     * @param $array 响应数据
+     * @return array
+     * @return array
+     * @auther guozhen
+     */
+   public function resultArray($msg = 0, $stat = '', $data = 0)
     {
-        header("Content-type: text/html; charset=utf-8");
-        if(empty($stat)){
-            $status="success";
-        }else{
-            $status="failed";
+        if (empty($stat)) {
+            $status = "success";
+        } else {
+            $status = "failed";
         }
         exit(json_encode([
             'status' => $status,
@@ -82,11 +83,11 @@ class Common extends Controller
      * @auther jingzheng
      */
 
-     public function getAuth()
-     {
-         $SystemConfig =SystemConfig::where('need_auth',1)->select();
-         $this->resultArray('','',json_encode($SystemConfig));
-     }
+    public function getAuth()
+    {
+        $SystemConfig = SystemConfig::where('need_auth', 1)->select();
+        $this->resultArray('', '', json_encode($SystemConfig));
+    }
 
     /**
      * 调用resultArray方法
@@ -95,10 +96,10 @@ class Common extends Controller
      * @auther jingzheng
      */
 
-     public function getNoauth()
-     {
-         $SystemConfig =SystemConfig::where('need_auth',0)->select();
-         $this->resultArray('','',json_encode($SystemConfig));
-     }
+    public function getNoauth()
+    {
+        $SystemConfig = SystemConfig::where('need_auth', 0)->select();
+        $this->resultArray('', '', json_encode($SystemConfig));
+    }
 
 }

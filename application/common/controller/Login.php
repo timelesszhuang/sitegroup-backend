@@ -16,6 +16,7 @@ class Login extends Common
     /**
      * 执行第一次的登陆操作
      * @access public
+     * @auther guozhen
      */
     public function login()
     {
@@ -27,14 +28,14 @@ class Login extends Common
         ];
         $validate = new Validate($rule);
         //检查参数传递
-        if (!$validate->check($rule)) {
+        if (!$validate->check($post)) {
             $this->resultArray($validate->getError(), "failed");
         }
         //检查验证码
         if (!captcha_check($post["verifyCode"])) {
             $this->resultArray('验证码错误', "failed");
         };
-        return (new User())->checkUser();
+        return (new User())->checkUser($post["user_name"],$post["pwd"]);
     }
 
     /**
