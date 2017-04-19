@@ -16,6 +16,14 @@ class Login extends Common
      */
     public function login()
     {
+        $post=$this->request->post();
+        $rule=[
+            ["user_name","require","请填写用户名"],
+            [""]
+
+        ];
+
+
         $userModel = model('User');
         $param = $this->param;
         $username = $param['username'];
