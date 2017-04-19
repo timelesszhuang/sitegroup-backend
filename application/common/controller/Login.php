@@ -9,6 +9,7 @@ namespace app\common\controller;
 
 use app\common\controller\Common;
 use app\common\model\User;
+use think\Config;
 use think\Validate;
 
 class Login extends Common
@@ -24,7 +25,7 @@ class Login extends Common
         $rule = [
             ["user_name", "require", "请填写用户名"],
             ["pwd", "require", "请填写密码"],
-            ["verifyCode", "require", "请填写验证码"]
+//            ["verifyCode", "require", "请填写验证码"]
         ];
         $validate = new Validate($rule);
         //检查参数传递
@@ -32,19 +33,28 @@ class Login extends Common
             $this->resultArray($validate->getError(), "failed");
         }
         //检查验证码
-        if (!captcha_check($post["verifyCode"])) {
-            $this->resultArray('验证码错误', "failed");
-        };
+//        if (!captcha_check($post["verifyCode"])) {
+//            $this->resultArray('验证码错误', "failed");
+//        };
         return (new User())->checkUser($post["user_name"],$post["pwd"]);
     }
 
     /**
-     * 记住密码的
-     * @access public
+     * 七天免登录验证
+     * @return string
      */
-    public function reLogin()
+    public function autoLogin()
     {
-        echo "1111";
+        $post=$this->request->post();
+        if (empty($post["rebUserId"]) || empty($post["rebember"])) {
+            $this->resultArray('', "failed");
+        }
+        $userInfo = User::get($post["rebUserId"]);
+        $private = Config::get("crypt.cookiePrivate");
+        if($post["rebember"]!=md5($userInfo["id"].$userInfo["salt"].$private)){
+            $this->resultArray('', "failed");
+        }
+        $this->resultArray();
     }
 
 }
