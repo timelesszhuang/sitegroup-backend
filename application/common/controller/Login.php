@@ -47,14 +47,14 @@ class Login extends Common
     {
         $post=$this->request->post();
         if (empty($post["rebUserId"]) || empty($post["rebember"])) {
-            $this->resultArray('', "failed");
+            return $this->resultArray('', "failed");
         }
         $userInfo = User::get($post["rebUserId"]);
         $private = Config::get("crypt.cookiePrivate");
         if($post["rebember"]!=md5($userInfo["id"].$userInfo["salt"].$private)){
-            $this->resultArray('', "failed");
+            return $this->resultArray('', "failed");
         }
-        $this->resultArray();
+        return $this->resultArray();
     }
 
 }

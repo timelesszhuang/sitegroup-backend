@@ -66,11 +66,11 @@ class Common extends Controller
         } else {
             $status = "failed";
         }
-        exit(json_encode([
+        return [
             'status' => $status,
             'data' => $data,
             'msg' => $msg
-        ]));
+        ];
     }
 
     /**
@@ -81,7 +81,6 @@ class Common extends Controller
 
     public function getDataList($auth)
     {
-
         $SystemConfig = new \app\common\model\SystemConfig();
         $auth_data = $SystemConfig->where(["need_auth"=>$auth])->select();
 
