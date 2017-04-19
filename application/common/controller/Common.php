@@ -11,6 +11,8 @@ namespace app\common\controller;
 use app\admin\model\SystemConfig;
 use think\Controller;
 use think\Session;
+use app\common\model\System;
+
 
 class Common extends Controller
 {
@@ -72,5 +74,17 @@ class Common extends Controller
             'msg' => $msg
         ]));
     }
+
+
+     public function getAuth()
+     {
+         $SystemConfig =SystemConfig::where('need_auth',1)->select();
+             return json_encode($SystemConfig);
+     }
+     public function getNoauth()
+     {
+         $SystemConfig =SystemConfig::where('need_auth',0)->select();
+         return json_encode($SystemConfig);
+     }
+
 }
- 
