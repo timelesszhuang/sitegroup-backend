@@ -55,24 +55,22 @@ class Common extends Controller
 
 
     /**
-     * 返回对象
+     * 返回对象  默认不填为success 否则是failed
      * @param $array 响应数据
      * @return array
      */
-    function resultArray($array)
+    function resultArray($msg=0,$stat='',$data=0)
     {
-        if (isset($array['data'])) {
-            $array['error'] = '';
-            $code = 200;
-        } elseif (isset($array['error'])) {
-            $code = 400;
-            $array['data'] = '';
+        if(empty($stat)){
+            $status="success";
+        }else{
+            $status="failed";
         }
-        return [
-            'code' => $code,
-            'data' => $array['data'],
-            'error' => $array['error']
-        ];
+        exit(josn_encode([
+            'status' => $status,
+            'data' => $data,
+            'msg' => $msg
+        ]));
     }
 }
  
