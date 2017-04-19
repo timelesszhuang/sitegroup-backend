@@ -22,7 +22,7 @@ class Common extends Controller
     function __construct()
     {
         parent::__construct();
-//        header("Access-Control-Allow-Origin:" . $_SERVER['HTTP_ORIGIN']);
+        header("Access-Control-Allow-Origin:" . $_SERVER['HTTP_ORIGIN']);
         header("Access-Control-Allow-Credentials: true ");
     }
 
@@ -102,7 +102,7 @@ class Common extends Controller
     public function getAuth()
     {
             $systemConfig = $this->getDataList(1);
-            return $this->resultArray(['data' => $systemConfig]);
+            return $this->resultArray('','',$systemConfig);
     }
 
     /**
@@ -120,7 +120,7 @@ class Common extends Controller
             $systemConfig = json_encode($systemConfig);
             cache('noAuth');
         }
-       return $this->resultArray(['data'=>$systemConfig]);
+       return $this->resultArray('','',$systemConfig);
     }
 
 }
