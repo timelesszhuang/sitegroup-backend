@@ -5,10 +5,10 @@
 // | Author: timelesszhuang <834916321@qq.com>
 // +----------------------------------------------------------------------
 
-namespace app\index\controller;
+namespace app\admin\controller;
 
 
-use app\index\model\SystemConfig;
+use app\admin\model\SystemConfig;
 use think\Controller;
 use think\Session;
 
