@@ -58,6 +58,7 @@ class Common extends Controller
      * 返回对象  默认不填为success 否则是failed
      * @param $array 响应数据
      * @return array
+     * @auther guozhen
      */
     function resultArray($msg=0,$stat='',$data=0)
     {

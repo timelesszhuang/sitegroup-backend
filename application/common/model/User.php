@@ -17,6 +17,7 @@ class User extends Model
      * @param $usrname
      * @param $pwd
      * @return array
+     * @auther guozhen
      */
         public function checkUser($username,$pwd)
         {
