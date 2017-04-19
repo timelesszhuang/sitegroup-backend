@@ -20,21 +20,22 @@ class Login extends Common
     public function login()
     {
         $post = $this->request->post();
-        $rule = [
-            ["user_name", "require", "请填写用户名"],
-            ["pwd", "require", "请填写密码"],
-            ["verifyCode", "require", "请填写验证码"]
-        ];
-        $validate = new Validate($rule);
-        //检查参数传递
-        if (!$validate->check($rule)) {
-            $this->resultArray($validate->getError(), "failed");
-        }
+
+//        $rule = [
+//            ["user_name", "require", "请填写用户名"],
+//            ["pwd", "require", "请填写密码"],
+//            ["verifyCode", "require", "请填写验证码"]
+//        ];
+//        $validate = new Validate($rule);
+//        //检查参数传递
+//        if (!$validate->check($post)) {
+//            $this->resultArray($validate->getError(), "failed");
+//        }
         //检查验证码
-        if (!captcha_check($post["verifyCode"])) {
-            $this->resultArray('验证码错误', "failed");
-        };
-        return (new User())->checkUser();
+//        if (!captcha_check($post["verifyCode"])) {
+//            $this->resultArray('验证码错误', "failed");
+//        };
+        return (new User())->checkUser($post["user_name"],$post["pwd"]);
     }
 
     /**
