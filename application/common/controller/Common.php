@@ -75,12 +75,24 @@ class Common extends Controller
         ]));
     }
 
+    /**
+     * 调用resultArray方法
+     * 返回json auth——name验证
+     * 检测 1 有验证
+     */
 
      public function getAuth()
      {
          $SystemConfig =SystemConfig::where('need_auth',1)->select();
          $this->resultArray('','',json_encode($SystemConfig));
      }
+
+    /**
+     * 调用resultArray方法
+     * 返回json auth——name验证
+     * 检测 0 无验证
+     */
+
      public function getNoauth()
      {
          $SystemConfig =SystemConfig::where('need_auth',0)->select();
