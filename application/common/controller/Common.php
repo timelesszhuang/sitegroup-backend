@@ -57,10 +57,10 @@ class Common extends Controller
 
 
     /**
-     * 返回对象  默认不填为success 否则是failed
-     * @param $array 响应数据
-     * @return array
-     */
+ * 返回对象  默认不填为success 否则是failed
+ * @param $array 响应数据
+ * @return array
+ */
     function resultArray($msg=0,$stat='',$data=0)
     {
         if(empty($stat)){
@@ -79,12 +79,12 @@ class Common extends Controller
      public function getAuth()
      {
          $SystemConfig =SystemConfig::where('need_auth',1)->select();
-             return json_encode($SystemConfig);
+         $this->resultArray('','',json_encode($SystemConfig));
      }
      public function getNoauth()
      {
          $SystemConfig =SystemConfig::where('need_auth',0)->select();
-         return json_encode($SystemConfig);
+         $this->resultArray('','',json_encode($SystemConfig));
      }
 
 }
