@@ -4,7 +4,6 @@ namespace app\common\controller;
 
 use think\Controller;
 use think\Request;
-
 class User extends Controller
 {
     /**
@@ -14,7 +13,10 @@ class User extends Controller
      */
     public function index()
     {
-        var_dump($this->request->isGet());
+        if($this->request->isGet()){
+            $request=$this->getLimit();
+            return (new \app\common\model\User)->getUser($request['limit'],$request["rows"]);
+        }
     }
 
     /**

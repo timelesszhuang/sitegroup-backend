@@ -50,8 +50,10 @@ class User extends Model
      */
     public function changePwd($oldPwd,$newPwd)
     {
+        var_dump(Session::get());die;
         $common=new Common();
-        $user_id=Session::get("user_id");
+        $userSession=$common->getSessionUser();
+        $user_id=$userSession["user_id"];
         $user_info=$this::get($user_id);
         if(empty($user_info)){
             return ["登录超时,请重新登录",'failed',''];
@@ -67,7 +69,7 @@ class User extends Model
         if(strlen($newPwd)<6){
             return ["新密码不能小于6位",'failed',''];
         }
-        if($this->where(["id"=>$user_id])->update(["pwd"=>md5($newPwd.$user_info->user_name)])){
+        if(!$this->where(["id"=>$user_id])->update(["pwd"=>md5($newPwd.$user_info->user_name)])){
             return ["密码修改失败",'failed',''];
         }
         return ["密码修改成功",'',''];
@@ -95,7 +97,7 @@ class User extends Model
     }
 
     /**
-     * 分页
+     * 获取user数据
      * @param $limit
      * @param $rows
      * @return array
@@ -108,7 +110,6 @@ class User extends Model
         return [
             "total"=>$count,
             "rows"=>$data
-
         ];
     }
 }

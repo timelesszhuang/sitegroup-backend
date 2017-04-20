@@ -146,15 +146,9 @@ class Common extends Controller
      */
     public function checkSession()
     {
-<<<<<<< HEAD
-        $user_id = Session::get("user_id");
-        if (empty($user_id)) {
-            exit(json_encode($this->resultArray('请先登录', 'failed')));
-=======
         $user_id=Session::get("type");
         if(empty($user_id)){
             exit(json_encode($this->resultArray('请先登录','failed')));
->>>>>>> e1bff8662a22e4b8e266bd3038bc7338a6db55c2
         }
     }
 
@@ -164,26 +158,36 @@ class Common extends Controller
      * @param $rows
      * @return int
      */
-    public function getLimit($page, $rows)
+    public function getLimit()
     {
+        $page=$this->request->get("page");
+        $rows=$this->request->get("rows");
         if ($page <1) {
             $page=1;
         } else if ($rows <1 || $rows>20) {
             $rows=10;
         }
-        return ($page - 1) * $rows;
-
+        $limit=($page-1)*$rows;
+        return ["limit"=>$limit,"rows"=>$rows];
     }
 
     /**
-     * 分页
-     * @param $page
-     * @param $rows
+     * 获取前后台用户统一session信息
      * @return array
      */
-
-    public function getUser($page, $rows)
+    public function getSessionUser()
     {
-        return (new User)->getUser($this->getLimit($page, $rows),$rows);
+        $type=Session::get("type");
+        $arr=[];
+        if($type==1){
+            $arr["user_id"]=Session::get("sys_id");
+            $arr["user_name"]=Session::get("sys_user_name");
+            $arr["user_commpany_name"]=Session::get("sys_name");
+        }else if($type==2){
+            $arr["user_id"]=Session::get("admin_id");
+            $arr["user_name"]=Session::get("admin_user_name");
+            $arr["user_commpany_name"]=Session::get("admin_name");
+        }
+        return $arr;
     }
 }
