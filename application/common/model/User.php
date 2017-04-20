@@ -25,24 +25,22 @@ class User extends Model
     public function checkUser($username, $pwd)
     {
         $user_info = $this::where(["user_name" => $username])->find();
-        if(empty($user_info)){
-            return ["用户名错误", "failed",''];
+        if (empty($user_info)) {
+            return ["用户名错误", "failed", ''];
         }
         $user_info_arr = $user_info->toArray();
         if (md5($pwd . $username) != $user_info_arr["pwd"]) {
-            return ["用户名或密码错误", "failed",''];
+            return ["用户名或密码错误", "failed", ''];
         }
         unset($user_info["pwd"]);
         //获取私钥
         $private = Config::get("crypt.cookiePrivate");
         $user_info["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
-//        Session::set('username',$user_info['username']);
-//        Session::set('user_id',$user_info["id"]);
-//       Session::set('name',$user_info["id"]);
-        return ["登录成功",'' ,$user_info,''];
-
-
+        $this->setSession($user_info_arr);
+        return ["登录成功", '', $user_info];
     }
+
+
 
     /**
      * 修改密码
@@ -75,7 +73,24 @@ class User extends Model
         return ["密码修改成功",'',''];
     }
 
-    public function  setSession($type_id){
-
+    /**
+     *  Session存储
+     * @param $user_info_arr
+     * @auther jingzheng
+     */
+    public function  setSession($user_info_arr){
+       if($user_info_arr['type']==1){
+            $user_name = "sys_user_name";
+            $id = "sys_id";
+            $name = "sys_name";
+       }else if($user_info_arr['type']==2){
+           $user_name="admin_user_name";
+           $id = "admin_id";
+           $name = "admin_name";
+       }
+        Session::set($user_name, $user_info_arr["username"]);
+        Session::set($id,$user_info_arr["id"]);
+        Session::set($name,$user_info_arr["name"]);
+        dump(Session::get());die;
     }
 }
