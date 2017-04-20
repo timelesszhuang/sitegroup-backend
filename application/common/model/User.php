@@ -88,7 +88,7 @@ class User extends Model
            $id = "admin_id";
            $name = "admin_name";
        }
-        Session::set($user_name, $user_info_arr["username"]);
+        Session::set($user_name, $user_info_arr["user_name"]);
         Session::set($id,$user_info_arr["id"]);
         Session::set($name,$user_info_arr["name"]);
         dump(Session::get());die;
