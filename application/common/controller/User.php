@@ -14,7 +14,7 @@ class User extends Controller
      */
     public function index()
     {
-        //
+        var_dump($this->request->isGet());
     }
 
     /**
