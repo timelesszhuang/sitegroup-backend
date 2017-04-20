@@ -154,7 +154,8 @@ class Common extends Controller
         if(!$validate->check($post)){
             return $this->resultArray($validate->getError(),"failed");
         }
-        return (new User)->changePwd($post["oldPwd"],$post['newPwd']);
+        $user_info=(new User)->changePwd($post["oldPwd"],$post['newPwd']);
+        return $this->resultArray($user_info[0],$user_info[1],$user_info[2]);
     }
 
     /**
