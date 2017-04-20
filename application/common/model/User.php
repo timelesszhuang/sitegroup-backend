@@ -38,7 +38,7 @@ class User extends Model
         $user_info["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
 //        Session::set('username',$user_info['username']);
 //        Session::set('user_id',$user_info["id"]);
-//        Session::set('name',$user_info["id"]);
+//       Session::set('name',$user_info["id"]);
         return ["登录成功",'' ,$user_info,''];
 
 
