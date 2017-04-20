@@ -98,5 +98,22 @@ class Login extends Controller
         }
         return $this->resultArray('', '', $systemConfig);
     }
+    /**
+     * 获取配置列表
+     * 重组数组
+     * @auther jingzheng
+     * */
+
+    public function getDataList($auth)
+    {
+        $SystemConfig = new \app\common\model\SystemConfig();
+        $auth_data = $SystemConfig->where(["need_auth" => $auth])->select();
+
+        $data = array();
+        foreach ($auth_data as $key => $val) {
+            $data[$val['name']] = $val['value'];
+        }
+        return $data;
+    }
 }
  
