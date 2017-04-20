@@ -57,5 +57,12 @@ class Login extends Common
         return $this->resultArray();
     }
 
+    /**
+     * 重写
+     */
+    public function checkSession()
+    {
+
+    }
 }
  
