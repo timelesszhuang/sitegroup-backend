@@ -25,7 +25,7 @@ class Login extends Common
         $rule = [
             ["user_name", "require", "请填写用户名"],
             ["pwd", "require", "请填写密码"],
-            ["verifyCode", "require", "请填写验证码"]
+//            ["verifyCode", "require", "请填写验证码"]
         ];
         $validate = new Validate($rule);
         //检查参数传递
@@ -33,9 +33,9 @@ class Login extends Common
             $this->resultArray($validate->getError(), "failed");
         }
         //检查验证码
-        if (!captcha_check($post["verifyCode"])) {
-            return  $this->resultArray('验证码错误', "failed");
-        };
+//        if (!captcha_check($post["verifyCode"])) {
+//            return  $this->resultArray('验证码错误', "failed");
+//        };
         return (new User())->checkUser($post["user_name"],$post["pwd"]);
     }
 
