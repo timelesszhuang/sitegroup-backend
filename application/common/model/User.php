@@ -50,7 +50,6 @@ class User extends Model
      */
     public function changePwd($oldPwd,$newPwd)
     {
-        var_dump(Session::get());die;
         $common=new Common();
         $userSession=$common->getSessionUser();
         $user_id=$userSession["user_id"];
