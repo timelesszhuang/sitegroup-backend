@@ -166,6 +166,7 @@ class Common extends Controller
             $rows=10;
         }
         return ($page - 1) * $rows;
+
     }
 
     /**

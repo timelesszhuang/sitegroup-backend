@@ -108,6 +108,7 @@ class User extends Model
         return [
             "total"=>$count,
             "rows"=>$data
+
         ];
     }
 }
