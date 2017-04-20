@@ -38,6 +38,7 @@ class User extends Model
         $private = Config::get("crypt.cookiePrivate");
         $user_info["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
         Session::set('name',$username);
+        Session::set('id',$user_info["id"]);
         return $common->resultArray("登录成功!!", "", $user_info);
     }
 
@@ -69,6 +70,6 @@ class User extends Model
         if($this->where(["id"=>$user_id])->update(["pwd"=>md5($newPwd.$user_info->user_name)])){
             return $common->resultArray('密码修改失败','failed');
         }
-        return $common->resultArra('密码修改成功');
+        return $common->resultArray('密码修改成功');
     }
 }
