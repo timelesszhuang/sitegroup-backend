@@ -84,6 +84,7 @@ class Login extends Controller
         //获取私钥
         $private = Config::get("crypt.cookiePrivate");
         $user_arr["remember"] = md5($user_arr["id"] . $user_arr["salt"] . $private);
+
         return $this->resultArray('','',$user_arr);
     }
     /**
