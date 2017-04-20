@@ -11,6 +11,7 @@ use app\common\model\User;
 use think\Config;
 use think\Controller;
 use think\Validate;
+use think\Model;
 
 class Login extends Controller
 {
@@ -84,8 +85,8 @@ class Login extends Controller
         //获取私钥
         $private = Config::get("crypt.cookiePrivate");
         $user_arr["remember"] = md5($user_arr["id"] . $user_arr["salt"] . $private);
-
-        return $this->resultArray('','',$user_arr);
+        (new User)->setSession($user_arr);
+        return $this->resultArray();
     }
     /**
      * 返回对象  默认不填为success 否则是failed
