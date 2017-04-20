@@ -122,8 +122,6 @@ class Common extends Controller
         return $this->resultArray('', '', $systemConfig);
     }
 
-
-
     /**
      * 修改密码
      * @return array|void
