@@ -23,12 +23,12 @@ class User extends Model
      */
     public function checkUser($username, $pwd)
     {
-        $user_info = $this::where(["user_name" => $username])->find();
-        $user_info_arr = $user_info->toArray();
         $common = new Common();
-        if (empty($user_info_arr)) {
+        $user_info = $this::where(["user_name" => $username])->find();
+        if(empty($user_info)){
             return $common->resultArray("用户名错误", "failed");
         }
+        $user_info_arr = $user_info->toArray();
         if (md5($pwd . $username) != $user_info_arr["pwd"]) {
             return $common->resultArray("用户名或密码错误", "failed");
         }
