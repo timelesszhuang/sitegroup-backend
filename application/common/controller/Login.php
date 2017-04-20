@@ -85,12 +85,8 @@ class Login extends Controller
         //获取私钥
         $private = Config::get("crypt.cookiePrivate");
         $user_arr["remember"] = md5($user_arr["id"] . $user_arr["salt"] . $private);
-<<<<<<< HEAD
-        return $this->resultArray('','',$user_arr);
-=======
         (new User)->setSession($user_arr);
         return $this->resultArray();
->>>>>>> jingzheng
     }
     /**
      * 返回对象  默认不填为success 否则是failed
