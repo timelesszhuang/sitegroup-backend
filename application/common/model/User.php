@@ -92,6 +92,5 @@ class User extends Model
         Session::set($id,$user_info_arr["id"]);
         Session::set($name,$user_info_arr["name"]);
         Session::set("type",$user_info_arr["type"]);
-        dump(Session::get());
     }
 }
