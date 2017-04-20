@@ -37,8 +37,9 @@ class User extends Model
         //获取私钥
         $private = Config::get("crypt.cookiePrivate");
         $user_info["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
-        Session::set('name',$username);
-        Session::set('id',$user_info["id"]);
+        Session::set('username',$user_info['username']);
+        Session::set('user_id',$user_info["id"]);
+        Session::set('name',$user_info["name"]);
         return $common->resultArray("登录成功!!", "", $user_info);
     }
 
