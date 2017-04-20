@@ -35,7 +35,7 @@ class User extends Model
         unset($user_info["pwd"]);
         //获取私钥
         $private = Config::get("crypt.cookiePrivate");
-        $user_info["rebember"] = md5($user_info["id"] . $user_info["salt"] . $private);
+        $user_info["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
         return $common->resultArray("登录成功!!", "", $user_info);
     }
 }
