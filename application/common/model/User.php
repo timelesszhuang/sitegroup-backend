@@ -36,9 +36,9 @@ class User extends Model
         //获取私钥
         $private = Config::get("crypt.cookiePrivate");
         $user_info["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
-        Session::set('username',$user_info['username']);
-        Session::set('user_id',$user_info["id"]);
-        Session::set('name',$user_info["id"]);
+//        Session::set('username',$user_info['username']);
+//        Session::set('user_id',$user_info["id"]);
+//       Session::set('name',$user_info["id"]);
         return ["登录成功",'' ,$user_info,''];
 
 
@@ -73,5 +73,9 @@ class User extends Model
             return ["密码修改失败",'failed',''];
         }
         return ["密码修改成功",'',''];
+    }
+
+    public function  setSession($type_id){
+
     }
 }
