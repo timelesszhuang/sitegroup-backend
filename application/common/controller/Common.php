@@ -146,9 +146,15 @@ class Common extends Controller
      */
     public function checkSession()
     {
+<<<<<<< HEAD
         $user_id = Session::get("user_id");
         if (empty($user_id)) {
             exit(json_encode($this->resultArray('请先登录', 'failed')));
+=======
+        $user_id=Session::get("type");
+        if(empty($user_id)){
+            exit(json_encode($this->resultArray('请先登录','failed')));
+>>>>>>> e1bff8662a22e4b8e266bd3038bc7338a6db55c2
         }
     }
 
