@@ -86,6 +86,7 @@ class Login extends Controller
         $private = Config::get("crypt.cookiePrivate");
         $user_arr["remember"] = md5($user_arr["id"] . $user_arr["salt"] . $private);
         (new User)->setSession($user_arr);
+
         return $this->resultArray();
     }
     /**
