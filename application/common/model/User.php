@@ -93,4 +93,21 @@ class User extends Model
         Session::set($name,$user_info_arr["name"]);
         Session::set("type",$user_info_arr["type"]);
     }
+
+    /**
+     * 分页
+     * @param $limit
+     * @param $rows
+     * @return array
+     */
+
+    public function getUser($limit,$rows)
+    {
+        $count=$this->count();
+        $data=$this->limit($limit,$rows)->order("id","desc")->select();
+        return [
+            "total"=>$count,
+            "rows"=>$data
+        ];
+    }
 }

@@ -128,17 +128,17 @@ class Common extends Controller
      */
     public function changePwd()
     {
-        $rule=[
-            ["oldPwd","require","请输入原始密码"],
-            ["newPwd","require","请输入新密码"]
+        $rule = [
+            ["oldPwd", "require", "请输入原始密码"],
+            ["newPwd", "require", "请输入新密码"]
         ];
-        $post=$this->request->post();
-        $validate=new Validate($rule);
-        if(!$validate->check($post)){
-            return $this->resultArray($validate->getError(),"failed");
+        $post = $this->request->post();
+        $validate = new Validate($rule);
+        if (!$validate->check($post)) {
+            return $this->resultArray($validate->getError(), "failed");
         }
-        $user_info=(new User)->changePwd($post["oldPwd"],$post['newPwd']);
-        return $this->resultArray($user_info[0],$user_info[1],$user_info[2]);
+        $user_info = (new User)->changePwd($post["oldPwd"], $post['newPwd']);
+        return $this->resultArray($user_info[0], $user_info[1], $user_info[2]);
     }
 
     /**
@@ -146,9 +146,37 @@ class Common extends Controller
      */
     public function checkSession()
     {
-        $user_id=Session::get("user_id");
-        if(empty($user_id)){
-            exit(json_encode($this->resultArray('请先登录','failed')));
+        $user_id = Session::get("user_id");
+        if (empty($user_id)) {
+            exit(json_encode($this->resultArray('请先登录', 'failed')));
         }
+    }
+
+    /**
+     * 获取limit
+     * @param $page
+     * @param $rows
+     * @return int
+     */
+    public function getLimit($page, $rows)
+    {
+        if ($page <1) {
+            $page=1;
+        } else if ($rows <1 || $rows>20) {
+            $rows=10;
+        }
+        return ($page - 1) * $rows;
+    }
+
+    /**
+     * 分页
+     * @param $page
+     * @param $rows
+     * @return array
+     */
+
+    public function getUser($page, $rows)
+    {
+        return (new User)->getUser($this->getLimit($page, $rows),$rows);
     }
 }
