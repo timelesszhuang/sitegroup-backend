@@ -123,23 +123,6 @@ class Common extends Controller
     }
 
     /**
-     * 调用resultArray方法
-     * 返回json auth——name验证
-     * 检测 0 无验证
-     * @auther jingzheng
-     */
-
-    public function getNoauth()
-    {
-        $systemConfig = cache('noAuth');
-        if (empty($systemConfig)) {
-            $systemConfig = $this->getDataList(0);
-            cache('noAuth');
-        }
-        return $this->resultArray('', '', $systemConfig);
-    }
-
-    /**
      * 修改密码
      * @return array|void
      */
