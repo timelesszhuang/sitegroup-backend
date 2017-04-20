@@ -41,7 +41,7 @@ class Common extends Controller
                 header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
             exit(0);
         }
-        return $this->checkSession();
+        $this->checkSession();
     }
 
     /**
@@ -164,9 +164,7 @@ class Common extends Controller
     {
         $user_id=Session::get("user_id");
         if(empty($user_id)){
-
-            return $this->resultArray('请先登录','failed');
+            exit(json_encode($this->resultArray('请先登录','failed')));
         }
-        return true;
     }
 }
