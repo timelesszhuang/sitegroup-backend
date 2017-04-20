@@ -9,8 +9,10 @@ namespace app\common\controller;
 
 
 use app\admin\model\SystemConfig;
+use app\common\model\User;
 use think\Controller;
 use think\Session;
+use think\Validate;
 
 
 class Common extends Controller
@@ -19,7 +21,7 @@ class Common extends Controller
     /**
      * 本地测试开启下 允许跨域ajax 获取数据
      */
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
         // Allow from any origin
@@ -39,6 +41,7 @@ class Common extends Controller
                 header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
             exit(0);
         }
+        return $this->checkSession();
     }
 
     /**
@@ -136,4 +139,34 @@ class Common extends Controller
         return $this->resultArray('', '', $systemConfig);
     }
 
+    /**
+     * 修改密码
+     * @return array|void
+     */
+    public function changePwd()
+    {
+        $rule=[
+            ["oldPwd","require","请输入原始密码"],
+            ["newPwd","require","请输入新密码"]
+        ];
+        $post=$this->request->post();
+        $validate=new Validate($rule);
+        if(!$validate->check($post)){
+            return $this->resultArray($validate->getError(),"failed");
+        }
+        return (new User)->changePwd($post["oldPwd"],$post['newPwd']);
+    }
+
+    /**
+     * 检查session
+     */
+    public function checkSession()
+    {
+        $user_id=Session::get("user_id");
+        if(empty($user_id)){
+
+            return $this->resultArray('请先登录','failed');
+        }
+        return true;
+    }
 }

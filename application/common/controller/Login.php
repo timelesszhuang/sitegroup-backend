@@ -34,7 +34,7 @@ class Login extends Common
         }
         //检查验证码
         if (!captcha_check($post["verifyCode"])) {
-            $this->resultArray('验证码错误', "failed");
+            return  $this->resultArray('验证码错误', "failed");
         };
         return (new User())->checkUser($post["user_name"],$post["pwd"]);
     }
