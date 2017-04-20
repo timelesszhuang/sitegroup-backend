@@ -46,12 +46,12 @@ class Login extends Common
     public function autoLogin()
     {
         $post=$this->request->post();
-        if (empty($post["rebUserId"]) || empty($post["rebember"])) {
+        if (empty($post["user_id"]) || empty($post["remember"])) {
             return $this->resultArray('', "failed");
         }
-        $userInfo = User::get($post["rebUserId"]);
+        $userInfo = User::get($post["user_id"]);
         $private = Config::get("crypt.cookiePrivate");
-        if($post["rebember"]!=md5($userInfo["id"].$userInfo["salt"].$private)){
+        if($post["remember"]!=md5($userInfo["id"].$userInfo["salt"].$private)){
             return $this->resultArray('', "failed");
         }
         return $this->resultArray();
