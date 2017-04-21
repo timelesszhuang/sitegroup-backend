@@ -70,12 +70,12 @@ class Industry extends Common{
                 ["name", "require", "请输入行业名"],
                 ['detail', 'require', '详细必须'],
             ];
-            $data = $this->request->post();
+            $data = $this->request->put();
             $validate = new Validate($rule);
             if (!$validate->check($data)) {
                 return $this->resultArray($validate->getError(), 'failed');
             }
-            if (!\app\common\model\Industry::create($data)) {
+            if (!\app\common\model\Industry::update($data)) {
                 return $this->resultArray('修改失败', 'failed');
             }
             return $this->resultArray();

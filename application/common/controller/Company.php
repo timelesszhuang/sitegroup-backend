@@ -51,6 +51,46 @@ class Company extends Common
         }
     }
 
+    /**
+     * 修改数据
+     * @return array
+     * @auther jingzheng
+     */
+    public function update()
+    {
+        if ($this->request->isPut()) {
+            $rule = [
+                ["name","require","请输入公司名称"],
+                ["artificialperson","require","请输入法人"],
+                ["manbusiness","require","请输入主营业务"],
+                ["industry_id","require","请选择行业"],
+                ["industry_name","require","请选择行业"]
+            ];
+            $data = $this->request->put();
+            $validate = new Validate($rule);
+            if (!$validate->check($data)) {
+                return $this->resultArray($validate->getError(), 'failed');
+            }
+            if (!\app\common\model\Company::update($data)) {
+                return $this->resultArray('修改失败', 'failed');
+            }
+            return $this->resultArray();
+        }
+    }
+    public function delete($id)
+    {
+        if ($this->request->isDelete()) {
+            $Industry = \app\common\model\C::get($id);
+            if (!$Industry->delete()) {
+                return $this->resultArray('删除失败', 'failed');
+            }
+            return $this->resultArray('删除成功');
+
+        }
+    }
+
+
+
 
 
 }

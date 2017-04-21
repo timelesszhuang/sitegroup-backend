@@ -94,13 +94,13 @@ class User extends Common
                 ["type","require","请选择类型"],
                 ["name","require","请输入公司名称"]
             ];
-            $data = $this->request->post();
+            $data = $this->request->put();
             $validate = new Validate($rule);
             if (!$validate->check($data)) {
                 return $this->resultArray($validate->getError(), 'failed');
             }
-            if (!\app\common\model\User::create($data)) {
-                return $this->resultArray('添加失败', 'failed');
+            if (!\app\common\model\User::update($data)) {
+                return $this->resultArray('修改失败', 'failed');
             }
             return $this->resultArray();
         }
