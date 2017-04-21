@@ -74,9 +74,7 @@ class User extends Common
      */
     public function update($id)
     {
-<<<<<<< HEAD
-        //
-=======
+
         if ($this->request->isPut()) {
             $rule = [
                 ["user_name", "require", "请输入用户名"],
@@ -86,9 +84,6 @@ class User extends Common
             $data = \app\common\model\User::create();
 
         }
-
->>>>>>> dev
-
     }
 
     /**
