@@ -113,7 +113,6 @@ class User extends Model
     {
         $count = $this->count();
         $data = $this->limit($limit, $rows)->order("id", "desc")->field("id,user_name,type,name,tel,mobile,qq,wechat,email,create_time")->select();
-        var_dump($data);die;
         return [
             "total" => $count,
             "rows" => $data
