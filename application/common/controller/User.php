@@ -21,16 +21,6 @@ class User extends Common
     }
 
     /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * 保存新建的资源
      *
      * @param  \think\Request $request
@@ -49,8 +39,11 @@ class User extends Common
      */
     public function read($id)
     {
-        $user = new \app\common\model\User;
-        return $user->field("id,user_name,type,name,tel,mobile,qq,wechat,email,create_time")->where(["id"=>$id])->find();
+        if($this->request->isGet()){
+            $user = new \app\common\model\User;
+            return $user->field("id,user_name,type,name,tel,mobile,qq,wechat,email,create_time")->where(["id"=>$id])->find();
+        }
+
     }
 
     /**

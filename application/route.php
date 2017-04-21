@@ -8,9 +8,6 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-use think\Route;
-Route::resource('user','common/User');
-Route::resource('user/:id','common/User/read');
 return [
     '__pattern__' => [
         'name' => '\w+',
