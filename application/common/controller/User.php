@@ -67,11 +67,11 @@ class User extends Common
     public function update(Request $request, $id)
     {
         //
+
     }
 
     /**
      * 删除指定资源
-     *
      * @param  int $id
      * @return \think\Response
      * auther jingzheng
@@ -79,7 +79,6 @@ class User extends Common
     public function delete($id)
     {
         if ($this->request->isDelete()) {
-//            return 1111;die;
             if ($id == 1) {
                 return $this->resultArray('系统管理员不允许删除', 'failed');
             }
