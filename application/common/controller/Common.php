@@ -150,6 +150,7 @@ class Common extends Controller
         if(empty($user_id)){
             exit(json_encode($this->resultArray('请先登录','failed')));
         }
+
     }
 
     /**

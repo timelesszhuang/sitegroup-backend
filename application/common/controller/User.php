@@ -74,6 +74,7 @@ class User extends Common
      */
     public function update($id)
     {
+
         if ($this->request->isPut()) {
             $rule = [
                 ["user_name", "require", "请输入用户名"],
@@ -93,13 +94,10 @@ class User extends Common
             }
             return $this->resultArray();
         }
-
-
     }
 
     /**
      * 删除指定资源
-     *
      * @param  int $id
      * @return \think\Response
      * auther jingzheng
