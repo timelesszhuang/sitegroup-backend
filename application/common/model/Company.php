@@ -9,10 +9,10 @@
 namespace app\common\model;
 class Company extends Model
 {
-    public function getCompany()
+    public function getCompany($limit,$rows)
     {
         $count=$this->count();
-        $data=$this->select();
+        $data=$this->field("id,name,sort_name,artificialperson,url,manbusiness,industry_id,create_time")->limit($limit,$rows)->order("id desc")->select();
 
 
 
