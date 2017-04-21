@@ -17,7 +17,16 @@ class User extends Common
     {
         if ($this->request->isGet()) {
             $request = $this->getLimit();
-            return (new \app\common\model\User)->getUser($request['limit'], $request["rows"]);
+            $type=$this->request->get("type");
+            $company=$this->request->get("name");
+            $where=[];
+            if(!empty($type)){
+                $where["type"]=["eq",$type];
+            }
+            if(!empty($company)){
+                $where["name"]=["like","%$company%"];
+            }
+            return (new \app\common\model\User)->getUser($request['limit'], $request["rows"],$where);
         }
     }
 
@@ -60,7 +69,7 @@ class User extends Common
             if (!\app\common\model\User::create($data)) {
                 return $this->resultArray('添加失败', 'failed');
             }
-            return $this->resultArray();
+            return $this->resultArray('添加成功');
         }
     }
 
@@ -72,9 +81,8 @@ class User extends Common
      * @return \think\Response
      * @auther guozhen
      */
-    public function update($id)
+    public function update()
     {
-
         if ($this->request->isPut()) {
             $rule = [
                 ["user_name", "require", "请输入用户名"],

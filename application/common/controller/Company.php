@@ -5,10 +5,18 @@
  * Date: 2017/4/21
  * Time: 11:31
  */
+
 namespace app\common\controller;
-class Company extends Common{
+class Company extends Common
+{
+    public function index()
+    {
+        if($this->request->isGet()){
 
 
+
+        }
+    }
 
 }
 
