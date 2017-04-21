@@ -47,7 +47,7 @@ class User extends Common
             $rule = [
                 ["user_name", "require", "请输入用户名"],
                 ["pwd", "require", "请输入密码"],
-                ["contacks", "require", "请输入联系人"],
+                ["contacts", "require", "请输入联系人"],
                 ["tel", "require", "请输入电话"],
                 ["type_name","require","请选择类型"],
                 ["type","require","请选择类型"]
@@ -78,10 +78,20 @@ class User extends Common
             $rule = [
                 ["user_name", "require", "请输入用户名"],
                 ["pwd", "require", "请输入密码"],
-                []
+                ["contacts", "require", "请输入联系人"],
+                ["tel", "require", "请输入电话"],
+                ["type_name","require","请选择类型"],
+                ["type","require","请选择类型"]
             ];
-            $data = \app\common\model\User::create();
-
+            $data = $this->request->post();
+            $validate = new Validate($rule);
+            if (!$validate->check($data)) {
+                return $this->resultArray($validate->getError(), 'failed');
+            }
+            if (!\app\common\model\User::create($data)) {
+                return $this->resultArray('添加失败', 'failed');
+            }
+            return $this->resultArray();
         }
 
 
