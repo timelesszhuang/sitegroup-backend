@@ -88,6 +88,7 @@ class User extends Common
                 return $this->resultArray('删除失败','failed');
             }
             return $this->resultArray('删除成功');
+
         }
     }
 }
