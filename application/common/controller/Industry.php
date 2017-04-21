@@ -102,3 +102,4 @@ class Industry extends Common{
     }
 
 }
+

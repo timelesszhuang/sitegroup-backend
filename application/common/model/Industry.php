@@ -10,10 +10,12 @@ namespace app\common\model;
 use think\Model;
 
 class Industry extends Model{
-    protected $rule = [
-        ['name', 'require', '公司名必须'],
-        ['detail', 'require', '详细必须'],
-    ];
+    /**
+     * 分页
+     * @param $limit
+     * @param $rows
+     * @return array
+     */
     public function getIndustry($limit, $rows)
     {
         $count = $this->count();
