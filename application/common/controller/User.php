@@ -4,6 +4,7 @@ namespace app\common\controller;
 
 use think\Controller;
 use think\Request;
+
 class User extends Common
 {
     /**
@@ -13,9 +14,9 @@ class User extends Common
      */
     public function index()
     {
-        if($this->request->isGet()){
-            $request=$this->getLimit();
-            return (new \app\common\model\User)->getUser($request['limit'],$request["rows"]);
+        if ($this->request->isGet()) {
+            $request = $this->getLimit();
+            return (new \app\common\model\User)->getUser($request['limit'], $request["rows"]);
         }
     }
 
@@ -32,7 +33,7 @@ class User extends Common
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
@@ -43,18 +44,19 @@ class User extends Common
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function read($id)
     {
-        //
+        $user = new \app\common\model\User;
+        return $user->field("id,user_name,type,name,tel,mobile,qq,wechat,email,create_time")->where(["id"=>$id])->find();
     }
 
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -65,8 +67,8 @@ class User extends Common
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param  \think\Request $request
+     * @param  int $id
      * @return \think\Response
      */
     public function update(Request $request, $id)
@@ -77,11 +79,21 @@ class User extends Common
     /**
      * 删除指定资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function delete($id)
     {
-        //
+        if ($this->request->isDelete()) {
+            return 1111;die;
+            if ($id == 1) {
+                return $this->resultArray('系统管理员不允许删除', 'failed');
+            }
+            $user = new \app\common\model\User;
+            if (!$user->delete($id)) {
+                return $this->resultArray('删除失败', 'failed');
+            }
+            return $this->resultArray('删除成功');
+        }
     }
 }
