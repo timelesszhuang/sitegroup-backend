@@ -112,7 +112,7 @@ class User extends Model
     public function getUser($limit, $rows)
     {
         $count = $this->count();
-        $data = $this->limit($limit, $rows)->order("id", "desc")->field("id,user_name,type,name,tel,mobile,qq,wechat,email,create_time")->select();
+        $data = $this->limit($limit, $rows)->order("id", "desc")->field("id,user_name,type,type_name,contacks,name,tel,mobile,qq,wechat,email,create_time")->select();
         return [
             "total" => $count,
             "rows" => $data
