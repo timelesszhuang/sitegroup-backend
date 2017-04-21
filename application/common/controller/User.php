@@ -87,7 +87,6 @@ class User extends Common
         if ($this->request->isPut()) {
             $rule = [
                 ["user_name", "require", "请输入用户名"],
-                ["pwd", "require", "请输入密码"],
                 ["contacts", "require", "请输入联系人"],
                 ["mobile", "require", "请输入电话"],
                 ["type_name","require","请选择类型"],
