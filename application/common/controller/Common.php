@@ -125,6 +125,7 @@ class Common extends Controller
     /**
      * 修改密码
      * @return array|void
+     * @auther guozhen
      */
     public function changePwd()
     {
@@ -158,6 +159,7 @@ class Common extends Controller
      * @param $page
      * @param $rows
      * @return int
+     * @auther guozhen
      */
     public function getLimit()
     {

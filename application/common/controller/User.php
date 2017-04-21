@@ -59,7 +59,8 @@ class User extends Common
                 ["contacts", "require", "请输入联系人"],
                 ["tel", "require", "请输入电话"],
                 ["type_name","require","请选择类型"],
-                ["type","require","请选择类型"]
+                ["type","require","请选择类型"],
+                ["name","require","请输入公司名称"]
             ];
             $data = $this->request->post();
             $validate = new Validate($rule);
@@ -90,7 +91,8 @@ class User extends Common
                 ["contacts", "require", "请输入联系人"],
                 ["tel", "require", "请输入电话"],
                 ["type_name","require","请选择类型"],
-                ["type","require","请选择类型"]
+                ["type","require","请选择类型"],
+                ["name","require","请输入公司名称"]
             ];
             $data = $this->request->post();
             $validate = new Validate($rule);

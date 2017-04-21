@@ -7,6 +7,7 @@
  */
 
 namespace app\common\model;
+use think\MOdel;
 class Company extends Model
 {
     /**

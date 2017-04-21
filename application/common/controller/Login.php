@@ -68,6 +68,7 @@ class Login extends Controller
     /**
      * 七天免登录验证
      * @return string
+     * @auther guozhen
      */
     public function autoLogin()
     {

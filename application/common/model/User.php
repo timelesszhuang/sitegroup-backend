@@ -17,6 +17,7 @@ class User extends Model
 {
     /**
      * 初始化操作
+     * @auther guozhen
      */
     public static function init()
     {
