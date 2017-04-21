@@ -15,6 +15,7 @@ class Industry extends Model{
      * @param $limit
      * @param $rows
      * @return array
+     * @auther jingzheng
      */
     public function getIndustry($limit, $rows)
     {
