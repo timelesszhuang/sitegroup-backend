@@ -57,7 +57,7 @@ class User extends Common
                 ["user_name", "require", "请输入用户名"],
                 ["pwd", "require", "请输入密码"],
                 ["contacts", "require", "请输入联系人"],
-                ["tel", "require", "请输入电话"],
+                ["mobile", "require", "请输入电话"],
                 ["type_name","require","请选择类型"],
                 ["type","require","请选择类型"],
                 ["name","require","请输入公司名称"]
@@ -89,7 +89,7 @@ class User extends Common
                 ["user_name", "require", "请输入用户名"],
                 ["pwd", "require", "请输入密码"],
                 ["contacts", "require", "请输入联系人"],
-                ["tel", "require", "请输入电话"],
+                ["mobile", "require", "请输入电话"],
                 ["type_name","require","请选择类型"],
                 ["type","require","请选择类型"],
                 ["name","require","请输入公司名称"]
