@@ -41,7 +41,7 @@ class Common extends Controller
                 header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
             exit(0);
         }
-        $this->checkSession();
+//        $this->checkSession();
     }
 
     /**

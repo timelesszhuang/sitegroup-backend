@@ -74,17 +74,18 @@ class User extends Common
      *
      * @param  int $id
      * @return \think\Response
+     * auther jingzheng
      */
     public function delete($id)
     {
         if ($this->request->isDelete()) {
-            return 1111;die;
+//            return 1111;die;
             if ($id == 1) {
                 return $this->resultArray('系统管理员不允许删除', 'failed');
             }
-            $user = new \app\common\model\User;
-            if (!$user->delete($id)) {
-                return $this->resultArray('删除失败', 'failed');
+            $user = \app\common\model\User::get($id);
+            if (!$user->delete()) {
+                return $this->resultArray('删除失败','failed');
             }
             return $this->resultArray('删除成功');
         }
