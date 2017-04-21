@@ -4,13 +4,14 @@ namespace app\common\controller;
 
 use think\Controller;
 use think\Request;
+use think\Validate;
 
 class User extends Common
 {
     /**
      * 显示资源列表
-     *
      * @return \think\Response
+     * @auther guozhen
      */
     public function index()
     {
@@ -21,40 +22,46 @@ class User extends Common
     }
 
     /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request $request
-     * @return \think\Response
-     */
-    public function save(Request $request)
-    {
-        //
-    }
-
-    /**
      * 显示指定的资源
      *
      * @param  int $id
      * @return \think\Response
+     * @auther guozhen
      */
     public function read($id)
     {
-        if($this->request->isGet()){
+        if ($this->request->isGet()) {
             $user = new \app\common\model\User;
-            return $user->field("id,user_name,type,name,tel,mobile,qq,wechat,email,create_time")->where(["id"=>$id])->find();
+            return $user->field("id,user_name,type,name,tel,mobile,qq,wechat,email,create_time")->where(["id" => $id])->find();
         }
-
     }
 
     /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int $id
-     * @return \think\Response
+     * 添加用户
+     * @return array
+     * @auther guozhen
      */
-    public function edit($id)
+    public function add()
     {
-        //
+        if ($this->request->isPost()) {
+            $rule = [
+                ["user_name", "require", "请输入用户名"],
+                ["pwd", "require", "请输入密码"],
+                ["contacks", "require", "请输入联系人"],
+                ["tel", "require", "请输入电话"],
+                ["type_name","require","请选择类型"],
+                ["type","require","请选择类型"]
+            ];
+            $data = $this->request->post();
+            $validate = new Validate($rule);
+            if (!$validate->check($data)) {
+                return $this->resultArray($validate->getError(), 'failed');
+            }
+            if (!\app\common\model\User::create($data)) {
+                return $this->resultArray('添加失败', 'failed');
+            }
+            return $this->resultArray();
+        }
     }
 
     /**
@@ -63,10 +70,24 @@ class User extends Common
      * @param  \think\Request $request
      * @param  int $id
      * @return \think\Response
+     * @auther guozhen
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
+<<<<<<< HEAD
         //
+=======
+        if ($this->request->isPut()) {
+            $rule = [
+                ["user_name", "require", "请输入用户名"],
+                ["pwd", "require", "请输入密码"],
+                []
+            ];
+            $data = \app\common\model\User::create();
+
+        }
+
+>>>>>>> dev
 
     }
 
@@ -84,9 +105,10 @@ class User extends Common
             }
             $user = \app\common\model\User::get($id);
             if (!$user->delete()) {
-                return $this->resultArray('删除失败','failed');
+                return $this->resultArray('删除失败', 'failed');
             }
             return $this->resultArray('删除成功');
+
         }
     }
 }
