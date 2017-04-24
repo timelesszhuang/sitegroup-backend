@@ -17,13 +17,18 @@ class Company extends Model
      * @return array
      * @auther guozhen
      */
-    public function getCompany($limit,$rows)
+    public function getCompany($limit,$rows,$where=0)
     {
         $count=$this->count();
-        $data=$this->field("id,name,short_name,artificialperson,url,manbusiness,industry_id,create_time")->limit($limit,$rows)->order("id desc")->select();
+        $data=$this->limit($limit,$rows)->order("id desc")->where($where)->select();
         return [
             "total"=>$count,
             "rows"=>$data
         ];
+    }
+    public function getSort()
+    {
+        $data = $this->order("id", "desc")->field("industry_id,industry_name")->select();
+        return $data;
     }
 }

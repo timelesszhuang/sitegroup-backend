@@ -15,7 +15,16 @@ class Company extends Common
     public function index()
     {
         $request=$this->getLimit();
-        return $this->resultArray('','',(new \app\common\model\Company)->getCompany($request["limit"],$request["rows"]));
+        $name = $this->request->get('industry_name');
+        $id = $this->request->get('industry_id');
+        $where = [];
+        if(!empty($name)){
+            $where["name"]=["like","%$name%"];
+        }
+        if(!empty($id)){
+            $where["industry_id"]=$id;
+        }
+        return $this->resultArray('','',(new \app\common\model\Company())->getCompany($request["limit"],$request["rows"],$where));
     }
 
     /**
@@ -23,11 +32,11 @@ class Company extends Common
      * @auther guozhen
      * @return \think\Response
      */
-    public function create()
-    {
+    public function create(){
+        $request=$this->getLimit();
+        return $this->resultArray('','',(new \app\common\model\Company())->getSort($request));
 
     }
-
     /**
      * 保存新建的资源
      * @auther guozhen
