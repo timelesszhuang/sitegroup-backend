@@ -12,6 +12,7 @@ use think\Route;
 Route::resource('user','common/User');
 Route::resource('industry','common/Industry');
 Route::resource('company','common/Company');
+Route::resource('node','common/Node');
 return [
     '__pattern__' => [
         'name' => '\w+',
