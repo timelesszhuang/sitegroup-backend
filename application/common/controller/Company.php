@@ -15,7 +15,7 @@ class Company extends Common
     public function index()
     {
         $request=$this->getLimit();
-        $this->resultArray('','',(new \app\common\model\Company)->getCompany($request["limit"],$request["rows"]));
+        return $this->resultArray('','',(new \app\common\model\Company)->getCompany($request["limit"],$request["rows"]));
     }
 
     /**
