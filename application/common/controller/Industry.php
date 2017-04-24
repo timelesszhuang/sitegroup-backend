@@ -44,20 +44,20 @@ class Industry extends Common{
      */
     public function save(Request $request){
 
-            $rule = [
-                ["name", "require", "请输入行业名"],
-                ['detail', 'require', '详细必须'],
-            ];
-            $data = $this->request->post();
-            $validate = new Validate($rule);
-            if (!$validate->check($data)) {
-                return $this->resultArray($validate->getError(), 'failed');
-            }
-            if (!\app\common\model\Industry::create($data)) {
-                return $this->resultArray('添加失败', 'failed');
-            }
-            return $this->resultArray('添加成功');
+        $rule = [
+            ["name", "require|unique:Industry", "请输入行业名|行业名重复"],
+            ['detail', 'require', '详细必须'],
+        ];
+        $data = $this->request->post();
+        $validate = new Validate($rule);
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'failed');
         }
+        if (!\app\common\model\Industry::create($data)) {
+            return $this->resultArray('添加失败', 'failed');
+        }
+        return $this->resultArray('添加成功');
+    }
 
 
 
@@ -68,12 +68,12 @@ class Industry extends Common{
      */
     public function update(Request $request, $id)
     {
-            $rule = [
-                ["name", "require", "请输入行业名"],
-                ['detail', 'require', '详细必须'],
-            ];
-            $data = $this->request->put();
-            $validate = new Validate($rule);
+        $rule = [
+            ["name", "require|unique:Industry", "请输入行业名|行业名重复"],
+            ['detail', 'require', '详细必须'],
+        ];
+        $data = $this->request->put();
+        $validate = new Validate($rule);
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
@@ -93,11 +93,11 @@ class Industry extends Common{
      */
     public function delete($id)
     {
-            $Industry = \app\common\model\Industry::get($id);
-            if (!$Industry->delete()) {
-                return $this->resultArray('删除失败', 'failed');
-            }
-            return $this->resultArray('删除成功');
+        $Industry = \app\common\model\Industry::get($id);
+        if (!$Industry->delete()) {
+            return $this->resultArray('删除失败', 'failed');
+        }
+        return $this->resultArray('删除成功');
 
     }
 

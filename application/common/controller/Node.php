@@ -27,7 +27,7 @@ class Node extends Common
     public function save(Request $request)
     {
         $rule=[
-            ["name","require","请输入节点名称"],
+            ["name","equire|unique:Node","请输入节点名称|节点名称重复"],
             ["detail","require","请输入详细"],
             ["com_name","require","请选择公司"],
             ["com_id","require","请选择公司"],
@@ -64,7 +64,7 @@ class Node extends Common
     public function update(Request $request, $id)
     {
         $rule=[
-            ["name","require","请输入节点名称"],
+            ["name","equire|unique:Node","请输入节点名称|节点名称重复"],
             ["detail","require","请输入详细"],
             ["com_name","require","请选择公司"],
             ["com_id","require","请选择公司"],
