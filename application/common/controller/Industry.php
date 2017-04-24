@@ -7,6 +7,7 @@
  */
 namespace app\common\controller;
 use think\Validate;
+use think\Request;
 
 class Industry extends Common{
     /**
@@ -60,7 +61,7 @@ class Industry extends Common{
      * @return array
      * @auther jingzheng
      */
-    public function update()
+    public function update(Request $request, $id)
     {
 
             $rule = [
