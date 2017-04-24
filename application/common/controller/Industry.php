@@ -16,11 +16,9 @@ class Industry extends Common{
      * @return array|false|\PDOStatement|string|\think\Model
      * @auther jingzheng
      */
-    public function read()
+    public function read($id)
     {
-
-        $user = new \app\common\model\User;
-        exit($user->field("id,user_name,type,name,tel,mobile,qq,wechat,email,create_time")->where(["id" => $id])->find());
+        return $this->resultArray('','',\app\common\model\Industry::get($id));
 
     }
     /**
@@ -28,9 +26,11 @@ class Industry extends Common{
      * @return array
      * @auther jingzheng
      */
-    public function index($id){
-            $request = $this->getLimit();
-            return  (new \app\common\model\Industry())->getIndustry($request['limit'], $request["rows"],$where);
+    public function index(){
+
+        $request=$this->getLimit();
+        $this->resultArray('','',(new \app\common\model\Industry())->getCompany($request["limit"],$request["rows"]));
+
     }
     /**
      * 添加数据
@@ -63,7 +63,6 @@ class Industry extends Common{
      */
     public function update(Request $request, $id)
     {
-
             $rule = [
                 ["name", "require", "请输入行业名"],
                 ['detail', 'require', '详细必须'],
