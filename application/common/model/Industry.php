@@ -17,10 +17,10 @@ class Industry extends Model{
      * @return array
      * @auther jingzheng
      */
-    public function getIndustry($limit, $rows)
+    public function getIndustry($limit, $rows,$where=0)
     {
         $count = $this->count();
-        $data = $this->limit($limit, $rows)->order("id", "desc")->field("id,name,detail,create_time,update_time")->select();
+        $data = $this->limit($limit, $rows)->order("id", "desc")->where($where)->select();
         return [
             "total" => $count,
             "rows" => $data

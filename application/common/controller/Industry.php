@@ -34,7 +34,16 @@ class Industry extends Common{
     public function index(){
 
         $request=$this->getLimit();
-        return $this->resultArray('','',(new \app\common\model\Industry())->getIndustry($request["limit"],$request["rows"]));
+        $name = $this->request->get('name');
+        $id = $this->request->get('id');
+        $where = [];
+        if(!empty($name)){
+            $where["name"]=["like","%$name%"];
+        }
+        if(!empty($id)){
+            $where["name"]=["like","%$id%"];
+        }
+        return $this->resultArray('','',(new \app\common\model\Industry())->getIndustry($request["limit"],$request["rows"],$where));
 
     }
     /**
