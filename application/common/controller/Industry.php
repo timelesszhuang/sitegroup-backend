@@ -69,13 +69,13 @@ class Industry extends Common{
             ];
             $data = $this->request->put();
             $validate = new Validate($rule);
-            if (!$validate->check($data)) {
-                return $this->resultArray($validate->getError(), 'failed');
-            }
-            if (!\app\common\model\Industry::update($data)) {
-                return $this->resultArray('修改失败', 'failed');
-            }
-            return $this->resultArray();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'failed');
+        }
+        if (!\app\common\model\Industry::update($data)) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
 
     }
 
