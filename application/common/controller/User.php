@@ -47,7 +47,7 @@ class User extends Common
     public function save(Request $request)
     {
         $rule = [
-            ["user_name", "require", "请输入用户名"],
+            ["user_name", "require|unique:User", "请输入用户名|用户名重复"],
             ["pwd", "require", "请输入密码"],
             ["contacts", "require", "请输入联系人"],
             ["mobile", "require", "请输入电话"],
@@ -108,7 +108,7 @@ class User extends Common
             ["type","require","请选择类型"],
             ["name","require","请输入公司名称"]
         ];
-        $data = $this->request->put();
+        $data = $request->put();
         $validate = new Validate($rule);
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');

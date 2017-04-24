@@ -37,7 +37,7 @@ class Company extends Common
     public function save(Request $request)
     {
         $rule=[
-            ["name","require","请输入公司名称"],
+            ["name","require|unique:Company","请输入公司名称|公司名重复"],
             ["artificialperson","require","请输入法人"],
             ["manbusiness","require","请输入主营业务"],
             ["industry_id","require","请选择行业"],
