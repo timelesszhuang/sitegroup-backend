@@ -14,7 +14,8 @@
 // 定义应用目录
 define('APP_PATH', __DIR__ . '/../application/');
 // 加载框架引导文件
-// Allow from any origin
+
+// 因为 thinkphp 资源路由不支持 跨域的时候 options 请求
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     // Decide if the origin in $_SERVER['HTTP_ORIGIN'] is one
     // you want to allow, and if so:
