@@ -15,7 +15,7 @@ class Company extends Common
     public function index()
     {
         $request=$this->getLimit();
-        return (new \app\common\model\Company)->getCompany($request["limit"],$request["rows"]);
+        $this->resultArray('','',(new \app\common\model\Company)->getCompany($request["limit"],$request["rows"]));
     }
 
     /**
@@ -62,7 +62,7 @@ class Company extends Common
      */
     public function read($id)
     {
-        exit(\app\common\model\Company::where($id));
+        return $this->resultArray('','',\app\common\model\Company::get($id));
     }
 
     /**
