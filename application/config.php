@@ -90,6 +90,10 @@ return [
     'url_param_type'         => 0,
     // 是否开启路由
     'url_route_on'           => true,
+    'URL_ROUTE_RULES'=> array(
+        'user'=>'common/user/index', //规则路由
+        'user/:id'=>'common/user/read', //规则路由
+    ),
     // 路由使用完整匹配
     'route_complete_match'   => false,
     // 路由配置文件（支持配置多个）
