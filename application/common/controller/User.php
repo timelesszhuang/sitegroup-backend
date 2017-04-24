@@ -24,7 +24,7 @@ class User extends Common
         if(!empty($company)){
             $where["name"]=["like","%$company%"];
         }
-        return $this->resultArray('','',[(new \app\common\model\User)->getUser($request['limit'], $request["rows"],$where)]);
+        return $this->resultArray('','',(new \app\common\model\User)->getUser($request['limit'], $request["rows"],$where));
     }
 
     /**
