@@ -7,7 +7,7 @@
  */
 
 namespace app\common\model;
-use think\MOdel;
+use think\Model;
 class Company extends Model
 {
     /**
@@ -20,7 +20,7 @@ class Company extends Model
     public function getCompany($limit,$rows)
     {
         $count=$this->count();
-        $data=$this->field("id,name,sort_name,artificialperson,url,manbusiness,industry_id,create_time")->limit($limit,$rows)->order("id desc")->select();
+        $data=$this->field("id,name,short_name,artificialperson,url,manbusiness,industry_id,create_time")->limit($limit,$rows)->order("id desc")->select();
         return [
             "total"=>$count,
             "rows"=>$data

@@ -9,8 +9,8 @@ class User extends Common
 {
     /**
      * 显示资源列表
-     *
      * @return \think\Response
+     * @auther guozhen
      */
     public function index()
     {
@@ -24,7 +24,7 @@ class User extends Common
         if(!empty($company)){
             $where["name"]=["like","%$company%"];
         }
-        return (new \app\common\model\User)->getUser($request['limit'], $request["rows"],$where);
+        return $this->resultArray('','',[(new \app\common\model\User)->getUser($request['limit'], $request["rows"],$where)]);
     }
 
     /**
@@ -42,6 +42,7 @@ class User extends Common
      *
      * @param  \think\Request  $request
      * @return \think\Response
+     * @auther guozhen
      */
     public function save(Request $request)
     {
@@ -70,6 +71,7 @@ class User extends Common
      *
      * @param  int  $id
      * @return \think\Response
+     * @auther guozhen
      */
     public function read($id)
     {
@@ -94,6 +96,7 @@ class User extends Common
      * @param  \think\Request  $request
      * @param  int  $id
      * @return \think\Response
+     * @auther guozhen
      */
     public function update(Request $request, $id)
     {
@@ -113,7 +116,7 @@ class User extends Common
         if (!\app\common\model\User::update($data)) {
             return $this->resultArray('修改失败', 'failed');
         }
-        return $this->resultArray();
+        return $this->resultArray('修改成功');
     }
 
     /**
@@ -121,6 +124,7 @@ class User extends Common
      *
      * @param  int  $id
      * @return \think\Response
+     * @auther guozhen
      */
     public function delete($id)
     {
