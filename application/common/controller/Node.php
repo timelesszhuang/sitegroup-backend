@@ -15,7 +15,7 @@ class Node extends Common
     public function index()
     {
         $request=$this->getLimit();
-        $this->resultArray('','',(new \app\common\model\Node)->getNode($request["limit"],$request["rows"]));
+         return $this->resultArray('','',(new \app\common\model\Node)->getNode($request["limit"],$request["rows"]));
     }
 
     /**

@@ -29,7 +29,7 @@ class Industry extends Common{
     public function index(){
 
         $request=$this->getLimit();
-        $this->resultArray('','',(new \app\common\model\Industry())->getIndustry($request["limit"],$request["rows"]));
+        return $this->resultArray('','',(new \app\common\model\Industry())->getIndustry($request["limit"],$request["rows"]));
 
     }
     /**
