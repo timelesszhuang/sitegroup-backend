@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 use think\Route;
 Route::resource('user','common/User');
+Route::resource('industry','common/Industry');
 return [
     '__pattern__' => [
         'name' => '\w+',

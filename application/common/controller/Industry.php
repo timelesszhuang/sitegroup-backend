@@ -15,34 +15,29 @@ class Industry extends Common{
      * @return array|false|\PDOStatement|string|\think\Model
      * @auther jingzheng
      */
-    public function index($id)
+    public function read()
     {
-        if ($this->request->isGet())
-        {
-            $Industry = new \app\common\model\Industry();
-            return $Industry->field("id,name,create_time,update_time")->where(["id" => $id])->find();
-        }
-    }
 
+        $user = new \app\common\model\User;
+        exit($user->field("id,user_name,type,name,tel,mobile,qq,wechat,email,create_time")->where(["id" => $id])->find());
+
+    }
     /**
      * 分页数据
      * @return array
      * @auther jingzheng
      */
-    public function read(){
-        if ($this->request->isGet())
-        {
+    public function index($id){
             $request = $this->getLimit();
-            return  (new \app\common\model\Industry())->getIndustry($request['limit'], $request["rows"]);
-        }
+            return  (new \app\common\model\Industry())->getIndustry($request['limit'], $request["rows"],$where);
     }
     /**
      * 添加数据
      * @return array
      * @auther jingzheng
      */
-    public function add(){
-        if($this->request->isPost()){
+    public function save(Request $request){
+
             $rule = [
                 ["name", "require", "请输入行业名"],
                 ['detail', 'require', '详细必须'],
@@ -57,7 +52,9 @@ class Industry extends Common{
             }
             return $this->resultArray('添加成功');
         }
-    }
+
+
+
     /**
      * 修改数据
      * @return array
@@ -65,7 +62,7 @@ class Industry extends Common{
      */
     public function update()
     {
-        if ($this->request->isPut()) {
+
             $rule = [
                 ["name", "require", "请输入行业名"],
                 ['detail', 'require', '详细必须'],
@@ -79,7 +76,7 @@ class Industry extends Common{
                 return $this->resultArray('修改失败', 'failed');
             }
             return $this->resultArray();
-        }
+
     }
 
 
@@ -91,14 +88,12 @@ class Industry extends Common{
      */
     public function delete($id)
     {
-        if ($this->request->isDelete()) {
             $Industry = \app\common\model\Industry::get($id);
             if (!$Industry->delete()) {
                 return $this->resultArray('删除失败', 'failed');
             }
             return $this->resultArray('删除成功');
 
-        }
     }
 
 }
