@@ -26,7 +26,11 @@ class Industry extends Model{
             "rows" => $data
         ];
     }
-
+    public function getSort()
+    {
+        $data = $this->order("sort", "desc")->field("id,name")->select();
+        return $data;
+    }
 
 
 }

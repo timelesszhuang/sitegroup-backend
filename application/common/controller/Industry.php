@@ -21,6 +21,11 @@ class Industry extends Common{
         return $this->resultArray('','',\app\common\model\Industry::get($id));
 
     }
+    public function create(){
+        $request=$this->getLimit();
+        return $this->resultArray('','',(new \app\common\model\Industry())->getSort($request));
+
+    }
     /**
      * 分页数据
      * @return array
