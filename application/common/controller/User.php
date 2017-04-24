@@ -76,7 +76,7 @@ class User extends Common
     public function read($id)
     {
         $user = new \app\common\model\User;
-        return $this->resultArray('','',$user->field("id,user_name,type,name,tel,mobile,qq,wechat,email,create_time")->where(["id" => $id])->find());
+        return $this->resultArray('','',$user->where(["id" => $id])->find());
     }
 
     /**
