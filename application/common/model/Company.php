@@ -26,9 +26,4 @@ class Company extends Model
             "rows"=>$data
         ];
     }
-    public function getSort()
-    {
-        $data = $this->order("id", "desc")->field("industry_id,industry_name")->select();
-        return $data;
-    }
 }
