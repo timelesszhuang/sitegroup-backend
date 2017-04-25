@@ -31,6 +31,7 @@ class Node extends Common
             ["detail","require","请输入详细"],
             ["com_name","require","请选择公司"],
             ["com_id","require","请选择公司"],
+            ["user_id","require","请选择管理员"],
         ];
         $validate=new Validate($rule);
         $data=$this->request->post();
@@ -41,6 +42,12 @@ class Node extends Common
             return $this->resultArray("添加失败","failed");
         }
         return $this->resultArray("添加成功");
+    }
+
+    public function create(){
+        $request=$this->getLimit();
+        return $this->resultArray('','',(new \app\common\model\Node())->getUser($request));
+
     }
 
     /**

@@ -26,6 +26,11 @@ class Node extends Model{
             "rows" => $data
         ];
     }
+    public function getUser()
+    {
+        $data = $this->order("id", "desc")->select();
+        return $data;
+    }
 
 
 
