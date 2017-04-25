@@ -22,8 +22,6 @@ class Industry extends Common{
 
     }
     public function create(){
-        $request=$this->getLimit();
-        return $this->resultArray('','',(new \app\common\model\Industry())->getSort($request));
 
     }
     /**
@@ -109,6 +107,5 @@ class Industry extends Common{
         return $this->resultArray('删除成功');
 
     }
-
 }
 

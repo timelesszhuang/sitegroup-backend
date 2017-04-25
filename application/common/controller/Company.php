@@ -131,4 +131,13 @@ class Company extends Common
 //        (new \app\common\model\Company)->field("id,")->select();
 
     }
+
+    /**
+     * 获取行业id name
+     * @return array
+     */
+
+    public function getIndustry(){
+        return $this->resultArray('','',(new \app\common\model\Industry())->getSort());
+    }
 }
