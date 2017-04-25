@@ -12,6 +12,7 @@ use think\Route;
 Route::resource('user','common/User');
 Route::resource('industry','common/Industry');
 Route::resource('company','common/Company');
+Route::rule('company/getAll','common/Company/getAll');
 Route::resource('node','common/Node');
 return [
     '__pattern__' => [

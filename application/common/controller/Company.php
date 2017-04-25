@@ -4,7 +4,7 @@ namespace app\common\controller;
 
 use think\Controller;
 use think\Request;
-
+use think\Validate;
 class Company extends Common
 {
     /**
@@ -33,8 +33,6 @@ class Company extends Common
      * @return \think\Response
      */
     public function create(){
-        $request=$this->getLimit();
-        return $this->resultArray('','',(new \app\common\model\Company())->getSort($request));
 
     }
     /**
@@ -125,5 +123,12 @@ class Company extends Common
             return $this->resultArray('删除失败', 'failed');
         }
         return $this->resultArray('删除成功');
+    }
+
+    public function getAll()
+    {
+        echo 1111;
+//        (new \app\common\model\Company)->field("id,")->select();
+
     }
 }
