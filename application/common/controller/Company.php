@@ -138,12 +138,5 @@ class Company extends Common
         return $this->resultArray('', '', $data);
     }
 
-    /**
-     * 获取行业id name
-     * @return array
-     */
 
-    public function getIndustry(){
-        return $this->resultArray('','',(new \app\common\model\Industry())->getSort());
-    }
 }
