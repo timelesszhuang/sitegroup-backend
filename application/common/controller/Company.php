@@ -132,13 +132,5 @@ class Company extends Common
 
     }
 
-    /**
-     * 获取行业id name
-     * @return array
-     * auther jingzheng
-     */
 
-    public function getIndustry(){
-        return $this->resultArray('','',(new \app\common\model\Industry())->getSort());
-    }
 }
