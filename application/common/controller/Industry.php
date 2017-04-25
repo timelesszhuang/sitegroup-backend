@@ -41,7 +41,7 @@ class Industry extends Common{
             $where["name"]=["like","%$name%"];
         }
         if(!empty($id)){
-            $where["name"]=["like","%$id%"];
+            $where["id"]=$id;
         }
         return $this->resultArray('','',(new \app\common\model\Industry())->getIndustry($request["limit"],$request["rows"],$where));
 
