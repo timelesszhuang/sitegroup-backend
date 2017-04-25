@@ -138,8 +138,13 @@ class User extends Common
         return $this->resultArray('删除成功');
     }
 
+    /**
+     * 获取所有用户 id,username
+     * @return array
+     */
     public function getAll()
     {
-        return (new \app\common\model\User)->field("id,account")->select();
+        $data=(new \app\common\model\User)->field("id,user_name")->select();
+        return $this->resultArray('','',$data);
     }
 }

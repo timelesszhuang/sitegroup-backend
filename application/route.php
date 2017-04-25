@@ -12,9 +12,11 @@ use think\Route;
 Route::resource('user','common/User');
 Route::resource('industry','common/Industry');
 Route::resource('company','common/Company');
+Route::resource('node','common/Node');
 Route::rule('company/getAll','common/Company/getAll');
 Route::rule('industry/getIndustry','common/industry/getIndustry');
-Route::resource('node','common/Node');
+Route::rule('user/getAll','common/User/getAll');
+
 return [
     '__pattern__' => [
         'name' => '\w+',
