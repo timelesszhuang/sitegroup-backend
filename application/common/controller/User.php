@@ -137,4 +137,9 @@ class User extends Common
         }
         return $this->resultArray('删除成功');
     }
+
+    public function getAll()
+    {
+        return (new \app\common\model\User)->field("id,account")->select();
+    }
 }
