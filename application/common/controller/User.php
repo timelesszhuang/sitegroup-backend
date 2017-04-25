@@ -144,7 +144,10 @@ class User extends Common
      */
     public function getAll()
     {
-        $data=(new \app\common\model\User)->field("id,user_name")->select();
+        $where=[];
+        $where["type"]=2;
+        $where["node_id"]=0;
+        $data=(new \app\common\model\User)->where($where)->field("id,user_name")->select();
         return $this->resultArray('','',$data);
     }
 }
