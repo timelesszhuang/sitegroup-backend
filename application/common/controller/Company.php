@@ -16,7 +16,7 @@ class Company extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $name = $this->request->get('industry_name');
+        $name = $this->request->get('name');
         $id = $this->request->get('industry_id');
         $where = [];
         if (!empty($name)) {
