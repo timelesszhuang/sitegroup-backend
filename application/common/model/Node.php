@@ -20,7 +20,7 @@ class Node extends Model{
     public function getNode($limit, $rows)
     {
         $count = $this->count();
-        $data = $this->limit($limit, $rows)->order("id", "desc")->field("id,name,detail,com_id,com_name,user_id,create_time,update_time")->select();
+        $data = $this->limit($limit, $rows)->order("id", "desc")->select();
         return [
             "total" => $count,
             "rows" => $data

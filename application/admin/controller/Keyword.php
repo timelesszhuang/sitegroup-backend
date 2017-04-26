@@ -8,8 +8,8 @@ class Keyword extends Common
 {
     /**
      * 显示资源列表
-     *
      * @return \think\Response
+     * @auther jingzheng
      */
     public function index()
     {
@@ -75,7 +75,6 @@ class Keyword extends Common
 
     /**
      * 删除指定资源
-     *
      * @param  int  $id
      * @return \think\Response
      */
