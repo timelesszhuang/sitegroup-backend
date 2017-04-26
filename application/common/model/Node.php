@@ -10,6 +10,7 @@ namespace app\common\model;
 use think\Model;
 
 class Node extends Model{
+
     /**
      * 分页
      * @param $limit

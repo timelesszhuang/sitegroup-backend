@@ -30,7 +30,7 @@ class Keyword extends Model
             $where["parent_id"]=$id;
         }
         $user=(new Common)->getSessionUser();
-//        $where["node_id"]=$user["user_node_id"];
+        $where["node_id"]=$user["user_node_id"];
         $data=$this->where($where)->select();
         return $data;
     }

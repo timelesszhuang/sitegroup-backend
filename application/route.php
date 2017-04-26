@@ -19,6 +19,7 @@ Route::rule('industry/getIndustry','common/industry/getIndustry');
 Route::rule('user/getAll','common/User/getAll');
 Route::rule('Industry/getIndustry','common/Industry/getIndustry');
 Route::resource('node','common/Node');
+Route::rule('node/status','common/Node/status');
 return [
     '__pattern__' => [
         'name' => '\w+',
