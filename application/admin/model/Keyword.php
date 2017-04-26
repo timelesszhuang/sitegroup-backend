@@ -8,7 +8,7 @@
 
 namespace app\admin\model;
 
-use app\common\model\Company;
+use app\common\model\Common;
 use think\Model;
 use think\Session;
 
@@ -28,7 +28,7 @@ class Keyword extends Model
         if(!empty($id)){
             $where["parent_id"]=$id;
         }
-        $user=(new Company)->getSessionUser();
+        $user=(new Common)->getSessionUser();
         $where["node_id"]=$user["user_node_id"];
         $data=$this->where($where)->select();
         return $data;
