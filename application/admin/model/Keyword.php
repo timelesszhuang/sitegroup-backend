@@ -9,6 +9,7 @@
 namespace app\model\Keyword;
 
 use think\Model;
+use think\Session;
 
 class Keyword extends Model
 {
@@ -17,9 +18,10 @@ class Keyword extends Model
      * @param $tag
      * @return false|\PDOStatement|string|\think\Collection
      */
-    public function getKeyword($tag)
+    public function getKeyword($tag,$node_id)
     {
         $where["tag"]=$tag;
+        $where["node_id"]=Session::get("")
         $data=$this->where($where)->select();
         return $data;
     }
