@@ -72,10 +72,10 @@ class Node extends Common
     public function update(Request $request, $id)
     {
         $rule=[
-//            ["name","require|unique:Node","请输入节点名称|节点名称重复"],
-//            ["detail","require","请输入详细"],
-//            ["com_name","require","请选择公司"],
-//            ["com_id","require","请选择公司"],
+            ["name","require|unique:Node","请输入节点名称|节点名称重复"],
+            ["detail","require","请输入详细"],
+            ["com_name","require","请选择公司"],
+            ["com_id","require","请选择公司"],
         ];
         $data = $this->request->put();
         $validate = new Validate($rule);
