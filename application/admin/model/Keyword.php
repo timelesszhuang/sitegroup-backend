@@ -6,7 +6,7 @@
  * Time: 下午2:25
  */
 
-namespace app\model\Keyword;
+namespace app\admin\model;
 
 use think\Model;
 

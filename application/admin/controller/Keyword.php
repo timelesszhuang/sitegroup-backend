@@ -5,7 +5,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Request;
 
-class keyword extends Controller
+class Keyword extends Controller
 {
     /**
      * 显示资源列表
@@ -14,6 +14,8 @@ class keyword extends Controller
      */
     public function index()
     {
+       $data = (new \app\admin\model\Keyword())->getKeyword();
+       return $data;
 
     }
 
