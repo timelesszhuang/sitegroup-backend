@@ -14,7 +14,7 @@ class Keyword extends Controller
      */
     public function index()
     {
-       $data = (new \app\admin\model\Keyword())->getKeyword();
+       $data = (new \app\admin\model\Keyword())->getKeyword('A','1');
        return $data;
 
     }

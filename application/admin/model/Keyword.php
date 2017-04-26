@@ -8,7 +8,8 @@
 
 namespace app\admin\model;
 
-use app\common\model\Common;
+use app\common\controller\Common;
+
 use think\Model;
 use think\Session;
 
