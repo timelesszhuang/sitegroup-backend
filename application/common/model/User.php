@@ -99,15 +99,20 @@ class User extends Model
         $user_name = "sys_user_name";
         $id = "sys_id";
         $name = "sys_name";
+        $type="sys_type";
+        $node_id="sys_node_id";
         if ($user_info_arr['type'] == 2) {
             $user_name = "admin_user_name";
             $id = "admin_id";
             $name = "admin_name";
+            $type = "admin_type";
+            $node_id="admin_node_id";
         }
         Session::set($user_name, $user_info_arr["user_name"]);
         Session::set($id, $user_info_arr["id"]);
         Session::set($name, $user_info_arr["name"]);
-        Session::set("type", $user_info_arr["type"]);
+        Session::set($type, $user_info_arr["type"]);
+        Session::set($node_id, $user_info_arr["node_id"]);
     }
 
     /**
