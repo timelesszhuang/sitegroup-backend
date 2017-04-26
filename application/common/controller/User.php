@@ -147,7 +147,7 @@ class User extends Common
         $where=[];
         $where["type"]=2;
         $where["node_id"]=0;
-        $data=(new \app\common\model\User)->where($where)->field("id,user_name")->select();
+        $data=(new \app\common\model\User)->where($where)->field("id,user_name as name")->select();
         return $this->resultArray('','',$data);
     }
 }
