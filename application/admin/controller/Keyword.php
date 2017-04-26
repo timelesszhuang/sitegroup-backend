@@ -1,11 +1,10 @@
 <?php
 
 namespace app\admin\controller;
-
-use think\Controller;
+use app\common\controller\Common;
 use think\Request;
 
-class Keyword extends Controller
+class Keyword extends Common
 {
     /**
      * 显示资源列表
@@ -14,7 +13,7 @@ class Keyword extends Controller
      */
     public function index()
     {
-       $data = (new \app\admin\model\Keyword())->getKeyword('A','1');
+       $data = (new \app\admin\model\Keyword())->getKeyword('A',0);
        return $data;
 
     }
@@ -48,7 +47,7 @@ class Keyword extends Controller
      */
     public function read($id)
     {
-        //
+        return $this->resultArray('','',\app\admin\model\Keyword::get($id));
     }
 
     /**
