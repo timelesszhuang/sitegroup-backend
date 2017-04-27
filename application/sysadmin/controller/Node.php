@@ -41,7 +41,7 @@ class Node extends Common
         }
         $node=new \app\common\model\Node();
         $node->startTrans();
-        if(!\app\common\model\Node::create($data)){
+        if(!\app\sysadmin\model\Node::create($data)){
             return $this->resultArray("添加失败","failed");
         }
         $nodeTemp=\app\sysadmin\model\Node::get($data["id"]);
