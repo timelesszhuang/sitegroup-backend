@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 use app\common\controller\Common;
 use think\Request;
+use think\worker\Server;
 
 class Keyword extends Common
 {
@@ -95,5 +96,12 @@ class Keyword extends Common
     public function delete($id)
     {
         //
+    }
+
+    public function uploadA()
+    {
+        $this->request->server();
+
+
     }
 }
