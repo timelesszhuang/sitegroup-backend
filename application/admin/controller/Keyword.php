@@ -14,8 +14,13 @@ class Keyword extends Common
      */
     public function index()
     {
-        $data = (new \app\admin\model\Keyword())->getKeyword('A');
-        return $data;
+        $tag = $this->request->get('tag');
+        if(empty($tag)){
+            $tag="A";
+        }
+        $id = $this->request->get('parent_id');
+        $data = (new \app\admin\model\Keyword())->getKeyword($tag,$id);
+        return $this->resultArray('','',$data);
     }
 
     /**
