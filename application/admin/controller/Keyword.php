@@ -15,8 +15,8 @@ class Keyword extends Common
      */
     public function index()
     {
-        $tag = $this->request->get('tag');
-        $id = $this->request->get('parent_id');
+        $tag ="";
+        $id = $this->request->get('id');
         if (empty($id)) {
             $tag = "A";
         }
