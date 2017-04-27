@@ -20,7 +20,7 @@ class Keyword extends Model
      * @param $tag
      * @return false|\PDOStatement|string|\think\Collection
      */
-    public function getKeyword($tag=null,$id=0)
+    public function getKeyword($tag="",$id=0)
     {
         $where=[];
         if(!empty($tag)){
@@ -30,7 +30,7 @@ class Keyword extends Model
             $where["parent_id"]=$id;
         }
         $user=(new Common)->getSessionUser();
-        $where["node_id"]=$user["user_node_id"];
+//        $where["node_id"]=$user["user_node_id"];
         $data=$this->where($where)->select();
         return $data;
     }

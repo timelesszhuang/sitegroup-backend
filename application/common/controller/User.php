@@ -154,3 +154,4 @@ class User extends Common
         return $this->resultArray('','',$data);
     }
 }
+
