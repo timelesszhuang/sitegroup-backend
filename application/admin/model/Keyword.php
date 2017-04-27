@@ -30,7 +30,6 @@ class Keyword extends Model
             $where["parent_id"]=$id;
         }
         $user=(new Common)->getSessionUser();
-        dump($user);die;
         $where["node_id"]=$user["user_node_id"];
         $data=$this->where($where)->field("id,name as label,tag")->select();
         return $data;
