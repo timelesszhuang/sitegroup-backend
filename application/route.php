@@ -20,6 +20,7 @@ Route::rule('user/getAll','common/User/getAll');
 Route::resource('node','sysadmin/Node');
 Route::rule('node/status','sysadmin/Node/status');
 Route::post('keyword/uploadKeyword','admin/keyword/uploadKeyword');
+Route::post('keyword/insertKeyword','admin/keyword/insertKeyword');
 return [
     '__pattern__' => [
         'name' => '\w+',
