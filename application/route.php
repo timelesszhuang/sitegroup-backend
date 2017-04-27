@@ -19,7 +19,7 @@ Route::rule('industry/getIndustry','sysadmin/industry/getIndustry');
 Route::rule('user/getAll','common/User/getAll');
 Route::resource('node','sysadmin/Node');
 Route::rule('node/status','sysadmin/Node/status');
-Route::post('keyword/uploadA','admin/keyword/uploadA');
+Route::post('keyword/uploadKeyword','admin/keyword/uploadKeyword');
 return [
     '__pattern__' => [
         'name' => '\w+',

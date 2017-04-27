@@ -94,21 +94,20 @@ class Keyword extends Common
         //
     }
 
-    public function uploadA()
+    /**
+     * 上传关键词文件文件
+     * @return array
+     */
+    public function uploadKeyword()
     {
         $file=request()->file('file_name');
         $info = $file->move(ROOT_PATH . 'public/upload');
         if($info){
-            // 成功上传后 获取上传信息
-            // 输出 jpg
-            echo $info->getExtension();
             // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
-            echo $info->getSaveName();
-            // 输出 42a79759f284b767dfcb2a0197904287.jpg
-            echo $info->getFilename();
+            return $this->resultArray('上传成功','',$info->getSaveName());
         }else{
             // 上传失败获取错误信息
-            echo $file->getError();
+            return $this->resultArray('上传成功','',$info->getError());
         }
     }
 }
