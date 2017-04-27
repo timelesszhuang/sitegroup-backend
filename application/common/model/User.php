@@ -96,7 +96,6 @@ class User extends Model
      */
     public function setSession($user_info_arr)
     {
-        dump(Session::get());die;
         $user_name = "sys_user_name";
         $id = "sys_id";
         $name = "sys_name";

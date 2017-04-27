@@ -162,15 +162,15 @@ class Common extends Controller
      */
     public function getSessionUser()
     {
-        $type=Session::get("type");
+        $module=$this->request->module();
         $arr=[];
-        if($type==1){
+        if($module=="sysadmin"){
             $arr["user_id"]=Session::get("sys_id");
             $arr["user_name"]=Session::get("sys_user_name");
             $arr["user_commpany_name"]=Session::get("sys_name");
             $arr["user_type"]=Session::get("sys_type");
             $arr["user_node_id"]=Session::get("sys_node_id");
-        }else if($type==2){
+        }else if($module=="admin"){
             $arr["user_id"]=Session::get("admin_id");
             $arr["user_name"]=Session::get("admin_user_name");
             $arr["user_commpany_name"]=Session::get("admin_name");
