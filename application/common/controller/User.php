@@ -128,10 +128,13 @@ class User extends Common
      */
     public function delete($id)
     {
-        if ($id == 1) {
-            return $this->resultArray('系统管理员不允许删除', 'failed');
-        }
         $user = \app\common\model\User::get($id);
+        if($user->type==1){
+            return $this->resultArray('不允许删除', 'failed');
+        }
+        if(!empty($user->node_id)){
+            return $this->resultArray('不允许删除', 'failed');
+        }
         if (!$user->delete()) {
             return $this->resultArray('删除失败', 'failed');
         }
