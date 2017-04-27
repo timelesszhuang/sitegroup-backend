@@ -31,9 +31,11 @@ class Keyword extends Model
         }
         $user=(new Common)->getSessionUser();
 //        $where["node_id"]=$user["user_node_id"];
-        $data=$this->where($where)->select();
+        $data=$this->where($where)->field("id,name as label,tag")->select();
         return $data;
     }
+
+
 
 
 
