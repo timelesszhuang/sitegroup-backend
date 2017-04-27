@@ -14,9 +14,7 @@ class Keyword extends Common
      */
     public function index()
     {
-        $tag = $this->request->get('tag');
-        $id = $this->request->get('parent_id');
-        $data = (new \app\admin\model\Keyword())->getKeyword("$tag","$id");
+        $data = (new \app\admin\model\Keyword())->getKeyword('A');
         return $data;
     }
 
@@ -38,19 +36,6 @@ class Keyword extends Common
      */
     public function save(Request $request)
     {
-        //
-        $rule = [
-            ["name", "require|unique:Company", "请输入公司名称|公司名重复"],
-        ];
-        $validate = new Validate($rule);
-        $data = $this->request->post();
-        if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), "failed");
-        }
-        if (!\app\common\model\Company::create($data)) {
-            return $this->resultArray("添加失败", "failed");
-        }
-        return $this->resultArray("添加成功");
 
     }
 
