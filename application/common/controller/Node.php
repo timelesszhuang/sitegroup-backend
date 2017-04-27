@@ -29,10 +29,10 @@ class Node extends Common
     {
         $rule=[
             ["name","require|unique:Node","请输入节点名称|节点名称重复"],
-//            ["detail","require","请输入详细"],
-//            ["com_name","require","请选择公司"],
-//            ["com_id","require","请选择公司"],
-//            ["user_id","require","请选择管理员"],
+            ["detail","require","请输入详细"],
+            ["com_name","require","请选择公司"],
+            ["com_id","require","请选择公司"],
+            ["user_id","require","请选择管理员"],
         ];
         $validate=new Validate($rule);
         $data=$this->request->post();
