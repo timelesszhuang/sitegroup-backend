@@ -6,7 +6,7 @@
  * Time: 11:34
  */
 
-namespace app\common\model;
+namespace app\sysadmin\model;
 use think\Model;
 class Company extends Model
 {

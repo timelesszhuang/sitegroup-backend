@@ -1,6 +1,6 @@
 <?php
-
-namespace app\common\controller;
+namespace app\sysadmin\controller;
+use app\common\controller\Common;
 
 use think\Controller;
 use think\Request;
@@ -16,7 +16,7 @@ class Node extends Common
     public function index()
     {
         $request=$this->getLimit();
-         return $this->resultArray('','',(new \app\common\model\Node)->getNode($request["limit"],$request["rows"]));
+         return $this->resultArray('','',(new \app\sysadmin\model\Node())->getNode($request["limit"],$request["rows"]));
     }
 
     /**
@@ -44,7 +44,7 @@ class Node extends Common
         if(!\app\common\model\Node::create($data)){
             return $this->resultArray("添加失败","failed");
         }
-        $nodeTemp=\app\common\model\Node::get($data["id"]);
+        $nodeTemp=\app\sysadmin\model\Node::get($data["id"]);
         $user=\app\common\model\User::get($nodeTemp->user_id);
         $user->node_id=$data["id"];
         $user->node_name = $data['name'];
@@ -57,7 +57,7 @@ class Node extends Common
 
     public function create(){
         $request=$this->getLimit();
-        return $this->resultArray('','',(new \app\common\model\Node())->getUser($request));
+        return $this->resultArray('','',(new \app\sysadmin\model\Node())->getUser($request));
 
     }
 
@@ -69,7 +69,7 @@ class Node extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('','',\app\common\model\Node::get($id));
+        return $this->resultArray('','',\app\sysadmin\model\Node::get($id));
     }
 
     /**
@@ -94,10 +94,10 @@ class Node extends Common
         }
         $node=new \app\common\model\Node();
         $node->startTrans();
-        if (!\app\common\model\Node::update($data)) {
+        if (!\app\sysadmin\model\Node::update($data)) {
             return $this->resultArray('修改失败', 'failed');
         }
-        $nodeTemp=\app\common\model\Node::get($data["id"]);
+        $nodeTemp=\app\sysadmin\model\Node::get($data["id"]);
         $user=\app\common\model\User::get($nodeTemp->user_id);
         $user->node_id=$data["id"];
         $user->node_name = $data['name'];
@@ -116,7 +116,7 @@ class Node extends Common
      */
     public function delete($id)
     {
-        $Industry = \app\common\model\Node::get($id);
+        $Industry = \app\sysadmin\model\Node::get($id);
         if (!$Industry->delete()) {
             return $this->resultArray('删除失败', 'failed');
         }
@@ -126,7 +126,7 @@ class Node extends Common
     {
         $status = $this->request->get('status');
         $id = $this->request->get('id');
-        $Node = new \app\common\model\Node();
+        $Node = new \app\sysadmin\model\Node();
         if($Node->where('id', $id)
             ->update(['status' => $status,'status_time' => $this->request->time()])){
             return $this->resultArray('修改成功');

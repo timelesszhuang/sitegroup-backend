@@ -5,12 +5,11 @@
  * Date: 2017/4/21
  * Time: 11:35
  */
-namespace app\common\model;
+namespace app\sysadmin\model;
 
 use think\Model;
 
-class Node extends Model{
-
+class Industry extends Model{
     /**
      * 分页
      * @param $limit
@@ -18,21 +17,20 @@ class Node extends Model{
      * @return array
      * @auther jingzheng
      */
-    public function getNode($limit, $rows)
+    public function getIndustry($limit, $rows,$where=0)
     {
         $count = $this->count();
-        $data = $this->limit($limit, $rows)->order("id", "desc")->select();
+        $data = $this->limit($limit, $rows)->order("id", "desc")->where($where)->select();
         return [
             "total" => $count,
             "rows" => $data
         ];
     }
-    public function getUser()
+    public function getSort()
     {
-        $data = $this->order("id", "desc")->select();
+        $data = $this->order("sort", "desc")->field("id,name")->select();
         return $data;
     }
-
 
 
 }

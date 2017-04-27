@@ -1,8 +1,8 @@
 <?php
 
-namespace app\common\controller;
+namespace app\sysadmin\controller;
 
-use think\Controller;
+use app\common\controller\Common;
 use think\Request;
 use think\Validate;
 
@@ -25,7 +25,7 @@ class Company extends Common
         if (!empty($id)) {
             $where["industry_id"] = $id;
         }
-        return $this->resultArray('', '', (new \app\common\model\Company())->getCompany($request["limit"], $request["rows"], $where));
+        return $this->resultArray('', '', (new \app\sysadmin\model\Company())->getCompany($request["limit"], $request["rows"], $where));
     }
 
     /**
@@ -58,7 +58,7 @@ class Company extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        if (!\app\common\model\Company::create($data)) {
+        if (!\app\sysadmin\model\Company::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
         return $this->resultArray("添加成功");
@@ -72,7 +72,7 @@ class Company extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('', '', \app\common\model\Company::get($id));
+        return $this->resultArray('', '', \app\sysadmin\model\Company::get($id));
     }
 
     /**
@@ -107,7 +107,7 @@ class Company extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        if (!\app\common\model\Company::update($data)) {
+        if (!\app\sysadmin\model\Company::update($data)) {
             return $this->resultArray('修改失败', 'failed');
         }
         return $this->resultArray('修改成功');
@@ -121,7 +121,7 @@ class Company extends Common
      */
     public function delete($id)
     {
-        $Industry = \app\common\model\Company::get($id);
+        $Industry = \app\sysadmin\model\Company::get($id);
         if (!$Industry->delete()) {
             return $this->resultArray('删除失败', 'failed');
         }
@@ -134,7 +134,7 @@ class Company extends Common
      */
     public function getAll()
     {
-        $data = (new \app\common\model\Company)->field("id,name")->select();
+        $data = (new \app\sysadmin\model\Company())->field("id,name")->select();
         return $this->resultArray('', '', $data);
     }
 

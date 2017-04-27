@@ -5,11 +5,12 @@
  * Date: 2017/4/21
  * Time: 11:35
  */
-namespace app\common\controller;
+namespace app\sysadmin\controller;
+use app\common\controller\Common;
 use think\Validate;
 use think\Request;
 
-class Industry extends Common{
+class Industry extends Common {
     /**
      * 查询数据
      * @param $id
@@ -18,7 +19,7 @@ class Industry extends Common{
      */
     public function read($id)
     {
-        return $this->resultArray('','',\app\common\model\Industry::get($id));
+        return $this->resultArray('','',\app\sysadmin\model\Industry::get($id));
 
     }
     public function create(){
@@ -41,7 +42,7 @@ class Industry extends Common{
         if(!empty($id)){
             $where["id"]=$id;
         }
-        return $this->resultArray('','',(new \app\common\model\Industry())->getIndustry($request["limit"],$request["rows"],$where));
+        return $this->resultArray('','',(new \app\sysadmin\model\Industry())->getIndustry($request["limit"],$request["rows"],$where));
 
     }
     /**
@@ -60,7 +61,7 @@ class Industry extends Common{
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        if (!\app\common\model\Industry::create($data)) {
+        if (!\app\sysadmin\model\Industry::create($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
@@ -84,7 +85,7 @@ class Industry extends Common{
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        if (!\app\common\model\Industry::update($data)) {
+        if (!\app\sysadmin\model\Industry::update($data)) {
             return $this->resultArray('修改失败', 'failed');
         }
         return $this->resultArray('修改成功');
@@ -100,7 +101,7 @@ class Industry extends Common{
      */
     public function delete($id)
     {
-        $Industry = \app\common\model\Industry::get($id);
+        $Industry = \app\sysadmin\model\Industry::get($id);
         if (!$Industry->delete()) {
             return $this->resultArray('删除失败', 'failed');
         }
@@ -115,7 +116,7 @@ class Industry extends Common{
      */
 
     public function getIndustry(){
-        return $this->resultArray('','',(new \app\common\model\Industry())->getSort());
+        return $this->resultArray('','',(new \app\sysadmin\model\Industry())->getSort());
     }
 }
 
