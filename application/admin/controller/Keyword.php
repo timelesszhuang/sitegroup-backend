@@ -1,6 +1,7 @@
 <?php
 
 namespace app\admin\controller;
+
 use app\common\controller\Common;
 use think\Request;
 use think\worker\Server;
@@ -15,12 +16,17 @@ class Keyword extends Common
     public function index()
     {
         $tag = $this->request->get('tag');
-        if(empty($tag)){
-            $tag="A";
+        if ($tag == "A") {
+            $tag = "B";
+        } else if ($tag == "B") {
+            $tag = "C";
+        }
+        if (empty($tag)) {
+            $tag = "A";
         }
         $id = $this->request->get('parent_id');
-        $data = (new \app\admin\model\Keyword())->getKeyword($tag,$id);
-        return $this->resultArray('','',$data);
+        $data = (new \app\admin\model\Keyword())->getKeyword($tag, $id);
+        return $this->resultArray('', '', $data);
     }
 
     /**
@@ -36,7 +42,7 @@ class Keyword extends Common
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
@@ -47,18 +53,18 @@ class Keyword extends Common
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function read($id)
     {
-        return $this->resultArray('','',\app\admin\model\Keyword::get($id));
+        return $this->resultArray('', '', \app\admin\model\Keyword::get($id));
     }
 
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -69,8 +75,8 @@ class Keyword extends Common
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param  \think\Request $request
+     * @param  int $id
      * @return \think\Response
      */
     public function update(Request $request, $id)
@@ -80,7 +86,7 @@ class Keyword extends Common
 
     /**
      * 删除指定资源
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function delete($id)
@@ -104,7 +110,5 @@ class Keyword extends Common
             // 上传失败获取错误信息
             echo $file->getError();
         }
-
-
     }
 }
