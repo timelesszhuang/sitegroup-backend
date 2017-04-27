@@ -17,9 +17,9 @@ Route::resource('keyword','admin/keyword');
 Route::rule('company/getAll','sysadmin/Company/getAll');
 Route::rule('industry/getIndustry','sysadmin/industry/getIndustry');
 Route::rule('user/getAll','common/User/getAll');
-Route::rule('Industry/getIndustry','sysadmin/Industry/getIndustry');
 Route::resource('node','sysadmin/Node');
 Route::rule('node/status','sysadmin/Node/status');
+Route::post('keyword/uploadA','admin/keyword/uploadA');
 return [
     '__pattern__' => [
         'name' => '\w+',
