@@ -10,16 +10,16 @@
 // +----------------------------------------------------------------------
 use think\Route;
 Route::resource('user','common/User');
-Route::resource('industry','common/Industry');
-Route::resource('company','common/Company');
-Route::resource('node','common/Node');
+Route::resource('industry','sysadmin/Industry');
+Route::resource('company','sysadmin/Company');
+Route::resource('node','sysadmin/Node');
 Route::resource('keyword','admin/keyword');
-Route::rule('company/getAll','common/Company/getAll');
-Route::rule('industry/getIndustry','common/industry/getIndustry');
+Route::rule('company/getAll','sysadmin/Company/getAll');
+Route::rule('industry/getIndustry','sysadmin/industry/getIndustry');
 Route::rule('user/getAll','common/User/getAll');
-Route::rule('Industry/getIndustry','common/Industry/getIndustry');
-Route::resource('node','common/Node');
-Route::rule('node/status','common/Node/status');
+Route::rule('Industry/getIndustry','sysadmin/Industry/getIndustry');
+Route::resource('node','sysadmin/Node');
+Route::rule('node/status','sysadmin/Node/status');
 return [
     '__pattern__' => [
         'name' => '\w+',

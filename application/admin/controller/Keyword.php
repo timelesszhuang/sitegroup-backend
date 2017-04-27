@@ -91,7 +91,5 @@ class Keyword extends Common
     public function uploadA()
     {
         $this->request->server();
-
-
-    }
+}
 }
