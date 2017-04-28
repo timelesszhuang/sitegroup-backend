@@ -94,10 +94,10 @@ class Keyword extends Common
         $where["node_id"] = $user["user_node_id"];
         $key = $keyword->where($where)->select();
         if (!empty($key)) {
-            return $this->resultArray('不能删除', 'failed');
+            return $this->resultArray('父级不能直接删除', 'failed');
         }
         if ($keyword->where(["id" => $id, "node_id" => $user["user_node_id"]])->delete() == false) {
-            return $this->resultArray('删除失败', 'failed');
+            return $this->resultArray('父级节点不能删除', 'failed');
         }
         return $this->resultArray('删除成功');
     }
