@@ -87,7 +87,18 @@ class Keyword extends Common
      */
     public function delete($id)
     {
-        //
+        $keyword = new \app\admin\model\Keyword();
+        $user=$this->getSessionUser();
+        $where["parent_id"]=$id;
+        $where["node_id"]=$user["user_node_id"];
+        $key = $keyword->where($where)->select();
+        if (!empty($key)) {
+            return $this->resultArray('不能删除', 'failed');
+        }
+        if ($keyword->where(["id" => $id,"node_id"=>$user["user_node_id"]])->delete()==false) {
+            return $this->resultArray('删除失败', 'failed');
+        }
+        return $this->resultArray('删除成功');
     }
 
     /**
@@ -110,36 +121,37 @@ class Keyword extends Common
     public function insertKeyword(Request $request)
     {
         $file_path = $request->post('path');
-        $file_path="upload/".$file_path;
+        $file_path = "upload/" . $file_path;
         $id = $request->post('id');
-        $model=new \app\admin\model\Keyword();
-        $user=$this->getSessionUser();
+        $model = new \app\admin\model\Keyword();
+        $user = $this->getSessionUser();
         if (file_exists($file_path)) {
-            $oldKey=$model->where(["id"=>$id])->find();
-            $tag="B";
-            if($oldKey["tag"]=="B"){
-                $tag="C";
+            $oldKey = $model->where(["id" => $id])->find();
+            $tag = "B";
+            if ($oldKey["tag"] == "B") {
+                $tag = "C";
             }
             $path = "," . $id . ",";
             if (!empty($oldKey["parent_id"])) {
                 $path = "," . $oldKey["parent_id"] . "," . $id . ",";
             }
-            $file=fopen($file_path, "r");
-            while ($key= fgets($file)) {
-                $getkey=$model->where(["name"=>$key])->find();
-                if(!empty($getkey)){
+            $file = fopen($file_path, "r");
+            while ($key = fgets($file)) {
+                $getkey = $model->where(["name" => $key])->find();
+                if (!empty($getkey)) {
                     continue;
                 }
                 \app\admin\model\Keyword::create([
                     "name" => $key,
                     "parent_id" => $id,
                     "path" => $path,
-                    "tag"=>$tag,
-                    "node_id"=>$user["user_node_id"]
+                    "tag" => $tag,
+                    "node_id" => $user["user_node_id"]
                 ]);
             }
             return $this->resultArray("添加成功");
         }
         return $this->resultArray("添加失败");
     }
+
 }
