@@ -95,7 +95,7 @@ class Keyword extends Common
         if (!empty($key)) {
             return $this->resultArray('不能删除', 'failed');
         }
-        if ($keyword->where(["id" => $id])->delete()==false) {
+        if ($keyword->where(["id" => $id,"node_id"=>$user["user_node_id"]])->delete()==false) {
             return $this->resultArray('删除失败', 'failed');
         }
         return $this->resultArray('删除成功');
