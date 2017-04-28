@@ -181,7 +181,7 @@ class Keyword extends Common
                 "tag"=>$tag,
                 "path"=>$path,
                 "file"=>$file,
-                "user_node_id"=>12
+                "user_node_id"=>$user["user_node_id"]
             ];
         }
         exit(json_encode($this->resultArray('文件不存在', "failed")));
