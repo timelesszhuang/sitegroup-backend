@@ -46,7 +46,6 @@ class Articletype extends Common
     public function create()
     {
         //
-
     }
 
     /**
@@ -60,13 +59,12 @@ class Articletype extends Common
         $rule = [
             ["name", "require|unique:Articletype", "请输入文章名|文章名重复"],
             ["detail", "require", "请输入详情"],
-            ["alias", "require", "请输入别名"],
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
         $user = $this->getSessionUser();
         $data['node_id'] = $user['user_node_id'];
-        if (!$validate->check($data)) {
+        if(!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
         if (!\app\admin\model\Articletype::create($data)) {
@@ -98,7 +96,6 @@ class Articletype extends Common
         $rule = [
             ["name", "require|unique:Articletype", "请输入文章名|文章名重复"],
             ["detail", "require", "请输入详情"],
-            ["alias", "require", "请输入别名"],
         ];
         $data = $this->request->put();
         $validate = new Validate($rule);
@@ -108,10 +105,8 @@ class Articletype extends Common
         if (!\app\admin\model\Articletype::update($data)) {
             return $this->resultArray('修改失败', 'failed');
         }
+
         return $this->resultArray('修改成功');
-
-
-
     }
 
     /**
@@ -126,8 +121,5 @@ class Articletype extends Common
             return $this->resultArray('删除失败', 'failed');
         }
         return $this->resultArray('删除成功');
-
     }
-
-
 }
