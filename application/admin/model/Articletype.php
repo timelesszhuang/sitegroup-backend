@@ -12,19 +12,14 @@ use think\Model;
 
 class Articletype extends Model
 {
-    public function getArticletype($name="",$id='')
+    public function getArticletype($limit,$rows,$where=0)
     {
-        $where=[];
-        if(!empty($name)){
-            $where["name"] = ["like", "%$name%"];
-        }
-        if(!empty($id)){
-            $where["id"]=$id;
-        }
-        $user=(new Common())->getSessionUser();
-        $where["node_id"]=$user["user_node_id"];
-        $data=$this->where($where)->select();
-        return $data;
+        $count=$this->count();
+        $data=$this->limit($limit,$rows)->where($where)->select();
+        return [
+            "total"=>$count,
+            "rows"=>$data
+        ];
     }
 
 

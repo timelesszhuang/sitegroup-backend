@@ -13,9 +13,19 @@ class Articletype extends Common
      */
     public function index()
     {
+        $request = $this->getLimit();
         $name = $this->request->get('name');
         $id = $this->request->get('id');
-        $data = (new \app\admin\model\Articletype())->getArticletype($name, $id);
+        $where=[];
+        if(!empty($name)){
+            $where["name"] = ["like", "%$name%"];
+        }
+        if(!empty($id)){
+            $where["id"]=$id;
+        }
+        $user=(new Common())->getSessionUser();
+        $where["node_id"]=$user["user_node_id"];
+        $data = (new \app\admin\model\Articletype())->getArticletype($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
@@ -54,6 +64,8 @@ class Articletype extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
+        $user = $this->getSessionUser();
+        $data['node_id'] = $user['user_node_id'];
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
@@ -62,9 +74,6 @@ class Articletype extends Common
         }
         return $this->resultArray("添加成功");
     }
-
-
-
     /**
      * 显示编辑资源表单页.
      *
@@ -86,6 +95,23 @@ class Articletype extends Common
     public function update(Request $request, $id)
     {
         //
+        $rule = [
+            ["name", "require", "请输入文章名"],
+            ["detail", "require", "请输入详情"],
+            ["alias", "require", "请输入别名"],
+        ];
+        $data = $this->request->put();
+        $validate = new Validate($rule);
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'failed');
+        }
+        if (!\app\admin\model\Articletype::update($data)) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
+
+
+
     }
 
     /**
@@ -95,6 +121,11 @@ class Articletype extends Common
      */
     public function delete($id)
     {
+        $Articletype = \app\admin\model\Articletype::get($id);
+        if (!$Articletype->delete()) {
+            return $this->resultArray('删除失败', 'failed');
+        }
+        return $this->resultArray('删除成功');
 
     }
 
