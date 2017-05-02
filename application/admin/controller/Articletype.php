@@ -15,7 +15,6 @@ class Articletype extends Common
     {
         $name = $this->request->get('name');
         $id = $this->request->get('id');
-
         $data = (new \app\admin\model\Articletype())->getArticletype($name, $id);
         return $this->resultArray('', '', $data);
     }
