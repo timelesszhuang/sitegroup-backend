@@ -13,10 +13,10 @@ class Articletype extends Common
      */
     public function index()
     {
-        $request = $this->getLimit();
+        $request=$this->getLimit();
         $name = $this->request->get('name');
         $id = $this->request->get('id');
-        $where=[];
+            $where=[];
         if(!empty($name)){
             $where["name"] = ["like", "%$name%"];
         }
@@ -58,7 +58,7 @@ class Articletype extends Common
     public function save(Request $request)
     {
         $rule = [
-            ["name", "require", "请输入文章名"],
+            ["name", "require|unique:Articletype", "请输入文章名|文章名重复"],
             ["detail", "require", "请输入详情"],
             ["alias", "require", "请输入别名"],
         ];
@@ -96,7 +96,7 @@ class Articletype extends Common
     {
         //
         $rule = [
-            ["name", "require", "请输入文章名"],
+            ["name", "require|unique:Articletype", "请输入文章名|文章名重复"],
             ["detail", "require", "请输入详情"],
             ["alias", "require", "请输入别名"],
         ];
