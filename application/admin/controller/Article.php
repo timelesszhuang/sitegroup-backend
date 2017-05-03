@@ -35,7 +35,7 @@ class Article extends Common
      */
     public function read($id)
     {
-
+        return $this->resultArray('','',\app\admin\model\Article::get($id));
     }
 
     /**
@@ -98,7 +98,7 @@ class Article extends Common
             ["content", "require", "请输入内容"],
             ["articletype_id", "require", "请选择文章分类"],
         ];
-        $data = $this->request->put();
+        $data = $request->put();
         $validate = new Validate($rule);
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
