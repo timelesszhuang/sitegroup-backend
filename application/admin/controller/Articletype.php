@@ -122,4 +122,12 @@ class Articletype extends Common
 //        }
 //        return $this->resultArray('删除成功');
     }
+
+    /**
+     * @return array
+     */
+    public function getType(){
+        $data = (new \app\admin\model\Articletype())->getArttype();
+        return $this->resultArray('', '', $data);
+    }
 }

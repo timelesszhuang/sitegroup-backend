@@ -21,6 +21,11 @@ class Articletype extends Model
             "rows"=>$data
         ];
     }
+    public function getArttype()
+    {
+        $data =$this->field('id,name')->select();
+        return $data;
+    }
 
 
 
