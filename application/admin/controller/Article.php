@@ -58,7 +58,7 @@ class Article extends Common
     {
         $rule = [
             ["title", "require", "请输入标题"],
-            ["content", "require", "请输入详情"],
+            ["content", "require", "请输入内容"],
             ["articletype_id", "require", "请选择文章分类"],
         ];
         $validate = new Validate($rule);
@@ -93,7 +93,21 @@ class Article extends Common
      */
     public function update(Request $request, $id)
     {
+        $rule = [
+            ["title", "require", "请输入标题"],
+            ["content", "require", "请输入内容"],
+            ["articletype_id", "require", "请选择文章分类"],
+        ];
+        $data = $this->request->put();
+        $validate = new Validate($rule);
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'failed');
+        }
+        if (!\app\admin\model\Article::update($data)) {
+            return $this->resultArray('修改失败', 'failed');
+        }
 
+        return $this->resultArray('修改成功');
     }
 
     /**
@@ -103,6 +117,11 @@ class Article extends Common
      */
     public function delete($id)
     {
+        $Article = \app\admin\model\Articletype::get($id);
+        if (!$Article->delete()) {
+            return $this->resultArray('删除失败', 'failed');
+        }
+        return $this->resultArray('删除成功');
 
     }
 }
