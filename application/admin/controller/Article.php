@@ -79,7 +79,6 @@ class Article extends Common
     public function update(Request $request, $id)
     {
         //
-
     }
 
     /**

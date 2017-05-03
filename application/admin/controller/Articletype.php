@@ -125,6 +125,7 @@ class Articletype extends Common
 
     /**
      * @return array
+     *
      */
     public function getType(){
         $data = (new \app\admin\model\Articletype())->getArttype();
