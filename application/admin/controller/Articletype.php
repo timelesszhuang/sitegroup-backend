@@ -116,10 +116,10 @@ class Articletype extends Common
      */
     public function delete($id)
     {
-        $Articletype = \app\admin\model\Articletype::get($id);
-        if (!$Articletype->delete()) {
-            return $this->resultArray('删除失败', 'failed');
-        }
-        return $this->resultArray('删除成功');
+//        $Articletype = \app\admin\model\Articletype::get($id);
+//        if (!$Articletype->delete()) {
+//            return $this->resultArray('删除失败', 'failed');
+//        }
+//        return $this->resultArray('删除成功');
     }
 }
