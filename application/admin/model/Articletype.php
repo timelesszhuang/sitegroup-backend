@@ -21,9 +21,10 @@ class Articletype extends Model
             "rows"=>$data
         ];
     }
-    public function getArttype()
+    public function getArttype($where=0)
     {
-        $data =$this->field('id,name')->select();
+
+        $data =$this->field('id,name')->where($where)->select();
         return $data;
     }
 

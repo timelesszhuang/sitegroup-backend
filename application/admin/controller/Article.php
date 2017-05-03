@@ -78,7 +78,7 @@ class Article extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
@@ -88,6 +88,6 @@ class Article extends Common
      */
     public function delete($id)
     {
-//
+
     }
 }

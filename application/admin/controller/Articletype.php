@@ -128,7 +128,10 @@ class Articletype extends Common
      *
      */
     public function getType(){
-        $data = (new \app\admin\model\Articletype())->getArttype();
+        $where=[];
+        $user=(new Common())->getSessionUser();
+        $where["node_id"]=$user["user_node_id"];
+        $data = (new \app\admin\model\Articletype())->getArttype($where);
         return $this->resultArray('', '', $data);
     }
 }
