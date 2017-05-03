@@ -35,7 +35,8 @@ class Article extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('','',\app\admin\model\Article::get($id));
+        $data = (new \app\admin\model\Article())->field('id,title,content,articletype_id')->find($id);
+        return $this->resultArray('','',$data);
     }
 
     /**
