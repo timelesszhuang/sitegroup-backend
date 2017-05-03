@@ -56,7 +56,22 @@ class Article extends Common
      */
     public function save(Request $request)
     {
-
+        $rule = [
+            ["title", "require", "请输入标题"],
+            ["content", "require", "请输入详情"],
+            ["articletype_id", "require", "请选择文章分类"],
+        ];
+        $validate = new Validate($rule);
+        $data = $request->post();
+        $user = $this->getSessionUser();
+        $data['node_id'] = $user['user_node_id'];
+        if(!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
+        }
+        if (!\app\admin\model\Article::create($data)) {
+            return $this->resultArray("添加失败", "failed");
+        }
+        return $this->resultArray("添加成功");
     }
     /**
      * 显示编辑资源表单页.

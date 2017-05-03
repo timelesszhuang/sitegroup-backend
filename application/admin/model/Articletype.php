@@ -23,7 +23,6 @@ class Articletype extends Model
     }
     public function getArttype($where=0)
     {
-
         $data =$this->field('id,name')->where($where)->select();
         return $data;
     }

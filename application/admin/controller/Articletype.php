@@ -57,7 +57,7 @@ class Articletype extends Common
     public function save(Request $request)
     {
         $rule = [
-            ["name", "require|unique:Articletype", "请输入文章名|文章名重复"],
+            ["name", "require|unique:Articletype", "请输入文章分类名|文章分类名重复"],
             ["detail", "require", "请输入详情"],
         ];
         $validate = new Validate($rule);
@@ -94,7 +94,7 @@ class Articletype extends Common
     {
         //
         $rule = [
-            ["name", "require|unique:Articletype", "请输入文章名|文章名重复"],
+            ["name", "require|unique:Articletype", "请输入文章分类名|文章分类名重复"],
             ["detail", "require", "请输入详情"],
         ];
         $data = $this->request->put();
