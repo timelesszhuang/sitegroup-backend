@@ -19,7 +19,7 @@ class Industry extends Model{
      */
     public function getIndustry($limit, $rows,$where=0)
     {
-        $count = $this->count();
+        $count=$this->where($where)->count();
         $data = $this->limit($limit, $rows)->order("id", "desc")->where($where)->select();
         return [
             "total" => $count,

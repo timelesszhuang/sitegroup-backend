@@ -14,7 +14,7 @@ class Articletype extends Model
 {
     public function getArticletype($limit,$rows,$where=0)
     {
-        $count=$this->count();
+        $count=$this->where($where)->count();
         $data=$this->limit($limit,$rows)->where($where)->select();
         return [
             "total"=>$count,
