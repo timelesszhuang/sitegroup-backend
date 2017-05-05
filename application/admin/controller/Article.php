@@ -118,7 +118,7 @@ class Article extends Common
      */
     public function delete($id)
     {
-        $Article = \app\admin\model\Articletype::get($id);
+        $Article = \app\admin\model\Article::get($id);
         if (!$Article->delete()) {
             return $this->resultArray('删除失败', 'failed');
         }
