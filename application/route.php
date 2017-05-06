@@ -16,6 +16,7 @@ Route::resource('node','sysadmin/Node');
 Route::resource('keyword','admin/keyword');
 Route::resource('articletype','admin/Articletype');
 Route::resource('article','admin/Article');
+Route::resource('menu','admin/Menu');
 Route::rule('articletype/gettype','admin/Articletype/getType');
 Route::rule('company/getAll','sysadmin/Company/getAll');
 Route::rule('industry/getIndustry','sysadmin/industry/getIndustry');
