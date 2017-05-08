@@ -51,10 +51,10 @@ class Question extends Common
             ['content_paragraph','require',"请填写答案"]
         ];
         $validate=new Validate($rule);
-        if(!$validate->check($request->request())){
+        if(!$validate->check($this->request->post())){
             return $this->resultArray($validate->getError(),'faile');
         }
-        if(!\app\admin\model\Question::create($request->request())){
+        if(!\app\admin\model\Question::create($this->request->post())){
             return $this->resultArray('添加失败','faile');
         }
         return $this->resultArray('添加成功');
@@ -97,10 +97,10 @@ class Question extends Common
             ['content_paragraph','require',"请填写答案"]
         ];
         $validate=new Validate($rule);
-        if(!$validate->check($request->request())){
+        if(!$validate->check($this->request->post())){
             return $this->resultArray($validate->getError(),'faile');
         }
-        if(!\app\admin\model\Question::create($request->request())){
+        if(!\app\admin\model\Question::create($this->request->post())){
             return $this->resultArray('修改失败','faile');
         }
         return $this->resultArray('修改成功');
