@@ -47,7 +47,6 @@ class Question extends Common
     public function save(Request $request)
     {
         $rule=[
-            ['id',"require","请选择一条数据"],
             ['question',"require","请填写问题"],
             ['content_paragraph','require',"请填写答案"]
         ];
