@@ -17,7 +17,7 @@ class Question extends Model
     public function getAll($limit, $rows, $where)
     {
         $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->field('id,question,create_time')->limit('id desc')->select();
+        $data = $this->limit($limit, $rows)->where($where)->field('id,question,create_time')->order('id','desc')->select();
         return [
             "total" => $count,
             "rows" => $data
