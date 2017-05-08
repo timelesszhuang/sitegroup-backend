@@ -102,7 +102,7 @@ class Question extends Common
             ['content_paragraph','require',"请填写答案"]
         ];
         $validate=new Validate($rule);
-        $data=$this->request->post();
+        $data=$this->request->put();
         if(!$validate->check($data)){
             return $this->resultArray($validate->getError(),'faile');
         }
