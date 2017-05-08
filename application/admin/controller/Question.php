@@ -46,7 +46,19 @@ class Question extends Common
      */
     public function save(Request $request)
     {
-        //
+        $rule=[
+            ['id',"require","请选择一条数据"],
+            ['question',"require","请填写问题"],
+            ['content_paragraph','require',"请填写答案"]
+        ];
+        $validate=new Validate($rule);
+        if(!$validate->check($request->input())){
+            return $this->resultArray($validate->getError(),'faile');
+        }
+        if(!\app\admin\model\Question::create($request->input())){
+            return $this->resultArray('添加失败','faile');
+        }
+        return $this->resultArray('添加成功');
     }
 
     /**
