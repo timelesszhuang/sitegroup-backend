@@ -23,7 +23,7 @@ class Question extends Common
         }
         $user=(new Common)->getSessionUser();
         $where["node_id"]=$user["user_node_id"];
-        return (new \app\admin\model\Question)->getAll($limits['limit'],$limits['rows'],$where);
+        return $this->resultArray('','',(new \app\admin\model\Question)->getAll($limits['limit'],$limits['rows'],$where));
     }
 
     /**
