@@ -5,6 +5,8 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Request;
 use app\common\controller\Common;
+use think\Validate;
+
 class Question extends Common
 {
     /**
@@ -78,7 +80,19 @@ class Question extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule=[
+            ['id',"require","请选择一条数据"],
+            ['question',"require","请填写问题"],
+            ['content_paragraph','require',"请填写答案"]
+        ];
+        $validate=new Validate($rule);
+        if(!$validate->check($request->input())){
+            return $this->resultArray($validate->getError(),'faile');
+        }
+        if(!\app\admin\model\Question::create($request->input())){
+            return $this->resultArray('修改失败','faile');
+        }
+        return $this->resultArray('修改成功');
     }
 
     /**
@@ -89,6 +103,9 @@ class Question extends Common
      */
     public function delete($id)
     {
-        //
+        if(!\app\admin\model\Question::destroy($id)){
+            return $this->resultArray('删除失败','faile');
+        }
+        return $this->resultArray('删除成功');
     }
 }
