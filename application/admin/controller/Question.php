@@ -32,6 +32,7 @@ class Question extends Common
      * 显示创建资源表单页.
      *
      * @return \think\Response
+     *
      */
     public function create()
     {
@@ -43,6 +44,7 @@ class Question extends Common
      *
      * @param  \think\Request  $request
      * @return \think\Response
+     * @auther guozhen
      */
     public function save(Request $request)
     {
@@ -67,10 +69,11 @@ class Question extends Common
      *
      * @param  int  $id
      * @return \think\Response
+     * @auther guozhen
      */
     public function read($id)
     {
-        return \app\admin\model\Question::where(["id"=>$id])->field('id,question,create_time')->find();
+        return \app\admin\model\Question::where(["id"=>$id])->field('id,question,create_time,content_paragraph')->find();
     }
 
     /**
@@ -90,6 +93,7 @@ class Question extends Common
      * @param  \think\Request  $request
      * @param  int  $id
      * @return \think\Response
+     * @auther guozhen
      */
     public function update(Request $request, $id)
     {
@@ -114,6 +118,7 @@ class Question extends Common
      *
      * @param  int  $id
      * @return \think\Response
+     * @auther guozhen
      */
     public function delete($id)
     {
