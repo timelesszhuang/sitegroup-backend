@@ -21,7 +21,7 @@ class Question extends Common
         $content=$request->get('content');
         $where=[];
         if(!empty($content)){
-            $where['content_paragraph']=["like","%$content%"];
+            $where['question']=["like","%$content%"];
         }
         $user=(new Common)->getSessionUser();
         $where["node_id"]=$user["user_node_id"];
