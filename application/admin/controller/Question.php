@@ -107,7 +107,7 @@ class Question extends Common
             return $this->resultArray($validate->getError(),'faile');
         }
         $data["node_id"]=$this->getSessionUser()['user_node_id'];
-        if(!\app\admin\model\Question::create($data)){
+        if(!\app\admin\model\Question::update($data)){
             return $this->resultArray('修改失败','faile');
         }
         return $this->resultArray('修改成功');
