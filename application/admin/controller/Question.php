@@ -50,7 +50,9 @@ class Question extends Common
     {
         $rule = [
             ['question', "require", "请填写问题"],
-            ['content_paragraph', 'require', "请填写答案"]
+            ['content_paragraph', 'require', "请填写答案"],
+            ["articletype_id","require","请选择分类id"],
+            ["articletype_name","require","请选择分类名称"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -99,7 +101,9 @@ class Question extends Common
     {
         $rule = [
             ['question', "require", "请填写问题"],
-            ['content_paragraph', 'require', "请填写答案"]
+            ['content_paragraph', 'require', "请填写答案"],
+            ["articletype_id","require","请选择分类id"],
+            ["articletype_name","require","请选择分类名称"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
@@ -128,24 +132,4 @@ class Question extends Common
         return $this->resultArray('删除成功');
     }
 
-    public function importData()
-    {
-        ignore_user_abort();
-        set_time_limit(0);
-        $que = (new \app\admin\model\Question());
-        $count = $que->count();
-        $page = 1;
-        $rows = 10;
-        for ($i = 1; $i <= $count; $i++) {
-            $limits = ($page - 1) * $rows;
-            $data = $que->limit($limits, $rows)->select();
-            foreach($data as $k=>$v){
-                $que_temp=\app\admin\model\Question::get($v["id"]);
-                $save=$que_temp->save([
-                    "question"=>$v["question"]."?",
-                ]);
-            }
-            $page++;
-        }
-    }
 }

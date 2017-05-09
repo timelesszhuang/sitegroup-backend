@@ -27,7 +27,7 @@ Route::rule('node/status','sysadmin/Node/status');
 Route::post('keyword/uploadKeyword','admin/keyword/uploadKeyword');
 Route::post('keyword/insertKeyword','admin/keyword/insertKeyword');
 Route::resource('question','admin/Question');
-
+Route::resource('scatteredArticle','admin/Scatteredarticle');
 return [
     '__pattern__' => [
         'name' => '\w+',
