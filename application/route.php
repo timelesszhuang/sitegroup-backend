@@ -14,6 +14,7 @@ Route::resource('industry','sysadmin/Industry');
 Route::resource('company','sysadmin/Company');
 Route::resource('node','sysadmin/Node');
 Route::resource('keyword','admin/keyword');
+Route::post('keyword/insertA','admin/keyword/insertA');
 Route::resource('articletype','admin/Articletype');
 Route::resource('article','admin/Article');
 Route::resource('menu','admin/Menu');
@@ -26,6 +27,7 @@ Route::rule('node/status','sysadmin/Node/status');
 Route::post('keyword/uploadKeyword','admin/keyword/uploadKeyword');
 Route::post('keyword/insertKeyword','admin/keyword/insertKeyword');
 Route::resource('question','admin/Question');
+
 return [
     '__pattern__' => [
         'name' => '\w+',

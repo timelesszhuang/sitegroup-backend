@@ -187,4 +187,27 @@ class Keyword extends Common
         }
         exit(json_encode($this->resultArray('文件不存在', "failed")));
     }
+
+    /**
+     * 添加A类关键词
+     * @auther guozhen
+     * @return array
+     */
+    public function insertA()
+    {
+        $rule=[
+            ["name","require","请填写A类关键词"],
+        ];
+        $validate=new Validate($rule);
+        $data=$this->request->post();
+        if(!$validate->check($data)){
+            return $this->resultArray($validate->getError(),'faile');
+        }
+        $user=$this->getSessionUser();
+        $data["node_id"]=$user["user_node_id"];
+        if(!\app\admin\model\Keyword::create($data)){
+            return $this->resultArray('添加失败',"faile");
+        }
+        return $this->resultArray('添加成功');
+    }
 }
