@@ -109,19 +109,6 @@ class Articletype extends Common
         return $this->resultArray('修改成功');
     }
 
-    /**
-     * 删除指定资源
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function delete($id)
-    {
-//        $Articletype = \app\admin\model\Articletype::get($id);
-//        if (!$Articletype->delete()) {
-//            return $this->resultArray('删除失败', 'failed');
-//        }
-//        return $this->resultArray('删除成功');
-    }
 
     /**
      * @return array
