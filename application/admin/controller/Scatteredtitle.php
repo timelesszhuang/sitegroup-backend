@@ -70,7 +70,7 @@ class Scatteredtitle extends Common
      */
     public function read($id)
     {
-        //
+        return $this->getread((new \app\admin\model\ScatteredTitle),$id);
     }
 
     /**

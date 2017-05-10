@@ -56,7 +56,7 @@ class Keyword extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('', '', \app\admin\model\Keyword::get($id));
+        return $this->getread((new \app\admin\model\Keyword),$id);
     }
 
     /**

@@ -35,7 +35,7 @@ class Articletype extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('','',\app\admin\model\Articletype::get($id));
+        return $this->resultArray('', '', \app\admin\model\Articletype::get($id));
     }
 
     /**

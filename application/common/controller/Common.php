@@ -179,4 +179,15 @@ class Common extends Controller
         }
         return $arr;
     }
+
+    /**
+     * 获取单条数据
+     * @param $rescoure
+     * @param $id
+     * @return array
+     */
+    public function getread($rescoure,$id)
+    {
+        return $this->resultArray('', '', $rescoure->where(["id" => $id])->field("create_time,update_time",true)->find());
+    }
 }

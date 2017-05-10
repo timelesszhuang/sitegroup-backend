@@ -35,8 +35,7 @@ class Menu extends Common
      */
     public function read($id)
     {
-        $data = (new \app\admin\model\Article())->field('id,title,content,articletype_id')->find($id);
-        return $this->resultArray('','',$data);
+        return $this->getread((new \app\admin\model\Menu()),$id);
     }
 
 

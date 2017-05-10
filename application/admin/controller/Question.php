@@ -75,7 +75,7 @@ class Question extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('', '', \app\admin\model\Question::where(["id" => $id])->field('id,question,create_time,content_paragraph')->find());
+        return $this->getread((new \app\admin\model\Question),$id);
     }
 
     /**
