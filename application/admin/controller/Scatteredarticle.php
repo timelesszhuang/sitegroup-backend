@@ -71,7 +71,7 @@ class Scatteredarticle extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('', '', \app\admin\model\ScatteredArticle::where(["id" => $id])->find());
+        return $this->resultArray('', '', \app\admin\model\ScatteredArticle::where(["id" => $id])->field("create_time",true)->find());
     }
 
     /**

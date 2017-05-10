@@ -5,6 +5,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Request;
 use app\common\controller\Common;
+use think\Validate;
 
 class Scatteredtitle extends Common
 {
@@ -55,7 +56,7 @@ class Scatteredtitle extends Common
             return $this->resultArray($validate->getError(), 'faile');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
-        if (!\app\admin\model\ScatteredArticle::create($data)) {
+        if (!\app\admin\model\ScatteredTitle::create($data)) {
             return $this->resultArray('添加失败', 'faile');
         }
         return $this->resultArray('添加成功');
