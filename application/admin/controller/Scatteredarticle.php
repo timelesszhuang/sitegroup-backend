@@ -100,7 +100,7 @@ class Scatteredarticle extends Common
             ["articletype_name","require","请选择分类名称"]
         ];
         $validate = new Validate($rule);
-        $data = $this->request->post();
+        $data = $this->request->put();
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'faile');
         }

@@ -81,7 +81,21 @@ class Scatteredtitle extends Common
      */
     public function edit($id)
     {
-        //
+        $rule = [
+            ['title', 'require', "请填写标题"],
+            ["articletype_id","require","请选择分类id"],
+            ["articletype_name","require","请选择分类名称"]
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->put();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'faile');
+        }
+        $data["node_id"] = $this->getSessionUser()['user_node_id'];
+        if (!\app\admin\model\ScatteredTitle::update($data)) {
+            return $this->resultArray('添加失败', 'faile');
+        }
+        return $this->resultArray('添加成功');
     }
 
     /**
