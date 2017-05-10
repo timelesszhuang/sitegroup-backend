@@ -29,6 +29,7 @@ Route::post('keyword/insertKeyword','admin/keyword/insertKeyword');
 Route::resource('question','admin/Question');
 Route::resource('scatteredArticle','admin/Scatteredarticle');
 Route::resource('scatteredTitle','admin/Scatteredtitle');
+Route::resource('questionType','admin/Questiontype');
 return [
     '__pattern__' => [
         'name' => '\w+',
