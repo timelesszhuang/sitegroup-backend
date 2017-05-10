@@ -18,8 +18,9 @@ class Scatteredtitle extends Common
     {
         $limits = $this->getLimit();
         $title = $request->get('title');
+        $article_type=$request->get("article_type");
         $where = [];
-        if (!empty($title)) {
+        if (!empty($title) && !empty($article_type)) {
             $where['title'] = ["like", "%$title%"];
         }
         $user = (new Common)->getSessionUser();
@@ -81,6 +82,18 @@ class Scatteredtitle extends Common
      */
     public function edit($id)
     {
+
+    }
+
+    /**
+     * 保存更新的资源
+     *
+     * @param  \think\Request  $request
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function update(Request $request, $id)
+    {
         $rule = [
             ['title', 'require', "请填写标题"],
             ["articletype_id","require","请选择分类id"],
@@ -99,18 +112,6 @@ class Scatteredtitle extends Common
     }
 
     /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
      * 删除指定资源
      *
      * @param  int  $id
@@ -118,6 +119,9 @@ class Scatteredtitle extends Common
      */
     public function delete($id)
     {
-        //
+        if (!\app\admin\model\ScatteredArticle::destroy($id)) {
+            return $this->resultArray('删除失败', 'faile');
+        }
+        return $this->resultArray('删除成功');
     }
 }
