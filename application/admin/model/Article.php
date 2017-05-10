@@ -22,8 +22,6 @@ class Article extends Model
         Article::event("before_write",function($article){
             $article->readcount=rand(100,10000);
         });
-
-
     }
 
 
