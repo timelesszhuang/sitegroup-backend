@@ -30,7 +30,7 @@ Route::resource('question','admin/Question');
 Route::resource('scatteredArticle','admin/Scatteredarticle');
 Route::resource('scatteredTitle','admin/Scatteredtitle');
 Route::resource('questionType','admin/Questiontype');
-Route::resource('questionType/list','admin/Questiontype/list');
+Route::get('questionType/list','admin/Questiontype/list');
 return [
     '__pattern__' => [
         'name' => '\w+',
