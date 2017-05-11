@@ -120,4 +120,13 @@ class Questiontype extends Common
         }
         return $this->resultArray('删除成功');
     }
+
+    /**
+     * 获取问答分类列表
+     * @return false|\PDOStatement|string|\think\Collection
+     */
+    public function list()
+    {
+        return (new \app\admin\model\QuestionType())->field("id,name")->select();
+    }
 }
