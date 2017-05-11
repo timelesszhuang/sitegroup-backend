@@ -14,11 +14,11 @@ class Article extends Common
     public function index()
     {
         $request=$this->getLimit();
-        $name = $this->request->get('name');
+        $title = $this->request->get('title');
         $id = $this->request->get('id');
         $where=[];
-        if(!empty($name)){
-            $where["name"] = ["like", "%$name%"];
+        if(!empty($title)){
+            $where["title"] = ["like", "%$title%"];
         }
         if(!empty($id)){
             $where["id"]=$id;

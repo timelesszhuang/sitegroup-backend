@@ -62,6 +62,5 @@ class ScatteredTitle extends Model
             "total" => $count,
             "rows" => $data
         ];
-
     }
 }

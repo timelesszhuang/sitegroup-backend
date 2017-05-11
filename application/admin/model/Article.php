@@ -24,7 +24,6 @@ class Article extends Model
         });
     }
 
-
     /**
      * 获取所有 文章
      * @param $limit
