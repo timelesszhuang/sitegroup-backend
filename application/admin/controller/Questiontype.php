@@ -127,6 +127,6 @@ class Questiontype extends Common
      */
     public function getlist()
     {
-        return (new \app\admin\model\QuestionType())->field("id,name")->select();
+        return $this->resultArray('','',(new \app\admin\model\QuestionType())->field("id,name")->select());
     }
 }
