@@ -22,7 +22,7 @@ class Questiontype extends Common
         }
         $user=(new Common())->getSessionUser();
         $where["node_id"]=$user["user_node_id"];
-        $data = (new \app\admin\model\QuestionType())->getArticle($request["limit"], $request["rows"], $where);
+        $data = (new \app\admin\model\QuestionType())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
