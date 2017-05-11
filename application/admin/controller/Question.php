@@ -51,8 +51,8 @@ class Question extends Common
         $rule = [
             ['question', "require", "请填写问题"],
             ['content_paragraph', 'require', "请填写答案"],
-            ["articletype_id","require","请选择分类id"],
-            ["articletype_name","require","请选择分类名称"]
+            ["type_id","require","请选择分类id"],
+            ["type_name","require","请选择分类名称"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
