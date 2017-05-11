@@ -5,6 +5,8 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Request;
 use app\common\controller\Common;
+use think\Validate;
+
 class Questiontype extends Common
 {
     /**
