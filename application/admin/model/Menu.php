@@ -11,7 +11,7 @@ use think\Model;
 
 class Menu extends Model
 {
-    public function getMenu($limit,$rows,$where=0)
+    public function getMenu($limit,$rows,$where)
     {
         $count = $this->where($where)->count();
         $data = $this->limit($limit, $rows)->where($where)->select();
