@@ -147,9 +147,10 @@ class Common extends Controller
     {
         $page=$this->request->get("page");
         $rows=$this->request->get("rows");
-        if ($page <1) {
+        if (intval($page) <1) {
             $page=1;
-        } else if ($rows <1) {
+        }
+        if (intval($rows) <1) {
             $rows=10;
         }
         $limit=($page-1)*$rows;

@@ -20,8 +20,11 @@ class Scatteredtitle extends Common
         $title = $request->get('title');
         $article_type=$request->get("article_type");
         $where = [];
-        if (!empty($title) && !empty($article_type)) {
+        if (!empty($title)) {
             $where['title'] = ["like", "%$title%"];
+        }
+        if(!empty($article_type)){
+            $where['articletype_id'] = $article_type;
         }
         $user = (new Common)->getSessionUser();
         $where["node_id"] = $user["user_node_id"];

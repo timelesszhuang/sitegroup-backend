@@ -58,6 +58,7 @@ class ScatteredTitle extends Model
     {
         $count = $this->where($where)->count();
         $data = $this->limit($limit, $rows)->where($where)->order('id', 'desc')->select();
+        dump($this->getLastSql());die;
         return [
             "total" => $count,
             "rows" => $data
