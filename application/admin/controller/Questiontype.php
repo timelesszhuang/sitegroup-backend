@@ -125,7 +125,7 @@ class Questiontype extends Common
      * 获取问答分类列表
      * @return false|\PDOStatement|string|\think\Collection
      */
-    public function list()
+    public function getlist()
     {
         return (new \app\admin\model\QuestionType())->field("id,name")->select();
     }
