@@ -15,13 +15,13 @@ class Article extends Common
     {
         $request=$this->getLimit();
         $title = $this->request->get('title');
-        $id = $this->request->get('id');
+        $article_type=$this->request->get("article_type");
         $where=[];
         if(!empty($title)){
             $where["title"] = ["like", "%$title%"];
         }
-        if(!empty($id)){
-            $where["id"]=$id;
+        if(!empty($article_type)){
+            $where['articletype_id']=$article_type;
         }
         $user=(new Common())->getSessionUser();
         $where["node_id"]=$user["user_node_id"];
