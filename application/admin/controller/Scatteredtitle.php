@@ -71,13 +71,7 @@ class Scatteredtitle extends Common
      */
     public function read($id)
     {
-        $title=(new \app\admin\model\ScatteredTitle)->where(["id"=>$id])->find();
-        $data='';
-        if($title["article_ids"]){
-            $data=\app\admin\model\ScatteredArticle::all($title["article_ids"]);
-            $data=collection($data)->toArray();
-        }
-        return $this->resultArray('','',["title"=>$title,"article"=>$data]);
+        return $this->getread((new \app\admin\model\ScatteredTitle),$id);
     }
 
     /**
@@ -129,5 +123,20 @@ class Scatteredtitle extends Common
             return $this->resultArray('删除失败', 'faile');
         }
         return $this->resultArray('删除成功');
+    }
+
+    /**
+     *根据id获取标题和article
+     * @return array
+     */
+    public function getArrticleJoinTitle($id)
+    {
+        $title=(new \app\admin\model\ScatteredTitle)->where(["id"=>$id])->find();
+        $data='';
+        if($title["article_ids"]){
+            $data=\app\admin\model\ScatteredArticle::all($title["article_ids"]);
+            $data=collection($data)->toArray();
+        }
+        return $this->resultArray('','',["title"=>$title,"article"=>$data]);
     }
 }
