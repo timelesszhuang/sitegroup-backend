@@ -24,4 +24,9 @@ class ScatteredArticle extends Model
         ];
 
     }
+
+    public function getAttributeById()
+    {
+
+    }
 }

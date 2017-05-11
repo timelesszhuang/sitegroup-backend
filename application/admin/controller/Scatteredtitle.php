@@ -71,7 +71,10 @@ class Scatteredtitle extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\ScatteredTitle),$id);
+        $title=(new \app\admin\model\ScatteredTitle)->where(["id"=>$id])->find();
+        $data=\app\admin\model\ScatteredArticle::all($title["article_ids"]);
+        $data=collection($data)->toArray();
+        return $this->resultArray('','',["title"=>$title,"article"=>$data]);
     }
 
     /**
