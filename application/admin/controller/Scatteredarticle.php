@@ -20,7 +20,7 @@ class Scatteredarticle extends Common
         $content = $request->get('content');
         $article_type=$request->get("article_type");
         $where = [];
-        if (!empty($content) && ) {
+        if (!empty($content)) {
             $where['content_paragraph'] = ["like", "%$content%"];
         }
         if(!empty($article_type)){
