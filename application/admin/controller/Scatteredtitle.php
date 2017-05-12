@@ -18,12 +18,12 @@ class Scatteredtitle extends Common
     {
         $limits = $this->getLimit();
         $title = $request->get('title');
-        $article_type=$request->get("article_type");
+        $article_type = $request->get("article_type");
         $where = [];
         if (!empty($title)) {
             $where['title'] = ["like", "%$title%"];
         }
-        if(!empty($article_type)){
+        if (!empty($article_type)) {
             $where['articletype_id'] = $article_type;
         }
         $user = (new Common)->getSessionUser();
@@ -44,15 +44,15 @@ class Scatteredtitle extends Common
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
     {
         $rule = [
             ['title', 'require', "请填写标题"],
-            ["articletype_id","require","请选择分类id"],
-            ["articletype_name","require","请选择分类名称"]
+            ["articletype_id", "require", "请选择分类id"],
+            ["articletype_name", "require", "请选择分类名称"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -69,18 +69,18 @@ class Scatteredtitle extends Common
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\ScatteredTitle),$id);
+        return $this->getread((new \app\admin\model\ScatteredTitle), $id);
     }
 
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -91,16 +91,16 @@ class Scatteredtitle extends Common
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param  \think\Request $request
+     * @param  int $id
      * @return \think\Response
      */
     public function update(Request $request, $id)
     {
         $rule = [
             ['title', 'require', "请填写标题"],
-            ["articletype_id","require","请选择分类id"],
-            ["articletype_name","require","请选择分类名称"]
+            ["articletype_id", "require", "请选择分类id"],
+            ["articletype_name", "require", "请选择分类名称"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
@@ -117,7 +117,7 @@ class Scatteredtitle extends Common
     /**
      * 删除指定资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function delete($id)
