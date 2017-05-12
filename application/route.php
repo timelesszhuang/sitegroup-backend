@@ -29,6 +29,7 @@ Route::post('keyword/insertKeyword','admin/keyword/insertKeyword');
 Route::resource('question','admin/Question');
 Route::resource('scatteredArticle','admin/Scatteredarticle');
 Route::resource('scatteredTitle','admin/Scatteredtitle');
+Route::get('scatteredTitle/getArrticleJoinTitle','admin/Scatteredtitle/getArrticleJoinTitle');
 Route::resource('questionType','admin/Questiontype');
 Route::get('questionType/list','admin/Questiontype/getlist');
 return [
