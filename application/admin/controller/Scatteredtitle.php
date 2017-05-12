@@ -135,7 +135,7 @@ class Scatteredtitle extends Common
     public function getArrticleJoinTitle($id)
     {
         $title=(new \app\admin\model\ScatteredTitle)->where(["id"=>$id])->find();
-        $data='';
+        $article='';
         if($title["article_ids"]){
             $data=\app\admin\model\ScatteredArticle::all($title["article_ids"]);
             $data=collection($data)->toArray();
@@ -143,10 +143,5 @@ class Scatteredtitle extends Common
             $article=implode("<br/>",$data);
         }
         return $this->resultArray('','',["title"=>$title,"article"=>$article]);
-    }
-
-    public function formatter_data(&$v)
-    {
-        dump($v);die;
     }
 }
