@@ -139,7 +139,14 @@ class Scatteredtitle extends Common
         if($title["article_ids"]){
             $data=\app\admin\model\ScatteredArticle::all($title["article_ids"]);
             $data=collection($data)->toArray();
+            $data=array_column($data,"content_paragraph");
+            $article=implode("<br/>",$data);
         }
-        return $this->resultArray('','',["title"=>$title,"article"=>$data]);
+        return $this->resultArray('','',["title"=>$title,"article"=>$article]);
+    }
+
+    public function formatter_data(&$v)
+    {
+        dump($v);die;
     }
 }
