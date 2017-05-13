@@ -46,7 +46,7 @@ class Menu extends Common
         $rule = [
             ['name', 'require', "请填写菜单"],
             ["flag","require","请选择栏目类型"],
-            ["flag_name","require","请选择栏目类型"],
+            ["flag_name","require","请选择栏目类型"]
         ];
         if(intval($flag)>1){
             array_push($rule,["type_id","require","请选择分类id"]);
@@ -55,11 +55,11 @@ class Menu extends Common
         $validate = new Validate($rule);
         $data = $this->request->post();
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'faile');
+            return $this->resultArray($validate->getError(), 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\Menu::create($data)) {
-            return $this->resultArray('添加失败', 'faile');
+            return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
     }
@@ -84,11 +84,11 @@ class Menu extends Common
         $validate = new Validate($rule);
         $data = $this->request->post();
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'faile');
+            return $this->resultArray($validate->getError(), 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\Menu::update($data)) {
-            return $this->resultArray('添加失败', 'faile');
+            return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
     }
@@ -102,7 +102,7 @@ class Menu extends Common
     public function delete($id)
     {
         if (!\app\admin\model\Menu::destroy($id)) {
-            return $this->resultArray('删除失败', 'faile');
+            return $this->resultArray('删除失败', 'failed');
         }
         return $this->resultArray('删除成功');
     }
