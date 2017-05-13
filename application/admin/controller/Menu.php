@@ -54,10 +54,51 @@ class Menu extends Common
             return $this->resultArray($validate->getError(), 'faile');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
-        if (!\app\admin\model\ScatteredTitle::create($data)) {
+        if (!\app\admin\model\Menu::create($data)) {
             return $this->resultArray('添加失败', 'faile');
         }
         return $this->resultArray('添加成功');
     }
 
+    /**
+     * 保存更新的资源
+     *
+     * @param  \think\Request $request
+     * @param  int $id
+     * @return \think\Response
+     * @auther guozhen
+     */
+    public function update(Request $request, $id)
+    {
+        $rule = [
+            ['name', 'require', "请填写菜单"],
+            ["type","require","请选择栏目类型"],
+            ["type_id","require","请选择分类id"],
+            ["type_name","require","请选择分类名称"]
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'faile');
+        }
+        $data["node_id"] = $this->getSessionUser()['user_node_id'];
+        if (!\app\admin\model\Menu::update($data)) {
+            return $this->resultArray('添加失败', 'faile');
+        }
+        return $this->resultArray('添加成功');
+    }
+
+    /**
+     * 删除指定资源
+     * @param  int $id
+     * @return \think\Response
+     * @auther guozhen
+     */
+    public function delete($id)
+    {
+        if (!\app\admin\model\Menu::destroy($id)) {
+            return $this->resultArray('删除失败', 'faile');
+        }
+        return $this->resultArray('删除成功');
+    }
 }

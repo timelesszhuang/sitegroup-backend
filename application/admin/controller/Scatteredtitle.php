@@ -57,11 +57,11 @@ class Scatteredtitle extends Common
         $validate = new Validate($rule);
         $data = $this->request->post();
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'faile');
+            return $this->resultArray($validate->getError(), 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\ScatteredTitle::create($data)) {
-            return $this->resultArray('添加失败', 'faile');
+            return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
     }
@@ -105,11 +105,11 @@ class Scatteredtitle extends Common
         $validate = new Validate($rule);
         $data = $this->request->put();
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'faile');
+            return $this->resultArray($validate->getError(), 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\ScatteredTitle::update($data)) {
-            return $this->resultArray('添加失败', 'faile');
+            return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
     }
@@ -123,7 +123,7 @@ class Scatteredtitle extends Common
     public function delete($id)
     {
         if (!\app\admin\model\ScatteredTitle::destroy($id)) {
-            return $this->resultArray('删除失败', 'faile');
+            return $this->resultArray('删除失败', 'failed');
         }
         return $this->resultArray('删除成功');
     }
