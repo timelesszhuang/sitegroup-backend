@@ -135,6 +135,7 @@ class Scatteredtitle extends Common
     public function getArrticleJoinTitle($id)
     {
         $title = (new \app\admin\model\ScatteredTitle)->where(["id" => $id])->find();
+        $article = '未设置文章';
         $data = '';
         if ($title["article_ids"]) {
             $data = \app\admin\model\ScatteredArticle::all($title["article_ids"]);
