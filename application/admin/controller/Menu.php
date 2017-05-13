@@ -74,13 +74,16 @@ class Menu extends Common
      */
     public function update(Request $request, $id)
     {
+        $flag=$request->post('flag');
         $rule = [
             ['name', 'require', "请填写菜单"],
             ["flag","require","请选择栏目类型"],
-            ["flag_name","require","请选择栏目类型"],
-            ["type_id","require","请选择分类id"],
-            ["type_name","require","请选择分类名称"]
+            ["flag_name","require","请选择栏目类型"]
         ];
+        if(intval($flag)>1){
+            array_push($rule,["type_id","require","请选择分类id"]);
+            array_push($rule,["type_name","require","请选择分类名称"]);
+        }
         $validate = new Validate($rule);
         $data = $this->request->post();
         if (!$validate->check($data)) {
