@@ -136,15 +136,15 @@ class Scatteredtitle extends Common
     {
         $title = (new \app\admin\model\ScatteredTitle)->where(["id" => $id])->find();
         $data = '';
-        $article = '';
         if ($title["article_ids"]) {
             $data = \app\admin\model\ScatteredArticle::all($title["article_ids"]);
             $data = collection($data)->toArray();
-            foreach ($data as $v) {
-                $article .= $v['content_paragraph'].'<br>';
-            }
+            $data = array_column($data, "content_paragraph");
+            $article = implode("<br/>", $data);
         }
         $title['content'] = $article;
         return $this->resultArray('', '', $title);
     }
+
+
 }
