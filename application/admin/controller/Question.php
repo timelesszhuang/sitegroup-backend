@@ -19,9 +19,13 @@ class Question extends Common
     {
         $limits = $this->getLimit();
         $content = $request->get('content');
+        $type_id=$request->get("type_id");
         $where = [];
         if (!empty($content)) {
             $where['question'] = ["like", "%$content%"];
+        }
+        if(!empty($type_id)){
+            $where['type_id']=$type_id;
         }
         $user = (new Common)->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
