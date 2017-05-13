@@ -44,7 +44,8 @@ class Menu extends Common
     {
         $rule = [
             ['name', 'require', "请填写菜单"],
-            ["type","require","请选择栏目类型"],
+            ["flag","require","请选择栏目类型"],
+            ["flag_name","require","请选择栏目类型"],
             ["type_id","require","请选择分类id"],
             ["type_name","require","请选择分类名称"]
         ];
@@ -72,7 +73,8 @@ class Menu extends Common
     {
         $rule = [
             ['name', 'require', "请填写菜单"],
-            ["type","require","请选择栏目类型"],
+            ["flag","require","请选择栏目类型"],
+            ["flag_name","require","请选择栏目类型"],
             ["type_id","require","请选择分类id"],
             ["type_name","require","请选择分类名称"]
         ];
