@@ -115,10 +115,7 @@ class Questiontype extends Common
      */
     public function delete($id)
     {
-        if (!\app\admin\model\QuestionType::destroy($id)) {
-            return $this->resultArray('删除失败', 'faile');
-        }
-        return $this->resultArray('删除成功');
+        return $this->deleteRecord((new \app\admin\model\QuestionType),$id);
     }
 
     /**

@@ -191,4 +191,23 @@ class Common extends Controller
     {
         return $this->resultArray('', '', $rescoure->where(["id" => $id])->field("create_time,update_time",true)->find());
     }
+
+    /**
+     * 统一删除接口
+     * @param $controller
+     * @param $id
+     * @return array
+     */
+    public function deleteRecord($controller,$id)
+    {
+        $user=$this->getSessionUser();
+        $where=[
+            "id"=>$id,
+            "node_id"=>$user["user_node_id"]
+        ];
+        if(!$controller->where($where)->delete()){
+            return $this->resultArray('删除失败', 'failed');
+        }
+        return $this->resultArray('删除成功');
+    }
 }

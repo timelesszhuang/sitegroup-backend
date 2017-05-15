@@ -94,7 +94,7 @@ class Article extends Common
     public function update(Request $request, $id)
     {
         $rule = [
-            ["title", "require", "请输入标题"],
+            ["title", "require", "请输入标题22"],
             ["content", "require", "请输入内容"],
             ["articletype_id", "require", "请选择文章分类"],
         ];
@@ -117,11 +117,6 @@ class Article extends Common
      */
     public function delete($id)
     {
-        $Article = \app\admin\model\Article::get($id);
-        if (!$Article->delete()) {
-            return $this->resultArray('删除失败', 'failed');
-        }
-        return $this->resultArray('删除成功');
-
+        return $this->deleteRecord((new \app\admin\model\Article),$id);
     }
 }

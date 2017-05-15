@@ -122,10 +122,7 @@ class Scatteredtitle extends Common
      */
     public function delete($id)
     {
-        if (!\app\admin\model\ScatteredTitle::destroy($id)) {
-            return $this->resultArray('删除失败', 'failed');
-        }
-        return $this->resultArray('删除成功');
+        return $this->deleteRecord((new \app\admin\model\ScatteredTitle),$id);
     }
 
     /**
