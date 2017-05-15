@@ -11,7 +11,7 @@ class ScatteredTitle extends Model
     const LIMIT = 7;
     /**
      * 初始化静态函数
-     * @auther guozhen
+     * @author guozhen
      */
     public static function init()
     {
@@ -27,7 +27,7 @@ class ScatteredTitle extends Model
      * @param $node_id
      * @param $articletype
      * @return int|string
-     * @auther guozhen
+     * @author guozhen
      */
     public static function randomAds($node_id, $articletype)
     {
@@ -52,7 +52,7 @@ class ScatteredTitle extends Model
      * @param $rows
      * @param $where
      * @return array
-     * @auther guozhen
+     * @author guozhen
      */
     public function getAll($limit, $rows, $where)
     {

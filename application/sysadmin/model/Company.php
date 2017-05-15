@@ -15,7 +15,7 @@ class Company extends Model
      * @param $limit
      * @param $rows
      * @return array
-     * @auther guozhen
+     * @author guozhen
      */
     public function getCompany($limit,$rows,$where=0)
     {

@@ -15,7 +15,7 @@ class Industry extends Model{
      * @param $limit
      * @param $rows
      * @return array
-     * @auther jingzheng
+     * @author jingzheng
      */
     public function getIndustry($limit, $rows,$where=0)
     {
@@ -26,6 +26,7 @@ class Industry extends Model{
             "rows" => $data
         ];
     }
+
     public function getSort()
     {
         $data = $this->order("sort", "desc")->field("id,name")->select();

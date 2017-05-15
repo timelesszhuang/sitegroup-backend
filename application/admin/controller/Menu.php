@@ -70,7 +70,7 @@ class Menu extends Common
      * @param  \think\Request $request
      * @param  int $id
      * @return \think\Response
-     * @auther guozhen
+     * @author guozhen
      */
     public function update(Request $request, $id)
     {
@@ -100,7 +100,7 @@ class Menu extends Common
      * 删除指定资源
      * @param  int $id
      * @return \think\Response
-     * @auther guozhen
+     * @author guozhen
      */
     public function delete($id)
     {

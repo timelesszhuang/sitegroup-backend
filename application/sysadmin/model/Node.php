@@ -16,7 +16,7 @@ class Node extends Model{
      * @param $limit
      * @param $rows
      * @return array
-     * @auther jingzheng
+     * @author jingzheng
      */
     public function getNode($limit, $rows)
     {
@@ -27,6 +27,8 @@ class Node extends Model{
             "rows" => $data
         ];
     }
+
+
     public function getUser()
     {
         $data = $this->order("id", "desc")->select();

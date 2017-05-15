@@ -13,7 +13,7 @@ class Article extends Model
 {
     /**
      * 初始化函数
-     * @auther guozhen
+     * @author guozhen
      */
     public static function init()
     {

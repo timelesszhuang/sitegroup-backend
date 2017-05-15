@@ -10,7 +10,7 @@ class Node extends Common
 {
     /**
      * 显示资源列表
-     * @auther jingzheng
+     * @author jingzheng
      * @return \think\Response
      */
     public function index()
@@ -21,7 +21,7 @@ class Node extends Common
 
     /**
      * 保存新建的资源
-     * @auther jingzheng
+     * @author jingzheng
      * @param  \think\Request  $request
      * @return \think\Response
      */

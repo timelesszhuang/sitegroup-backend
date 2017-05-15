@@ -15,7 +15,7 @@ class Industry extends Common {
      * 查询数据
      * @param $id
      * @return array|false|\PDOStatement|string|\think\Model
-     * @auther jingzheng
+     * @author jingzheng
      */
     public function read($id)
     {
@@ -28,7 +28,7 @@ class Industry extends Common {
     /**
      * 分页数据
      * @return array
-     * @auther jingzheng
+     * @author jingzheng
      */
     public function index(){
 
@@ -48,7 +48,7 @@ class Industry extends Common {
     /**
      * 添加数据
      * @return array
-     * @auther jingzheng
+     * @author jingzheng
      */
     public function save(Request $request){
 
@@ -72,7 +72,7 @@ class Industry extends Common {
     /**
      * 修改数据
      * @return array
-     * @auther jingzheng
+     * @author jingzheng
      */
     public function update(Request $request, $id)
     {
@@ -97,7 +97,7 @@ class Industry extends Common {
      * 删除
      * @param  int $id
      * @return \think\Response
-     * auther jingzheng
+     * author jingzheng
      */
     public function delete($id)
     {
@@ -112,7 +112,7 @@ class Industry extends Common {
     /**
      * 获取行业id name
      * @return array
-     * auther jingzheng
+     * author jingzheng
      */
 
     public function getIndustry(){

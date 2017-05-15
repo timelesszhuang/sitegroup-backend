@@ -42,7 +42,7 @@ class Login extends Controller
     /**
      * 执行第一次的登陆操作
      * @access public
-     * @auther guozhen
+     * @author guozhen
      */
     public function login()
     {
@@ -68,7 +68,7 @@ class Login extends Controller
     /**
      * 七天免登录验证
      * @return string
-     * @auther guozhen
+     * @author guozhen
      */
     public function autoLogin()
     {
@@ -94,7 +94,7 @@ class Login extends Controller
      * @param $array 响应数据
      * @return array
      * @return array
-     * @auther guozhen
+     * @author guozhen
      */
     public function resultArray($msg = 0, $stat = '', $data = 0)
     {
@@ -113,7 +113,7 @@ class Login extends Controller
      * 调用resultArray方法
      * 返回json auth——name验证
      * 检测 0 无验证
-     * @auther jingzheng
+     * @author jingzheng
      */
 
     public function getNoauth()
@@ -128,7 +128,7 @@ class Login extends Controller
     /**
      * 获取配置列表
      * 重组数组
-     * @auther jingzheng
+     * @author jingzheng
      * */
 
     public function getDataList($auth)

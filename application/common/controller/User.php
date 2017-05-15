@@ -10,7 +10,7 @@ class User extends Common
     /**
      * 显示资源列表
      * @return \think\Response
-     * @auther guozhen
+     * @author guozhen
      */
     public function index()
     {
@@ -42,7 +42,7 @@ class User extends Common
      *
      * @param  \think\Request  $request
      * @return \think\Response
-     * @auther guozhen
+     * @author guozhen
      */
     public function save(Request $request)
     {
@@ -71,7 +71,7 @@ class User extends Common
      *
      * @param  int  $id
      * @return \think\Response
-     * @auther guozhen
+     * @author guozhen
      */
     public function read($id)
     {
@@ -96,7 +96,7 @@ class User extends Common
      * @param  \think\Request  $request
      * @param  int  $id
      * @return \think\Response
-     * @auther guozhen
+     * @author guozhen
      */
     public function update(Request $request, $id)
     {
@@ -124,7 +124,7 @@ class User extends Common
      *
      * @param  int  $id
      * @return \think\Response
-     * @auther guozhen
+     * @author guozhen
      */
     public function delete($id)
     {

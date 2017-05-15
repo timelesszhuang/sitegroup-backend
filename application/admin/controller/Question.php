@@ -13,7 +13,7 @@ class Question extends Common
      * 显示资源列表
      *
      * @return \think\Response
-     * @auther guozhen
+     * @author guozhen
      */
     public function index(Request $request)
     {
@@ -48,7 +48,7 @@ class Question extends Common
      *
      * @param  \think\Request $request
      * @return \think\Response
-     * @auther guozhen
+     * @author guozhen
      */
     public function save(Request $request)
     {
@@ -75,7 +75,7 @@ class Question extends Common
      *
      * @param  int $id
      * @return \think\Response
-     * @auther guozhen
+     * @author guozhen
      */
     public function read($id)
     {
@@ -99,7 +99,7 @@ class Question extends Common
      * @param  \think\Request $request
      * @param  int $id
      * @return \think\Response
-     * @auther guozhen
+     * @author guozhen
      */
     public function update(Request $request, $id)
     {
@@ -126,7 +126,7 @@ class Question extends Common
      *
      * @param  int $id
      * @return \think\Response
-     * @auther guozhen
+     * @author guozhen
      */
     public function delete($id)
     {

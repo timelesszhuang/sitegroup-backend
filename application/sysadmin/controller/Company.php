@@ -10,7 +10,7 @@ class Company extends Common
 {
     /**
      * 显示资源列表
-     * @auther guozhen
+     * @author guozhen
      * @return \think\Response
      */
     public function index()
@@ -30,7 +30,7 @@ class Company extends Common
 
     /**
      * 显示创建资源表单页.
-     * @auther guozhen
+     * @author guozhen
      * @return \think\Response
      */
     public function create()
@@ -40,7 +40,7 @@ class Company extends Common
 
     /**
      * 保存新建的资源
-     * @auther guozhen
+     * @author guozhen
      * @param  \think\Request $request
      * @return \think\Response
      */

@@ -17,7 +17,7 @@ class User extends Model
 {
     /**
      * 初始化操作
-     * @auther guozhen
+     * @author guozhen
      */
     public static function init()
     {
@@ -35,7 +35,7 @@ class User extends Model
      * @param $usrname
      * @param $pwd
      * @return array
-     * @auther guozhen
+     * @author guozhen
      */
     public function checkUser($username, $pwd)
     {
@@ -61,7 +61,7 @@ class User extends Model
      * @param $oldPwd
      * @param $newPwd
      * @return array
-     * @auther guozhen
+     * @author guozhen
      */
     public function changePwd($oldPwd, $newPwd)
     {
@@ -92,7 +92,7 @@ class User extends Model
     /**
      *  Session存储
      * @param $user_info_arr
-     * @auther jingzheng
+     * @author jingzheng
      */
     public function setSession($user_info_arr)
     {
@@ -120,7 +120,7 @@ class User extends Model
      * @param $limit
      * @param $rows
      * @return array
-     * @auther guozhen
+     * @author guozhen
      */
 
     public function getUser($limit, $rows,$where=1)

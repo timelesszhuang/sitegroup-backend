@@ -57,7 +57,7 @@ class Common extends Controller
      * @param $array 响应数据
      * @return array
      * @return array
-     * @auther guozhen
+     * @author guozhen
      */
     public function resultArray($msg = 0, $stat = '', $data = 0)
     {
@@ -76,7 +76,7 @@ class Common extends Controller
     /**
      * 获取配置列表
      * 重组数组
-     * @auther jingzheng
+     * @author jingzheng
      * */
 
     public function getDataList($auth)
@@ -95,7 +95,7 @@ class Common extends Controller
      * 调用resultArray方法
      * 返回json auth——name验证
      * 检测 1 有验证
-     * @auther jingzheng
+     * @author jingzheng
      */
 
     public function getAuth()
@@ -107,7 +107,7 @@ class Common extends Controller
     /**
      * 修改密码
      * @return array|void
-     * @auther guozhen
+     * @author guozhen
      */
     public function changePwd()
     {
@@ -141,7 +141,7 @@ class Common extends Controller
      * @param $page
      * @param $rows
      * @return int
-     * @auther guozhen
+     * @author guozhen
      */
     public function getLimit()
     {

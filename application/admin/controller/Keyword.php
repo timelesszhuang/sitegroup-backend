@@ -13,7 +13,7 @@ class Keyword extends Common
     /**
      * 显示资源列表
      * @return \think\Response
-     * @auther jingzheng
+     * @author jingzheng
      */
     public function index()
     {
@@ -124,7 +124,7 @@ class Keyword extends Common
      * 根据上传的文件名 导入关键词
      * @param Request $request
      * @return array
-     * @auther guozhen
+     * @author guozhen
      */
     public function insertKeyword(Request $request)
     {
@@ -161,7 +161,7 @@ class Keyword extends Common
      * @param $id
      * @param $model
      * @return array
-     * @auther guozhen
+     * @author guozhen
      */
     public function getKeywordInfo($file_path, $id,$model)
     {
@@ -190,7 +190,7 @@ class Keyword extends Common
 
     /**
      * 添加A类关键词
-     * @auther guozhen
+     * @author guozhen
      * @return array
      */
     public function insertA()

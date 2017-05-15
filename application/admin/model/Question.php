@@ -13,7 +13,7 @@ class Question extends Model
      * @param $rows
      * @param $where
      * @return array
-     * @auther guozhen
+     * @author guozhen
      */
     public function getAll($limit, $rows, $where)
     {
