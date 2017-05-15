@@ -226,6 +226,9 @@ class Common extends Controller
             "id"=>$id,
             "node_id"=>$user["user_node_id"]
         ];
+        if(array_key_exists('id',$data)){
+            unset($data["id"]);
+        }
         if (!$controller->where($where)->update($data)) {
             return $this->resultArray('修改失败', 'failed');
         }

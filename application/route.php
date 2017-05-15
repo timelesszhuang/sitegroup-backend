@@ -9,29 +9,57 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 use think\Route;
+//用户
 Route::resource('user','common/User');
-Route::resource('industry','sysadmin/Industry');
-Route::resource('company','sysadmin/Company');
-Route::resource('node','sysadmin/Node');
-Route::resource('keyword','admin/keyword');
-Route::post('keyword/insertA','admin/keyword/insertA');
-Route::resource('articletype','admin/Articletype');
-Route::resource('article','admin/Article');
-Route::resource('menu','admin/Menu');
-Route::rule('articletype/gettype','admin/Articletype/getType');
-Route::rule('company/getAll','sysadmin/Company/getAll');
-Route::rule('industry/getIndustry','sysadmin/industry/getIndustry');
 Route::rule('user/getAll','common/User/getAll');
+
+//行业
+Route::resource('industry','sysadmin/Industry');
+Route::rule('industry/getIndustry','sysadmin/industry/getIndustry');
+
+//公司
+Route::resource('company','sysadmin/Company');
+Route::rule('company/getAll','sysadmin/Company/getAll');
+
+//节点
 Route::resource('node','sysadmin/Node');
 Route::rule('node/status','sysadmin/Node/status');
+
+//关键词
+Route::resource('keyword','admin/keyword');
+Route::post('keyword/insertA','admin/keyword/insertA');
 Route::post('keyword/uploadKeyword','admin/keyword/uploadKeyword');
 Route::post('keyword/insertKeyword','admin/keyword/insertKeyword');
+
+//文章分类
+Route::resource('articletype','admin/Articletype');
+Route::rule('articletype/gettype','admin/Articletype/getType');
+
+//文章
+Route::resource('article','admin/Article');
+
+//菜单
+Route::resource('menu','admin/Menu');
+
+//问答
 Route::resource('question','admin/Question');
-Route::resource('scatteredArticle','admin/Scatteredarticle');
-Route::resource('scatteredTitle','admin/Scatteredtitle');
-Route::get('scatteredTitle/getArrticleJoinTitle','admin/Scatteredtitle/getArrticleJoinTitle');
+
+//问答分类
 Route::resource('questionType','admin/Questiontype');
 Route::get('questionType/list','admin/Questiontype/getlist');
+
+//段落文章
+Route::resource('scatteredArticle','admin/Scatteredarticle');
+
+//段落标题
+Route::resource('scatteredTitle','admin/Scatteredtitle');
+Route::get('scatteredTitle/getArrticleJoinTitle','admin/Scatteredtitle/getArrticleJoinTitle');
+
+//公共代码
+Route::resource('code','admin/Code');
+
+//域名管理
+Route::resource('domain','admin/domain');
 return [
     '__pattern__' => [
         'name' => '\w+',
