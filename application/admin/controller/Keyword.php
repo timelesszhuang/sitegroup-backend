@@ -3,10 +3,8 @@
 namespace app\admin\controller;
 
 use app\common\controller\Common;
-use app\sysadmin\model\Node;
 use think\Request;
 use think\Validate;
-use think\worker\Server;
 
 class Keyword extends Common
 {
