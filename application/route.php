@@ -60,6 +60,11 @@ Route::resource('code','admin/Code');
 
 //域名管理
 Route::resource('domain','admin/domain');
+
+//模板相关操作
+Route::resource('template', 'admin/template');
+Route::post('template/uploadTemplate','admin/template/uploadTemplate');
+
 return [
     '__pattern__' => [
         'name' => '\w+',
