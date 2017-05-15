@@ -11,7 +11,6 @@ namespace app\admin\model;
 use app\common\controller\Common;
 
 use think\Model;
-use think\Session;
 
 class Keyword extends Model
 {
