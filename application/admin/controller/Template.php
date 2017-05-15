@@ -6,7 +6,7 @@ use app\common\controller\Common;
 use think\Request;
 use think\Validate;
 
-class Keyword extends Common
+class Template extends Common
 {
     /**
      * 显示资源列表
@@ -105,12 +105,11 @@ class Keyword extends Common
      * 上传关键词文件文件
      * @return array
      */
-    public function uploadKeyword()
+    public function uploadTemplate()
     {
         $file = request()->file('file_name');
         $info = $file->move(ROOT_PATH . 'public/upload');
         if ($info) {
-            // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
             return $this->resultArray('上传成功', '', $info->getSaveName());
         } else {
             // 上传失败获取错误信息
