@@ -104,10 +104,6 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $user=$this->getSessionUser();
-        $where=[
-            "node_id"=>$user["user_node_id"]
-        ];
         return $this->publicUpdate((new \app\admin\model\Article),$data,$id);
     }
 

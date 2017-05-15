@@ -100,7 +100,7 @@ class Questiontype extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'faile');
         }
-        return $this->publicUpdate((new \app\admin\model\Articletype),$data,$id);
+        return $this->publicUpdate((new \app\admin\model\QuestionType),$data,$id);
     }
 
     /**

@@ -107,7 +107,7 @@ class Scatteredarticle extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        return $this->publicUpdate((new \app\admin\model\Articletype),$data,$id);
+        return $this->publicUpdate((new \app\admin\model\ScatteredArticle),$data,$id);
     }
 
     /**
