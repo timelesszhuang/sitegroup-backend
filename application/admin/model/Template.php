@@ -12,5 +12,20 @@ use think\Model;
 
 class Template extends Model
 {
-
+    /**
+     * 获取所有 模板
+     * @param $limit
+     * @param $rows
+     * @param int $where
+     * @return array
+     */
+    public function getTemplate($limit, $rows, $where = 0)
+    {
+        $count = $this->where($where)->count();
+        $data = $this->limit($limit, $rows)->where($where)->select();
+        return [
+            "total" => $count,
+            "rows" => $data
+        ];
+    }
 }
