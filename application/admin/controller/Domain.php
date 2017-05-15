@@ -43,7 +43,22 @@ class Domain extends Controller
      */
     public function save(Request $request)
     {
-        //
+        $rule = [
+            ['registrant_user', "require", "请填写注册人"],
+            ['registrant_tel', 'require', "请填写手机号"],
+            ["registrant_email","require","请填写邮箱"],
+            ["domain","require","请填写域名"]
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'faile');
+        }
+        $data["node_id"] = $this->getSessionUser()['user_node_id'];
+        if (!\app\admin\model\Domain::create($data)) {
+            return $this->resultArray('添加失败', 'failed');
+        }
+        return $this->resultArray('添加成功');
     }
 
     /**
@@ -54,7 +69,7 @@ class Domain extends Controller
      */
     public function read($id)
     {
-        //
+        return $this->getread((new \app\admin\model\Domain),$id);
     }
 
     /**
@@ -65,7 +80,7 @@ class Domain extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -77,7 +92,18 @@ class Domain extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule = [
+            ['registrant_user', "require", "请填写注册人"],
+            ['registrant_tel', 'require', "请填写手机号"],
+            ["registrant_email","require","请填写邮箱"],
+            ["domain","require","请填写域名"]
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'faile');
+        }
+        return $this->publicUpdate((new \app\admin\model\Domain),$data,$id);
     }
 
     /**
@@ -88,6 +114,6 @@ class Domain extends Controller
      */
     public function delete($id)
     {
-        //
+        return $this->deleteRecord((new \app\admin\model\Domain),$id);
     }
 }
