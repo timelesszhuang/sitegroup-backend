@@ -18,14 +18,14 @@ class Template extends Common
      */
     public function index()
     {
-        $request=$this->getLimit();
+        $request = $this->getLimit();
         $name = $this->request->get('name');
-        $where=[];
-        if(!empty($name)){
+        $where = [];
+        if (!empty($name)) {
             $where["title"] = ["like", "%$name%"];
         }
-        $user=(new Common())->getSessionUser();
-        $where["node_id"]=$user["user_node_id"];
+        $user = (new Common())->getSessionUser();
+        $where["node_id"] = $user["user_node_id"];
         $data = (new \app\admin\model\Template())->getTemplate($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
@@ -59,7 +59,7 @@ class Template extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Keyword), $id);
+        return $this->getread((new \app\admin\model\Template), $id);
     }
 
     /**
@@ -86,22 +86,18 @@ class Template extends Common
     }
 
     /**
-     * 删除指定资源
+     * 删除指定资源 模板暂时不支持删除操作
      * @param  int $id
      * @return \think\Response
      */
     public function delete($id)
     {
-        $keyword = new \app\admin\model\Keyword();
+        $template = new \app\admin\model\Template();
         $user = $this->getSessionUser();
         $where["parent_id"] = $id;
         $where["node_id"] = $user["user_node_id"];
-        $key = $keyword->where($where)->select();
-        if (!empty($key)) {
-            return $this->resultArray('父级不能直接删除', 'failed');
-        }
-        if ($keyword->where(["id" => $id, "node_id" => $user["user_node_id"]])->delete() == false) {
-            return $this->resultArray('父级节点不能删除', 'failed');
+        if ($template->where(["id" => $id, "node_id" => $user["user_node_id"]])->delete()) {
+            return $this->resultArray('删除成功', 'failed');
         }
         return $this->resultArray('删除成功');
     }
@@ -141,6 +137,8 @@ class Template extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $post['path'] = self::$templatepath . $post['path'];
+        $user = (new Common())->getSessionUser();
+        $post["node_id"] = $user["user_node_id"];
         $model = new \app\admin\model\Template();
         $model->save($post);
         if ($model->id) {
@@ -149,27 +147,4 @@ class Template extends Common
         return $this->resultArray('添加失败', 'failed');
     }
 
-
-    /**
-     * 添加A类关键词
-     * @author guozhen
-     * @return array
-     */
-    public function insertA()
-    {
-        $rule = [
-            ["name", "require", "请填写A类关键词"],
-        ];
-        $validate = new Validate($rule);
-        $data = $this->request->post();
-        if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'faile');
-        }
-        $user = $this->getSessionUser();
-        $data["node_id"] = $user["user_node_id"];
-        if (!\app\admin\model\Keyword::create($data)) {
-            return $this->resultArray('添加失败', "faile");
-        }
-        return $this->resultArray('添加成功');
-    }
 }
