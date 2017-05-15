@@ -217,6 +217,7 @@ class Common extends Controller
      * @param $controller
      * @param $data
      * @param $id
+     * @author guozhen
      * @return array
      */
     public function publicUpdate($controller,$data,$id)
@@ -226,6 +227,10 @@ class Common extends Controller
             "id"=>$id,
             "node_id"=>$user["user_node_id"]
         ];
+        //前台可能会提交id过来,为了防止错误,所以将其删除掉
+        if(array_key_exists('id',$data)){
+            unset($data["id"]);
+        }
         if (!$controller->where($where)->update($data)) {
             return $this->resultArray('修改失败', 'failed');
         }

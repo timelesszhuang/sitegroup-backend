@@ -60,11 +60,11 @@ class Question extends Common
         $validate = new Validate($rule);
         $data = $this->request->post();
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'faile');
+            return $this->resultArray($validate->getError(), 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\Question::create($data)) {
-            return $this->resultArray('添加失败', 'faile');
+            return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
     }
@@ -111,7 +111,7 @@ class Question extends Common
         $validate = new Validate($rule);
         $data = $this->request->put();
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'faile');
+            return $this->resultArray($validate->getError(), 'failed');
         }
         return $this->publicUpdate((new \app\admin\model\Question),$data,$id);
     }
