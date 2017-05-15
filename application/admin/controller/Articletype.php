@@ -102,11 +102,7 @@ class Articletype extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        if (!\app\admin\model\Articletype::update($data)) {
-            return $this->resultArray('修改失败', 'failed');
-        }
-
-        return $this->resultArray('修改成功');
+        return $this->publicUpdate((new \app\admin\model\Articletype),$data,$id);
     }
 
 

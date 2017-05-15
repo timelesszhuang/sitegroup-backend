@@ -107,11 +107,7 @@ class Scatteredarticle extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $data["node_id"] = $this->getSessionUser()['user_node_id'];
-        if (!\app\admin\model\ScatteredArticle::update($data)) {
-            return $this->resultArray('添加失败', 'failed');
-        }
-        return $this->resultArray('添加成功');
+        return $this->publicUpdate((new \app\admin\model\Articletype),$data,$id);
     }
 
     /**

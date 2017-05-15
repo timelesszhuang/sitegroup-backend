@@ -196,6 +196,7 @@ class Common extends Controller
      * 统一删除接口
      * @param $controller
      * @param $id
+     * @author guozhen
      * @return array
      */
     public function deleteRecord($controller,$id)
@@ -209,5 +210,25 @@ class Common extends Controller
             return $this->resultArray('删除失败', 'failed');
         }
         return $this->resultArray('删除成功');
+    }
+
+    /**
+     * 统一修改接口
+     * @param $controller
+     * @param $data
+     * @param $id
+     * @return array
+     */
+    public function publicUpdate($controller,$data,$id)
+    {
+        $user=$this->getSessionUser();
+        $where=[
+            "id"=>$id,
+            "node_id"=>$user["user_node_id"]
+        ];
+        if (!$controller->where($where)->update($data)) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
     }
 }
