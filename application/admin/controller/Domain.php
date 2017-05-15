@@ -101,7 +101,7 @@ class Domain extends Controller
         $validate = new Validate($rule);
         $data = $this->request->put();
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'faile');
+            return $this->resultArray($validate->getError(), 'failed');
         }
         return $this->publicUpdate((new \app\admin\model\Domain),$data,$id);
     }
