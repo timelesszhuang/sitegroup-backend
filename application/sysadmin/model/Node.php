@@ -5,11 +5,13 @@
  * Date: 2017/4/21
  * Time: 11:35
  */
+
 namespace app\sysadmin\model;
 
 use think\Model;
 
-class Node extends Model{
+class Node extends Model
+{
 
     /**
      * 分页
@@ -34,7 +36,6 @@ class Node extends Model{
         $data = $this->order("id", "desc")->select();
         return $data;
     }
-
 
 
 }
