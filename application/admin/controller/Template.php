@@ -9,7 +9,7 @@ use think\Validate;
 class Template extends Common
 {
 
-    static $templatepath = 'public/upload/template';
+    static $templatepath = 'public/upload/template/';
 
     /**
      * 显示资源列表
@@ -18,12 +18,15 @@ class Template extends Common
      */
     public function index()
     {
-        $tag = "";
-        $id = $this->request->get('id');
-        if (empty($id)) {
-            $tag = "A";
+        $request=$this->getLimit();
+        $name = $this->request->get('name');
+        $where=[];
+        if(!empty($name)){
+            $where["title"] = ["like", "%$name%"];
         }
-        $data = (new \app\admin\model\Keyword())->getKeyword($tag, $id);
+        $user=(new Common())->getSessionUser();
+        $where["node_id"]=$user["user_node_id"];
+        $data = (new \app\admin\model\Template())->getTemplate($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
@@ -35,7 +38,6 @@ class Template extends Common
     public function create()
     {
         //
-
     }
 
     /**
