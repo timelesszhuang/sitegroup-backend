@@ -97,7 +97,7 @@ class Industry extends Common {
      * 删除
      * @param  int $id
      * @return \think\Response
-     * author jingzheng
+     * @author jingzheng
      */
     public function delete($id)
     {
@@ -112,7 +112,7 @@ class Industry extends Common {
     /**
      * 获取行业id name
      * @return array
-     * author jingzheng
+     * @author jingzheng
      */
 
     public function getIndustry(){
