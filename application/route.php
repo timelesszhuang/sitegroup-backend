@@ -9,61 +9,64 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 use think\Route;
+
 //用户
-Route::resource('user','common/User');
-Route::rule('user/getAll','common/User/getAll');
+Route::resource('user', 'common/User');
+Route::rule('user/getAll', 'common/User/getAll');
 
 //行业
-Route::resource('industry','sysadmin/Industry');
-Route::rule('industry/getIndustry','sysadmin/industry/getIndustry');
+Route::resource('industry', 'sysadmin/Industry');
+Route::rule('industry/getIndustry', 'sysadmin/industry/getIndustry');
 
 //公司
-Route::resource('company','sysadmin/Company');
-Route::rule('company/getAll','sysadmin/Company/getAll');
+Route::resource('company', 'sysadmin/Company');
+Route::rule('company/getAll', 'sysadmin/Company/getAll');
 
 //节点
-Route::resource('node','sysadmin/Node');
-Route::rule('node/status','sysadmin/Node/status');
+Route::resource('node', 'sysadmin/Node');
+Route::rule('node/status', 'sysadmin/Node/status');
 
 //关键词
-Route::resource('keyword','admin/keyword');
-Route::post('keyword/insertA','admin/keyword/insertA');
-Route::post('keyword/uploadKeyword','admin/keyword/uploadKeyword');
-Route::post('keyword/insertKeyword','admin/keyword/insertKeyword');
+Route::resource('keyword', 'admin/keyword');
+Route::post('keyword/insertA', 'admin/keyword/insertA');
+Route::post('keyword/uploadKeyword', 'admin/keyword/uploadKeyword');
+Route::post('keyword/insertKeyword', 'admin/keyword/insertKeyword');
 
 //文章分类
-Route::resource('articletype','admin/Articletype');
-Route::rule('articletype/gettype','admin/Articletype/getType');
+Route::resource('articletype', 'admin/Articletype');
+Route::rule('articletype/gettype', 'admin/Articletype/getType');
 
 //文章
-Route::resource('article','admin/Article');
+Route::resource('article', 'admin/Article');
 
 //菜单
-Route::resource('menu','admin/Menu');
+Route::resource('menu', 'admin/Menu');
 
 //问答
-Route::resource('question','admin/Question');
+Route::resource('question', 'admin/Question');
 
 //问答分类
-Route::resource('questionType','admin/Questiontype');
-Route::get('questionType/list','admin/Questiontype/getlist');
+Route::resource('questionType', 'admin/Questiontype');
+Route::get('questionType/list', 'admin/Questiontype/getlist');
 
 //段落文章
-Route::resource('scatteredArticle','admin/Scatteredarticle');
+Route::resource('scatteredArticle', 'admin/Scatteredarticle');
 
 //段落标题
-Route::resource('scatteredTitle','admin/Scatteredtitle');
-Route::get('scatteredTitle/getArrticleJoinTitle','admin/Scatteredtitle/getArrticleJoinTitle');
+Route::resource('scatteredTitle', 'admin/Scatteredtitle');
+Route::get('scatteredTitle/getArrticleJoinTitle', 'admin/Scatteredtitle/getArrticleJoinTitle');
 
 //公共代码
-Route::resource('code','admin/Code');
+Route::resource('code', 'admin/Code');
 
 //域名管理
-Route::resource('domain','admin/domain');
+Route::resource('domain', 'admin/domain');
 
 //模板相关操作
 Route::resource('template', 'admin/template');
-Route::post('template/uploadTemplate','admin/template/uploadTemplate');
+Route::post('template/uploadTemplate', 'admin/template/uploadTemplate');
+Route::post('template/addTemplate', 'admin/template/addTemplate');
+
 
 return [
     '__pattern__' => [

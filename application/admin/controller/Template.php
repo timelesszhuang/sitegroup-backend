@@ -8,6 +8,9 @@ use think\Validate;
 
 class Template extends Common
 {
+
+    static $templatepath = 'public/upload/template';
+
     /**
      * 显示资源列表
      * @return \think\Response
@@ -54,7 +57,7 @@ class Template extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Keyword),$id);
+        return $this->getread((new \app\admin\model\Keyword), $id);
     }
 
     /**
@@ -108,7 +111,7 @@ class Template extends Common
     public function uploadTemplate()
     {
         $file = request()->file('file_name');
-        $info = $file->move(ROOT_PATH . 'public/upload');
+        $info = $file->move(ROOT_PATH . self::$templatepath);
         if ($info) {
             return $this->resultArray('上传成功', '', $info->getSaveName());
         } else {
@@ -123,67 +126,27 @@ class Template extends Common
      * @return array
      * @author guozhen
      */
-    public function insertKeyword(Request $request)
+    public function addTemplate(Request $request)
     {
         $post = $request->post();
         $rule = [
-            ["id", "require", "请传入id"],
+            ["name", "require", "请传入模板名"],
+            ["detail", "require", "请传入模板详情"],
             ["path", "require", "请传入path"]
         ];
         $validate = new Validate($rule);
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $model = new \app\admin\model\Keyword();
-        $file_info=$this->getKeywordInfo($post["path"], $post["id"],$model);
-        while ($key = fgets($file_info["file"])) {
-            $getkey = $model->where(["name" => $key])->find();
-            if (!empty($getkey)) {
-                continue;
-            }
-            \app\admin\model\Keyword::create([
-                "name" => $key,
-                "parent_id" => $post["id"],
-                "path" => $file_info["path"],
-                "tag" => $file_info["tag"],
-                "node_id" => $file_info["user_node_id"]
-            ]);
+        $post['path'] = self::$templatepath . $post['path'];
+        $model = new \app\admin\model\Template();
+        $model->save($post);
+        if ($model->id) {
+            return $this->resultArray("添加成功");
         }
-        return $this->resultArray("添加成功");
+        return $this->resultArray('添加失败', 'failed');
     }
 
-    /**
-     * 获取文件信息
-     * @param $file_path
-     * @param $id
-     * @param $model
-     * @return array
-     * @author guozhen
-     */
-    public function getKeywordInfo($file_path, $id,$model)
-    {
-        $file_path = "upload/" . $file_path;
-        if (file_exists($file_path)) {
-            $oldKey = $model->where(["id" => $id])->find();
-            $tag = "B";
-            if ($oldKey["tag"] == "B") {
-                $tag = "C";
-            }
-            $path = "," . $id . ",";
-            if (!empty($oldKey["parent_id"])) {
-                $path = "," . $oldKey["parent_id"] . "," . $id . ",";
-            }
-            $file = fopen($file_path, "r");
-            $user = $this->getSessionUser();
-            return [
-                "tag"=>$tag,
-                "path"=>$path,
-                "file"=>$file,
-                "user_node_id"=>$user["user_node_id"]
-            ];
-        }
-        exit(json_encode($this->resultArray('文件不存在', "failed")));
-    }
 
     /**
      * 添加A类关键词
@@ -192,18 +155,18 @@ class Template extends Common
      */
     public function insertA()
     {
-        $rule=[
-            ["name","require","请填写A类关键词"],
+        $rule = [
+            ["name", "require", "请填写A类关键词"],
         ];
-        $validate=new Validate($rule);
-        $data=$this->request->post();
-        if(!$validate->check($data)){
-            return $this->resultArray($validate->getError(),'faile');
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'faile');
         }
-        $user=$this->getSessionUser();
-        $data["node_id"]=$user["user_node_id"];
-        if(!\app\admin\model\Keyword::create($data)){
-            return $this->resultArray('添加失败',"faile");
+        $user = $this->getSessionUser();
+        $data["node_id"] = $user["user_node_id"];
+        if (!\app\admin\model\Keyword::create($data)) {
+            return $this->resultArray('添加失败', "faile");
         }
         return $this->resultArray('添加成功');
     }
