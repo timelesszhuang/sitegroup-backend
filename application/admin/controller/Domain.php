@@ -99,9 +99,9 @@ class Domain extends Controller
             ["domain","require","请填写域名"]
         ];
         $validate = new Validate($rule);
-        $data = $this->request->post();
+        $data = $this->request->put();
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'faile');
+            return $this->resultArray($validate->getError(), 'failed');
         }
         return $this->publicUpdate((new \app\admin\model\Domain),$data,$id);
     }
