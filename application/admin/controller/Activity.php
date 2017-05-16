@@ -130,9 +130,12 @@ class Activity extends Common
 //      $path = 'upload/activity/zipactivity/demo.zip';
         $file_savename = $info->getSaveName();
         $demo_path = $dest . pathinfo($file_savename)['filename'];
-        $this->unzipFile($file_savename, $dest);
+        $status = '实例解压缩失败';
+        if ($this->unzipFile(承担, ROOT_PATH . 'public/' . $dest)) {
+            $status = '实例解压缩成功';
+        }
         if ($info) {
-            return $this->resultArray('上传成功', '', ['code_path' => $file_savename, 'demo_path' => $demo_path]);
+            return $this->resultArray('上传成功', '', ['code_path' => $file_savename, 'demo_path' => $demo_path, 'status' => $status]);
         } else {
             // 上传失败获取错误信息
             return $this->resultArray('上传失败', 'failed', $info->getError());
