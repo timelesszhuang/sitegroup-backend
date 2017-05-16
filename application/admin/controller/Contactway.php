@@ -46,13 +46,12 @@ class Contactway extends Common
     public function save(Request $request)
     {
         $rule = [
-            ['site_id', "require", "请选择站点"],
             ['html', 'require', "请填写代码"],
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'faile');
+            return $this->resultArray($validate->getError(), 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\Contactway::create($data)) {
@@ -93,7 +92,6 @@ class Contactway extends Common
     public function update(Request $request, $id)
     {
         $rule = [
-            ['site_id', "require", "请选择站点"],
             ['html', 'require', "请填写代码"],
         ];
         $validate = new Validate($rule);
