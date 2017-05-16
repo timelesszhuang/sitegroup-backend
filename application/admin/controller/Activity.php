@@ -156,9 +156,9 @@ class Activity extends Common
     {
         $post = $request->post();
         $rule = [
-            ["name", "require", "请传入模板名"],
-            ["detail", "require", "请传入模板详情"],
-            ["path", "require", "请传入path"]
+            ["name", "require", "请填写活动/创意名名"],
+            ["detail", "require", "请填写活动/创意详情"],
+            ["code_path", "require", "请先上传代码"],
         ];
         $validate = new Validate($rule);
         if (!$validate->check($post)) {
