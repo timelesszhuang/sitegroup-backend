@@ -5,8 +5,9 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Request;
 use think\Validate;
+use app\common\controller\Common;
 
-class Code extends Controller
+class Code extends Common
 {
     /**
      * 显示资源列表

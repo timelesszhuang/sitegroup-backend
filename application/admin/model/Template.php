@@ -28,4 +28,5 @@ class Template extends Model
             "rows" => $data
         ];
     }
+
 }

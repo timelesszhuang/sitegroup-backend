@@ -9,7 +9,7 @@ use think\Validate;
 class Template extends Common
 {
 
-    static $templatepath = 'public/upload/template/';
+    static $templatepath = 'upload/template/';
 
     /**
      * 显示资源列表
@@ -82,7 +82,16 @@ class Template extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule = [
+            ['name', "require", "请填写模板名"],
+            ['detail', 'require', "请填写模板信息"],
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->put();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'failed');
+        }
+        return $this->publicUpdate((new \app\admin\model\Template()), $data, $id);
     }
 
     /**
