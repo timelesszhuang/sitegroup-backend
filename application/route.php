@@ -67,6 +67,11 @@ Route::resource('template', 'admin/template');
 Route::post('template/uploadTemplate', 'admin/template/uploadTemplate');
 Route::post('template/addTemplate', 'admin/template/addTemplate');
 
+//活动相关操作
+Route::resource('activity', 'admin/activity');
+//上传活动信息
+Route::get('activity/uploadActivity', 'admin/activity/uploadActivity');
+
 //联系方式
 Route::resource('contactway','admin/Contactway');
 
