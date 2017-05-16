@@ -164,7 +164,7 @@ class Activity extends Common
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $post['path'] = self::$Activitypath . $post['path'];
+        $post['code_path'] = self::$activitypath . $post['code_path'];
         $user = (new Common())->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new \app\admin\model\Activity();
