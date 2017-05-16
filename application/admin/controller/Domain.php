@@ -4,8 +4,10 @@ namespace app\admin\controller;
 
 use think\Controller;
 use think\Request;
+use think\Validate;
+use app\common\controller\Common;
 
-class Domain extends Controller
+class Domain extends Common
 {
     /**
      * 显示资源列表

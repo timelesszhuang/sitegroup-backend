@@ -6,7 +6,8 @@ use think\Model;
 
 class QuestionType extends Model
 {
-
+    //只读字段
+    protected $readonly=["node_id"];
     /**
      * 获取所有数据
      * @param $limit
