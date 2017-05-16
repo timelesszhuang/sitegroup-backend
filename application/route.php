@@ -67,6 +67,8 @@ Route::resource('template', 'admin/template');
 Route::post('template/uploadTemplate', 'admin/template/uploadTemplate');
 Route::post('template/addTemplate', 'admin/template/addTemplate');
 
+//联系方式
+Route::resource('contactway','admin/Contactway');
 
 return [
     '__pattern__' => [
