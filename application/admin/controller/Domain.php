@@ -20,7 +20,7 @@ class Domain extends Common
         $name = $this->request->get('domain');
         $where = [];
         if (!empty($name)) {
-            $where['name'] = ["like", "%$name%"];
+            $where['domain'] = ["like", "%$name%"];
         }
         $user = (new Common)->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
