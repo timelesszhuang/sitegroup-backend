@@ -17,10 +17,10 @@ class Contactway extends Common
     public function index()
     {
         $limits = $this->getLimit();
-        $name = $this->request->get('domain');
+        $site_id = $this->request->get('site_id');
         $where = [];
-        if (!empty($name)) {
-            $where['name'] = ["like", "%$name%"];
+        if (!empty($site_id)) {
+            $where['site_id'] = $site_id;
         }
         $user = (new Common)->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
