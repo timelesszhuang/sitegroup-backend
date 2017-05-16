@@ -46,7 +46,8 @@ class Contactway extends Common
     public function save(Request $request)
     {
         $rule = [
-            ['html', 'require', "请填写代码"],
+            ['detail','require','请填写描述'],
+            ['html', 'require', "请填写代码"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -92,7 +93,8 @@ class Contactway extends Common
     public function update(Request $request, $id)
     {
         $rule = [
-            ['html', 'require', "请填写代码"],
+            ['detail','require','请填写描述'],
+            ['html', 'require', "请填写代码"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
