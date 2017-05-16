@@ -132,9 +132,9 @@ class Activity extends Common
         $pathinfo = pathinfo($file_savename);
 //        print_r($pathinfo);
         $demo_path = $dest . $pathinfo['filename'];
-        $status = '活动解压缩失败';
-        if ($this->unzipFile($file_savename, ROOT_PATH . 'public/' . $dest)) {
-            $status = '活动解压缩成功';
+        $status = '文件解压缩失败';
+        if ($this->unzipFile(self::$activitypath . '/' . $file_savename, ROOT_PATH . 'public/' . $dest)) {
+            $status = '文件解压缩成功';
         }
         if ($info) {
             return $this->resultArray('上传成功', '', ['code_path' => $file_savename, 'demo_path' => $demo_path, 'status' => $status]);
