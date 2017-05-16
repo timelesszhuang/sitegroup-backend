@@ -237,3 +237,31 @@ class Common extends Controller
         return $this->resultArray('修改成功');
     }
 }
+
+    /**
+     * 解压缩文件
+     * @access public
+     * @param $path 源文件的路径
+     * @param $dest 解压缩到的路径
+     */
+    public function unzipFile($path, $dest)
+    {
+        $path = ROOT_PATH . 'public/' . $path;
+        if (file_exists($path)) {
+            //文件不存在
+        }
+        $dest = 'upload/activity/activity/';
+        $zip = new \ZipArchive;
+        $res = $zip->open($path);
+        if ($res === TRUE) {
+            //解压缩到test文件夹
+            $zip->extractTo($dest);
+            $zip->close();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+}
