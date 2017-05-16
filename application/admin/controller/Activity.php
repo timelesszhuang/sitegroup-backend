@@ -130,10 +130,11 @@ class Activity extends Common
 //      $path = 'upload/activity/zipactivity/demo.zip';
         $file_savename = $info->getSaveName();
         $pathinfo = pathinfo($file_savename);
-//        print_r($pathinfo);
-        $demo_path = $dest . $pathinfo['filename'];
+        $file_name = $pathinfo['filename'];
+        $demo_path = $dest . $file_name;
         $status = '文件解压缩失败';
-        if ($this->unzipFile(self::$activitypath . '/' . $file_savename, ROOT_PATH . 'public/' . $dest)) {
+        //解压缩主题文件到指定的目录中
+        if ($this->unzipFile(self::$activitypath . '/' . $file_savename, ROOT_PATH . 'public/' . $dest . $file_name)) {
             $status = '文件解压缩成功';
         }
         if ($info) {
