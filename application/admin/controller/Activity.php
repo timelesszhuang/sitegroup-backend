@@ -124,7 +124,7 @@ class Activity extends Common
     public function uploadActivity()
     {
         $file = request()->file('file_name');
-        $info = $file->move(ROOT_PATH . 'public/' . self::$Activitypath);
+        $info = $file->move(ROOT_PATH . 'public/' . self::$activitypath);
         //要解压到的位置
         $dest = 'upload/activity/activity/';
 //      $path = 'upload/activity/zipactivity/demo.zip';
