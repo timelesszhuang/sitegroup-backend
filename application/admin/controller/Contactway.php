@@ -46,7 +46,6 @@ class Contactway extends Common
     public function save(Request $request)
     {
         $rule = [
-            ['site_id', "require", "请选择站点"],
             ['html', 'require', "请填写代码"],
         ];
         $validate = new Validate($rule);
@@ -93,7 +92,6 @@ class Contactway extends Common
     public function update(Request $request, $id)
     {
         $rule = [
-            ['site_id', "require", "请选择站点"],
             ['html', 'require', "请填写代码"],
         ];
         $validate = new Validate($rule);
