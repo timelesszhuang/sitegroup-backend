@@ -17,13 +17,13 @@ class Domain extends Common
     public function index()
     {
         $limits = $this->getLimit();
-        $name = $this->request->get('domain');
+        $domain = $this->request->get('domain');
         $where = [];
-        if (!empty($name)) {
-            $where['domain'] = ["like", "%$name%"];
+        if (!empty($domain)) {
+            $where['domain'] = ["like", "%$domain%"];
         }
         $user = (new Common)->getSessionUser();
-        $where["node_id"] = $user["user_node_id"];
+//        $where["node_id"] = $user["user_node_id"];
         return $this->resultArray('', '', (new \app\admin\model\Domain())->getAll($limits['limit'], $limits['rows'], $where));
     }
 
