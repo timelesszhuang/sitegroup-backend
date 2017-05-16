@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use think\Controller;
 use think\Request;
+use think\Validate;
 
 class Code extends Controller
 {
