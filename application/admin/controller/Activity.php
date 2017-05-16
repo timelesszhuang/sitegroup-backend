@@ -129,7 +129,9 @@ class Activity extends Common
         $dest = 'upload/activity/activity/';
 //      $path = 'upload/activity/zipactivity/demo.zip';
         $file_savename = $info->getSaveName();
-        $demo_path = $dest . pathinfo($file_savename)['filename'];
+        $pathinfo = pathinfo($file_savename);
+        print_r($pathinfo);
+        $demo_path = $dest . $pathinfo['filename'];
         $status = '实例解压缩失败';
         if ($this->unzipFile(承担, ROOT_PATH . 'public/' . $dest)) {
             $status = '实例解压缩成功';
