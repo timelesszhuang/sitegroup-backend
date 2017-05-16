@@ -123,16 +123,13 @@ class Activity extends Common
      */
     public function uploadActivity()
     {
-        $path = 'upload/activity/zipactivity/demo.zip';
-        print_r(pathinfo($path));exit;
         $file = request()->file('file_name');
         $info = $file->move(ROOT_PATH . 'public/' . self::$Activitypath);
         //要解压到的位置
         $dest = 'upload/activity/activity/';
-        $path = 'upload/activity/zipactivity/demo.zip';
-        print_r($path);exit;
+//      $path = 'upload/activity/zipactivity/demo.zip';
         $file_savename = $info->getSaveName();
-        $demo_path = '';
+        $demo_path = $dest . pathinfo($file_savename);
         $this->unzipFile($file_savename, $dest);
         if ($info) {
             return $this->resultArray('上传成功', '', ['code_path' => $file_savename, 'demo_path' => $demo_path]);
