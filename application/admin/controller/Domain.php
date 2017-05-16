@@ -23,7 +23,7 @@ class Domain extends Common
             $where['domain'] = ["like", "%$domain%"];
         }
         $user = (new Common)->getSessionUser();
-//        $where["node_id"] = $user["user_node_id"];
+        $where["node_id"] = $user["user_node_id"];
         return $this->resultArray('', '', (new \app\admin\model\Domain())->getAll($limits['limit'], $limits['rows'], $where));
     }
 
