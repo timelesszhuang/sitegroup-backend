@@ -9,7 +9,7 @@ use think\Validate;
 class Template extends Common
 {
 
-    static $templatepath = 'upload/template/';
+    static $templatepath = 'public/upload/template/';
 
     /**
      * 显示资源列表
