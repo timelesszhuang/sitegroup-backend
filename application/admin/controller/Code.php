@@ -23,7 +23,7 @@ class Code extends Common
             $where['name'] = ["like", "%$name%"];
         }
         $user = (new Common)->getSessionUser();
-        $where["node_id"] = $user["user_node_id"];
+//        $where["node_id"] = $user["user_node_id"];
         return $this->resultArray('', '', (new \app\admin\model\Code())->getAll($limits['limit'], $limits['rows'], $where));
     }
 

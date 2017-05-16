@@ -11,6 +11,14 @@ use think\Model;
 
 class Menu extends Model
 {
+    //只读字段
+    protected $readonly=["node_id"];
+    /**
+     * @param $limit
+     * @param $rows
+     * @param $where
+     * @return array
+     */
     public function getMenu($limit,$rows,$where)
     {
         $count = $this->where($where)->count();

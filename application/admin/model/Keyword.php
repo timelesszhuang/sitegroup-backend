@@ -14,6 +14,8 @@ use think\Model;
 
 class Keyword extends Model
 {
+    //只读字段
+    protected $readonly=["node_id"];
     /**
      * 根据tag获取数据
      * @param $tag

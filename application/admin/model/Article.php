@@ -11,6 +11,8 @@ use think\Model;
 
 class Article extends Model
 {
+    //只读字段
+    protected $readonly=["node_id"];
     /**
      * 初始化函数
      * @author guozhen

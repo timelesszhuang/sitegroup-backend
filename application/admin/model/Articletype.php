@@ -12,6 +12,14 @@ use think\Model;
 
 class Articletype extends Model
 {
+    //只读字段
+    protected $readonly=["node_id"];
+    /**
+     * @param $limit
+     * @param $rows
+     * @param int $where
+     * @return array
+     */
     public function getArticletype($limit,$rows,$where=0)
     {
         $count=$this->where($where)->count();
@@ -21,6 +29,11 @@ class Articletype extends Model
             "rows"=>$data
         ];
     }
+
+    /**
+     * @param int $where
+     * @return false|\PDOStatement|string|\think\Collection
+     */
     public function getArttype($where=0)
     {
         $data =$this->field('id,name')->where($where)->select();

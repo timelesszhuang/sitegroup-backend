@@ -6,6 +6,8 @@ use think\Model;
 
 class ScatteredTitle extends Model
 {
+    //只读字段
+    protected $readonly=["node_id"];
     const COUNT = 15;
     const RAND = 8;
     const LIMIT = 7;

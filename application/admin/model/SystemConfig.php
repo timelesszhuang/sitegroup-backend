@@ -11,7 +11,8 @@ use think\Model;
 
 class SystemConfig extends Model 
 {
-
+    //只读字段
+    protected $readonly=["node_id"];
 	/**
 	 * 获取配置列表
 	 * @param  array   $param  [description]
