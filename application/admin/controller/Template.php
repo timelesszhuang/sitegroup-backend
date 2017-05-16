@@ -9,7 +9,7 @@ use think\Validate;
 class Template extends Common
 {
 
-    static $templatepath = 'public/upload/template/';
+    static $templatepath = 'upload/template/';
 
     /**
      * 显示资源列表
@@ -118,7 +118,7 @@ class Template extends Common
     public function uploadTemplate()
     {
         $file = request()->file('file_name');
-        $info = $file->move(ROOT_PATH . self::$templatepath);
+        $info = $file->move(ROOT_PATH . 'public/' . self::$templatepath);
         if ($info) {
             return $this->resultArray('上传成功', '', $info->getSaveName());
         } else {
