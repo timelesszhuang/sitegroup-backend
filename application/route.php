@@ -74,13 +74,16 @@ Route::rule('activity/uploadActivity', 'admin/activity/uploadActivity');
 Route::post('activity/addActivity', 'admin/activity/addActivity');
 Route::put('activity/changeActivityStatus', 'admin/activity/changeActivityStatus');
 
-
 //联系方式
 Route::resource('contactway', 'admin/Contactway');
 
 //网站用户
 Route::resource('siteuser','admin/Siteuser');
 Route::put('siteuser/enable','admin/Siteuser/enable');
+
+//网站分类
+Route::resource('sitetype','admin/Sitetype');
+
 return [
     '__pattern__' => [
         'name' => '\w+',
