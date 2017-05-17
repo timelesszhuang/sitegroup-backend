@@ -89,8 +89,8 @@ class Activity extends Common
     public function update(Request $request, $id)
     {
         $rule = [
-            ['name', "require", "请填写模板名"],
-            ['detail', 'require', "请填写模板信息"],
+            ['name', "require", "请填写活动名"],
+            ['detail', 'require', "请填写活动信息"],
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
@@ -107,15 +107,20 @@ class Activity extends Common
      */
     public function delete($id)
     {
-        $Activity = new \app\admin\model\Activity();
-        $user = $this->getSessionUser();
-        $where["parent_id"] = $id;
-        $where["node_id"] = $user["user_node_id"];
-        if ($Activity->where(["id" => $id, "node_id" => $user["user_node_id"]])->delete()) {
-            return $this->resultArray('删除成功', 'failed');
-        }
-        return $this->resultArray('删除成功');
+
     }
+
+
+    /**
+     * 更新数据
+     * @access public
+     */
+    public function changeActivityStatus($id)
+    {
+        $data = $this->request->put();
+        return $this->publicUpdate((new \app\admin\model\Activity()), $data, $id);
+    }
+
 
     /**
      * 上传关键词文件文件
@@ -164,7 +169,7 @@ class Activity extends Common
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $post['code_path'] = self::$activitypath . $post['code_path'];
+        $post['code_path'] = self::$activitypath . '/' . $post['code_path'];
         $user = (new Common())->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new \app\admin\model\Activity();

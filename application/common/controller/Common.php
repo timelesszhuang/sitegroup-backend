@@ -237,11 +237,13 @@ class Common extends Controller
         return $this->resultArray('修改成功');
     }
 
+
     /**
      * 解压缩文件
      * @access public
      * @param $path 源文件的路径
      * @param $dest 解压缩到的路径
+     * @return bool
      */
     public function unzipFile($path, $dest)
     {
