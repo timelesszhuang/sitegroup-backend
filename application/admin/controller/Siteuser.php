@@ -122,7 +122,7 @@ class Siteuser extends Common
             "id"=>$id,
             "node_id"=>$user["user_node_id"]
         ];
-        $user=\app\admin\model\SiteUser::where($where)->save([
+        $user=(new \app\admin\model\SiteUser)->where($where)->save([
             "is_on"=>$is_on
         ]);
         if(!$user){
