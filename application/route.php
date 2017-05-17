@@ -72,7 +72,7 @@ Route::resource('activity', 'admin/activity');
 //上传活动信息
 Route::rule('activity/uploadActivity', 'admin/activity/uploadActivity');
 Route::post('activity/addActivity', 'admin/activity/addActivity');
-Route::put('activity/changeActivityStatus', 'admin/activity/addActivity');
+Route::put('activity/changeActivityStatus', 'admin/activity/changeActivityStatus');
 
 
 //联系方式
