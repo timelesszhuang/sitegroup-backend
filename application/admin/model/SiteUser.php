@@ -21,7 +21,7 @@ class SiteUser extends Model
             $siteuser->com_name=$node->com_name;
         });
         //修改事件
-        SiteUser::event('before_save',function($siteuser){
+        SiteUser::event('before_update',function($siteuser){
             if(!empty($siteuser->pwd)){
                 $siteuser->pwd=md5($siteuser->pwd.$siteuser->account);
             }
