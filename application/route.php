@@ -71,9 +71,10 @@ Route::post('template/addTemplate', 'admin/template/addTemplate');
 Route::resource('activity', 'admin/activity');
 //上传活动信息
 Route::rule('activity/uploadActivity', 'admin/activity/uploadActivity');
+Route::post('activity/addActivity', 'admin/activity/addActivity');
 
 //联系方式
-Route::resource('contactway','admin/Contactway');
+Route::resource('contactway', 'admin/Contactway');
 
 //网站用户
 Route::resource('siteuser','admin/Siteuser');

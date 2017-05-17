@@ -129,10 +129,16 @@ class Activity extends Common
         $dest = 'upload/activity/activity/';
 //      $path = 'upload/activity/zipactivity/demo.zip';
         $file_savename = $info->getSaveName();
-        $demo_path = $dest . pathinfo($file_savename);
-        $this->unzipFile($file_savename, $dest);
+        $pathinfo = pathinfo($file_savename);
+        $file_name = $pathinfo['filename'];
+        $demo_path = $dest . $file_name;
+        $status = '文件解压缩失败';
+        //解压缩主题文件到指定的目录中
+        if ($this->unzipFile(self::$activitypath . '/' . $file_savename, ROOT_PATH . 'public/' . $dest . $file_name)) {
+            $status = '文件解压缩成功';
+        }
         if ($info) {
-            return $this->resultArray('上传成功', '', ['code_path' => $file_savename, 'demo_path' => $demo_path]);
+            return $this->resultArray('上传成功', '', ['code_path' => $file_savename, 'demo_path' => $demo_path, 'status' => $status]);
         } else {
             // 上传失败获取错误信息
             return $this->resultArray('上传失败', 'failed', $info->getError());
@@ -150,15 +156,15 @@ class Activity extends Common
     {
         $post = $request->post();
         $rule = [
-            ["name", "require", "请传入模板名"],
-            ["detail", "require", "请传入模板详情"],
-            ["path", "require", "请传入path"]
+            ["name", "require", "请填写活动/创意名名"],
+            ["detail", "require", "请填写活动/创意详情"],
+            ["code_path", "require", "请先上传代码"],
         ];
         $validate = new Validate($rule);
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $post['path'] = self::$Activitypath . $post['path'];
+        $post['code_path'] = self::$activitypath . $post['code_path'];
         $user = (new Common())->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new \app\admin\model\Activity();
