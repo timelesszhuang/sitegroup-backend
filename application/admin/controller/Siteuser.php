@@ -6,7 +6,6 @@ use think\Controller;
 use think\Request;
 use app\common\controller\Common;
 use think\Validate;
-
 class Siteuser extends Common
 {
     /**
@@ -71,7 +70,7 @@ class Siteuser extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('', '', (new SiteUser)->where(["id" => $id])->field("name,account,com_name,is_on")->find());
+        return $this->resultArray('', '', (new \app\admin\model\SiteUser)->where(["id" => $id])->field("name,account,com_name,is_on")->find());
     }
 
     /**
