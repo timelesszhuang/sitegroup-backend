@@ -23,7 +23,6 @@ class Siteuser extends Common
         }
         $user = (new Common)->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        $where["is_on"] = 10;
         return $this->resultArray('', '', (new \app\admin\model\SiteUser())->getAll($limits['limit'], $limits['rows'], $where));
     }
 
