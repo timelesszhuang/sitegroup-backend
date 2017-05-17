@@ -101,7 +101,19 @@ class Siteuser extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        return $this->publicUpdate((new \app\admin\model\SiteUser),$data,$id);
+        $user=$this->getSessionUser();
+        $where=[
+            "id"=>$id,
+            "node_id"=>$user["user_node_id"]
+        ];
+        //前台可能会提交id过来,为了防止错误,所以将其删除掉
+        if(array_key_exists('id',$data)){
+            unset($data["id"]);
+        }
+        if (!(new \app\admin\model\SiteUser)->save($data,$where)) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
     }
 
     /**
