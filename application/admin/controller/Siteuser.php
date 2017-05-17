@@ -23,6 +23,7 @@ class Siteuser extends Common
         }
         $user = (new Common)->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
+        $where["is_on"] = 1;
         return $this->resultArray('', '', (new \app\admin\model\SiteUser())->getAll($limits['limit'], $limits['rows'], $where));
     }
 
@@ -44,7 +45,21 @@ class Siteuser extends Common
      */
     public function save(Request $request)
     {
-        //
+        $rule = [
+            ['name','require','请填写昵称'],
+            ['pwd', 'require', "请填写密码"],
+            ['account','require','请填写帐号'],
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'failed');
+        }
+        $data["node_id"] = $this->getSessionUser()['user_node_id'];
+        if (!\app\admin\model\SiteUser::create($data)) {
+            return $this->resultArray('添加失败', 'failed');
+        }
+        return $this->resultArray('添加成功');
     }
 
     /**
@@ -53,9 +68,9 @@ class Siteuser extends Common
      * @param  int  $id
      * @return \think\Response
      */
-    public function read($id)
+    public function read(SiteUser $siteuser,$id)
     {
-        //
+        return $this->resultArray('', '', $siteuser->where(["id" => $id])->field("name,account,com_name,is_on")->find());
     }
 
     /**
