@@ -115,9 +115,11 @@ class Activity extends Common
      * 更新数据
      * @access public
      */
-    public function changeActivityStatus($id)
+    public function changeActivityStatus()
     {
         $data = $this->request->put();
+        $id = $data['id'];
+        unset($data['id']);
         return $this->publicUpdate((new \app\admin\model\Activity()), $data, $id);
     }
 
