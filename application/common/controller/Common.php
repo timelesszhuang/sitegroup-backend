@@ -129,9 +129,9 @@ class Common extends Controller
      */
     public function checkSession()
     {
-        $user=$this->getSessionUser();
-        if(empty($user_id)){
-            exit(json_encode($this->resultArray('请先登录','failed')));
+        $user = $this->getSessionUser();
+        if (empty($user_id)) {
+            exit(json_encode($this->resultArray('请先登录', 'failed')));
         }
 
     }
@@ -145,16 +145,16 @@ class Common extends Controller
      */
     public function getLimit()
     {
-        $page=$this->request->get("page");
-        $rows=$this->request->get("rows");
-        if (intval($page) <1) {
-            $page=1;
+        $page = $this->request->get("page");
+        $rows = $this->request->get("rows");
+        if (intval($page) < 1) {
+            $page = 1;
         }
-        if (intval($rows) <1) {
-            $rows=10;
+        if (intval($rows) < 1) {
+            $rows = 10;
         }
-        $limit=($page-1)*$rows;
-        return ["limit"=>$limit,"rows"=>$rows];
+        $limit = ($page - 1) * $rows;
+        return ["limit" => $limit, "rows" => $rows];
     }
 
     /**
@@ -163,20 +163,20 @@ class Common extends Controller
      */
     public function getSessionUser()
     {
-        $module=$this->request->module();
-        $arr=[];
-        if($module=="sysadmin"){
-            $arr["user_id"]=Session::get("sys_id");
-            $arr["user_name"]=Session::get("sys_user_name");
-            $arr["user_commpany_name"]=Session::get("sys_name");
-            $arr["user_type"]=Session::get("sys_type");
-            $arr["user_node_id"]=Session::get("sys_node_id");
-        }else if($module=="admin"){
-            $arr["user_id"]=Session::get("admin_id");
-            $arr["user_name"]=Session::get("admin_user_name");
-            $arr["user_commpany_name"]=Session::get("admin_name");
-            $arr["user_type"]=Session::get("admin_type");
-            $arr["user_node_id"]=Session::get("admin_node_id");
+        $module = $this->request->module();
+        $arr = [];
+        if ($module == "sysadmin") {
+            $arr["user_id"] = Session::get("sys_id");
+            $arr["user_name"] = Session::get("sys_user_name");
+            $arr["user_commpany_name"] = Session::get("sys_name");
+            $arr["user_type"] = Session::get("sys_type");
+            $arr["user_node_id"] = Session::get("sys_node_id");
+        } else if ($module == "admin") {
+            $arr["user_id"] = Session::get("admin_id");
+            $arr["user_name"] = Session::get("admin_user_name");
+            $arr["user_commpany_name"] = Session::get("admin_name");
+            $arr["user_type"] = Session::get("admin_type");
+            $arr["user_node_id"] = Session::get("admin_node_id");
         }
         return $arr;
     }
@@ -187,9 +187,9 @@ class Common extends Controller
      * @param $id
      * @return array
      */
-    public function getread($rescoure,$id)
+    public function getread($rescoure, $id)
     {
-        return $this->resultArray('', '', $rescoure->where(["id" => $id])->field("create_time,update_time",true)->find());
+        return $this->resultArray('', '', $rescoure->where(["id" => $id])->field("create_time,update_time", true)->find());
     }
 
     /**
@@ -199,14 +199,14 @@ class Common extends Controller
      * @author guozhen
      * @return array
      */
-    public function deleteRecord($controller,$id)
+    public function deleteRecord($controller, $id)
     {
-        $user=$this->getSessionUser();
-        $where=[
-            "id"=>$id,
-            "node_id"=>$user["user_node_id"]
+        $user = $this->getSessionUser();
+        $where = [
+            "id" => $id,
+            "node_id" => $user["user_node_id"]
         ];
-        if(!$controller->where($where)->delete()){
+        if (!$controller->where($where)->delete()) {
             return $this->resultArray('删除失败', 'failed');
         }
         return $this->resultArray('删除成功');
@@ -220,15 +220,15 @@ class Common extends Controller
      * @author guozhen
      * @return array
      */
-    public function publicUpdate($controller,$data,$id)
+    public function publicUpdate($controller, $data, $id)
     {
-        $user=$this->getSessionUser();
-        $where=[
-            "id"=>$id,
-            "node_id"=>$user["user_node_id"]
+        $user = $this->getSessionUser();
+        $where = [
+            "id" => $id,
+            "node_id" => $user["user_node_id"]
         ];
         //前台可能会提交id过来,为了防止错误,所以将其删除掉
-        if(array_key_exists('id',$data)){
+        if (array_key_exists('id', $data)) {
             unset($data["id"]);
         }
         if (!$controller->where($where)->update($data)) {
@@ -262,6 +262,38 @@ class Common extends Controller
         } else {
             return false;
         }
+    }
+
+
+
+    /**
+     * curl 传输文件操作
+     * @access public
+     * @param $file 要传输的文件 需要文件的绝对路径
+     * @param $dest 传输到的地方 会是一个域名 追加 一个固定的位置
+     * @param $type 类型 传输的文件的类型 比如 是 模板 template 还是创意 activity
+     */
+    public function sendFile($file, $dest, $type)
+    {
+        //测试发送文件操作
+//        $dest = 'http://local.sitegroup.com/index.php/testsendFile/index';
+        $post = array(
+            "file" => new \CURLFile($file),//这里是要上传的文件，key与后台处理文件对应
+            "type" => $type,
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $dest);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_VERBOSE, 0);
+
+        $a = curl_exec($ch);
+        print_r($a);
+        var_dump(curl_multi_getcontent($ch));
+        curl_close($ch);
+
     }
 
 
