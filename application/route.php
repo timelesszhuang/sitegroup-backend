@@ -38,6 +38,7 @@ Route::rule('articletype/gettype', 'admin/Articletype/getType');
 
 //文章
 Route::resource('article', 'admin/Article');
+Route::resource('article/sync','admin/syncArticle');
 
 //菜单
 Route::resource('menu', 'admin/Menu');
