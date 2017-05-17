@@ -69,9 +69,9 @@ class Siteuser extends Common
      * @param  int  $id
      * @return \think\Response
      */
-    public function read(SiteUser $siteuser,$id)
+    public function read($id)
     {
-        return $this->resultArray('', '', $siteuser->where(["id" => $id])->field("name,account,com_name,is_on")->find());
+        return $this->resultArray('', '', (new SiteUser)->where(["id" => $id])->field("name,account,com_name,is_on")->find());
     }
 
     /**
