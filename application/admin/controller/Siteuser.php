@@ -69,7 +69,7 @@ class Siteuser extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('', '', (new \app\admin\model\SiteUser)->where(["id" => $id])->field("name,account,com_name,is_on")->find());
+        return $this->resultArray('', '', (new \app\admin\model\SiteUser)->where(["id" => $id])->field("id,name,account,com_name,is_on")->find());
     }
 
     /**
