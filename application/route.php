@@ -77,12 +77,20 @@ Route::put('activity/changeActivityStatus', 'admin/activity/changeActivityStatus
 //联系方式
 Route::resource('contactway', 'admin/Contactway');
 
-//网站用户
-Route::resource('siteuser','admin/Siteuser');
-Route::put('siteuser/enable','admin/Siteuser/enable');
+//站点用户
+Route::resource('siteuser', 'admin/Siteuser');
+Route::put('siteuser/enable', 'admin/Siteuser/enable');
 
-//网站分类
-Route::resource('sitetype','admin/Sitetype');
+//站点分类
+Route::resource('sitetype', 'admin/Sitetype');
+
+//站点管理
+Route::resource('Site', 'admin/Site');
+Route::get('Site/uploadTemplateFile', 'admin/Site/uploadTemplateFile');
+
+//测试文件接收  实际应该写在小节点中
+Route::rule('testsendFile/index', 'admin/testsendFile/index');
+
 
 return [
     '__pattern__' => [
