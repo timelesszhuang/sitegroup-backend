@@ -28,7 +28,7 @@ class Activity extends Common
         $name = $this->request->get('name');
         $where = [];
         if (!empty($name)) {
-            $where["title"] = ["like", "%$name%"];
+            $where["name"] = ["like", "%$name%"];
         }
         $user = (new Common())->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
