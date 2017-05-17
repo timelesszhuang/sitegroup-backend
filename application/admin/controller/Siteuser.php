@@ -120,9 +120,9 @@ class Siteuser extends Common
             "id"=>$id,
             "node_id"=>$user["user_node_id"]
         ];
-        $user=(new \app\admin\model\SiteUser)->where($where)->update([
-            "is_on"=>$is_on
-        ]);
+        $user=\app\admin\model\SiteUser::get($where);
+        $user->is_on=$is_on;
+        $user->save();
         if(!$user){
             return $this->resultArray('修改失败','failed');
         }
