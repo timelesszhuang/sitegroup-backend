@@ -23,7 +23,7 @@ class Siteuser extends Common
         }
         $user = (new Common)->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        $where["is_on"] = 1;
+        $where["is_on"] = 10;
         return $this->resultArray('', '', (new \app\admin\model\SiteUser())->getAll($limits['limit'], $limits['rows'], $where));
     }
 
@@ -107,13 +107,19 @@ class Siteuser extends Common
     }
 
     /**
-     * 删除指定资源
-     *
+     * 是否启用
      * @param  int  $id
      * @return \think\Response
      */
-    public function delete($id)
+    public function enable($id)
     {
-        //
+        $user=$this->getSessionUser();
+        $where=[
+            "id"=>$id,
+            "node_id"=>$user["user_node_id"]
+        ];
+        $is_on=$this->request->put("is_on");
+        $user=\app\admin\model\SiteUser::where($where)->get();
+
     }
 }
