@@ -41,16 +41,4 @@ class SiteUser extends Model
 
     }
 
-    /**
-     * 格式化数据返回
-     * @param $is_on
-     * @return string
-     */
-    public function getIsOnAttr($is_on)
-    {
-        if ($is_on == 0) {
-            return "禁用";
-        }
-        return "启用";
-    }
 }

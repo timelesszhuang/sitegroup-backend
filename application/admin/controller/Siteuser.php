@@ -94,7 +94,17 @@ class Siteuser extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule = [
+            ['name','require','请填写昵称'],
+            ['pwd', 'require', "请填写密码"],
+            ['account','require','请填写帐号']
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->put();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'failed');
+        }
+        return $this->publicUpdate((new \app\admin\model\SiteUser),$data,$id);
     }
 
     /**
