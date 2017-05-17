@@ -94,7 +94,6 @@ class Siteuser extends Common
     {
         $rule = [
             ['name','require','请填写昵称'],
-            ['pwd', 'require', "请填写密码"],
             ['account','require','请填写帐号']
         ];
         $validate = new Validate($rule);
