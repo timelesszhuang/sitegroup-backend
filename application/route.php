@@ -80,7 +80,7 @@ Route::resource('contactway', 'admin/Contactway');
 
 //网站用户
 Route::resource('siteuser','admin/Siteuser');
-Route::put('siteuser/enable','admin/siteuser/enable');
+Route::put('siteuser/enable','admin/Siteuser/enable');
 return [
     '__pattern__' => [
         'name' => '\w+',
