@@ -78,6 +78,8 @@ Route::put('activity/changeActivityStatus', 'admin/activity/addActivity');
 //联系方式
 Route::resource('contactway', 'admin/Contactway');
 
+//网站用户
+Route::resource('siteuser','admin/Siteuser');
 return [
     '__pattern__' => [
         'name' => '\w+',
