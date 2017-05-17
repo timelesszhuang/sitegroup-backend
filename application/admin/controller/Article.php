@@ -124,7 +124,7 @@ class Article extends Common
      */
     public function syncArticle($id)
     {
-        $is_sync=$this->request->get('is_sync');
+        $is_sync=$this->request->post('is_sync');
         $user=(new Common())->getSessionUser();
         $where["node_id"]=$user["user_node_id"];
         $where["id"]=$id;
