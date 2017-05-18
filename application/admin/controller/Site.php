@@ -154,6 +154,6 @@ class Site extends Common
             return $this->resultArray('请选择是否是主站','failed');
         }
         $data=["main_site"=>$main_site];
-        return $this->publicUpdate((new \app\admin\model\Site(),$data,$id);
+        return $this->publicUpdate((new \app\admin\model\Site()),$data,$id);
     }
 }
