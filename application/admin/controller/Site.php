@@ -54,11 +54,11 @@ class Site extends Common
             ['site_name','require','请填写网站名称'],
             ['menu', 'require', "请选择菜单"],
             ['template_id','require','请选择模板'],
-            ['ec','required','请填写ec代码'],
-            ['support_hotline','required','请填写电话号码'],
-            ['domain_id','required','请选择域名'],
-            ['domain','required','请选择域名'],
-            ['site_type','required','请选择网站类型']
+            ['ec','require','请填写ec代码'],
+            ['support_hotline','require','请填写电话号码'],
+            ['domain_id','require','请选择域名'],
+            ['domain','require','请选择域名'],
+            ['site_type','require','请选择网站类型']
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -107,11 +107,11 @@ class Site extends Common
             ['site_name','require','请填写网站名称'],
             ['menu', 'require', "请选择菜单"],
             ['template_id','require','请选择模板'],
-            ['ec','required','请填写ec代码'],
-            ['support_hotline','required','请填写电话号码'],
-            ['domain_id','required','请选择域名'],
-            ['domain','required','请选择域名'],
-            ['site_type','required','请选择网站类型']
+            ['ec','require','请填写ec代码'],
+            ['support_hotline','require','请填写电话号码'],
+            ['domain_id','require','请选择域名'],
+            ['domain','require','请选择域名'],
+            ['site_type','require','请选择网站类型']
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
