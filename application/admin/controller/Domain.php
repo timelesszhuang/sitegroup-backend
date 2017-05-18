@@ -128,4 +128,19 @@ class Domain extends Common
         $field="id,domain as text";
         return (new Common())->getList((new \app\admin\model\Domain),$field);
     }
+
+    /**
+     * 获取办公地点
+     * @return array
+     */
+    public function getOffice()
+    {
+        $office=[
+            ["id"=>1,"text"=>"阿里云"],
+            ["id"=>2,"text"=>"新网互联"],
+            ["id"=>3,"text"=>"百度"],
+            ["id"=>4,"text"=>"蜂巢"]
+        ];
+        return $this->resultArray('','',$office);
+    }
 }

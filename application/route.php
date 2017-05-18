@@ -64,6 +64,7 @@ Route::resource('code', 'admin/Code');
 //域名管理
 Route::resource('domain', 'admin/domain');
 Route::get('domain/getDomain','admin/domain/getDomain');
+Route::get('domain/getOffice','admin/domain/getOffice');
 
 //模板相关操作
 Route::resource('template', 'admin/template');
