@@ -141,4 +141,19 @@ class Site extends Common
         $dest = 'http://local.sitegroup.com/index.php/testsendFile/index';
         $this->sendFile(ROOT_PATH . 'public/upload/20170427/1.csv', $dest, 'template');
     }
+
+    /**
+     * 修改为主站
+     * @param $id
+     * @return array
+     */
+    public function setMainSite($id)
+    {
+        $main_site=$this->request->post("main_site");
+        if(empty($main_site)){
+            return $this->resultArray('请选择是否是主站','failed');
+        }
+        $data=["main_site"=>$main_site];
+        return $this->publicUpdate((new \app\admin\model\Site(),$data,$id);
+    }
 }

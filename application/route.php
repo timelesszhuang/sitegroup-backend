@@ -94,6 +94,7 @@ Route::get('sitetype/getSiteType','admin/Sitetype/getSiteType');
 //站点管理
 Route::resource('Site', 'admin/Site');
 Route::get('Site/uploadTemplateFile', 'admin/Site/uploadTemplateFile');
+Route::post('Site/setMainSite','admin/Site/setMainSite');
 
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');
