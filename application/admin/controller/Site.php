@@ -13,11 +13,6 @@ use think\Validate;
  */
 class Site extends Common
 {
-
-    //该目录是相对于 public  使用 ROOT_PATH 需 手动追加 public/ 目录
-    static $activitypath = 'upload/activity/zipactivity';
-
-
     /**
      * 显示资源列表
      * @return \think\Response
@@ -26,14 +21,14 @@ class Site extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $name = $this->request->get('name');
+        $site_name = $this->request->get('site_name');
         $where = [];
-        if (!empty($name)) {
-            $where["name"] = ["like", "%$name%"];
+        if (!empty($site_name)) {
+            $where["site_name"] = ["like", "%$site_name%"];
         }
         $user = (new Common())->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        $data = (new \app\admin\model\Activity())->getActivity($request["limit"], $request["rows"], $where);
+        $data = (new \app\admin\model\Site())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
@@ -55,7 +50,27 @@ class Site extends Common
      */
     public function save(Request $request)
     {
+        $rule = [
+            ['site_name','require','请填写网站名称'],
+            ['menu', 'require', "请选择菜单"],
+            ['template_id','require','请选择模板'],
+            ['ec','required','请填写ec代码'],
+            ['support_hotline','required','请填写电话号码'],
+            ['domain_id','required','请选择域名'],
+            ['domain','required','请选择域名'],
+            ['site_type','required','请选择网站类型'],
 
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'failed');
+        }
+        $data["node_id"] = $this->getSessionUser()['user_node_id'];
+        if (!\app\admin\model\Site::create($data)) {
+            return $this->resultArray('添加失败', 'failed');
+        }
+        return $this->resultArray('添加成功');
     }
 
     /**
@@ -66,7 +81,7 @@ class Site extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Activity), $id);
+        return $this->getread((new \app\admin\model\Site), $id);
     }
 
     /**
@@ -90,15 +105,20 @@ class Site extends Common
     public function update(Request $request, $id)
     {
         $rule = [
-            ['name', "require", "请填写活动名"],
-            ['detail', 'require', "请填写活动信息"],
+            ['site_name','require','请填写网站名称'],
+            ['menu', 'require', "请选择菜单"],
+            ['template_id','require','请选择模板'],
+            ['ec','required','请填写ec代码'],
+            ['support_hotline','required','请填写电话号码'],
+            ['domain_id','required','请选择域名'],
+            ['domain','required','请选择域名']
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        return $this->publicUpdate((new \app\admin\model\Activity()), $data, $id);
+        return $this->publicUpdate((new \app\admin\model\Site()), $data, $id);
     }
 
     /**
@@ -121,64 +141,4 @@ class Site extends Common
         $dest = 'http://local.sitegroup.com/index.php/testsendFile/index';
         $this->sendFile(ROOT_PATH . 'public/upload/20170427/1.csv', $dest, 'template');
     }
-
-
-    /**
-     * 上传关键词文件文件
-     * @return array
-     */
-    public function uploadActivity()
-    {
-        $file = request()->file('file_name');
-        $info = $file->move(ROOT_PATH . 'public/' . self::$activitypath);
-        //要解压到的位置
-        $dest = 'upload/activity/activity/';
-//      $path = 'upload/activity/zipactivity/demo.zip';
-        $file_savename = $info->getSaveName();
-        $pathinfo = pathinfo($file_savename);
-        $file_name = $pathinfo['filename'];
-        $demo_path = $dest . $file_name;
-        $status = '文件解压缩失败';
-        //解压缩主题文件到指定的目录中
-        if ($this->unzipFile(self::$activitypath . '/' . $file_savename, ROOT_PATH . 'public/' . $dest . $file_name)) {
-            $status = '文件解压缩成功';
-        }
-        if ($info) {
-            return $this->resultArray('上传成功', '', ['code_path' => $file_savename, 'demo_path' => $demo_path, 'status' => $status]);
-        } else {
-            // 上传失败获取错误信息
-            return $this->resultArray('上传失败', 'failed', $info->getError());
-        }
-    }
-
-
-    /**
-     * 根据上传的文件名 导入关键词
-     * @param Request $request
-     * @return array
-     * @author guozhen
-     */
-    public function addActivity(Request $request)
-    {
-        $post = $request->post();
-        $rule = [
-            ["name", "require", "请填写活动/创意名名"],
-            ["detail", "require", "请填写活动/创意详情"],
-            ["code_path", "require", "请先上传代码"],
-        ];
-        $validate = new Validate($rule);
-        if (!$validate->check($post)) {
-            return $this->resultArray($validate->getError(), 'failed');
-        }
-        $post['code_path'] = self::$activitypath . '/' . $post['code_path'];
-        $user = (new Common())->getSessionUser();
-        $post["node_id"] = $user["user_node_id"];
-        $model = new \app\admin\model\Activity();
-        $model->save($post);
-        if ($model->id) {
-            return $this->resultArray("添加成功");
-        }
-        return $this->resultArray('添加失败', 'failed');
-    }
-
 }

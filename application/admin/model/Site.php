@@ -4,7 +4,7 @@ namespace app\admin\model;
 
 use think\Model;
 
-class ScatteredArticle extends Model
+class Site extends Model
 {
     //只读字段
     protected $readonly=["node_id"];
@@ -24,6 +24,5 @@ class ScatteredArticle extends Model
             "total" => $count,
             "rows" => $data
         ];
-
     }
 }
