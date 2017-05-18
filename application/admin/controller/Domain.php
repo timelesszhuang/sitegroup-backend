@@ -118,4 +118,14 @@ class Domain extends Common
     {
         return $this->deleteRecord((new \app\admin\model\Domain),$id);
     }
+
+    /**
+     * 获取所有域名
+     * @return array
+     */
+    public function getDomain()
+    {
+        $field="id,domain as text";
+        return (new Common())->getList((new \app\admin\model\Domain),$field);
+    }
 }

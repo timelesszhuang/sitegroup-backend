@@ -63,11 +63,13 @@ Route::resource('code', 'admin/Code');
 
 //域名管理
 Route::resource('domain', 'admin/domain');
+Route::get('domain/getDomain','admin/domain/getDomain');
 
 //模板相关操作
 Route::resource('template', 'admin/template');
 Route::post('template/uploadTemplate', 'admin/template/uploadTemplate');
 Route::post('template/addTemplate', 'admin/template/addTemplate');
+Route::get('template/getTemplate','admin/Template/getTemplate');
 
 //活动相关操作
 Route::resource('activity', 'admin/activity');

@@ -156,9 +156,14 @@ class Template extends Common
         return $this->resultArray('添加失败', 'failed');
     }
 
+    /**
+     * 获取所有模板
+     * @return array
+     */
     public function getTemplate()
     {
-
+        $field="id,name as text";
+        return (new Common())->getList((new \app\admin\model\Template),$field);
     }
 
 }
