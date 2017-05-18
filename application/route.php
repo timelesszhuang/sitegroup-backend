@@ -42,6 +42,7 @@ Route::post('article/sync','admin/Article/syncArticle');
 
 //菜单
 Route::resource('menu', 'admin/Menu');
+Route::get('menu/getMenu','admin/Menu/getMenu');
 
 //问答
 Route::resource('question', 'admin/Question');

@@ -296,5 +296,19 @@ class Common extends Controller
 
     }
 
-
+    /**
+     * 统一获取列表
+     * @param $model
+     * @param $field
+     * @return array
+     */
+    public function getList($model,$field)
+    {
+        $user = $this->getSessionUser();
+        $where = [
+            "node_id" => $user["user_node_id"]
+        ];
+        $data=$model->field($field)->where($where)->select();
+        return $this->resultArray('','',$data);
+    }
 }

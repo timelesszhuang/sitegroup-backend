@@ -59,7 +59,6 @@ class Site extends Common
             ['domain_id','required','请选择域名'],
             ['domain','required','请选择域名'],
             ['site_type','required','请选择网站类型'],
-
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();

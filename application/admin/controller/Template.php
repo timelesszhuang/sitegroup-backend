@@ -156,4 +156,9 @@ class Template extends Common
         return $this->resultArray('添加失败', 'failed');
     }
 
+    public function getTemplate()
+    {
+
+    }
+
 }

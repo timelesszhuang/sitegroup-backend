@@ -13,14 +13,14 @@ class Menu extends Common
      */
     public function index()
     {
-        $request=$this->getLimit();
+        $request = $this->getLimit();
         $name = $this->request->get('name');
-        $where=[];
-        if(!empty($name)){
+        $where = [];
+        if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
         }
-        $user=(new Common())->getSessionUser();
-        $where["node_id"]=$user["user_node_id"];
+        $user = (new Common())->getSessionUser();
+        $where["node_id"] = $user["user_node_id"];
         $data = (new \app\admin\model\Menu())->getMenu($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
@@ -31,26 +31,26 @@ class Menu extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Menu()),$id);
+        return $this->getread((new \app\admin\model\Menu()), $id);
     }
 
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
     {
-        $flag=$request->post('flag');
+        $flag = $request->post('flag');
         $rule = [
             ['name', 'require', "请填写菜单"],
-            ["flag","require","请选择栏目类型"],
-            ["flag_name","require","请选择栏目类型"]
+            ["flag", "require", "请选择栏目类型"],
+            ["flag_name", "require", "请选择栏目类型"]
         ];
-        if(intval($flag)>1){
-            array_push($rule,["type_id","require","请选择分类id"]);
-            array_push($rule,["type_name","require","请选择分类名称"]);
+        if (intval($flag) > 1) {
+            array_push($rule, ["type_id", "require", "请选择分类id"]);
+            array_push($rule, ["type_name", "require", "请选择分类名称"]);
         }
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -74,22 +74,22 @@ class Menu extends Common
      */
     public function update(Request $request, $id)
     {
-        $flag=$request->post('flag');
+        $flag = $request->post('flag');
         $rule = [
             ['name', 'require', "请填写菜单"],
-            ["flag","require","请选择栏目类型"],
-            ["flag_name","require","请选择栏目类型"]
+            ["flag", "require", "请选择栏目类型"],
+            ["flag_name", "require", "请选择栏目类型"]
         ];
-        if(intval($flag)>1){
-            array_push($rule,["type_id","require","请选择分类id"]);
-            array_push($rule,["type_name","require","请选择分类名称"]);
+        if (intval($flag) > 1) {
+            array_push($rule, ["type_id", "require", "请选择分类id"]);
+            array_push($rule, ["type_name", "require", "请选择分类名称"]);
         }
         $validate = new Validate($rule);
         $data = $this->request->post();
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        return $this->publicUpdate((new \app\admin\model\Menu),$data,$id);
+        return $this->publicUpdate((new \app\admin\model\Menu), $data, $id);
     }
 
     /**
@@ -100,6 +100,16 @@ class Menu extends Common
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new \app\admin\model\Menu),$id);
+        return $this->deleteRecord((new \app\admin\model\Menu), $id);
+    }
+
+    /**
+     * 获取所有栏目
+     * @return array
+     */
+    public function getMenu()
+    {
+        $field="id,name as text";
+        return (new Common())->getList((new \app\admin\model\Menu),$field);
     }
 }
