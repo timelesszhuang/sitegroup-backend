@@ -49,7 +49,7 @@ Route::resource('question', 'admin/Question');
 
 //问答分类
 Route::resource('questionType', 'admin/Questiontype');
-Route::get('questionType/list', 'admin/Questiontype/getlist');
+Route::get('questionType/list', 'admin/Questiontype/getQuestionType');
 
 //段落文章
 Route::resource('scatteredArticle', 'admin/Scatteredarticle');
