@@ -116,4 +116,15 @@ class Sitetype extends Common
     {
         //
     }
+
+    /**
+     * 获取所有网站类型
+     * @return array
+     */
+    public function getSiteType()
+    {
+        $field="id,name as text";
+        return (new Common())->getList((new \app\admin\model\SiteType),$field);
+    }
+
 }

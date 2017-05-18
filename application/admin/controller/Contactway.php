@@ -114,4 +114,14 @@ class Contactway extends Common
     {
         return $this->deleteRecord((new \app\admin\model\Contactway),$id);
     }
+
+    /**
+     * 获取所有域名
+     * @return array
+     */
+    public function getContactway()
+    {
+        $field="id,detail as text";
+        return (new Common())->getList((new \app\admin\model\Contactway),$field);
+    }
 }

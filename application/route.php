@@ -80,6 +80,7 @@ Route::put('activity/changeActivityStatus', 'admin/activity/changeActivityStatus
 
 //联系方式
 Route::resource('contactway', 'admin/Contactway');
+Route::get('contactway/getContactway','admin/Contactway/getContactway');
 
 //站点用户
 Route::resource('siteuser', 'admin/Siteuser');
@@ -87,6 +88,7 @@ Route::put('siteuser/enable', 'admin/Siteuser/enable');
 
 //站点分类
 Route::resource('sitetype', 'admin/Sitetype');
+Route::get('sitetype/getSiteType','admin/Sitetype/getSiteType');
 
 //站点管理
 Route::resource('Site', 'admin/Site');

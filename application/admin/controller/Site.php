@@ -58,7 +58,7 @@ class Site extends Common
             ['support_hotline','required','请填写电话号码'],
             ['domain_id','required','请选择域名'],
             ['domain','required','请选择域名'],
-            ['site_type','required','请选择网站类型'],
+            ['site_type','required','请选择网站类型']
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -110,7 +110,8 @@ class Site extends Common
             ['ec','required','请填写ec代码'],
             ['support_hotline','required','请填写电话号码'],
             ['domain_id','required','请选择域名'],
-            ['domain','required','请选择域名']
+            ['domain','required','请选择域名'],
+            ['site_type','required','请选择网站类型']
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
