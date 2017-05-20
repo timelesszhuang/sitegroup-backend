@@ -57,7 +57,6 @@ class Login extends Common
             return  $this->resultArray('验证码错误', "failed");
         };
         $user_arr=(new SiteUser())->checkUser($post["name"],$post["pwd"]);
-        dump($user_arr);die;
         return $this->resultArray($user_arr[0],$user_arr[1],$user_arr[2]);
     }
 
