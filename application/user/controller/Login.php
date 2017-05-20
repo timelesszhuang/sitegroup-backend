@@ -61,6 +61,31 @@ class Login extends Common
     }
 
     /**
+     * 七天免登录验证
+     * @return string
+     * @author guozhen
+     */
+    public function autoLogin()
+    {
+        $post=$this->request->post();
+        if (empty($post["site_id"]) || empty($post["remember"])) {
+            return $this->resultArray('', "failed");
+        }
+        $userInfo = SiteUser::get($post["site_id"]);
+        $private = Config::get("crypt.cookiePrivate");
+        if($post["remember"]!=md5($userInfo["id"].$userInfo["salt"].$private)){
+            return $this->resultArray('', "failed");
+        }
+        $user_arr=$userInfo->getData();
+        unset($user_arr["pwd"]);
+        //获取私钥
+        $private = Config::get("crypt.cookiePrivate");
+        $user_arr["remember"] = md5($user_arr["id"] . $user_arr["salt"] . $private);
+        (new SiteUser)->setSession($user_arr);
+        return $this->resultArray('','',$user_arr);
+    }
+
+    /**
      * 显示资源列表
      *
      * @return \think\Response
