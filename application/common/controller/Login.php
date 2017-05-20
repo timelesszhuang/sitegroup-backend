@@ -55,7 +55,7 @@ class Login extends Controller
         $validate = new Validate($rule);
         //检查参数传递
         if (!$validate->check($post)) {
-            $this->resultArray($validate->getError(), "failed");
+            return $this->resultArray($validate->getError(), "failed");
         }
         //检查验证码
 //        if (!captcha_check($post["verifyCode"])) {
