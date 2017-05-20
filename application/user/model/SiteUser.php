@@ -2,7 +2,9 @@
 
 namespace app\user\model;
 
+use think\Config;
 use think\Model;
+use think\Session;
 
 class SiteUser extends Model
 {
@@ -15,7 +17,7 @@ class SiteUser extends Model
      */
     public function checkUser($username, $pwd)
     {
-        $user_info = self::where(["name" => $username])->find();
+        $user_info = $this::where(["name" => $username])->find();
         if (empty($user_info)) {
             return ["用户名错误", "failed"];
         }
@@ -23,11 +25,22 @@ class SiteUser extends Model
         if (md5($pwd . $username) != $user_info_arr["pwd"]) {
             return ["用户名或密码错误", "failed"];
         }
-        unset($user_info["pwd"]);
+        unset($user_info_arr["pwd"]);
         //获取私钥
         $private = Config::get("crypt.cookiePrivate");
         $user_info["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
         $this->setSession($user_info_arr);
-        return ["登录成功", '', $user_info,''];
+        return ["登录成功", '', $user_info_arr];
+    }
+
+    /**
+     * 设置用户的session
+     * @param $user
+     */
+    public function setSession($user)
+    {
+        Session::set("site_name", $user["name"]);
+        Session::set("site_id", $user["id"]);
+        Session::set("site_node_id", $user["node_id"]);
     }
 }
