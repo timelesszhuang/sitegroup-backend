@@ -28,6 +28,6 @@ class SiteUser extends Model
         $private = Config::get("crypt.cookiePrivate");
         $user_info["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
         $this->setSession($user_info_arr);
-        return ["登录成功", '', $user_info];
+        return ["登录成功", '', $user_info,''];
     }
 }
