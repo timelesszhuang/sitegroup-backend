@@ -39,7 +39,7 @@ class User extends Model
      */
     public function checkUser($username, $pwd)
     {
-        $user_info = $this::where(["user_name" => $username])->find();
+        $user_info = self::where(["user_name" => $username])->find();
         if (empty($user_info)) {
             return ["用户名错误", "failed", ''];
         }

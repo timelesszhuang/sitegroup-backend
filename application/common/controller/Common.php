@@ -130,7 +130,7 @@ class Common extends Controller
     public function checkSession()
     {
         $user = $this->getSessionUser();
-        if (empty($user_id)) {
+        if (empty($user)) {
             exit(json_encode($this->resultArray('请先登录', 'failed')));
         }
 
