@@ -2,6 +2,7 @@
 
 namespace app\user\controller;
 
+use app\user\model\SiteUser;
 use think\Request;
 use app\common\controller\Common;
 use think\Validate;
@@ -55,7 +56,7 @@ class Login extends Common
         if (!captcha_check($post["verifyCode"])) {
             return  $this->resultArray('验证码错误', "failed");
         };
-        $user_arr=(new User())->checkUser($post["user_name"],$post["pwd"]);
+        $user_arr=(new SiteUser())->checkUser($post["user_name"],$post["pwd"]);
         return $this->resultArray($user_arr[0],$user_arr[1],$user_arr[2]);
     }
 
