@@ -53,11 +53,10 @@ class Login extends Common
             return $this->resultArray($validate->getError(), "failed");
         }
         //检查验证码
-//        if (!captcha_check($post["verifyCode"])) {
-//            return  $this->resultArray('验证码错误', "failed");
-//        };
+        if (!captcha_check($post["verifyCode"])) {
+            return  $this->resultArray('验证码错误', "failed");
+        };
         $user_arr=(new SiteUser())->checkUser($post["name"],$post["pwd"]);
-        dump($user_arr);die;
         return $this->resultArray($user_arr[0],$user_arr[1],$user_arr[2]);
     }
 
