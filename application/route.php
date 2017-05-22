@@ -86,6 +86,7 @@ Route::get('contactway/getContactway','admin/Contactway/getContactway');
 //站点用户
 Route::resource('siteuser', 'admin/Siteuser');
 Route::put('siteuser/enable', 'admin/Siteuser/enable');
+Route::get('siteuser/getUsers','admin/Siteuser/getUsers');
 
 //站点分类
 Route::resource('sitetype', 'admin/Sitetype');
