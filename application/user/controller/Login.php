@@ -4,6 +4,7 @@ namespace app\user\controller;
 
 use app\admin\model\Site;
 use app\user\model\SiteUser;
+use think\Config;
 use think\Request;
 use app\common\controller\Common;
 use think\Validate;
