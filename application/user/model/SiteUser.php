@@ -30,7 +30,7 @@ class SiteUser extends Model
         unset($user_info_arr["pwd"]);
         //获取私钥
         $private = Config::get("crypt.cookiePrivate");
-        $user_info["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
+        $user_info_arr["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
         $this->setSession($user_info_arr);
         $site_info=$this->getSiteInfo($user_info->id);
         return ["登录成功", '', ["user_info"=>$user_info_arr,"site_info"=>$site_info]];
