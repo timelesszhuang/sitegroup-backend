@@ -84,8 +84,8 @@ class Login extends Common
         $private = Config::get("crypt.cookiePrivate");
         $user_arr["remember"] = md5($user_arr["id"] . $user_arr["salt"] . $private);
         (new SiteUser)->setSession($user_arr);
-
-        return $this->resultArray('','',$user_arr);
+        $site_info=(new SiteUser())->getSiteInfo($userInfo->id);
+        return $this->resultArray('','',["user_info"=>$user_arr,'site_info'=>$site_info]);
     }
 
 
