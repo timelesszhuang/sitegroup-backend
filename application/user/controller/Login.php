@@ -2,6 +2,7 @@
 
 namespace app\user\controller;
 
+use app\admin\model\Site;
 use app\user\model\SiteUser;
 use think\Request;
 use app\common\controller\Common;
@@ -45,7 +46,7 @@ class Login extends Common
         $rule = [
             ["name", "require", "请填写用户名"],
             ["pwd", "require", "请填写密码"],
-            ["verifyCode", "require", "请填写验证码"]
+//            ["verifyCode", "require", "请填写验证码"]
         ];
         $validate = new Validate($rule);
         //检查参数传递
@@ -53,9 +54,9 @@ class Login extends Common
             return $this->resultArray($validate->getError(), "failed");
         }
         //检查验证码
-        if (!captcha_check($post["verifyCode"])) {
-            return  $this->resultArray('验证码错误', "failed");
-        };
+//        if (!captcha_check($post["verifyCode"])) {
+//            return  $this->resultArray('验证码错误', "failed");
+//        };
         $user_arr=(new SiteUser())->checkUser($post["name"],$post["pwd"]);
         return $this->resultArray($user_arr[0],$user_arr[1],$user_arr[2]);
     }
@@ -82,8 +83,10 @@ class Login extends Common
         $private = Config::get("crypt.cookiePrivate");
         $user_arr["remember"] = md5($user_arr["id"] . $user_arr["salt"] . $private);
         (new SiteUser)->setSession($user_arr);
+
         return $this->resultArray('','',$user_arr);
     }
+
 
     /**
      * 显示资源列表

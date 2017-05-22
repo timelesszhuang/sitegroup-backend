@@ -2,6 +2,8 @@
 
 namespace app\user\model;
 
+
+use app\admin\model\Site;
 use think\Config;
 use think\Model;
 use think\Session;
@@ -30,6 +32,7 @@ class SiteUser extends Model
         $private = Config::get("crypt.cookiePrivate");
         $user_info["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
         $this->setSession($user_info_arr);
+        $this->getSiteInfo($user_info->id);
         return ["登录成功", '', $user_info_arr];
     }
 
@@ -42,6 +45,12 @@ class SiteUser extends Model
         Session::set("site_name", $user["name"]);
         Session::set("site_id", $user["id"]);
         Session::set("site_node_id", $user["node_id"]);
+    }
+
+    public function getSiteInfo($user_id)
+    {
+        $siteInfo=Site::where(["user_id"=>$user_id]);
+        dump($siteInfo);die;
     }
 
 }
