@@ -47,9 +47,14 @@ class SiteUser extends Model
         Session::set("site_node_id", $user["node_id"]);
     }
 
+    /**
+     * 获取登录网站信息
+     * @param $user_id
+     * @return false|\PDOStatement|string|\think\Collection
+     */
     public function getSiteInfo($user_id)
     {
-        $siteInfo=Site::where(["user_id"=>$user_id])->field("id,domain")->select();
+        $siteInfo=Site::where(["user_id"=>$user_id])->field("id,domain,site_name")->select();
         return $siteInfo;
     }
 
