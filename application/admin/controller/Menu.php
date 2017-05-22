@@ -46,7 +46,8 @@ class Menu extends Common
         $rule = [
             ['name', 'require', "请填写菜单"],
             ["flag", "require", "请选择栏目类型"],
-            ["flag_name", "require", "请选择栏目类型"]
+            ["flag_name", "require", "请选择栏目类型"],
+            ["generate_name",'require','请填写栏目生成名']
         ];
         if (intval($flag) > 1) {
             array_push($rule, ["type_id", "require", "请选择分类id"]);
@@ -58,6 +59,10 @@ class Menu extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
+        $old_generate=\app\admin\model\Menu::where(["generate"=>$data["generate"],"node_id"=>$data["node_id"]])->find();
+        if($old_generate){
+            return $this->resultArray('栏目生成名重复', 'failed');
+        }
         if (!\app\admin\model\Menu::create($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
@@ -78,7 +83,8 @@ class Menu extends Common
         $rule = [
             ['name', 'require', "请填写菜单"],
             ["flag", "require", "请选择栏目类型"],
-            ["flag_name", "require", "请选择栏目类型"]
+            ["flag_name", "require", "请选择栏目类型"],
+            ["generate_name",'require','请填写栏目生成名']
         ];
         if (intval($flag) > 1) {
             array_push($rule, ["type_id", "require", "请选择分类id"]);
