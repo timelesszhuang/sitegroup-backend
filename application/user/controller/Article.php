@@ -104,6 +104,7 @@ class Article extends Common
         $data['node_id'] =$this->getSiteSession('login_site')["node_id"];
         $data["site_id"] =$this->getSiteSession('website')["id"];
         $data["site_name"] =$this->getSiteSession('website')["site_name"];
+        dump($data);die;
         if(!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
