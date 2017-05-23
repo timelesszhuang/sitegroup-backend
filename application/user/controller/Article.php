@@ -71,7 +71,7 @@ class Article extends Common
      */
     public function read($id)
     {
-        //
+        return $this->getread((new \app\admin\model\Article),$id);
     }
 
     /**
@@ -94,7 +94,20 @@ class Article extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule = [
+            ["title", "require", "请输入标题"],
+            ["content", "require", "请输入内容"],
+            ["articletype_id", "require", "请选择文章分类"],
+        ];
+        $validate = new Validate($rule);
+        $data = $request->post();
+        $data['node_id'] =$this->getSiteSession('login_site')["node_id"];
+        $data["site_id"] =$this->getSiteSession('website')["id"];
+        $data["site_name"] =$this->getSiteSession('website')["site_name"];
+        if(!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
+        }
+        return $this->publicUpdate((new \app\admin\model\Article),$data,$id);
     }
 
     /**
