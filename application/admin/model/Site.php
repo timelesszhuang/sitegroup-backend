@@ -47,4 +47,9 @@ class Site extends Model
     {
         return trim($menu,",");
     }
+
+    public function getKeywordIdsAttr($key)
+    {
+        return trim($key,",");
+    }
 }
