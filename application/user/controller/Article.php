@@ -18,9 +18,10 @@ class Article extends Common
     public function index()
     {
         $request=$this->getLimit();
-        $node_id=(new Common())->getSiteSession('login_site')["node_id"];
+        $node_id=(new Common())->getSiteSession('login_site');
         $where=[];
-        $where["node_id"]=$node_id;
+        $where["node_id"]=$node_id["node_id"];
+        $where["site_id"]=$node_id["id"];
         $data = (new \app\admin\model\Article())->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
