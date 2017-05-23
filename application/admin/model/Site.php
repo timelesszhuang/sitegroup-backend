@@ -45,6 +45,6 @@ class Site extends Model
      */
     public function getMenuAttr($menu)
     {
-        return trim($menu,",");
+        return rtrim($menu,",");
     }
 }
