@@ -18,10 +18,10 @@ class Article extends Common
     public function index()
     {
         $request=$this->getLimit();
-        $node_id=(new Common())->getSiteSession('login_site');
+        $node_id=$this->getSiteSession('login_site');
         $where=[];
         $where["node_id"]=$node_id["node_id"];
-        $where["site_id"]=$node_id["id"];
+        $where["site_id"]=$this->getSiteSession('website')["id"];
         $data = (new \app\admin\model\Article())->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
@@ -104,7 +104,6 @@ class Article extends Common
         $data['node_id'] =$this->getSiteSession('login_site')["node_id"];
         $data["site_id"] =$this->getSiteSession('website')["id"];
         $data["site_name"] =$this->getSiteSession('website')["site_name"];
-        dump($data);die;
         if(!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
