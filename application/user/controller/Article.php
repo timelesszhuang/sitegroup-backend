@@ -118,7 +118,7 @@ class Article extends Common
      */
     public function delete($id)
     {
-        //
+        return $this->deleteRecord((new \app\admin\model\Article),$id);
     }
 
     /**
