@@ -117,7 +117,15 @@ class Index extends Common
      */
     public function setSession($site_info)
     {
-        dump($site_info->getAttr());die;
-        Session("website",$site_info);
+        $arr["id"]=$site_info->getAttr("id");
+        $arr["menu"]=$site_info->getAttr("menu");
+        $arr["template_id"]=$site_info->getAttr("template_id");
+        $arr["domain_id"]=$site_info->getAttr("domain");
+        $arr["site_name"]=$site_info->getAttr("site_name");
+        $arr["main_site"]=$site_info->getAttr("main_site");
+        $arr["site_type"]=$site_info->getAttr("site_type");
+        $arr["site_type_name"]=$site_info->getAttr("site_type_name");
+        $arr["keyword_ids"]=$site_info->getAttr("keyword_ids");
+        Session("website",$arr);
     }
 }
