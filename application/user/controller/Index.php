@@ -117,7 +117,7 @@ class Index extends Common
      */
     public function setSession($site_info)
     {
-        dump($site_info);die;
+        dump(collection($site_info)->toArray());die;
         Session("website",$site_info);
     }
 }
