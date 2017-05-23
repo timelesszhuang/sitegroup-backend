@@ -60,7 +60,9 @@ class Site extends Common
             ['domain','require','请选择域名'],
             ['site_type','require','请选择网站类型'],
             ['user_id',"require","请选择用户"],
-            ["user_name","require","请选择用户名"]
+            ["user_name","require","请选择用户名"],
+            ["site_type_name","require","请填写网站类型名称"],
+            ["keyword","require","请填写关键字"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -113,7 +115,9 @@ class Site extends Common
             ['support_hotline','require','请填写电话号码'],
             ['domain_id','require','请选择域名'],
             ['domain','require','请选择域名'],
-            ['site_type','require','请选择网站类型']
+            ['site_type','require','请选择网站类型'],
+            ["site_type_name","require","请填写网站类型名称"],
+            ["keyword","require","请填写关键字"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
