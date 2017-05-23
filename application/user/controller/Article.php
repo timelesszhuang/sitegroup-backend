@@ -111,6 +111,7 @@ class Article extends Common
      */
     public function getArticleType()
     {
+        dump(Session::get());die;
         return (new Articletype)->getType();
     }
 }
