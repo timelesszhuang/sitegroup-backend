@@ -48,6 +48,11 @@ class Site extends Model
         return trim($menu,",");
     }
 
+    /**
+     * 格式化keyword
+     * @param $key
+     * @return string
+     */
     public function getKeywordIdsAttr($key)
     {
         return trim($key,",");

@@ -42,9 +42,7 @@ class SiteUser extends Model
      */
     public function setSession($user)
     {
-        Session::set("site_name", $user["name"]);
-        Session::set("site_id", $user["id"]);
-        Session::set("site_node_id", $user["node_id"]);
+        Session::set("login_site", $user);
     }
 
     /**

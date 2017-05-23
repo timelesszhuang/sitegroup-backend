@@ -2,12 +2,10 @@
 
 namespace app\user\controller;
 
-use app\admin\model\Site;
-use think\Request;
 use app\common\controller\Common;
-use think\Validate;
+use think\Request;
 
-class Index extends Common
+class Article extends Common
 {
     /**
      * 显示资源列表
@@ -16,7 +14,12 @@ class Index extends Common
      */
     public function index()
     {
-        //
+        $request=$this->getLimit();
+        $node_id=(new Common())->getSiteSession('login_site')["node_id"];
+        $where=[];
+        $where["node_id"]=$node_id;
+        $data = (new \app\admin\model\Article())->getArticle($request["limit"], $request["rows"], $where);
+        return $this->resultArray('', '', $data);
     }
 
     /**
@@ -37,7 +40,23 @@ class Index extends Common
      */
     public function save(Request $request)
     {
-        //
+        $rule = [
+            ["title", "require", "请输入标题"],
+            ["content", "require", "请输入内容"],
+            ["articletype_id", "require", "请选择文章分类"],
+        ];
+        $validate = new Validate($rule);
+        $data = $request->post();
+        $data['node_id'] =$this->getSiteSession('login_site')["node_id"];
+        $data["site_id"] =$this->getSiteSession('website')["id"];
+        $data["site_name"] =$this->getSiteSession('website')["site_name"];
+        if(!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
+        }
+        if (!\app\admin\model\Article::create($data)) {
+            return $this->resultArray("添加失败", "failed");
+        }
+        return $this->resultArray("添加成功");
     }
 
     /**
@@ -83,40 +102,5 @@ class Index extends Common
     public function delete($id)
     {
         //
-    }
-
-    /**
-     * 小网站用户存储站点信息
-     * @return array
-     */
-    public function siteInfo()
-    {
-        $site_id=$this->request->post("site_id");
-        $site_name=$this->request->post("site_name");
-        $rule=[
-            ["site_id","require","请选择站点"],
-            ["site_name","require","请选择站点名称"]
-        ];
-        $validate=new Validate($rule);
-        $data=$this->request->post();
-        if(!$validate->check($data)){
-            return $this->resultArray($validate->getError(), 'failed');
-        }
-        $site_info=Site::where(["id"=>$site_id,"site_name"=>$site_name])->find();
-        if(!$site_info){
-            return $this->resultArray('无此网站','failed');
-        }
-        $this->setSession($site_info);
-        return $this->resultArray('','',$site_info);
-    }
-
-    /**
-     * 设置session 全部都放进去 以后有用
-     * @param $site_id
-     * @param $site_name
-     */
-    public function setSession($site_info)
-    {
-        Session("website",$site_info);
     }
 }

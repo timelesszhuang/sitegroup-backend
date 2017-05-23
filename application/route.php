@@ -100,8 +100,12 @@ Route::post('Site/setMainSite','admin/Site/setMainSite');
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');
 
-//站点登录后的首页操作
+//小站点登录后的首页操作
 Route::post('user/siteInfo','user/index/siteInfo');
+
+//小站点文章
+Route::resource('user/article','user/Article');
+
 
 return [
     '__pattern__' => [

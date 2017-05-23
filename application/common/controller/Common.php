@@ -177,6 +177,10 @@ class Common extends Controller
             $arr["user_commpany_name"] = Session::get("admin_name");
             $arr["user_type"] = Session::get("admin_type");
             $arr["user_node_id"] = Session::get("admin_node_id");
+        } else if($module == "user"){
+            $arr["user_id"] = Session::get("login_site")["id"];
+            $arr["user_name"] = Session::get("login_site")["name"];
+            $arr["user_node_id"] = Session::get("website")["node_id"];
         }
         return $arr;
     }
@@ -265,7 +269,6 @@ class Common extends Controller
     }
 
 
-
     /**
      * curl 传输文件操作
      * @access public
@@ -302,13 +305,24 @@ class Common extends Controller
      * @param $field
      * @return array
      */
-    public function getList($model,$field)
+    public function getList($model, $field)
     {
         $user = $this->getSessionUser();
         $where = [
             "node_id" => $user["user_node_id"]
         ];
-        $data=$model->field($field)->where($where)->select();
-        return $this->resultArray('','',$data);
+        $data = $model->field($field)->where($where)->select();
+        return $this->resultArray('', '', $data);
+    }
+
+    /**
+     * 获取小站点的session
+     * @param $item
+     * @return mixed
+     */
+    public function getSiteSession($item)
+    {
+        $arr = Session::get($item);
+        return $arr;
     }
 }
