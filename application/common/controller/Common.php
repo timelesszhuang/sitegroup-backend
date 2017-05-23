@@ -180,7 +180,7 @@ class Common extends Controller
         } else if($module == "user"){
             $arr["user_id"] = Session::get("login_site")["id"];
             $arr["user_name"] = Session::get("login_site")["name"];
-            $arr["user_node_id"] = Session::get("website")->node_id;
+            $arr["user_node_id"] = Session::get("login_site")["node_id"];
         }
         return $arr;
     }
