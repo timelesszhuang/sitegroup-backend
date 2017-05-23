@@ -2,6 +2,7 @@
 
 namespace app\user\controller;
 
+use app\admin\controller\Articletype;
 use app\common\controller\Common;
 use think\Request;
 
@@ -102,5 +103,14 @@ class Article extends Common
     public function delete($id)
     {
         //
+    }
+
+    /**
+     * 获取文章类型
+     * @return array
+     */
+    public function getArticleType()
+    {
+        return (new Articletype)->getType();
     }
 }

@@ -105,7 +105,7 @@ Route::post('user/siteInfo','user/index/siteInfo');
 
 //小站点文章
 Route::resource('user/article','user/Article');
-
+Route::get('user/articleType','user/Article/getArticleType');
 
 return [
     '__pattern__' => [
