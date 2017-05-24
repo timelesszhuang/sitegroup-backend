@@ -171,6 +171,7 @@ class Site extends Common
     {
         $site_id=Session::get("website")["id"];
         $node_id=Session::get('login_site')["node_id"];
+        dump($node_id);die;
         $where=[
             "id"=>$id,
 //            "node_id"=>$node_id,
