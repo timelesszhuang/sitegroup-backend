@@ -174,7 +174,6 @@ class Site extends Common
         $where=[
             "id"=>$id,
             "node_id"=>$node_id,
-            "site_id"=>$site_id
         ];
         $data=$this->request->put();
         $site=\app\admin\model\Site::where($where)->find();
