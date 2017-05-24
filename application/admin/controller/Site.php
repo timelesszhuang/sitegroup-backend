@@ -169,12 +169,10 @@ class Site extends Common
 
     public function saveFtp($id)
     {
-        $site_id=Session::get("website")["id"];
-        $node_id=Session::get('login_site')["node_id"];
-        dump($node_id);die;
+        $user=(new Common())->getSessionUser();
         $where=[
             "id"=>$id,
-//            "node_id"=>$node_id,
+            "node_id"=>$user["user_node_id"],
         ];
         $data=$this->request->put();
         if(!\app\admin\model\Site::where($where)->update($data)){
