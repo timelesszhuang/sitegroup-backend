@@ -161,7 +161,7 @@ class Article extends Common
             "node_id"=>$user["user_node_id"],
             "status"=>20
         ];
-        $count = (new \app\common\model\SiteErrorInfo())->count();
+        $count = (new \app\common\model\SiteErrorInfo())->where($where)->count();
         return $this->resultArray('', '', $count);
     }
 
