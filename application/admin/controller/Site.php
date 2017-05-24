@@ -178,7 +178,7 @@ class Site extends Common
         $data=$this->request->put();
         dump($data);die;
         $site=\app\admin\model\Site::where($where)->find();
-        if(!$site->save($data)){
+        if(!$site->update($data)){
             return $this->resultArray('修改失败','failed');
         }
         return $this->resultArray('修改成功');
