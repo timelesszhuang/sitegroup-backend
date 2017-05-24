@@ -141,10 +141,10 @@ class Article extends Common
      */
     public function getErrorInfo()
     {
-        $node_id=Session::get('login_site')["node_id"];
+        $user=(new Common())->getSessionUser();
         $request=$this->getLimit();
         $where=[
-            "node_id"=>$node_id,
+            "node_id"=>$user["user_node_id"],
         ];
         $data = (new \app\common\model\SiteErrorInfo())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
