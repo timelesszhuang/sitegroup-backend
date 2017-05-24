@@ -39,6 +39,7 @@ Route::rule('articletype/gettype', 'admin/Articletype/getType');
 //文章
 Route::resource('article', 'admin/Article');
 Route::post('article/sync','admin/Article/syncArticle');
+Route::get('article/getErrorInfo','admin/Article/getErrorInfo');
 
 //菜单
 Route::resource('menu', 'admin/Menu');
@@ -106,6 +107,7 @@ Route::post('user/siteInfo','user/index/siteInfo');
 //小站点文章
 Route::resource('user/article','user/Article');
 Route::get('user/articleType','user/Article/getArticleType');
+Route::get('user/getErrorInfo','user/Article/getErrorInfo');
 
 return [
     '__pattern__' => [

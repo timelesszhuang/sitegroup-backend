@@ -129,4 +129,21 @@ class Article extends Common
     {
         return (new Articletype)->getType();
     }
+
+    /**
+     * 获取错误信息
+     * @return false|\PDOStatement|string|\think\Collection
+     */
+    public function getErrorInfo()
+    {
+        $site_id=Session::get("website")["id"];
+        $node_id=Session::get('login_site')["node_id"];
+        $request=$this->getLimit();
+        $where=[
+            "node_id"=>$node_id,
+            "site_id"=>$site_id
+        ];
+        $data = (new \app\admin\model\SiteErrorInfo())->getAll($request["limit"], $request["rows"], $where);
+        return $this->resultArray('', '', $data);
+    }
 }
