@@ -326,4 +326,14 @@ class Common extends Controller
         $arr = Session::get($item);
         return $arr;
     }
+
+    /**
+     * 匹配http
+     * @param $http
+     * @return string
+     */
+    public function searchHttp($http)
+    {
+        return strrchr("http",$http);
+    }
 }

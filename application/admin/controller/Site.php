@@ -61,12 +61,16 @@ class Site extends Common
             ['user_id',"require","请选择用户"],
             ["user_name","require","请选择用户名"],
             ["site_type_name","require","请填写网站类型名称"],
-            ["keyword_ids","require","请填写关键字"]
+            ["keyword_ids","require","请填写关键字"],
+            ["url","require","请输入url"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
+        }
+        if(!$this->searchHttp($data["url"])){
+            $data["url"]="http://".$data["url"];
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\Site::create($data)) {
@@ -115,7 +119,8 @@ class Site extends Common
             ['domain','require','请选择域名'],
             ['site_type','require','请选择网站类型'],
             ["site_type_name","require","请填写网站类型名称"],
-            ["keyword_ids","require","请填写关键字"]
+            ["keyword_ids","require","请填写关键字"],
+            ["url","require","请输入url"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
