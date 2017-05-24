@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use app\common\controller\Common;
 use think\Request;
+use think\Session;
 use think\Validate;
 
 /**
