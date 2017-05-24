@@ -162,6 +162,9 @@ class Article extends Common
             "status"=>20
         ];
         $count = (new \app\common\model\SiteErrorInfo())->where($where)->count();
+        if($count<1){
+            $count="无";
+        }
         return $this->resultArray('', '', $count);
     }
 
