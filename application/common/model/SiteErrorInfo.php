@@ -17,7 +17,7 @@ class SiteErrorInfo extends Model
     public function getAll($limit,$rows,$where)
     {
         $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->field("msg,operator")->select();
+        $data = $this->limit($limit, $rows)->where($where)->field("msg,operator,site_name")->select();
         return [
             "total" => $count,
             "rows" => $data
