@@ -146,7 +146,7 @@ class Article extends Common
         $where=[
             "node_id"=>$node_id,
         ];
-        $data = (new \app\admin\model\SiteErrorInfo())->getAll($request["limit"], $request["rows"], $where);
+        $data = (new \app\common\model\SiteErrorInfo())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 }
