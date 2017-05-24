@@ -165,4 +165,21 @@ class Site extends Common
         $data=["main_site"=>$main_site];
         return $this->publicUpdate((new \app\admin\model\Site()),$data,$id);
     }
+
+    public function saveFtp($id)
+    {
+        $site_id=Session::get("website")["id"];
+        $node_id=Session::get('login_site')["node_id"];
+        $where=[
+            "id"=>$id,
+            "node_id"=>$node_id,
+            "site_id"=>$site_id
+        ];
+        $data=$this->request->put();
+        $site=\app\admin\model\Site::where($where)->find();
+        if(!$site->save($data)){
+            return $this->resultArray('修改失败','failed');
+        }
+        return $this->resultArray('修改成功');
+    }
 }
