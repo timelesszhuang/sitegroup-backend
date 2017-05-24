@@ -176,6 +176,7 @@ class Site extends Common
             "node_id"=>$node_id,
         ];
         $data=$this->request->put();
+        dump($data);die;
         $site=\app\admin\model\Site::where($where)->find();
         if(!$site->save($data)){
             return $this->resultArray('修改失败','failed');
