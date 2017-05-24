@@ -149,4 +149,20 @@ class Article extends Common
         $data = (new \app\common\model\SiteErrorInfo())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
+
+    /**
+     * 获取当前节点有多少没有查看的日志
+     * @return array
+     */
+    public function getErrorStatus()
+    {
+        $user=(new Common())->getSessionUser();
+        $request=$this->getLimit();
+        $where=[
+            "node_id"=>$user["user_node_id"],
+            "status"=>20
+        ];
+        $count = (new \app\common\model\SiteErrorInfo())->count();
+        return $this->resultArray('', '', $count);
+    }
 }

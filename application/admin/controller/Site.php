@@ -167,6 +167,11 @@ class Site extends Common
         return $this->publicUpdate((new \app\admin\model\Site()),$data,$id);
     }
 
+    /**
+     * 修改ftp信息
+     * @param $id
+     * @return array
+     */
     public function saveFtp($id)
     {
         $user=(new Common())->getSessionUser();
