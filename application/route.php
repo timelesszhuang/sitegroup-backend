@@ -41,6 +41,7 @@ Route::resource('article', 'admin/Article');
 Route::post('article/sync','admin/Article/syncArticle');
 Route::get('article/getErrorInfo','admin/Article/getErrorInfo');
 Route::get('article/getErrorStatus','admin/Article/getErrorStatus');
+Route::post('article/changeErrorStatus/:id','admin/Article/changeErrorStatus');
 
 //菜单
 Route::resource('menu', 'admin/Menu');

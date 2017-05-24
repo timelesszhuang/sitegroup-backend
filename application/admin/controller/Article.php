@@ -157,12 +157,31 @@ class Article extends Common
     public function getErrorStatus()
     {
         $user=(new Common())->getSessionUser();
-        $request=$this->getLimit();
         $where=[
             "node_id"=>$user["user_node_id"],
             "status"=>20
         ];
         $count = (new \app\common\model\SiteErrorInfo())->count();
         return $this->resultArray('', '', $count);
+    }
+
+    /**
+     * 修改错误信息status
+     * @param $id
+     * @return array
+     */
+    public function changeErrorStatus($id)
+    {
+        $user=(new Common())->getSessionUser();
+        $where=[
+            "id"=>$id,
+            "node_id"=>$user["user_node_id"],
+        ];
+        $site = \app\common\model\SiteErrorInfo::where($where)->find();
+        $site->status=10;
+        if(!$site->save()){
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
     }
 }
