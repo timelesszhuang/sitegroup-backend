@@ -173,7 +173,7 @@ class Site extends Common
         $node_id=Session::get('login_site')["node_id"];
         $where=[
             "id"=>$id,
-            "node_id"=>$node_id,
+//            "node_id"=>$node_id,
         ];
         $data=$this->request->put();
         if(!\app\admin\model\Site::where($where)->update($data)){
