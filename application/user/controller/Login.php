@@ -2,6 +2,7 @@
 
 namespace app\user\controller;
 
+use think\Controller;
 use app\admin\model\Site;
 use app\user\model\SiteUser;
 use think\Config;
@@ -9,7 +10,7 @@ use think\Request;
 use app\common\controller\Common;
 use think\Validate;
 
-class Login extends Common
+class Login extends Controller
 {
     /**
      * 本地测试开启下 允许跨域ajax 获取数据
@@ -60,6 +61,27 @@ class Login extends Common
 //        };
         $user_arr=(new SiteUser())->checkUser($post["name"],$post["pwd"]);
         return $this->resultArray($user_arr[0],$user_arr[1],$user_arr[2]);
+    }
+
+    /**
+     * 返回对象  默认不填为success 否则是failed
+     * @param $array 响应数据
+     * @return array
+     * @return array
+     * @author guozhen
+     */
+    public function resultArray($msg = 0, $stat = '', $data = 0)
+    {
+        if (empty($stat)) {
+            $status = "success";
+        } else {
+            $status = "failed";
+        }
+        return [
+            'status' => $status,
+            'data' => $data,
+            'msg' => $msg
+        ];
     }
 
     /**
