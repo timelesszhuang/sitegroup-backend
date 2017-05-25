@@ -47,18 +47,18 @@ class Site extends Model
      * @param $menu
      * @return string
      */
-//    public function getMenuAttr($menu)
-//    {
-//        return trim($menu,",");
-//    }
+    public function getMenuAttr($menu)
+    {
+        return trim($menu,",");
+    }
 
     /**
      * 格式化keyword
      * @param $key
      * @return string
      */
-//    public function getKeywordIdsAttr($key)
-//    {
-//        return trim($key,",");
-//    }
+    public function getKeywordIdsAttr($key)
+    {
+        return trim($key,",");
+    }
 }
