@@ -32,9 +32,9 @@ class SiteErrorInfo extends Model
     public function getStatusAttr($status)
     {
         if($status==10){
-            return "未读";
-        }else if($status==20){
             return "已读";
+        }else if($status==20){
+            return "未读";
         }
     }
 }
