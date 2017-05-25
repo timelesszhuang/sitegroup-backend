@@ -49,8 +49,9 @@ class Site extends Model
      */
     public function getMenuAttr($menu)
     {
-        dump($menu);die;
-        return trim($menu,",");
+        if(is_string($menu)){
+            return trim($menu,",");
+        }
     }
 
     /**
@@ -60,6 +61,8 @@ class Site extends Model
      */
     public function getKeywordIdsAttr($key)
     {
-        return trim($key,",");
+        if(is_string($key)){
+            return trim($key,",");
+        }
     }
 }
