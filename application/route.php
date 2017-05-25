@@ -111,7 +111,7 @@ Route::post('user/siteInfo','user/index/siteInfo');
 Route::resource('user/article','user/Article');
 Route::get('user/articleType','user/Article/getArticleType');
 Route::get('user/getErrorInfo','user/Article/getErrorInfo');
-
+Route::post('user/changeErrorStatus/:id','user/Article/changeErrorStatus');
 return [
     '__pattern__' => [
         'name' => '\w+',

@@ -21,11 +21,11 @@ class SiteUser extends Model
     {
         $user_info = $this::where(["name" => $username])->find();
         if (empty($user_info)) {
-            return ["用户名错误", "failed"];
+            return ["用户名错误", "failed",''];
         }
         $user_info_arr = $user_info->toArray();
         if (md5($pwd . $username) != $user_info_arr["pwd"]) {
-            return ["用户名或密码错误", "failed"];
+            return ["用户名或密码错误", "failed",''];
         }
         unset($user_info_arr["pwd"]);
         //获取私钥

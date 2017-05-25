@@ -156,9 +156,11 @@ class Article extends Common
     {
         $user=(new Common())->getSessionUser();
         $node_id=Session::get('login_site')["node_id"];
+        $site_id=Session::get("website")["id"];
         $where=[
             "id"=>$id,
-            "node_id"=>$node_id
+            "node_id"=>$node_id,
+            "site_id"=>$site_id
         ];
         $site = \app\common\model\SiteErrorInfo::where($where)->find();
         $site->status=10;
