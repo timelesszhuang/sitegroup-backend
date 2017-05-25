@@ -49,6 +49,7 @@ class Site extends Model
      */
     public function getMenuAttr($menu)
     {
+        dump($menu);die;
         return trim($menu,",");
     }
 
