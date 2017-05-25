@@ -125,10 +125,15 @@ class Site extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
-        if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'failed');
+        $user=$this->getSessionUser();
+        $where=[
+            "id"=>$id,
+            "node_id"=>$user["user_node_id"]
+        ];
+        if (!(new \app\admin\model\SiteUser)->save($data,$where)) {
+            return $this->resultArray('修改失败', 'failed');
         }
-        return $this->publicUpdate((new \app\admin\model\Site()), $data, $id);
+        return $this->resultArray('修改成功', 'failed');
     }
 
     /**
