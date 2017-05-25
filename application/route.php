@@ -112,6 +112,7 @@ Route::resource('user/article','user/Article');
 Route::get('user/articleType','user/Article/getArticleType');
 Route::get('user/getErrorInfo','user/Article/getErrorInfo');
 Route::post('user/changeErrorStatus/:id','user/Article/changeErrorStatus');
+Route::get('user/getErrorStatus/','user/Article/getErrorStatus');
 return [
     '__pattern__' => [
         'name' => '\w+',

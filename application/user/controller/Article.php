@@ -170,4 +170,23 @@ class Article extends Common
         return $this->resultArray('修改成功');
     }
 
+    /**
+     * 获取当前节点有多少没有查看的日志
+     * @return array
+     */
+    public function getErrorStatus()
+    {
+        $user=(new Common())->getSessionUser();
+        $site_id=Session::get("website")["id"];
+        $where=[
+            "node_id"=>$user["user_node_id"],
+            "status"=>20,
+            "site_id"=>$site_id
+        ];
+        $count = (new \app\common\model\SiteErrorInfo())->where($where)->count();
+        if($count<1){
+            $count="无";
+        }
+        return $this->resultArray('', '', $count);
+    }
 }
