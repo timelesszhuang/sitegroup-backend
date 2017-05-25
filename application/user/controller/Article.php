@@ -146,4 +146,26 @@ class Article extends Common
         $data = (new \app\common\model\SiteErrorInfo())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
+
+    /**
+     * 修改错误信息status
+     * @param $id
+     * @return array
+     */
+    public function changeErrorStatus($id)
+    {
+        $user=(new Common())->getSessionUser();
+        $node_id=Session::get('login_site')["node_id"];
+        $where=[
+            "id"=>$id,
+            "node_id"=>$node_id
+        ];
+        $site = \app\common\model\SiteErrorInfo::where($where)->find();
+        $site->status=10;
+        if(!$site->save()){
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
+    }
+
 }
