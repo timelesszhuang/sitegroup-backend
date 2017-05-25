@@ -133,7 +133,7 @@ class Site extends Common
         if (!(new \app\admin\model\Site)->save($data,$where)) {
             return $this->resultArray('修改失败', 'failed');
         }
-        return $this->resultArray('修改成功', 'failed');
+        return $this->resultArray('修改成功');
     }
 
     /**
