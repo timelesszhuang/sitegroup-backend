@@ -73,6 +73,9 @@ class Site extends Common
         if(!$this->searchHttp($data["url"])){
             $data["url"]="http://".$data["url"];
         }
+        if(!empty($data["link_id"])){
+            $data["link_id"]=",".implode(",",$data["link_id"]).",";
+        }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         $data["menu"]="," . implode(",",$data["menu"]) . ",";
         $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
@@ -133,6 +136,9 @@ class Site extends Common
             "id"=>$id,
             "node_id"=>$user["user_node_id"]
         ];
+        if(!empty($data["link_id"])){
+            $data["link_id"]=",".implode(",",$data["link_id"]).",";
+        }
         $data["menu"]="," . implode(",",$data["menu"]) . ",";
         $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
         if (!(new \app\admin\model\Site)->save($data,$where)) {
@@ -204,7 +210,7 @@ class Site extends Common
     {
         $user=(new Common())->getSessionUser();
         $where=[
-            "is_mobile"=>1,
+            "is_mobile"=>20,
             "node_id"=>$user["user_node_id"],
             ];
         $data=(new \app\admin\model\Site)->where($where)->field("id,site_name as text")->select();
