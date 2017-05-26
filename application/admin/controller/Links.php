@@ -69,7 +69,7 @@ class Links extends Common
      */
     public function read($id)
     {
-        //
+        return $this->getread((new \app\admin\model\Links),$id);
     }
 
     /**
@@ -92,7 +92,16 @@ class Links extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule = [
+            ['name', "require", "请填写站点名称"],
+            ['domain', 'require', "请填写域名"],
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->put();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'failed');
+        }
+        return $this->publicUpdate((new \app\admin\model\Links),$data,$id);
     }
 
     /**
@@ -103,6 +112,6 @@ class Links extends Common
      */
     public function delete($id)
     {
-        //
+        return $this->deleteRecord((new \app\admin\model\Links),$id);
     }
 }
