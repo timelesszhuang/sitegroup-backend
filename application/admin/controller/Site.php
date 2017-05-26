@@ -196,9 +196,13 @@ class Site extends Common
         return $this->resultArray('修改成功');
     }
 
+    /**
+     * 获取手机网站
+     * @return false|\PDOStatement|string|\think\Collection
+     */
     public function mobileSite()
     {
-        $data=\app\admin\model\Site::all(["is_mobile"=>1],"id");
-        return $data;
+        $data=(new \app\admin\model\Site)->where(["is_mobile"=>1])->field("id,site_name as text")->select();
+        return $this->resultArray('','',$data);
     }
 }
