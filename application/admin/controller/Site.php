@@ -202,7 +202,12 @@ class Site extends Common
      */
     public function mobileSite()
     {
-        $data=(new \app\admin\model\Site)->where(["is_mobile"=>1])->field("id,site_name as text")->select();
+        $user=(new Common())->getSessionUser();
+        $where=[
+            "is_mobile"=>1,
+            "node_id"=>$user["user_node_id"],
+            ];
+        $data=(new \app\admin\model\Site)->where($where)->field("id,site_name as text")->select();
         return $this->resultArray('','',$data);
     }
 }
