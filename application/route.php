@@ -100,10 +100,17 @@ Route::resource('Site', 'admin/Site');
 Route::get('Site/uploadTemplateFile', 'admin/Site/uploadTemplateFile');
 Route::post('Site/setMainSite','admin/Site/setMainSite');
 Route::put('Site/saveFtp/:id','admin/Site/saveFtp');
+Route::post('Site/mobileSite','admin/Site/mobileSite');
 
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');
 
+Route::resource('links','admin/Links');
+
+
+
+
+//小站点相关--------------------------------------------------------
 //小站点登录后的首页操作
 Route::post('user/siteInfo','user/index/siteInfo');
 

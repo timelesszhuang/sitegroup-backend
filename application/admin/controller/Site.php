@@ -195,4 +195,10 @@ class Site extends Common
         }
         return $this->resultArray('修改成功');
     }
+
+    public function mobileSite()
+    {
+        $data=\app\admin\model\Site::all(["is_mobile"=>1]);
+        return $data;
+    }
 }
