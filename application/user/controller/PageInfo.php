@@ -21,7 +21,7 @@ class PageInfo extends Common
         $where=[];
         $where["node_id"]=$node_id["node_id"];
         $where["site_id"]=$this->getSiteSession('website')["id"];
-        $data = (new \app\user\model\SitePageInfo())->getAll($request["limit"], $request["rows"], $where);
+        $data = (new \app\user\model\SitePageinfo())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
@@ -54,7 +54,7 @@ class PageInfo extends Common
         if(!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        if (!\app\admin\model\SitePageInfo::create($data)) {
+        if (!\app\admin\model\SitePageinfo::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
         return $this->resultArray("添加成功");
@@ -68,7 +68,7 @@ class PageInfo extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\SitePageInfo),$id);
+        return $this->getread((new \app\admin\model\SitePageinfo),$id);
     }
 
     /**
@@ -102,7 +102,7 @@ class PageInfo extends Common
         if(!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        return $this->publicUpdate((new \app\admin\model\SitePageInfo),$data,$id);
+        return $this->publicUpdate((new \app\admin\model\SitePageinfo),$data,$id);
     }
 
     /**
@@ -113,6 +113,6 @@ class PageInfo extends Common
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new \app\admin\model\SitePageInfo),$id);
+        return $this->deleteRecord((new \app\admin\model\SitePageinfo),$id);
     }
 }

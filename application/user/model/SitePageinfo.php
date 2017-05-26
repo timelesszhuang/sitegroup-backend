@@ -4,7 +4,7 @@ namespace app\user\model;
 
 use think\Model;
 
-class SitePageInfo extends Model
+class SitePageinfo extends Model
 {
     //只读字段
     protected $readonly=["node_id"];
