@@ -5,6 +5,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Request;
 use app\common\controller\Common;
+use think\Validate;
 
 class Links extends Common
 {
@@ -45,10 +46,8 @@ class Links extends Common
     public function save(Request $request)
     {
         $rule = [
-            ['name', "require", "请填写问题"],
-            ['content_paragraph', 'require', "请填写答案"],
-            ["type_id","require","请选择分类id"],
-            ["type_name","require","请选择分类名称"]
+            ['name', "require", "请填写站点名称"],
+            ['domain', 'require', "请填写域名"],
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -56,6 +55,10 @@ class Links extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
+        if (!\app\admin\model\Links::create($data)) {
+            return $this->resultArray('添加失败', 'failed');
+        }
+        return $this->resultArray('添加成功');
     }
 
     /**
