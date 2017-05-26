@@ -124,6 +124,8 @@ Route::get('user/getErrorStatus/','user/Article/getErrorStatus');
 //问答
 Route::resource('user/question','user/question');
 
+//页面tdk修改
+Route::resource('user/pageInfo','user/PageInfo');
 
 return [
     '__pattern__' => [

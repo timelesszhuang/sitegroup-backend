@@ -51,4 +51,16 @@ class Site extends Model
             return trim($key,",");
         }
     }
+
+    /**
+     * 格式化keyword
+     * @param $key
+     * @return string
+     */
+    public function getLinkIdAttr($key)
+    {
+        if(is_string($key)){
+            return trim($key,",");
+        }
+    }
 }

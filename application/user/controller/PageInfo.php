@@ -4,9 +4,9 @@ namespace app\user\controller;
 
 use think\Controller;
 use think\Request;
-use app\common\controller\Common;
+use think\Validate;
 
-class Question extends Common
+class PageInfo extends Controller
 {
     /**
      * 显示资源列表
@@ -20,7 +20,7 @@ class Question extends Common
         $where=[];
         $where["node_id"]=$node_id["node_id"];
         $where["site_id"]=$this->getSiteSession('website')["id"];
-        $data = (new \app\admin\model\Question())->getAll($request["limit"], $request["rows"], $where);
+        $data = (new \app\user\model\SitePageInfo())->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
@@ -43,10 +43,7 @@ class Question extends Common
     public function save(Request $request)
     {
         $rule = [
-            ['question', "require", "请填写问题"],
-            ['content_paragraph', 'require', "请填写答案"],
-            ["type_id","require","请选择分类id"],
-            ["type_name","require","请选择分类名称"]
+            ["page_id", "require", "请输入页面id"],
         ];
         $validate = new Validate($rule);
         $data = $request->post();
@@ -56,7 +53,7 @@ class Question extends Common
         if(!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        if (!\app\admin\model\Question::create($data)) {
+        if (!\app\admin\model\SitePageInfo::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
         return $this->resultArray("添加成功");
@@ -70,7 +67,7 @@ class Question extends Common
      */
     public function read($id)
     {
-        //
+        return $this->getread((new \app\admin\model\SitePageInfo),$id);
     }
 
     /**
@@ -81,7 +78,7 @@ class Question extends Common
      */
     public function edit($id)
     {
-        return $this->getread((new \app\admin\model\Question),$id);
+        //
     }
 
     /**
@@ -94,17 +91,17 @@ class Question extends Common
     public function update(Request $request, $id)
     {
         $rule = [
-            ['question', "require", "请填写问题"],
-            ['content_paragraph', 'require', "请填写答案"],
-            ["type_id","require","请选择分类id"],
-            ["type_name","require","请选择分类名称"]
+            ["page_id", "require", "请输入页面id"],
         ];
         $validate = new Validate($rule);
-        $data = $this->request->put();
-        if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'failed');
+        $data = $request->post();
+        $data['node_id'] =$this->getSiteSession('login_site')["node_id"];
+        $data["site_id"] =$this->getSiteSession('website')["id"];
+        $data["site_name"] =$this->getSiteSession('website')["site_name"];
+        if(!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
         }
-        return $this->publicUpdate((new \app\admin\model\Question),$data,$id);
+        return $this->publicUpdate((new \app\admin\model\SitePageInfo),$data,$id);
     }
 
     /**
@@ -115,6 +112,6 @@ class Question extends Common
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new \app\admin\model\Question),$id);
+        return $this->deleteRecord((new \app\admin\model\SitePageInfo),$id);
     }
 }
