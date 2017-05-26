@@ -5,8 +5,9 @@ namespace app\user\controller;
 use think\Controller;
 use think\Request;
 use think\Validate;
+use app\common\controller\Common;
 
-class PageInfo extends Controller
+class PageInfo extends Common
 {
     /**
      * 显示资源列表
