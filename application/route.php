@@ -106,7 +106,7 @@ Route::get('Site/mobileSite','admin/Site/mobileSite');
 Route::rule('testsendFile/index', 'admin/testsendFile/index');
 
 Route::resource('links','admin/Links');
-
+Route::get('links/getLinks','admin/Links/getLinks');
 
 
 

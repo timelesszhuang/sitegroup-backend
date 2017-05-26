@@ -114,4 +114,18 @@ class Links extends Common
     {
         return $this->deleteRecord((new \app\admin\model\Links),$id);
     }
+
+    /**
+     * 获取所有链接
+     * @return array
+     */
+    public function getLinks()
+    {
+        $user=$this->getSessionUser();
+        $where=[
+            "node_id"=>$user["user_node_id"],
+        ];
+        $data=(new \app\admin\model\Links)->where($where)->field("id,name as text")->select();
+        return $this->resultArray('','',$data);
+    }
 }
