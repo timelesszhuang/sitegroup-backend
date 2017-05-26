@@ -21,7 +21,7 @@ class PageInfo extends Common
         $where=[];
         $where["node_id"]=$node_id["node_id"];
         $where["site_id"]=$this->getSiteSession('website')["id"];
-        $data = (new \app\user\model\SitePageInfo())->getArticle($request["limit"], $request["rows"], $where);
+        $data = (new \app\user\model\SitePageInfo())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
