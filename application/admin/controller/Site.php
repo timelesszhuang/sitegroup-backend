@@ -74,6 +74,9 @@ class Site extends Common
             $data["url"]="http://".$data["url"];
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
+        $data["menu"]="," . implode(",",$data["menu"]) . ",";
+        $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
+
         if (!\app\admin\model\Site::create($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
@@ -125,10 +128,17 @@ class Site extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
-        if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'failed');
+        $user=$this->getSessionUser();
+        $where=[
+            "id"=>$id,
+            "node_id"=>$user["user_node_id"]
+        ];
+        $data["menu"]="," . implode(",",$data["menu"]) . ",";
+        $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
+        if (!(new \app\admin\model\Site)->save($data,$where)) {
+            return $this->resultArray('修改失败', 'failed');
         }
-        return $this->publicUpdate((new \app\admin\model\Site()), $data, $id);
+        return $this->resultArray('修改成功');
     }
 
     /**
