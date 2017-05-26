@@ -113,6 +113,11 @@ Route::get('user/articleType','user/Article/getArticleType');
 Route::get('user/getErrorInfo','user/Article/getErrorInfo');
 Route::post('user/changeErrorStatus/:id','user/Article/changeErrorStatus');
 Route::get('user/getErrorStatus/','user/Article/getErrorStatus');
+
+//问答
+Route::resource('user/question','user/question');
+
+
 return [
     '__pattern__' => [
         'name' => '\w+',

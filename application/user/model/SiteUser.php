@@ -19,7 +19,7 @@ class SiteUser extends Model
      */
     public function checkUser($username, $pwd)
     {
-        $user_info = $this::where(["name" => $username])->find();
+        $user_info = $this::where(["account" => $username])->find();
         if (empty($user_info)) {
             return ["用户名错误", "failed",''];
         }
