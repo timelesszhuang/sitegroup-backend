@@ -198,7 +198,7 @@ class Site extends Common
 
     public function mobileSite()
     {
-        $data=\app\admin\model\Site::all(["is_mobile"=>1]);
+        $data=\app\admin\model\Site::all(["is_mobile"=>1],"id");
         return $data;
     }
 }

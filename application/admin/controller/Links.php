@@ -4,8 +4,9 @@ namespace app\admin\controller;
 
 use think\Controller;
 use think\Request;
+use app\common\controller\Common;
 
-class Links extends Controller
+class Links extends Common
 {
     /**
      * 显示资源列表
