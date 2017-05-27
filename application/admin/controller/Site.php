@@ -229,12 +229,11 @@ class Site extends Common
         if(is_null($site)){
             return $this->resultArray('模板发送失败,无此记录!','failed');
         }
-        $pr=[
+        print_r(json_encode([
             'status' => "success",
             'data' => '',
             'msg' => "正在发送模板,请等待.."
-        ];
-        print_r(json_encode($pr));
+        ]));
         $this->openObStart();
         $template=\app\admin\model\Template::get($site->template_id);
         $this->uploadTemplateFile($site->url,$template->path);
