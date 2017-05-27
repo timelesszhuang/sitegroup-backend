@@ -230,6 +230,11 @@ class Site extends Common
             return $this->resultArray('模板发送失败,无此记录!','failed');
         }
         $this->openObStart();
+        printf([
+            'status' => "success",
+            'data' => '',
+            'msg' => "正在发送模板,请等待.."
+        ]);
         $template=\app\admin\model\Template::get($site->template_id);
         $this->uploadTemplateFile($site->url,$template->path);
 

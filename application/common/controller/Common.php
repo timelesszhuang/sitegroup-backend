@@ -346,6 +346,7 @@ class Common extends Controller
         ignore_user_abort(true);//在关闭连接后，继续运行php脚本
         /******** background process ********/
         set_time_limit(0); //no time limit，不设置超时时间（根据实际情况使用）
+
     }
 
 }
