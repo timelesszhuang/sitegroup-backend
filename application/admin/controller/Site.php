@@ -235,7 +235,7 @@ class Site extends Common
             'data' => '',
             'msg' => "正在发送模板,请等待.."
         ];
-        print_r($pr);
+        print_r($pr,true);
         $template=\app\admin\model\Template::get($site->template_id);
         $this->uploadTemplateFile($site->url,$template->path);
 
