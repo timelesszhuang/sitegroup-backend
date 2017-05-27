@@ -295,10 +295,8 @@ class Common extends Controller
         curl_setopt($ch, CURLOPT_VERBOSE, 0);
 
         $a = curl_exec($ch);
-        print_r($a);
-        var_dump(curl_multi_getcontent($ch));
         curl_close($ch);
-
+        return $a;
     }
 
     /**
@@ -337,16 +335,4 @@ class Common extends Controller
     {
         return strrchr("http",$http);
     }
-
-    /**
-     * 开启缓冲区并刷新数据到前台
-     */
-    public function openObStart()
-    {
-        ignore_user_abort(true);//在关闭连接后，继续运行php脚本
-        /******** background process ********/
-        set_time_limit(0); //no time limit，不设置超时时间（根据实际情况使用）
-
-    }
-
 }

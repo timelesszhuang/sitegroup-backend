@@ -101,7 +101,9 @@ Route::get('Site/uploadTemplateFile', 'admin/Site/uploadTemplateFile');
 Route::post('Site/setMainSite','admin/Site/setMainSite');
 Route::put('Site/saveFtp/:id','admin/Site/saveFtp');
 Route::get('Site/mobileSite','admin/Site/mobileSite');
-Route::get('Site/syncTemplate/:id','admin/Site/syncTemplate');
+Route::get('Site/ignoreFrontend/:id','admin/Site/ignoreFrontend');
+Route::get('Site/syncTemplate/:id/:nid','admin/Site/syncTemplate');
+
 
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');

@@ -165,7 +165,8 @@ class Site extends Common
     public function uploadTemplateFile($dest,$path)
     {
         $dest = $dest.'/index.php/filemanage/uploadFile';
-        $this->sendFile(ROOT_PATH ."public/". $path, $dest, 'template');
+        $sync=$this->sendFile(ROOT_PATH ."public/". $path, $dest, 'template');
+        file_put_contents("1.txt",$sync);
     }
 
     /**
@@ -217,26 +218,30 @@ class Site extends Common
         return $this->resultArray('','',$data);
     }
 
-
-    public function syncTemplate($id)
+    /**
+     * 中断前台操作,继续执行后台请求
+     * @param $id
+     * @return array
+     */
+    public function ignoreFrontend($id)
     {
         $user = $this->getSessionUser();
+        $nid = $user["user_node_id"];
+        pclose(popen("curl http://sitegroup.youdao.so/index.php/Site/syncTemplate/$id/$nid &", 'r'));
+        return $this->resultArray('模板正在同步中');
+    }
+
+    public function syncTemplate($id,$nid)
+    {
         $where=[
             "id"=>$id,
-            "node_id" => $user["user_node_id"]
+            "node_id" => $nid
         ];
         $site=\app\admin\model\Site::where($where)->find();
         if(is_null($site)){
             return $this->resultArray('模板发送失败,无此记录!','failed');
         }
-        print_r(json_encode([
-            'status' => "success",
-            'data' => '',
-            'msg' => "正在发送模板,请等待.."
-        ]));
-        $this->openObStart();
         $template=\app\admin\model\Template::get($site->template_id);
         $this->uploadTemplateFile($site->url,$template->path);
-
     }
 }
