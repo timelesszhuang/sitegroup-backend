@@ -229,6 +229,7 @@ class Site extends Common
         if(is_null($site)){
             return $this->resultArray('模板发送失败,无此记录!','failed');
         }
+        $this->openObStart();
         $template=\app\admin\model\Template::get($site->template_id);
         $this->uploadTemplateFile($site->url,$template->path);
 
