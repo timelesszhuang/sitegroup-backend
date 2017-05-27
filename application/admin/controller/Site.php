@@ -165,6 +165,7 @@ class Site extends Common
     public function uploadTemplateFile($dest,$path)
     {
         $dest = $dest.'/index.php/filemanage/uploadFile';
+        file_put_contents("2.txt",11111);
         $sync=$this->sendFile(ROOT_PATH ."public/". $path, $dest, 'template');
         file_put_contents("1.txt",$sync);
     }
@@ -227,10 +228,16 @@ class Site extends Common
     {
         $user = $this->getSessionUser();
         $nid = $user["user_node_id"];
-        pclose(popen("curl http://sitegroup.youdao.so/index.php/Site/syncTemplate/$id/$nid &", 'r'));
+        pclose(popen("curl http://www.sitegroupback.com/index.php/Site/syncTemplate/$id/$nid &", 'r'));
         return $this->resultArray('模板正在同步中');
     }
 
+    /**
+     * 同步模板
+     * @param $id
+     * @param $nid
+     * @return array
+     */
     public function syncTemplate($id,$nid)
     {
         $where=[
