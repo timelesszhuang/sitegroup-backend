@@ -146,7 +146,7 @@ class Template extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $post['path'] = self::$templatepath . $post['path'];
-        $user = (new Common())->getSessionUser();
+        $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new \app\admin\model\Template();
         $model->save($post);
@@ -156,4 +156,13 @@ class Template extends Common
         return $this->resultArray('添加失败', 'failed');
     }
 
+    /**
+     * 获取所有模板
+     * @return array
+     */
+    public function getTemplate()
+    {
+        $field="id,name as text";
+        return $this->getList((new \app\admin\model\Template),$field);
+    }
 }

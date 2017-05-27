@@ -1,42 +1,29 @@
 <?php
 
-namespace app\admin\controller;
+namespace app\user\controller;
 
+use app\admin\controller\Articletype;
 use app\common\controller\Common;
+use think\Request;
 use think\Session;
 use think\Validate;
-use think\Request;
 
 class Article extends Common
 {
     /**
-     * @return array
+     * 显示资源列表
+     *
+     * @return \think\Response
      */
     public function index()
     {
         $request=$this->getLimit();
-        $title = $this->request->get('title');
-        $article_type=$this->request->get("article_type");
+        $node_id=$this->getSiteSession('login_site');
         $where=[];
-        if(!empty($title)){
-            $where["title"] = ["like", "%$title%"];
-        }
-        if(!empty($article_type)){
-            $where['articletype_id']=$article_type;
-        }
-        $user=(new Common())->getSessionUser();
-        $where["node_id"]=$user["user_node_id"];
+        $where["node_id"]=$node_id["node_id"];
+        $where["site_id"]=$this->getSiteSession('website')["id"];
         $data = (new \app\admin\model\Article())->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
-    }
-
-    /**
-     * @param $id
-     * @return array
-     */
-    public function read($id)
-    {
-        return $this->getread((new \app\admin\model\Article),$id);
     }
 
     /**
@@ -52,7 +39,7 @@ class Article extends Common
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request $request
+     * @param  \think\Request  $request
      * @return \think\Response
      */
     public function save(Request $request)
@@ -64,8 +51,9 @@ class Article extends Common
         ];
         $validate = new Validate($rule);
         $data = $request->post();
-        $user = $this->getSessionUser();
-        $data['node_id'] = $user['user_node_id'];
+        $data['node_id'] =$this->getSiteSession('login_site')["node_id"];
+        $data["site_id"] =$this->getSiteSession('website')["id"];
+        $data["site_name"] =$this->getSiteSession('website')["site_name"];
         if(!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
@@ -74,10 +62,22 @@ class Article extends Common
         }
         return $this->resultArray("添加成功");
     }
+
+    /**
+     * 显示指定的资源
+     *
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function read($id)
+    {
+        return $this->getread((new \app\admin\model\Article),$id);
+    }
+
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return \think\Response
      */
     public function edit($id)
@@ -88,29 +88,32 @@ class Article extends Common
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request $request
-     * @param  int $id
+     * @param  \think\Request  $request
+     * @param  int  $id
      * @return \think\Response
      */
     public function update(Request $request, $id)
     {
-
         $rule = [
             ["title", "require", "请输入标题"],
             ["content", "require", "请输入内容"],
             ["articletype_id", "require", "请选择文章分类"],
         ];
-        $data = $request->put();
         $validate = new Validate($rule);
-        if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'failed');
+        $data = $request->post();
+        $data['node_id'] =$this->getSiteSession('login_site')["node_id"];
+        $data["site_id"] =$this->getSiteSession('website')["id"];
+        $data["site_name"] =$this->getSiteSession('website')["site_name"];
+        if(!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
         }
         return $this->publicUpdate((new \app\admin\model\Article),$data,$id);
     }
 
     /**
      * 删除指定资源
-     * @param  int $id
+     *
+     * @param  int  $id
      * @return \think\Response
      */
     public function delete($id)
@@ -119,20 +122,12 @@ class Article extends Common
     }
 
     /**
-     * 同步文章
-     * @param $id
+     * 获取文章类型
      * @return array
      */
-    public function syncArticle($id)
+    public function getArticleType()
     {
-        $is_sync=$this->request->post('is_sync');
-        $user=(new Common())->getSessionUser();
-        $where["node_id"]=$user["user_node_id"];
-        $where["id"]=$id;
-        if((new \app\admin\model\Article)->save(["is_sync"=>$is_sync],$where)){
-            return $this->resultArray("修改成功");
-        }
-        return $this->resultArray("添加失败",'failed');
+        return (new Articletype)->getType();
     }
 
     /**
@@ -141,31 +136,15 @@ class Article extends Common
      */
     public function getErrorInfo()
     {
-        $user=(new Common())->getSessionUser();
+        $site_id=Session::get("website")["id"];
+        $node_id=Session::get('login_site')["node_id"];
         $request=$this->getLimit();
         $where=[
-            "node_id"=>$user["user_node_id"],
+            "node_id"=>$node_id,
+            "site_id"=>$site_id
         ];
         $data = (new \app\common\model\SiteErrorInfo())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
-    }
-
-    /**
-     * 获取当前节点有多少没有查看的日志
-     * @return array
-     */
-    public function getErrorStatus()
-    {
-        $user=(new Common())->getSessionUser();
-        $where=[
-            "node_id"=>$user["user_node_id"],
-            "status"=>20
-        ];
-        $count = (new \app\common\model\SiteErrorInfo())->where($where)->count();
-        if($count<1){
-            $count="无";
-        }
-        return $this->resultArray('', '', $count);
     }
 
     /**
@@ -176,9 +155,12 @@ class Article extends Common
     public function changeErrorStatus($id)
     {
         $user=(new Common())->getSessionUser();
+        $node_id=Session::get('login_site')["node_id"];
+        $site_id=Session::get("website")["id"];
         $where=[
             "id"=>$id,
-            "node_id"=>$user["user_node_id"],
+            "node_id"=>$node_id,
+            "site_id"=>$site_id
         ];
         $site = \app\common\model\SiteErrorInfo::where($where)->find();
         $site->status=10;
@@ -186,5 +168,25 @@ class Article extends Common
             return $this->resultArray('修改失败', 'failed');
         }
         return $this->resultArray('修改成功');
+    }
+
+    /**
+     * 获取当前节点有多少没有查看的日志
+     * @return array
+     */
+    public function getErrorStatus()
+    {
+        $user=(new Common())->getSessionUser();
+        $site_id=Session::get("website")["id"];
+        $where=[
+            "node_id"=>$user["user_node_id"],
+            "status"=>20,
+            "site_id"=>$site_id
+        ];
+        $count = (new \app\common\model\SiteErrorInfo())->where($where)->count();
+        if($count<1){
+            $count="无";
+        }
+        return $this->resultArray('', '', $count);
     }
 }

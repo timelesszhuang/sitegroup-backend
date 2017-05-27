@@ -38,16 +38,21 @@ Route::rule('articletype/gettype', 'admin/Articletype/getType');
 
 //文章
 Route::resource('article', 'admin/Article');
+Route::post('article/sync','admin/Article/syncArticle');
+Route::get('article/getErrorInfo','admin/Article/getErrorInfo');
+Route::get('article/getErrorStatus','admin/Article/getErrorStatus');
+Route::post('article/changeErrorStatus/:id','admin/Article/changeErrorStatus');
 
 //菜单
 Route::resource('menu', 'admin/Menu');
+Route::get('menu/getMenu','admin/Menu/getMenu');
 
 //问答
 Route::resource('question', 'admin/Question');
 
 //问答分类
 Route::resource('questionType', 'admin/Questiontype');
-Route::get('questionType/list', 'admin/Questiontype/getlist');
+Route::get('questionType/list', 'admin/Questiontype/getQuestionType');
 
 //段落文章
 Route::resource('scatteredArticle', 'admin/Scatteredarticle');
@@ -61,11 +66,14 @@ Route::resource('code', 'admin/Code');
 
 //域名管理
 Route::resource('domain', 'admin/domain');
+Route::get('domain/getDomain','admin/domain/getDomain');
+Route::get('domain/getOffice','admin/domain/getOffice');
 
 //模板相关操作
 Route::resource('template', 'admin/template');
 Route::post('template/uploadTemplate', 'admin/template/uploadTemplate');
 Route::post('template/addTemplate', 'admin/template/addTemplate');
+Route::get('template/getTemplate','admin/Template/getTemplate');
 
 //活动相关操作
 Route::resource('activity', 'admin/activity');
@@ -76,21 +84,52 @@ Route::put('activity/changeActivityStatus', 'admin/activity/changeActivityStatus
 
 //联系方式
 Route::resource('contactway', 'admin/Contactway');
+Route::get('contactway/getContactway','admin/Contactway/getContactway');
 
 //站点用户
 Route::resource('siteuser', 'admin/Siteuser');
 Route::put('siteuser/enable', 'admin/Siteuser/enable');
+Route::get('siteuser/getUsers','admin/Siteuser/getUsers');
 
 //站点分类
 Route::resource('sitetype', 'admin/Sitetype');
+Route::get('sitetype/getSiteType','admin/Sitetype/getSiteType');
 
 //站点管理
 Route::resource('Site', 'admin/Site');
 Route::get('Site/uploadTemplateFile', 'admin/Site/uploadTemplateFile');
+Route::post('Site/setMainSite','admin/Site/setMainSite');
+Route::put('Site/saveFtp/:id','admin/Site/saveFtp');
+Route::get('Site/mobileSite','admin/Site/mobileSite');
+Route::get('Site/syncTemplate/:id','admin/Site/syncTemplate');
 
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');
 
+//友情链接
+Route::resource('links','admin/Links');
+Route::get('links/getLinks','admin/Links/getLinks');
+
+
+
+
+
+//小站点相关--------------------------------------------------------
+//小站点登录后的首页操作
+Route::post('user/siteInfo','user/index/siteInfo');
+
+//小站点文章
+Route::resource('user/article','user/Article');
+Route::get('user/articleType','user/Article/getArticleType');
+Route::get('user/getErrorInfo','user/Article/getErrorInfo');
+Route::post('user/changeErrorStatus/:id','user/Article/changeErrorStatus');
+Route::get('user/getErrorStatus/','user/Article/getErrorStatus');
+
+//问答
+Route::resource('user/question','user/question');
+
+//页面tdk修改
+Route::resource('user/pageInfo','user/PageInfo');
 
 return [
     '__pattern__' => [

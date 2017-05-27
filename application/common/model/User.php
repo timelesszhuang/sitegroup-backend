@@ -39,7 +39,7 @@ class User extends Model
      */
     public function checkUser($username, $pwd)
     {
-        $user_info = $this::where(["user_name" => $username])->find();
+        $user_info = self::where(["user_name" => $username])->find();
         if (empty($user_info)) {
             return ["用户名错误", "failed", ''];
         }
@@ -52,7 +52,7 @@ class User extends Model
         $private = Config::get("crypt.cookiePrivate");
         $user_info["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
         $this->setSession($user_info_arr);
-        return ["登录成功", '', $user_info];
+        return ["登录成功", '', $user_info,''];
     }
 
 

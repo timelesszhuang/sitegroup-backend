@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use app\common\controller\Common;
 use think\Request;
+use think\Session;
 use think\Validate;
 
 /**
@@ -13,11 +14,6 @@ use think\Validate;
  */
 class Site extends Common
 {
-
-    //该目录是相对于 public  使用 ROOT_PATH 需 手动追加 public/ 目录
-    static $activitypath = 'upload/activity/zipactivity';
-
-
     /**
      * 显示资源列表
      * @return \think\Response
@@ -26,14 +22,14 @@ class Site extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $name = $this->request->get('name');
+        $site_name = $this->request->get('site_name');
         $where = [];
-        if (!empty($name)) {
-            $where["name"] = ["like", "%$name%"];
+        if (!empty($site_name)) {
+            $where["site_name"] = ["like", "%$site_name%"];
         }
         $user = (new Common())->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        $data = (new \app\admin\model\Activity())->getActivity($request["limit"], $request["rows"], $where);
+        $data = (new \app\admin\model\Site())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
@@ -55,7 +51,39 @@ class Site extends Common
      */
     public function save(Request $request)
     {
+        $rule = [
+            ['site_name','require','请填写网站名称'],
+            ['menu', 'require', "请选择菜单"],
+            ['template_id','require','请选择模板'],
+            ['support_hotline','require','请填写电话号码'],
+            ['domain_id','require','请选择域名'],
+            ['domain','require','请选择域名'],
+            ['site_type','require','请选择网站类型'],
+            ['user_id',"require","请选择用户"],
+            ["user_name","require","请选择用户名"],
+            ["site_type_name","require","请填写网站类型名称"],
+            ["keyword_ids","require","请填写关键字"],
+            ["url","require","请输入url"]
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'failed');
+        }
+        if(!$this->searchHttp($data["url"])){
+            $data["url"]="http://".$data["url"];
+        }
+        if(!empty($data["link_id"])){
+            $data["link_id"]=",".implode(",",$data["link_id"]).",";
+        }
+        $data["node_id"] = $this->getSessionUser()['user_node_id'];
+        $data["menu"]="," . implode(",",$data["menu"]) . ",";
+        $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
 
+        if (!\app\admin\model\Site::create($data)) {
+            return $this->resultArray('添加失败', 'failed');
+        }
+        return $this->resultArray('添加成功');
     }
 
     /**
@@ -66,7 +94,7 @@ class Site extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Activity), $id);
+        return $this->getread((new \app\admin\model\Site), $id);
     }
 
     /**
@@ -90,15 +118,33 @@ class Site extends Common
     public function update(Request $request, $id)
     {
         $rule = [
-            ['name', "require", "请填写活动名"],
-            ['detail', 'require', "请填写活动信息"],
+            ['site_name','require','请填写网站名称'],
+            ['menu', 'require', "请选择菜单"],
+            ['template_id','require','请选择模板'],
+            ['support_hotline','require','请填写电话号码'],
+            ['domain_id','require','请选择域名'],
+            ['domain','require','请选择域名'],
+            ['site_type','require','请选择网站类型'],
+            ["site_type_name","require","请填写网站类型名称"],
+            ["keyword_ids","require","请填写关键字"],
+            ["url","require","请输入url"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
-        if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'failed');
+        $user=$this->getSessionUser();
+        $where=[
+            "id"=>$id,
+            "node_id"=>$user["user_node_id"]
+        ];
+        if(!empty($data["link_id"])){
+            $data["link_id"]=",".implode(",",$data["link_id"]).",";
         }
-        return $this->publicUpdate((new \app\admin\model\Activity()), $data, $id);
+        $data["menu"]="," . implode(",",$data["menu"]) . ",";
+        $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
+        if (!(new \app\admin\model\Site)->save($data,$where)) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
     }
 
     /**
@@ -116,69 +162,81 @@ class Site extends Common
      * 传输模板文件到站点服务器
      * @access public
      */
-    public function uploadTemplateFile()
+    public function uploadTemplateFile($dest,$path)
     {
-        $dest = 'http://local.sitegroup.com/index.php/testsendFile/index';
-        $this->sendFile(ROOT_PATH . 'public/upload/20170427/1.csv', $dest, 'template');
+        $dest = $dest.'/index.php/filemanage/uploadFile';
+        $this->sendFile(ROOT_PATH ."public/". $path, $dest, 'template');
     }
 
-
     /**
-     * 上传关键词文件文件
+     * 修改为主站
+     * @param $id
      * @return array
      */
-    public function uploadActivity()
+    public function setMainSite($id)
     {
-        $file = request()->file('file_name');
-        $info = $file->move(ROOT_PATH . 'public/' . self::$activitypath);
-        //要解压到的位置
-        $dest = 'upload/activity/activity/';
-//      $path = 'upload/activity/zipactivity/demo.zip';
-        $file_savename = $info->getSaveName();
-        $pathinfo = pathinfo($file_savename);
-        $file_name = $pathinfo['filename'];
-        $demo_path = $dest . $file_name;
-        $status = '文件解压缩失败';
-        //解压缩主题文件到指定的目录中
-        if ($this->unzipFile(self::$activitypath . '/' . $file_savename, ROOT_PATH . 'public/' . $dest . $file_name)) {
-            $status = '文件解压缩成功';
+        $main_site=$this->request->post("main_site");
+        if(empty($main_site)){
+            return $this->resultArray('请选择是否是主站','failed');
         }
-        if ($info) {
-            return $this->resultArray('上传成功', '', ['code_path' => $file_savename, 'demo_path' => $demo_path, 'status' => $status]);
-        } else {
-            // 上传失败获取错误信息
-            return $this->resultArray('上传失败', 'failed', $info->getError());
-        }
+        $data=["main_site"=>$main_site];
+        return $this->publicUpdate((new \app\admin\model\Site()),$data,$id);
     }
 
-
     /**
-     * 根据上传的文件名 导入关键词
-     * @param Request $request
+     * 修改ftp信息
+     * @param $id
      * @return array
-     * @author guozhen
      */
-    public function addActivity(Request $request)
+    public function saveFtp($id)
     {
-        $post = $request->post();
-        $rule = [
-            ["name", "require", "请填写活动/创意名名"],
-            ["detail", "require", "请填写活动/创意详情"],
-            ["code_path", "require", "请先上传代码"],
+        $user=(new Common())->getSessionUser();
+        $where=[
+            "id"=>$id,
+            "node_id"=>$user["user_node_id"],
         ];
-        $validate = new Validate($rule);
-        if (!$validate->check($post)) {
-            return $this->resultArray($validate->getError(), 'failed');
+        $data=$this->request->put();
+        if(!\app\admin\model\Site::where($where)->update($data)){
+            return $this->resultArray('修改失败','failed');
         }
-        $post['code_path'] = self::$activitypath . '/' . $post['code_path'];
-        $user = (new Common())->getSessionUser();
-        $post["node_id"] = $user["user_node_id"];
-        $model = new \app\admin\model\Activity();
-        $model->save($post);
-        if ($model->id) {
-            return $this->resultArray("添加成功");
-        }
-        return $this->resultArray('添加失败', 'failed');
+        return $this->resultArray('修改成功');
     }
 
+    /**
+     * 获取手机网站
+     * @return false|\PDOStatement|string|\think\Collection
+     */
+    public function mobileSite()
+    {
+        $user=(new Common())->getSessionUser();
+        $where=[
+            "is_mobile"=>20,
+            "node_id"=>$user["user_node_id"],
+            ];
+        $data=(new \app\admin\model\Site)->where($where)->field("id,site_name as text")->select();
+        return $this->resultArray('','',$data);
+    }
+
+
+    public function syncTemplate($id)
+    {
+        $user = $this->getSessionUser();
+        $where=[
+            "id"=>$id,
+            "node_id" => $user["user_node_id"]
+        ];
+        $site=\app\admin\model\Site::where($where)->find();
+        if(is_null($site)){
+            return $this->resultArray('模板发送失败,无此记录!','failed');
+        }
+        print_r(json_encode([
+            'status' => "success",
+            'data' => '',
+            'msg' => "正在发送模板,请等待.."
+        ]));
+        $this->openObStart();
+        $template=\app\admin\model\Template::get($site->template_id);
+        $this->uploadTemplateFile($site->url,$template->path);
+
+    }
 }

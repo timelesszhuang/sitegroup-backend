@@ -107,8 +107,8 @@ class Articletype extends Common
 
 
     /**
+     * 获取文章分类
      * @return array
-     *
      */
     public function getType(){
         $where=[];

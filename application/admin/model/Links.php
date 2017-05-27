@@ -4,7 +4,7 @@ namespace app\admin\model;
 
 use think\Model;
 
-class ScatteredArticle extends Model
+class Links extends Model
 {
     //只读字段
     protected $readonly=["node_id"];
@@ -19,7 +19,7 @@ class ScatteredArticle extends Model
     public function getAll($limit, $rows, $where)
     {
         $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->order('id','desc')->select();
+        $data = $this->limit($limit, $rows)->where($where)->field('update_time',true)->order('id','desc')->select();
         return [
             "total" => $count,
             "rows" => $data

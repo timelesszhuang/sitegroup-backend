@@ -8,7 +8,9 @@
 namespace app\common\controller;
 
 
+use app\admin\model\Site;
 use app\admin\model\SystemConfig;
+use app\common\model\SiteErrorInfo;
 use app\common\model\User;
 use think\Controller;
 use think\Session;
@@ -130,7 +132,7 @@ class Common extends Controller
     public function checkSession()
     {
         $user = $this->getSessionUser();
-        if (empty($user_id)) {
+        if (empty($user)) {
             exit(json_encode($this->resultArray('请先登录', 'failed')));
         }
 
@@ -177,6 +179,10 @@ class Common extends Controller
             $arr["user_commpany_name"] = Session::get("admin_name");
             $arr["user_type"] = Session::get("admin_type");
             $arr["user_node_id"] = Session::get("admin_node_id");
+        } else if($module == "user"){
+            $arr["user_id"] = Session::get("login_site")["id"];
+            $arr["user_name"] = Session::get("login_site")["name"];
+            $arr["user_node_id"] = Session::get("login_site")["node_id"];
         }
         return $arr;
     }
@@ -265,7 +271,6 @@ class Common extends Controller
     }
 
 
-
     /**
      * curl 传输文件操作
      * @access public
@@ -296,5 +301,52 @@ class Common extends Controller
 
     }
 
+    /**
+     * 统一获取列表
+     * @param $model
+     * @param $field
+     * @return array
+     */
+    public function getList($model, $field)
+    {
+        $user = $this->getSessionUser();
+        $where = [
+            "node_id" => $user["user_node_id"]
+        ];
+        $data = $model->field($field)->where($where)->select();
+        return $this->resultArray('', '', $data);
+    }
+
+    /**
+     * 获取小站点的session
+     * @param $item
+     * @return mixed
+     */
+    public function getSiteSession($item)
+    {
+        $arr = Session::get($item);
+        return $arr;
+    }
+
+    /**
+     * 匹配http
+     * @param $http
+     * @return string
+     */
+    public function searchHttp($http)
+    {
+        return strrchr("http",$http);
+    }
+
+    /**
+     * 开启缓冲区并刷新数据到前台
+     */
+    public function openObStart()
+    {
+        ignore_user_abort(true);//在关闭连接后，继续运行php脚本
+        /******** background process ********/
+        set_time_limit(0); //no time limit，不设置超时时间（根据实际情况使用）
+
+    }
 
 }

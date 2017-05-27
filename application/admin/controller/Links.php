@@ -7,7 +7,7 @@ use think\Request;
 use app\common\controller\Common;
 use think\Validate;
 
-class Contactway extends Common
+class Links extends Common
 {
     /**
      * 显示资源列表
@@ -17,14 +17,14 @@ class Contactway extends Common
     public function index()
     {
         $limits = $this->getLimit();
-        $detail = $this->request->get('detail');
+        $domain = $this->request->get('domain');
         $where = [];
-        if (!empty($detail)) {
-            $where['detail'] = $detail;
+        if (!empty($domain)) {
+            $where['domain'] = ["like", "%$domain%"];
         }
         $user = (new Common)->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        return $this->resultArray('', '', (new \app\admin\model\Contactway())->getAll($limits['limit'], $limits['rows'], $where));
+        return $this->resultArray('', '', (new \app\admin\model\Links)->getAll($limits['limit'], $limits['rows'], $where));
     }
 
     /**
@@ -46,8 +46,8 @@ class Contactway extends Common
     public function save(Request $request)
     {
         $rule = [
-            ['detail','require','请填写描述'],
-            ['html', 'require', "请填写代码"]
+            ['name', "require", "请填写站点名称"],
+            ['domain', 'require', "请填写域名"],
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -55,7 +55,7 @@ class Contactway extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
-        if (!\app\admin\model\Contactway::create($data)) {
+        if (!\app\admin\model\Links::create($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
@@ -69,7 +69,7 @@ class Contactway extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Contactway),$id);
+        return $this->getread((new \app\admin\model\Links),$id);
     }
 
     /**
@@ -80,7 +80,7 @@ class Contactway extends Common
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -93,15 +93,15 @@ class Contactway extends Common
     public function update(Request $request, $id)
     {
         $rule = [
-            ['detail','require','请填写描述'],
-            ['html', 'require', "请填写代码"]
+            ['name', "require", "请填写站点名称"],
+            ['domain', 'require', "请填写域名"],
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        return $this->publicUpdate((new \app\admin\model\Contactway),$data,$id);
+        return $this->publicUpdate((new \app\admin\model\Links),$data,$id);
     }
 
     /**
@@ -112,16 +112,20 @@ class Contactway extends Common
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new \app\admin\model\Contactway),$id);
+        return $this->deleteRecord((new \app\admin\model\Links),$id);
     }
 
     /**
-     * 获取所有域名
+     * 获取所有链接
      * @return array
      */
-    public function getContactway()
+    public function getLinks()
     {
-        $field="id,detail as text";
-        return (new Common())->getList((new \app\admin\model\Contactway),$field);
+        $user=$this->getSessionUser();
+        $where=[
+            "node_id"=>$user["user_node_id"],
+        ];
+        $data=(new \app\admin\model\Links)->where($where)->field("id,name as text")->select();
+        return $this->resultArray('','',$data);
     }
 }

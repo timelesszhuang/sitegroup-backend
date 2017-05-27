@@ -140,4 +140,14 @@ class Siteuser extends Common
         }
         return $this->resultArray('修改成功');
     }
+
+    /**
+     * 获取所有用户
+     * @return array
+     */
+    public function getUsers()
+    {
+        $field="id,name as text";
+        return (new Common())->getList((new \app\admin\model\SiteUser),$field);
+    }
 }
