@@ -146,7 +146,7 @@ class Template extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $post['path'] = self::$templatepath . $post['path'];
-        $user = (new Common())->getSessionUser();
+        $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new \app\admin\model\Template();
         $model->save($post);
@@ -168,7 +168,12 @@ class Template extends Common
 
     public function syncTemplate($id)
     {
-       $site=\app\admin\model\Site::get($id);
+        $user = $this->getSessionUser();
+        $where=[
+            "id"=>55,
+            "node_id" => $user["user_node_id"]
+        ];
+       $site=\app\admin\model\Site::where($where)->find();
        dump($site);die;
 
     }
