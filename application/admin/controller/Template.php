@@ -163,7 +163,14 @@ class Template extends Common
     public function getTemplate()
     {
         $field="id,name as text";
-        return (new Common())->getList((new \app\admin\model\Template),$field);
+        return $this->getList((new \app\admin\model\Template),$field);
     }
+
+    public function syncTemplate($id)
+    {
+        $site=Site::get($id);
+
+    }
+
 
 }

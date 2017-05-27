@@ -8,6 +8,7 @@
 namespace app\common\controller;
 
 
+use app\admin\model\Site;
 use app\admin\model\SystemConfig;
 use app\common\model\SiteErrorInfo;
 use app\common\model\User;
@@ -336,4 +337,5 @@ class Common extends Controller
     {
         return strrchr("http",$http);
     }
+
 }
