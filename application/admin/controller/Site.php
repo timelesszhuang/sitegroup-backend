@@ -165,9 +165,8 @@ class Site extends Common
     public function uploadTemplateFile($dest,$path)
     {
         $dest = $dest.'/index.php/filemanage/uploadFile';
-        file_put_contents("2.txt",11111);
         $sync=$this->sendFile(ROOT_PATH ."public/". $path, $dest, 'template');
-        file_put_contents("1.txt",$sync);
+        return $sync;
     }
 
     /**
@@ -249,6 +248,10 @@ class Site extends Common
             return $this->resultArray('模板发送失败,无此记录!','failed');
         }
         $template=\app\admin\model\Template::get($site->template_id);
-        $this->uploadTemplateFile($site->url,$template->path);
+        $upload=$this->uploadTemplateFile($site->url,$template->path);
+        if($upload){
+            $site->template_status=10;
+            $site->save();
+        }
     }
 }
