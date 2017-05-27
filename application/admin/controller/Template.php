@@ -168,7 +168,8 @@ class Template extends Common
 
     public function syncTemplate($id)
     {
-        $site=Site::get($id);
+       $site=\app\admin\model\Site::get($id);
+       dump($site);die;
 
     }
 
