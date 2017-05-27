@@ -74,7 +74,6 @@ Route::resource('template', 'admin/template');
 Route::post('template/uploadTemplate', 'admin/template/uploadTemplate');
 Route::post('template/addTemplate', 'admin/template/addTemplate');
 Route::get('template/getTemplate','admin/Template/getTemplate');
-Route::get('template/syncTemplate/:id','admin/Template/syncTemplate');
 
 //活动相关操作
 Route::resource('activity', 'admin/activity');
@@ -102,6 +101,7 @@ Route::get('Site/uploadTemplateFile', 'admin/Site/uploadTemplateFile');
 Route::post('Site/setMainSite','admin/Site/setMainSite');
 Route::put('Site/saveFtp/:id','admin/Site/saveFtp');
 Route::get('Site/mobileSite','admin/Site/mobileSite');
+Route::get('Site/syncTemplate/:id','admin/Site/syncTemplate');
 
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');

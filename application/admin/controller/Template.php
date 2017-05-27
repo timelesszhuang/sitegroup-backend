@@ -165,18 +165,4 @@ class Template extends Common
         $field="id,name as text";
         return $this->getList((new \app\admin\model\Template),$field);
     }
-
-    public function syncTemplate($id)
-    {
-        $user = $this->getSessionUser();
-        $where=[
-            "id"=>55,
-            "node_id" => $user["user_node_id"]
-        ];
-       $site=\app\admin\model\Site::where($where)->find();
-       dump($site);die;
-
-    }
-
-
 }

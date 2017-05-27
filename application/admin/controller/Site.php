@@ -162,10 +162,10 @@ class Site extends Common
      * 传输模板文件到站点服务器
      * @access public
      */
-    public function uploadTemplateFile()
+    public function uploadTemplateFile($dest,$path)
     {
-        $dest = 'http://local.sitegroup.com/index.php/testsendFile/index';
-        $this->sendFile(ROOT_PATH . 'public/upload/20170427/1.csv', $dest, 'template');
+        $dest = $dest.'/index.php/filemanage/uploadFile';
+        $this->sendFile(ROOT_PATH ."public/". $path, $dest, 'template');
     }
 
     /**
@@ -215,5 +215,22 @@ class Site extends Common
             ];
         $data=(new \app\admin\model\Site)->where($where)->field("id,site_name as text")->select();
         return $this->resultArray('','',$data);
+    }
+
+
+    public function syncTemplate($id)
+    {
+        $user = $this->getSessionUser();
+        $where=[
+            "id"=>$id,
+            "node_id" => $user["user_node_id"]
+        ];
+        $site=\app\admin\model\Site::where($where)->find();
+        if(is_null($site)){
+            return $this->resultArray('模板发送失败,无此记录!','failed');
+        }
+        $template=\app\admin\model\Template::get($site->template_id);
+        $this->uploadTemplateFile($site->url,$template->path);
+
     }
 }
