@@ -230,7 +230,7 @@ class Site extends Common
             return $this->resultArray('模板发送失败,无此记录!','failed');
         }
         $this->openObStart();
-        printf([
+        print_r([
             'status' => "success",
             'data' => '',
             'msg' => "正在发送模板,请等待.."
