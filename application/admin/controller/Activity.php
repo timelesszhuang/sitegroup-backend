@@ -30,7 +30,7 @@ class Activity extends Common
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
         }
-        $user = (new Common())->getSessionUser();
+        $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $data = (new \app\admin\model\Activity())->getActivity($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
@@ -172,7 +172,7 @@ class Activity extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $post['code_path'] = self::$activitypath . '/' . $post['code_path'];
-        $user = (new Common())->getSessionUser();
+        $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new \app\admin\model\Activity();
         $model->save($post);

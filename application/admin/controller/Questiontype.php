@@ -21,7 +21,7 @@ class Questiontype extends Common
         if(!empty($name)){
             $where["name"] = ["like", "%$name%"];
         }
-        $user=(new Common())->getSessionUser();
+        $user=$this->getSessionUser();
         $where["node_id"]=$user["user_node_id"];
         $data = (new \app\admin\model\QuestionType())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
@@ -120,6 +120,6 @@ class Questiontype extends Common
     public function getQuestionType()
     {
         $field="id,name";
-        return (new Common())->getList((new \app\admin\model\QuestionType()),$field);
+        return $this->getList((new \app\admin\model\QuestionType()),$field);
     }
 }

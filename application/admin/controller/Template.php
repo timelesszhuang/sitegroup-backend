@@ -24,7 +24,7 @@ class Template extends Common
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
         }
-        $user = (new Common())->getSessionUser();
+        $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $data = (new \app\admin\model\Template())->getTemplate($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);

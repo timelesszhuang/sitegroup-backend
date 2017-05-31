@@ -21,7 +21,7 @@ class Siteuser extends Common
         if (!empty($name)) {
             $where['name'] = $name;
         }
-        $user = (new Common)->getSessionUser();
+        $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         return $this->resultArray('', '', (new \app\admin\model\SiteUser())->getAll($limits['limit'], $limits['rows'], $where));
     }
@@ -148,6 +148,6 @@ class Siteuser extends Common
     public function getUsers()
     {
         $field="id,name as text";
-        return (new Common())->getList((new \app\admin\model\SiteUser),$field);
+        return $this->getList((new \app\admin\model\SiteUser),$field);
     }
 }
