@@ -25,6 +25,7 @@ class Common extends Controller
      */
     public function __construct()
     {
+        $this->checkSession();
         parent::__construct();
     }
 
