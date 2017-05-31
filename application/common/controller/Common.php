@@ -134,7 +134,7 @@ class Common extends Controller
     public function checkSession()
     {
         $user = $this->getSessionUser();
-        if (empty($user)) {
+        if (empty($user["user_id"])) {
             exit(json_encode($this->resultArray('请先登录', 'failed')));
         }
 
@@ -170,22 +170,26 @@ class Common extends Controller
         $request=Request::instance();
         $module = $request->module();
         $arr = [];
-        if ($module == "sysadmin") {
-            $arr["user_id"] = Session::get("sys_id");
-            $arr["user_name"] = Session::get("sys_user_name");
-            $arr["user_commpany_name"] = Session::get("sys_name");
-            $arr["user_type"] = Session::get("sys_type");
-            $arr["user_node_id"] = Session::get("sys_node_id");
-        } else if ($module == "admin") {
-            $arr["user_id"] = Session::get("admin_id");
-            $arr["user_name"] = Session::get("admin_user_name");
-            $arr["user_commpany_name"] = Session::get("admin_name");
-            $arr["user_type"] = Session::get("admin_type");
-            $arr["user_node_id"] = Session::get("admin_node_id");
-        } else if($module == "user"){
-            $arr["user_id"] = Session::get("login_site")["id"];
-            $arr["user_name"] = Session::get("login_site")["name"];
-            $arr["user_node_id"] = Session::get("login_site")["node_id"];
+        switch($module){
+            case "sysadmin":
+                $arr["user_id"] = Session::get("sys_id");
+                $arr["user_name"] = Session::get("sys_user_name");
+                $arr["user_commpany_name"] = Session::get("sys_name");
+                $arr["user_type"] = Session::get("sys_type");
+                $arr["user_node_id"] = Session::get("sys_node_id");
+                break;
+            case "admin":
+                $arr["user_id"] = Session::get("admin_id");
+                $arr["user_name"] = Session::get("admin_user_name");
+                $arr["user_commpany_name"] = Session::get("admin_name");
+                $arr["user_type"] = Session::get("admin_type");
+                $arr["user_node_id"] = Session::get("admin_node_id");
+                break;
+            case "user":
+                $arr["user_id"] = Session::get("login_site")["id"];
+                $arr["user_name"] = Session::get("login_site")["name"];
+                $arr["user_node_id"] = Session::get("login_site")["node_id"];
+                break;
         }
         return $arr;
     }
