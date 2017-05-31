@@ -13,6 +13,7 @@ use app\admin\model\SystemConfig;
 use app\common\model\SiteErrorInfo;
 use app\common\model\User;
 use think\Controller;
+use think\Request;
 use think\Session;
 use think\Validate;
 
@@ -166,7 +167,8 @@ class Common extends Controller
      */
     public function getSessionUser()
     {
-        $module = $this->request->module();
+        $request=Request::instance();
+        $module = $request->module();
         $arr = [];
         if ($module == "sysadmin") {
             $arr["user_id"] = Session::get("sys_id");
