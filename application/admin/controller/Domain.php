@@ -22,7 +22,7 @@ class Domain extends Common
         if (!empty($domain)) {
             $where['domain'] = ["like", "%$domain%"];
         }
-        $user = (new Common)->getSessionUser();
+        $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         return $this->resultArray('', '', (new \app\admin\model\Domain())->getAll($limits['limit'], $limits['rows'], $where));
     }
@@ -126,7 +126,7 @@ class Domain extends Common
     public function getDomain()
     {
         $field="id,domain as text";
-        return (new Common())->getList((new \app\admin\model\Domain),$field);
+        return $this->getList((new \app\admin\model\Domain),$field);
     }
 
     /**

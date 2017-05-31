@@ -26,7 +26,7 @@ class Question extends Common
         if(!empty($type_id)){
             $where['type_id']=$type_id;
         }
-        $user = (new Common)->getSessionUser();
+        $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         return $this->resultArray('', '', (new \app\admin\model\Question)->getAll($limits['limit'], $limits['rows'], $where));
     }

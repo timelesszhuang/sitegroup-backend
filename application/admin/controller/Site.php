@@ -27,7 +27,7 @@ class Site extends Common
         if (!empty($site_name)) {
             $where["site_name"] = ["like", "%$site_name%"];
         }
-        $user = (new Common())->getSessionUser();
+        $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $data = (new \app\admin\model\Site())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
@@ -209,7 +209,7 @@ class Site extends Common
      */
     public function mobileSite()
     {
-        $user=(new Common())->getSessionUser();
+        $user=$this->getSessionUser();
         $where=[
             "is_mobile"=>20,
             "node_id"=>$user["user_node_id"],

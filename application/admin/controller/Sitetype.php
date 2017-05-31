@@ -22,7 +22,7 @@ class Sitetype extends Common
         if (!empty($name)) {
             $where['name'] = ["like","%$name%"];
         }
-        $user = (new Common)->getSessionUser();
+        $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         return $this->resultArray('', '', (new \app\admin\model\SiteType())->getAll($limits['limit'], $limits['rows'], $where));
     }
@@ -124,7 +124,7 @@ class Sitetype extends Common
     public function getSiteType()
     {
         $field="id,name as text";
-        return (new Common())->getList((new \app\admin\model\SiteType),$field);
+        return $this->getList((new \app\admin\model\SiteType),$field);
     }
 
 }

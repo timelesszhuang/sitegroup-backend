@@ -22,7 +22,7 @@ class Contactway extends Common
         if (!empty($detail)) {
             $where['detail'] = $detail;
         }
-        $user = (new Common)->getSessionUser();
+        $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         return $this->resultArray('', '', (new \app\admin\model\Contactway())->getAll($limits['limit'], $limits['rows'], $where));
     }
@@ -122,6 +122,6 @@ class Contactway extends Common
     public function getContactway()
     {
         $field="id,detail as text";
-        return (new Common())->getList((new \app\admin\model\Contactway),$field);
+        return $this->getList((new \app\admin\model\Contactway),$field);
     }
 }

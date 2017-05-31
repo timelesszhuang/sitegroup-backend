@@ -23,7 +23,7 @@ class Articletype extends Common
         if(!empty($id)){
             $where["id"]=$id;
         }
-        $user=(new Common())->getSessionUser();
+        $user=$this->getSessionUser();
         $where["node_id"]=$user["user_node_id"];
         $data = (new \app\admin\model\Articletype())->getArticletype($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
@@ -112,7 +112,7 @@ class Articletype extends Common
      */
     public function getType(){
         $where=[];
-        $user=(new Common())->getSessionUser();
+        $user=$this->getSessionUser();
         $where["node_id"]=$user["user_node_id"];
         $data = (new \app\admin\model\Articletype())->getArttype($where);
         return $this->resultArray('', '', $data);

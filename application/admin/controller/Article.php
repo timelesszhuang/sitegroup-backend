@@ -24,7 +24,7 @@ class Article extends Common
         if(!empty($article_type)){
             $where['articletype_id']=$article_type;
         }
-        $user=(new Common())->getSessionUser();
+        $user=$this->getSessionUser();
         $where["node_id"]=$user["user_node_id"];
         $data = (new \app\admin\model\Article())->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
@@ -126,7 +126,7 @@ class Article extends Common
     public function syncArticle($id)
     {
         $is_sync=$this->request->post('is_sync');
-        $user=(new Common())->getSessionUser();
+        $user=$this->getSessionUser();
         $where["node_id"]=$user["user_node_id"];
         $where["id"]=$id;
         if((new \app\admin\model\Article)->save(["is_sync"=>$is_sync],$where)){
@@ -141,7 +141,7 @@ class Article extends Common
      */
     public function getErrorInfo()
     {
-        $user=(new Common())->getSessionUser();
+        $user=$this->getSessionUser();
         $request=$this->getLimit();
         $where=[
             "node_id"=>$user["user_node_id"],
@@ -156,7 +156,7 @@ class Article extends Common
      */
     public function getErrorStatus()
     {
-        $user=(new Common())->getSessionUser();
+        $user=$this->getSessionUser();
         $where=[
             "node_id"=>$user["user_node_id"],
             "status"=>20
@@ -175,7 +175,7 @@ class Article extends Common
      */
     public function changeErrorStatus($id)
     {
-        $user=(new Common())->getSessionUser();
+        $user=$this->getSessionUser();
         $where=[
             "id"=>$id,
             "node_id"=>$user["user_node_id"],

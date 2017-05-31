@@ -25,7 +25,7 @@ class Scatteredarticle extends Common
         if(!empty($article_type)){
             $where['articletype_id']=$article_type;
         }
-        $user = (new Common)->getSessionUser();
+        $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         return $this->resultArray('', '', (new \app\admin\model\ScatteredArticle)->getAll($limits['limit'], $limits['rows'], $where));
     }

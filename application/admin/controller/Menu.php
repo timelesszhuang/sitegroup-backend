@@ -19,7 +19,7 @@ class Menu extends Common
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
         }
-        $user = (new Common())->getSessionUser();
+        $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $data = (new \app\admin\model\Menu())->getMenu($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
@@ -121,6 +121,6 @@ class Menu extends Common
     public function getMenu()
     {
         $field="id,name as text";
-        return (new Common())->getList((new \app\admin\model\Menu),$field);
+        return $this->getList((new \app\admin\model\Menu),$field);
     }
 }

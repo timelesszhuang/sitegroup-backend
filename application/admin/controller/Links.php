@@ -22,7 +22,7 @@ class Links extends Common
         if (!empty($domain)) {
             $where['domain'] = ["like", "%$domain%"];
         }
-        $user = (new Common)->getSessionUser();
+        $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         return $this->resultArray('', '', (new \app\admin\model\Links)->getAll($limits['limit'], $limits['rows'], $where));
     }

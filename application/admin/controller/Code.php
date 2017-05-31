@@ -22,8 +22,8 @@ class Code extends Common
         if (!empty($name)) {
             $where['name'] = ["like", "%$name%"];
         }
-        $user = (new Common)->getSessionUser();
-//        $where["node_id"] = $user["user_node_id"];
+        $user = $this->getSessionUser();
+        $where["node_id"] = $user["user_node_id"];
         return $this->resultArray('', '', (new \app\admin\model\Code())->getAll($limits['limit'], $limits['rows'], $where));
     }
 
