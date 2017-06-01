@@ -142,13 +142,13 @@ class Keyword extends Common
             if (!empty($getkey)) {
                 continue;
             }
-            $keyword=new \app\admin\model\Keyword();
-            $keyword->name=$key;
-            $keyword->parent_id=$post["id"];
-            $keyword->path=$file_info["path"];
-            $keyword->tag=$file_info["tag"];
-            $keyword->node_id=$file_info["user_node_id"];
-            $keyword->save();
+            \app\admin\model\Keyword::create([
+                "name" => $key,
+                "parent_id" => $post["id"],
+                "path" => $file_info["path"],
+                "tag" => $file_info["tag"],
+                "node_id" => $file_info["user_node_id"]
+            ]);
         }
         return $this->resultArray("添加成功");
     }
