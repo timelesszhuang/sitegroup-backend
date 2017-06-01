@@ -90,7 +90,8 @@ class Site extends Common
     public function checkHasBC($arr)
     {
         foreach($arr as $item){
-            dump($item);die;
+            $keyB=\app\admin\model\Keyword::where(["path"=>["like","%,$item,%"],"tag"=>"C"])->find();
+            dump($keyB);die;
         }
     }
 
