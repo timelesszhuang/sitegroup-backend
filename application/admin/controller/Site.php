@@ -78,21 +78,35 @@ class Site extends Common
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         $data["menu"]="," . implode(",",$data["menu"]) . ",";
-        $this->checkHasBC($data["keyword_ids"]);
-        $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
-
+        $errorKey=$this->checkHasBC($data["keyword_ids"];
+        //验证关键字是否在C类中存在
+        if(empty($errorKey)){
+            $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
+        }else{
+            return $this->resultArray('添加失败', 'failed',$errorKey." 没有缺少BC关键词");
+        }
         if (!\app\admin\model\Site::create($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
     }
 
+    /**
+     * 根据传入的关键字数组 判断C类中是否有  如果返回空即验证通过 否则不通过
+     * @param $arr
+     * @return string
+     */
     public function checkHasBC($arr)
     {
+        $temp='';
         foreach($arr as $item){
             $keyB=\app\admin\model\Keyword::where(["path"=>["like","%,$item,%"],"tag"=>"C"])->find();
-            dump($keyB);die;
+            if(is_null($keyB)){
+                $getKey=\app\admin\model\Keyword::get($item);
+                $temp.=$getKey->name;
+            }
         }
+        return $temp;
     }
 
     /**
