@@ -103,7 +103,7 @@ class Site extends Common
             $keyB=\app\admin\model\Keyword::where(["path"=>["like","%,$item,%"],"tag"=>"C"])->find();
             if(is_null($keyB)){
                 $getKey=\app\admin\model\Keyword::get($item);
-                $temp.=$getKey->name;
+                $temp.=$getKey->name.",";
             }
         }
         return $temp;
