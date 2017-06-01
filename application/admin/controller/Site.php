@@ -78,7 +78,7 @@ class Site extends Common
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         $data["menu"]="," . implode(",",$data["menu"]) . ",";
-        $errorKey=$this->checkHasBC($data["keyword_ids"];
+        $errorKey=$this->checkHasBC($data["keyword_ids"]);
         //验证关键字是否在C类中存在
         if(empty($errorKey)){
             $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
