@@ -78,12 +78,20 @@ class Site extends Common
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         $data["menu"]="," . implode(",",$data["menu"]) . ",";
+        $this->checkHasBC($data["keyword_ids"]);
         $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
 
         if (!\app\admin\model\Site::create($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
+    }
+
+    public function checkHasBC($arr)
+    {
+        foreach($arr as $item){
+            dump($item);die;
+        }
     }
 
     /**
