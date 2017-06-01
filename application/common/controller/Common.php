@@ -137,7 +137,6 @@ class Common extends Controller
         if (empty($user["user_id"])) {
             exit(json_encode($this->resultArray('请先登录', 'failed')));
         }
-
     }
 
     /**
@@ -163,6 +162,7 @@ class Common extends Controller
 
     /**
      * 获取前后台用户统一session信息
+     * @author guozhen
      * @return array
      */
     public function getSessionUser()
@@ -171,6 +171,7 @@ class Common extends Controller
         $module = $request->module();
         $arr = [];
         switch($module){
+            //大后台
             case "sysadmin":
                 $arr["user_id"] = Session::get("sys_id");
                 $arr["user_name"] = Session::get("sys_user_name");
@@ -178,6 +179,7 @@ class Common extends Controller
                 $arr["user_type"] = Session::get("sys_type");
                 $arr["user_node_id"] = Session::get("sys_node_id");
                 break;
+            //节点后台
             case "admin":
                 $arr["user_id"] = Session::get("admin_id");
                 $arr["user_name"] = Session::get("admin_user_name");
@@ -185,6 +187,7 @@ class Common extends Controller
                 $arr["user_type"] = Session::get("admin_type");
                 $arr["user_node_id"] = Session::get("admin_node_id");
                 break;
+            //站点后台
             case "user":
                 $arr["user_id"] = Session::get("login_site")["id"];
                 $arr["user_name"] = Session::get("login_site")["name"];
