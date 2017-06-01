@@ -83,7 +83,7 @@ class Site extends Common
         if(empty($errorKey)){
             $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
         }else{
-            return $this->resultArray('添加失败', 'failed',$errorKey." 没有缺少BC关键词");
+            return $this->resultArray($errorKey." 缺少B、C类关键词", 'failed');
         }
         if (!\app\admin\model\Site::create($data)) {
             return $this->resultArray('添加失败', 'failed');
