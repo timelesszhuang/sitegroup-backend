@@ -138,7 +138,7 @@ class Keyword extends Common
         $model = new \app\admin\model\Keyword();
         $file_info=$this->getKeywordInfo($post["path"], $post["id"],$model);
         while ($key = fgets($file_info["file"])) {
-            $getkey = $model->where(["parent_id"=>$post["id"],"name" => $key])->find();
+            $getkey=\app\admin\model\Keyword::where(["parent_id"=>$post["id"],"name" => $key])->find();
             if (!empty($getkey)) {
                 continue;
             }
