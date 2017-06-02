@@ -39,9 +39,22 @@ class ExternalAccess extends Controller
     {
         $browse=new BrowseRecord($request->post());
         $browse->allowField(true)->save();
-
-        $access=new AccessKeyword($request->post());
-        $access->allowField(true)->save();
+        $keyword=$request->post("keyword");
+        if(!empty($request->post("keyword"))){
+            $where=[
+                "keyword"=>$keyword,
+                "site_id"=>intval($request->post("site_id")),
+                "node_id"=>intval($request->post("node_id"))
+            ];
+            $access=AccessKeyword::where($where)->find();
+            if($access){
+                $access->count=++$access->count;
+                $access->save();
+                return;
+            }
+            $access_model=new AccessKeyword($request->post());
+            $access_model->allowField(true)->save();
+        }
     }
 
     /**
