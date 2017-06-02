@@ -28,7 +28,7 @@ class Acount extends Common
         foreach ($arr as $k=>$v){
             $temp[]=[$v['engine'],$v['keyCount']/$arrcount];
         }
-        return $temp;
+        return $this->resultArray('','',$temp);
 
     }
 
