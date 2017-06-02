@@ -133,6 +133,13 @@ Route::resource('user/question','user/question');
 //页面tdk修改
 Route::resource('user/pageInfo','user/PageInfo');
 
+//外部访问 操作 甩单、关键词等
+Route::resource('user/externalAccess','common/ExternalAccess');
+
+
+
+
+
 return [
     '__pattern__' => [
         'name' => '\w+',
