@@ -101,6 +101,7 @@ Route::get('Site/uploadTemplateFile', 'admin/Site/uploadTemplateFile');
 Route::post('Site/setMainSite','admin/Site/setMainSite');
 Route::put('Site/saveFtp/:id','admin/Site/saveFtp');
 Route::get('Site/mobileSite','admin/Site/mobileSite');
+Route::get('Site/flow','admin/Site/flow');
 Route::get('Site/ignoreFrontend/:id','admin/Site/ignoreFrontend');
 Route::get('Site/syncTemplate/:id/:nid','admin/Site/syncTemplate');
 
@@ -126,7 +127,8 @@ Route::get('user/articleType','user/Article/getArticleType');
 Route::get('user/getErrorInfo','user/Article/getErrorInfo');
 Route::post('user/changeErrorStatus/:id','user/Article/changeErrorStatus');
 Route::get('user/getErrorStatus/','user/Article/getErrorStatus');
-
+//小站点统计
+Route::resource('user/acount','user/Acount');
 //问答
 Route::resource('user/question','user/question');
 
