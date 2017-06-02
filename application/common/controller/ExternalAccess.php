@@ -40,7 +40,7 @@ class ExternalAccess extends Controller
         $browse=new BrowseRecord($request->post());
         $browse->allowField(true)->save();
         $keyword=$request->post("keyword");
-        if(!empty($request->post("keyword"))){
+        if(!empty($keyword)){
             $where=[
                 "keyword"=>$keyword,
                 "site_id"=>intval($request->post("site_id")),
