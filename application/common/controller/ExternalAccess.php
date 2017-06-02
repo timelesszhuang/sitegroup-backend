@@ -37,6 +37,7 @@ class ExternalAccess extends Controller
      */
     public function save(Request $request)
     {
+        urldecode($request->post("keyword"));die;
         $browse=new BrowseRecord($request->post());
         $browse->allowField(true)->save();
 
