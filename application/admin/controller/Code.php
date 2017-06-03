@@ -121,7 +121,7 @@ class Code extends Common
      */
     public function getCodes()
     {
-        $field="id,code as text";
+        $field="id,name as text";
         return $this->getList((new \app\admin\model\Code),$field);
     }
 }
