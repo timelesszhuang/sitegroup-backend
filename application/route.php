@@ -130,6 +130,7 @@ Route::post('user/changeErrorStatus/:id','user/Article/changeErrorStatus');
 Route::get('user/getErrorStatus/','user/Article/getErrorStatus');
 //小站点统计
 Route::resource('user/acount','user/Acount');
+Route::resource('user/keyword','user/Keyword');
 //问答
 Route::resource('user/question','user/question');
 
