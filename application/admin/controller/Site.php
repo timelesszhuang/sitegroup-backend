@@ -87,7 +87,6 @@ class Site extends Common
         }
         //公共代码
         if(!empty($data["public_code"])){
-            dump(implode(",",$data["public_code"]));die;
             $data["public_code"]=implode(",",$data["public_code"]);
         }
         if (!\app\admin\model\Site::create($data)) {
@@ -166,6 +165,10 @@ class Site extends Common
         ];
         if(!empty($data["link_id"])){
             $data["link_id"]=",".implode(",",$data["link_id"]).",";
+        }
+        //公共代码
+        if(!empty($data["public_code"])){
+            $data["public_code"]=implode(",",$data["public_code"]);
         }
         $data["menu"]="," . implode(",",$data["menu"]) . ",";
         $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
