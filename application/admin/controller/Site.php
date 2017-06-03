@@ -257,6 +257,7 @@ class Site extends Common
     /**
      * 同步模板
      * @param $id
+     *
      * @param $nid
      * @return array
      */
