@@ -22,6 +22,7 @@ class Acount extends Common
         $start_time=$this->request->get('time');
 
         $time = strtotime($start_time);
+        dump($time);
         $where = [
             'create_time'=>'between',$time,
             'node_id'=>2,
