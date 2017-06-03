@@ -26,7 +26,7 @@ class Acount extends Common
         $arrcount = (new BrowseRecord())->where($where)->count();
         $temp=[];
         foreach ($arr as $k=>$v){
-            $temp[]=[$v['engine'],$v['keyCount']/$arrcount];
+            $temp[]=[$v['engine'],($v['keyCount']/$arrcount)*100];
         }
         return $this->resultArray('','',$temp);
 

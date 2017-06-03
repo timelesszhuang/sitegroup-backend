@@ -63,4 +63,5 @@ class Site extends Model
             return trim($key,",");
         }
     }
+
 }
