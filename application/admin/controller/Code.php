@@ -121,11 +121,7 @@ class Code extends Common
      */
     public function getCodes()
     {
-        $user=$this->getSessionUser();
-        $where=[
-            "node_id"=>$user["user_node_id"],
-        ];
-        $data=(new \app\admin\model\Code())->where($where)->field("id,code as text")->select();
-        return $this->resultArray('','',$data);
+        $field="id,code as text";
+        return $this->getList((new \app\admin\model\Code),$field);
     }
 }
