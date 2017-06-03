@@ -19,14 +19,17 @@ class Acount extends Common
         //
 //      $request=$this->getLimit();
 //      $node_id=$this->getSiteSession('login_site');
-        $start_time=$this->request->get();
-        dump($start_time);die;
-        $time = strtotime($start_time);
+        $param=$this->request->get();
+        list($start_time,$stop_time)=$param['time'];
+        $starttime = strtotime($start_time);
+        $stoptime=strtotime($stop_time);
         $where = [
-            'create_time'=>'between',$time,
+            'create_time'=>['between',[$starttime,$stoptime]],
             'node_id'=>2,
             'site_id'=>1
         ];
+        print_r($where);
+        exit;
         $arr = (new BrowseRecord())->field('engine,count(id) as keyCount')->where($where)->group('engine')->select();
         $arrcount = (new BrowseRecord())->where($where)->count();
         $temp=[];
