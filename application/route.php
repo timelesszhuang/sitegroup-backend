@@ -63,6 +63,7 @@ Route::get('scatteredTitle/getArrticleJoinTitle', 'admin/Scatteredtitle/getArrti
 
 //公共代码
 Route::resource('code', 'admin/Code');
+Route::get('code/getAll','admin/Code/getCodes');
 
 //域名管理
 Route::resource('domain', 'admin/domain');

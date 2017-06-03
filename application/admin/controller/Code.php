@@ -114,4 +114,18 @@ class Code extends Common
     {
         return $this->deleteRecord((new \app\admin\model\Code),$id);
     }
+
+    /**
+     * 获取所有code
+     * @return array
+     */
+    public function getCodes()
+    {
+        $user=$this->getSessionUser();
+        $where=[
+            "node_id"=>$user["user_node_id"],
+        ];
+        $data=(new \app\admin\model\Code())->where($where)->field("id,code as text")->select();
+        return $this->resultArray('','',$data);
+    }
 }
