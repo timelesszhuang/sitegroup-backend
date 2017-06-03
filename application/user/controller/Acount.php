@@ -19,9 +19,8 @@ class Acount extends Common
         //
 //      $request=$this->getLimit();
 //      $node_id=$this->getSiteSession('login_site');
-        $start_time=$this->request->get('time');
-dump($start_time);
-        $time = strtotime($start_time);
+        $time=$this->request->get('time');
+//        $time = strtotime($start_time);
         $where = [
             'create_time'=>'between',$time,
             'node_id'=>2,
