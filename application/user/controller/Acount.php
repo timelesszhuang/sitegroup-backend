@@ -25,6 +25,7 @@ class Acount extends Common
         $arr = (new BrowseRecord())->field('engine,count(id) as keyCount')->where($where)->group('engine')->select();
         $arrcount = (new BrowseRecord())->where($where)->count();
         $temp=[];
+
         foreach ($arr as $k=>$v){
             $temp[]=[$v['engine'],round($v['keyCount']/$arrcount*100,2)];
         }
