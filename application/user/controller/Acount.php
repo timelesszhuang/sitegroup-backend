@@ -28,8 +28,8 @@ class Acount extends Common
             'node_id'=>2,
             'site_id'=>1
         ];
-        print_r($where);
-        exit;
+//        print_r($where);
+//        exit;
         $arr = (new BrowseRecord())->field('engine,count(id) as keyCount')->where($where)->group('engine')->select();
         $arrcount = (new BrowseRecord())->where($where)->count();
         $temp=[];
