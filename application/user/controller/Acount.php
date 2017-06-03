@@ -22,7 +22,7 @@ class Acount extends Common
         $param=$this->request->get();
         if($param){
            $starttime = 0;
-           $stoptime = time();
+           $stoptime = 1498636661;
         }else{
             list($start_time,$stop_time)=$param['time'];
             $starttime = strtotime($start_time);
@@ -38,7 +38,6 @@ class Acount extends Common
         $arr = (new BrowseRecord())->field('engine,count(id) as keyCount')->where($where)->group('engine')->select();
         $arrcount = (new BrowseRecord())->where($where)->count();
         $temp=[];
-
         foreach ($arr as $k=>$v){
             $temp[]=[$v['engine'],round($v['keyCount']/$arrcount*100,2)];
         }
