@@ -17,11 +17,16 @@ class Acount extends Common
     public function index()
     {
         //
-//        $request=$this->getLimit();
-//        $node_id=$this->getSiteSession('login_site');
-        $where=[];
-        $where["node_id"]=2;
-        $where["site_id"]=1;
+//      $request=$this->getLimit();
+//      $node_id=$this->getSiteSession('login_site');
+        $start_time=$this->request->get('time');
+
+        $time = strtotime($start_time);
+        $where = [
+            'create_time'=>'between',$time,
+            'node_id'=>2,
+            'site_id'=>1
+        ];
         $arr = (new BrowseRecord())->field('engine,count(id) as keyCount')->where($where)->group('engine')->select();
         $arrcount = (new BrowseRecord())->where($where)->count();
         $temp=[];
