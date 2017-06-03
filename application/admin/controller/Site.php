@@ -278,5 +278,4 @@ class Site extends Common
             $site->save();
         }
     }
-
 }
