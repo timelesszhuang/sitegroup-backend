@@ -21,9 +21,11 @@ class Acount extends Common
 //      $node_id=$this->getSiteSession('login_site');
         $param=$this->request->get();
         if($param){
-            $param['time']="";
+           $starttime = 0;
+           $stoptime = time();
+        }else{
+            list($start_time,$stop_time)=$param['time'];
         }
-        list($start_time,$stop_time)=$param['time'];
         $starttime = strtotime($start_time);
         $stoptime=strtotime($stop_time);
         $where = [
