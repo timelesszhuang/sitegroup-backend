@@ -19,7 +19,7 @@ class Acount extends Common
         //
 //      $request=$this->getLimit();
 //      $node_id=$this->getSiteSession('login_site');
-        $start_time=$this->request->get('time[]');
+        $start_time=$this->request->get('time');
 dump($start_time);die;
         $time = strtotime($start_time);
         $where = [
