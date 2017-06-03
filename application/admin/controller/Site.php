@@ -85,6 +85,10 @@ class Site extends Common
         }else{
             return $this->resultArray($errorKey." 缺少B、C类关键词", 'failed');
         }
+        //公共代码
+        if(!empty($data["public_code"])){
+            $data["public_code"]=implode(",",$data["public_code"]);
+        }
         if (!\app\admin\model\Site::create($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
