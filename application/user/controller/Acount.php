@@ -20,10 +20,9 @@ class Acount extends Common
 //      $request=$this->getLimit();
 //      $node_id=$this->getSiteSession('login_site');
         $param=$this->request->get();
-        if($param){
-           $starttime = 0;
-           $stoptime = 1498636661;
-        }else{
+        $starttime = 0;
+        $stoptime = time();
+        if(!$param){
             list($start_time,$stop_time)=$param['time'];
             $starttime = strtotime($start_time);
             $stoptime=strtotime($stop_time);
