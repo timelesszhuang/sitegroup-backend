@@ -87,6 +87,7 @@ class Site extends Common
         }
         //公共代码
         if(!empty($data["public_code"])){
+            dump(implode(",",$data["public_code"]));die;
             $data["public_code"]=implode(",",$data["public_code"]);
         }
         if (!\app\admin\model\Site::create($data)) {
