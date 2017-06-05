@@ -113,8 +113,8 @@ Route::rule('testsendFile/index', 'admin/testsendFile/index');
 //友情链接
 Route::resource('links','admin/Links');
 Route::get('links/getLinks','admin/Links/getLinks');
-
-
+//节点统计
+Route::resource("count",'admin/Count');
 
 
 
