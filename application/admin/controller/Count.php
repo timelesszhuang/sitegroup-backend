@@ -34,7 +34,7 @@ class Count extends Common
 //        exit;
         $browse=new BrowseRecord();
         $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->select();
-        dump($browse->getLastSql());die;
+//        dump($browse->getLastSql());die;
 
         $arrcount = $browse->where($where)->count();
         $temp=[];
