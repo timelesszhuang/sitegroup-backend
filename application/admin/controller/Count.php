@@ -20,6 +20,7 @@ class Count extends Common
         if(!empty($this->request->get('time[]'))){
 
         }
+        dump($this->request->get('time[]'));die;
         echo 1111;die;
 //        dump($param);die;
         $starttime = 0;
