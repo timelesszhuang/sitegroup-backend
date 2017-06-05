@@ -20,9 +20,11 @@ class Count extends Common
         $param=$this->request->get();
         $starttime = 0;
         $stoptime = time();
+        if(!$param){
             list($start_time,$stop_time)=$param['time'];
             $starttime = strtotime($start_time);
             $stoptime=strtotime($stop_time);
+        }
         $where = [
             'create_time'=>['between',[$starttime,$stoptime]],
             'node_id'=>2,
