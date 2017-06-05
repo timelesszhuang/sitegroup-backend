@@ -18,7 +18,7 @@ class Count extends Common
     {
 //      $node_id=$this->getSiteSession('login_site');
         $param=$this->request->get();
-        dump($param);die;
+//        dump($param);die;
         $starttime = 0;
         $stoptime = time();
         if(!$param){
