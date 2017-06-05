@@ -24,6 +24,7 @@ class Count extends Common
             list($start_time,$stop_time)=$param['time'];
             $starttime = strtotime($start_time);
             $stoptime=strtotime($stop_time);
+            dump($starttime);die;
         }
         $where = [
             'create_time'=>['between',[$starttime,$stoptime]],
