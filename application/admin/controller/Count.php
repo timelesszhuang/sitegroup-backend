@@ -16,8 +16,6 @@ class Count extends Common
      */
     public function index()
     {
-//      $node_id=$this->getSiteSession('login_site');
-        dump($this->request->get("time"));die;
         $param=$this->request->get();
         $starttime = time();
         $stoptime = time();
@@ -29,8 +27,7 @@ class Count extends Common
             'node_id'=>2,
             'site_id'=>1
         ];
-//        print_r($where);
-//        exit;
+
         $arr = (new BrowseRecord())->field('engine,count(id) as keyCount')->where($where)->group('engine')->select();
         $arrcount = (new BrowseRecord())->where($where)->count();
         $temp=[];
