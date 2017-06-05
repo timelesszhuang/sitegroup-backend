@@ -24,7 +24,6 @@ class Count extends Common
             list($start_time,$stop_time)=$param['time'];
             $starttime = strtotime($start_time);
             $stoptime=strtotime($stop_time);
-            dump($starttime);die;
         }
         $where = [
             'create_time'=>['between',[$starttime,$stoptime]],
@@ -33,8 +32,11 @@ class Count extends Common
         ];
 //        print_r($where);
 //        exit;
-        $arr = (new BrowseRecord())->field('engine,count(id) as keyCount')->where($where)->group('engine')->select();
-        $arrcount = (new BrowseRecord())->where($where)->count();
+        $browse=new BrowseRecord();
+        $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->select();
+        dump($browse->getLastSql());die;
+
+        $arrcount = $browse->where($where)->count();
         $temp=[];
         foreach ($arr as $k=>$v){
             $temp[]=[$v['engine'],round($v['keyCount']/$arrcount*100,2)];
