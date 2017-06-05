@@ -17,12 +17,13 @@ class Count extends Common
     public function index()
     {
 //      $node_id=$this->getSiteSession('login_site');
+        dump($this->request->get("time"));die;
         $param=$this->request->get();
         $starttime = time();
         $stoptime = time();
-            list($start_time,$stop_time)=$param['time'];
-            $starttime = strtotime($start_time);
-            $stoptime=strtotime($stop_time);
+        list($start_time,$stop_time)=$param['time'];
+        $starttime = strtotime($start_time);
+        $stoptime=strtotime($stop_time);
         $where = [
             'create_time'=>['between',[$starttime,$stoptime]],
             'node_id'=>2,
