@@ -16,18 +16,20 @@ class Count extends Common
      */
     public function index()
     {
+//      $node_id=$this->getSiteSession('login_site');
         $param=$this->request->get();
-        $starttime = time();
+        $starttime = 0;
         $stoptime = time();
-        list($start_time,$stop_time)=$param['time'];
-        $starttime = strtotime($start_time);
-        $stoptime=strtotime($stop_time);
+            list($start_time,$stop_time)=$param['time'];
+            $starttime = strtotime($start_time);
+            $stoptime=strtotime($stop_time);
         $where = [
             'create_time'=>['between',[$starttime,$stoptime]],
             'node_id'=>2,
             'site_id'=>1
         ];
-
+//        print_r($where);
+//        exit;
         $arr = (new BrowseRecord())->field('engine,count(id) as keyCount')->where($where)->group('engine')->select();
         $arrcount = (new BrowseRecord())->where($where)->count();
         $temp=[];
