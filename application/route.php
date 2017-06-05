@@ -115,9 +115,6 @@ Route::resource('links','admin/Links');
 Route::get('links/getLinks','admin/Links/getLinks');
 //节点统计
 Route::resource("count",'admin/Count');
-
-
-
 //小站点相关--------------------------------------------------------
 //小站点登录后的首页操作
 Route::post('user/siteInfo','user/index/siteInfo');

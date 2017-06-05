@@ -1,6 +1,6 @@
 <?php
 
-namespace app\user\controller;
+namespace app\admin\controller;
 
 use app\common\model\BrowseRecord;
 use think\Request;
