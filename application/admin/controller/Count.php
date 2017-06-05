@@ -17,8 +17,11 @@ class Count extends Common
     public function index()
     {
 //      $node_id=$this->getSiteSession('login_site');
-        $param=$this->request->get();
-        dump($param);die;
+        if(!empty($this->request->get('time'))){
+
+        }
+        echo 1111;die;
+//        dump($param);die;
         $starttime = 0;
         $stoptime = time();
         if(!$param){
