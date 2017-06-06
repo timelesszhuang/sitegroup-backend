@@ -24,10 +24,10 @@ class Acount extends Common
             'node_id'=>$node_id["node_id"],
             'site_id'=>$this->getSiteSession('website')["id"]
         ];
-        if(isset($param["time"])){
+        if(empty($param["time"])){
             list($start_time,$stop_time)=$param['time'];
-            $starttime = strtotime($start_time);
-            $stoptime=strtotime($stop_time);
+            $starttime = (!empty($start_time))?strtotime($start_time):$starttime;
+            $stoptime=(!empty($stop_time))?strtotime($stop_time):$stoptime;
             $where["create_time"]=['between',[$starttime,$stoptime]];
         }
         $browse=new BrowseRecord();

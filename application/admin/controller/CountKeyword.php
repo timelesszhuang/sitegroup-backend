@@ -16,19 +16,21 @@ class CountKeyword extends Common
     public function index()
     {
         $param=$this->request->get();
+        $user=$this->getSessionUser();
         $starttime = 0;
         $stoptime = time();
         $where = [
-            'node_id'=>2,
-            'site_id'=>1
+            'node_id'=>$user["user_node_id"],
         ];
-        if(isset($param["time"])){
+        if(empty($param["time"])){
             list($start_time,$stop_time)=$param['time'];
-            $starttime = strtotime($start_time);
-            $stoptime=strtotime($stop_time);
+            $starttime = (!empty($start_time))?strtotime($start_time):$starttime;
+            $stoptime=(!empty($stop_time))?strtotime($stop_time):$stoptime;
             $where["create_time"]=['between',[$starttime,$stoptime]];
         }
-
+        if(!empty($param["site_id"])){
+            $where['site_id']=$param['site_id'];
+        }
         $browse=new BrowseRecord();
         $arr = $browse->field('keyword,count(id) as keyCount')->where($where)->group('keyword')->order("keyCount","desc")->select();
 
