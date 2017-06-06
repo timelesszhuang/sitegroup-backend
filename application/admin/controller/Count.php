@@ -35,7 +35,6 @@ class Count extends Common
         }
         $browse=new BrowseRecord();
         $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->order("keyCount","desc")->select();
-        dump($browse->getLastSql());die;
         $arrcount = $browse->where($where)->count();
         $temp=[];
         foreach ($arr as $k=>$v){
