@@ -39,7 +39,7 @@ class Count extends Common
         $arrcount = $browse->where($where)->count();
         $temp=[];
         foreach ($arr as $k=>$v){
-            $temp[]=[$v['engine'],round($v['keyCount']/$arrcount*100,2)];
+            $temp[]=["value"=>round($v['keyCount']/$arrcount*100,2),"name"=>$v['engine']];
         }
         return $this->resultArray('','',$temp);
 
