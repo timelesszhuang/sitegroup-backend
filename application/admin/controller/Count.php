@@ -26,8 +26,8 @@ class Count extends Common
         ];
         if(isset($param["time"])){
             list($start_time,$stop_time)=$param['time'];
-            $starttime = strtotime($start_time);
-            $stoptime=strtotime($stop_time);
+            $starttime = (!empty($start_time))?strtotime($start_time):$starttime;
+            $stoptime=(!empty($stop_time))?strtotime($stop_time):$stoptime;
             $where["create_time"]=['between',[$starttime,$stoptime]];
         }
         if(!empty($param["site_id"])){
