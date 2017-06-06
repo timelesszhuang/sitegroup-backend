@@ -32,7 +32,7 @@ class Count extends Common
         }
 
         $browse=new BrowseRecord();
-        $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->select();
+        $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->order("keyCount","desc")->select();
 
         $arrcount = $browse->where($where)->count();
         $temp=[];
