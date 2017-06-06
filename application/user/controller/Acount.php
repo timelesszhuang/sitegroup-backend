@@ -16,15 +16,13 @@ class Acount extends Common
      */
     public function index()
     {
-        //
-//      $request=$this->getLimit();
-//      $node_id=$this->getSiteSession('login_site');
+        $node_id=$this->getSiteSession('login_site');
         $param=$this->request->get();
         $starttime = 0;
         $stoptime = time();
         $where = [
-            'node_id'=>2,
-            'site_id'=>1
+            'node_id'=>$node_id["node_id"],
+            'site_id'=>$this->getSiteSession('website')["id"]
         ];
         if(isset($param["time"])){
             list($start_time,$stop_time)=$param['time'];
@@ -32,10 +30,8 @@ class Acount extends Common
             $stoptime=strtotime($stop_time);
             $where["create_time"]=['between',[$starttime,$stoptime]];
         }
-
         $browse=new BrowseRecord();
         $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->order("keyCount","desc")->select();
-
         $arrcount = $browse->where($where)->count();
         $temp=[];
         foreach ($arr as $k=>$v){
