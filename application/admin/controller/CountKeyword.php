@@ -15,29 +15,27 @@ class CountKeyword extends Common
      */
     public function index()
     {
-        //
-//      $request=$this->getLimit();
-//      $node_id=$this->getSiteSession('login_site');
         $param=$this->request->get();
         $starttime = 0;
         $stoptime = time();
-        if(!$param){
-            list($start_time,$stop_time)=$param['time'];
-            $starttime = strtotime($start_time);
-            $stoptime=strtotime($stop_time);
-        }
         $where = [
-            'create_time'=>['between',[$starttime,$stoptime]],
             'node_id'=>2,
             'site_id'=>1
         ];
-//        print_r($where);
-//        exit;
-        $arr = (new BrowseRecord())->field('keyword,count(id) as keyCount')->where($where)->group('keyword')->select();
-        $arrcount = (new BrowseRecord())->where($where)->count();
+        if(isset($param["time"])){
+            list($start_time,$stop_time)=$param['time'];
+            $starttime = strtotime($start_time);
+            $stoptime=strtotime($stop_time);
+            $where["create_time"]=['between',[$starttime,$stoptime]];
+        }
+
+        $browse=new BrowseRecord();
+        $arr = $browse->field('keyword,count(id) as keyCount')->where($where)->group('keyword')->select();
+
+        $arrcount = $browse->where($where)->count();
         $temp=[];
         foreach ($arr as $k=>$v){
-            $temp[]=[$v['keyword'],round($v['keyCount']/$arrcount*100,2)];
+            $temp[]=["value"=>round($v['keyCount']/$arrcount*100,2),"name"=>$v['keyword']];
         }
         return $this->resultArray('','',$temp);
 
@@ -50,7 +48,7 @@ class CountKeyword extends Common
      */
     public function create()
     {
-        //
+
     }
 
     /**
