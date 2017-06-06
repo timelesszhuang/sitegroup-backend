@@ -28,8 +28,8 @@ class Count extends Common
             list($start_time,$stop_time)=$param['time'];
             $starttime = (!empty($start_time))?strtotime($start_time):$starttime;
             $stoptime=(!empty($stop_time))?strtotime($stop_time):$stoptime;
-            $where["create_time"]=['between',[$starttime,$stoptime]];
         }
+        $where["create_time"]=['between',[$starttime,$stoptime]];
         if(!empty($param["site_id"])){
             $where['site_id']=$param['site_id'];
         }
