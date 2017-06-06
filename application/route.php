@@ -105,7 +105,7 @@ Route::get('Site/mobileSite','admin/Site/mobileSite');
 Route::get('Site/flow','admin/Site/flow');
 Route::get('Site/ignoreFrontend/:id','admin/Site/ignoreFrontend');
 Route::get('Site/syncTemplate/:id/:nid','admin/Site/syncTemplate');
-
+Route::get('Site/getSites','admin/Site/getSites');
 
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');

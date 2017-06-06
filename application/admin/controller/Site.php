@@ -286,4 +286,14 @@ class Site extends Common
             $site->save();
         }
     }
+
+    /**
+     * 获取所有code
+     * @return array
+     */
+    public function getSites()
+    {
+        $field="id,site_name as text";
+        return $this->getList((new \app\admin\model\Site),$field);
+    }
 }

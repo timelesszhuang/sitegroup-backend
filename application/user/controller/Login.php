@@ -59,8 +59,8 @@ class Login extends Controller
 //        if (!captcha_check($post["verifyCode"])) {
 //            return  $this->resultArray('验证码错误', "failed");
 //        };
-        $user_arr=(new SiteUser())->checkUser($post["name"],$post["pwd"]);
-        return $this->resultArray($user_arr[0],$user_arr[1],$user_arr[2]);
+        $user_arr = (new SiteUser())->checkUser($post["name"], $post["pwd"]);
+        return $this->resultArray($user_arr[0], $user_arr[1], $user_arr[2]);
     }
 
     /**
@@ -91,22 +91,24 @@ class Login extends Controller
      */
     public function autoLogin()
     {
-        $post=$this->request->post();
+        $post = $this->request->post();
         if (empty($post["site_id"]) || empty($post["remember"])) {
             return $this->resultArray('', "failed");
         }
         $userInfo = SiteUser::get($post["site_id"]);
         $private = Config::get("crypt.cookiePrivate");
-        if($post["remember"]!=md5($userInfo["id"].$userInfo["salt"].$private)){
+        if ($post["remember"] != md5($userInfo["id"] . $userInfo["salt"] . $private)) {
             return $this->resultArray('', "failed");
         }
-        $user_arr=$userInfo->getData();
+        $user_arr = $userInfo->getData();
         unset($user_arr["pwd"]);
         //获取私钥
         $private = Config::get("crypt.cookiePrivate");
         $user_arr["remember"] = md5($user_arr["id"] . $user_arr["salt"] . $private);
         (new SiteUser)->setSession($user_arr);
-        $site_info=(new SiteUser())->getSiteInfo($userInfo->id);
-        return $this->resultArray('','',["user_info"=>$user_arr,'site_info'=>$site_info]);
+        $site_info = (new SiteUser())->getSiteInfo($userInfo->id);
+        return $this->resultArray('', '', ["user_info" => $user_arr, 'site_info' => $site_info]);
     }
+
+
 }
