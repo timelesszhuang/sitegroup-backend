@@ -18,19 +18,20 @@ class Count extends Common
     {
 //      $node_id=$this->getSiteSession('login_site');
         $param=$this->request->get();
-//            dump($param);die;
         $user=$this->getSessionUser();
         $starttime = 0;
         $stoptime = time();
         $where = [
             'node_id'=>$user["user_node_id"],
-            'site_id'=>$param['site_id'],
         ];
         if(isset($param["time"])){
             list($start_time,$stop_time)=$param['time'];
             $starttime = strtotime($start_time);
             $stoptime=strtotime($stop_time);
             $where["create_time"]=['between',[$starttime,$stoptime]];
+        }
+        if(isset($param["site_id"])){
+            $where['site_id']=$param['site_id'];
         }
 
         $browse=new BrowseRecord();
