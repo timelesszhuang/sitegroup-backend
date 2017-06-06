@@ -30,7 +30,7 @@ class CountKeyword extends Common
         }
 
         $browse=new BrowseRecord();
-        $arr = $browse->field('keyword,count(id) as keyCount')->where($where)->group('keyword')->select();
+        $arr = $browse->field('keyword,count(id) as keyCount')->where($where)->group('keyword')->order("keyCount","desc")->select();
 
         $arrcount = $browse->where($where)->count();
         $temp=[];
