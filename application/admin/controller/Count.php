@@ -30,7 +30,7 @@ class Count extends Common
             $stoptime=strtotime($stop_time);
             $where["create_time"]=['between',[$starttime,$stoptime]];
         }
-        if(isset($param["site_id"])){
+        if(!empty($param["site_id"])){
             $where['site_id']=$param['site_id'];
         }
 
