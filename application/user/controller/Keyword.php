@@ -7,6 +7,7 @@ use think\Request;
 use app\common\controller\Common;
 use think\Session;
 use think\Validate;
+
 class Keyword extends Common
 {
     /**
@@ -19,28 +20,31 @@ class Keyword extends Common
         //
 //      $request=$this->getLimit();
 //      $node_id=$this->getSiteSession('login_site');
-        $param=$this->request->get();
+        $param = $this->request->get();
         $starttime = 0;
         $stoptime = time();
-        if(!$param){
-            list($start_time,$stop_time)=$param['time'];
-            $starttime = strtotime($start_time);
-            $stoptime=strtotime($stop_time);
-        }
         $where = [
-            'create_time'=>['between',[$starttime,$stoptime]],
-            'node_id'=>2,
-            'site_id'=>1
+            'node_id' => 2,
+            'site_id' => 1
         ];
-//        print_r($where);
-//        exit;
-        $arr = (new BrowseRecord())->field('keyword,count(id) as keyCount')->where($where)->group('keyword')->select();
-        $arrcount = (new BrowseRecord())->where($where)->count();
-        $temp=[];
-        foreach ($arr as $k=>$v){
-            $temp[]=[$v['keyword'],round($v['keyCount']/$arrcount*100,2)];
+        if (isset($param["time"])) {
+            list($start_time, $stop_time) = $param['time'];
+            $starttime = strtotime($start_time);
+            $stoptime = strtotime($stop_time);
+            $where["create_time"] = ['between', [$starttime, $stoptime]];
         }
-        return $this->resultArray('','',$temp);
+
+        $browse = new BrowseRecord();
+        $arr = $browse->field('keyword,count(id) as keyCount')->where($where)->group('keyword')->order("keyCount", "desc")->select();
+
+        $arrcount = $browse->where($where)->count();
+        $temp = [];
+        foreach ($arr as $k => $v) {
+            $temp[] = ["value" => round($v['keyCount'] / $arrcount * 100, 2), "name" => $v['keyword']];
+        }
+
+
+        return $this->resultArray('', '', $temp);
 
     }
 
@@ -57,7 +61,7 @@ class Keyword extends Common
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
@@ -68,7 +72,7 @@ class Keyword extends Common
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function read($id)
@@ -79,7 +83,7 @@ class Keyword extends Common
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -90,8 +94,8 @@ class Keyword extends Common
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param  \think\Request $request
+     * @param  int $id
      * @return \think\Response
      */
     public function update(Request $request, $id)
@@ -102,7 +106,7 @@ class Keyword extends Common
     /**
      * 删除指定资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function delete($id)

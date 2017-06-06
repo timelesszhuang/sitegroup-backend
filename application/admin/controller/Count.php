@@ -20,29 +20,26 @@ class Count extends Common
         $param=$this->request->get();
         $starttime = 0;
         $stoptime = time();
-        if($param["time"]){
-            list($start_time,$stop_time)=$param['time'];
-            $starttime = strtotime($start_time);
-            $stoptime=strtotime($stop_time);
-        }
         $where = [
-            'create_time'=>['between',[$starttime,$stoptime]],
             'node_id'=>2,
             'site_id'=>1
         ];
-//        print_r($where);
-//        exit;
+        if(isset($param["time"])){
+            list($start_time,$stop_time)=$param['time'];
+            $starttime = strtotime($start_time);
+            $stoptime=strtotime($stop_time);
+            $where["create_time"]=['between',[$starttime,$stoptime]];
+        }
+
         $browse=new BrowseRecord();
-        $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->select();
-//        dump($browse->getLastSql());die;
+        $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->order("keyCount","desc")->select();
 
         $arrcount = $browse->where($where)->count();
         $temp=[];
         foreach ($arr as $k=>$v){
-            $temp[]=[$v['engine'],round($v['keyCount']/$arrcount*100,2)];
+            $temp[]=["value"=>round($v['keyCount']/$arrcount*100,2),"name"=>$v['engine']];
         }
         return $this->resultArray('','',$temp);
-
     }
 
     /**
