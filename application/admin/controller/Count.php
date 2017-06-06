@@ -33,7 +33,7 @@ class Count extends Common
         if(!empty($param["site_id"])){
             $where['site_id']=$param['site_id'];
         }
-
+        dump($param["site_id"]);die;
         $browse=new BrowseRecord();
         $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->order("keyCount","desc")->select();
 
