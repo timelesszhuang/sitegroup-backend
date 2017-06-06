@@ -19,20 +19,21 @@ class Keyword extends Common
     {
         //
 //      $request=$this->getLimit();
-      $node_id=$this->getSiteSession('login_site');
+        $node_id = $this->getSiteSession('login_site');
         $param = $this->request->get();
         $starttime = 0;
         $stoptime = time();
         $where = [
-            'node_id'=>$node_id["node_id"],
-            'site_id'=>$this->getSiteSession('website')["id"]
+            'node_id' => $node_id["node_id"],
+            'site_id' => $this->getSiteSession('website')["id"]
         ];
-        if(empty($param["time"])){
-            list($start_time,$stop_time)=$param['time'];
-            $starttime = (!empty($start_time))?strtotime($start_time):$starttime;
-            $stoptime=(!empty($stop_time))?strtotime($stop_time):$stoptime;
-            $where["create_time"]=['between',[$starttime,$stoptime]];
+        if (isset($param["time"])) {
+            list($start_time, $stop_time) = $param['time'];
+            $starttime = (!empty(intval($start_time))) ? strtotime($start_time) : $starttime;
+            $stoptime = (!empty(intval($stop_time))) ? strtotime($stop_time) : $stoptime;
         }
+        $where["create_time"] = ['between', [$starttime, $stoptime]];
+
         $browse = new BrowseRecord();
         $arr = $browse->field('keyword,count(id) as keyCount')->where($where)->group('keyword')->order("keyCount", "desc")->select();
 
