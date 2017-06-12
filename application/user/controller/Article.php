@@ -164,6 +164,7 @@ class Article extends Common
         ];
         $site = \app\common\model\SiteErrorInfo::where($where)->find();
         $site->status=10;
+        $site->update_time=time();
         if(!$site->save()){
             return $this->resultArray('修改失败', 'failed');
         }
