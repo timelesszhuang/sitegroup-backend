@@ -298,6 +298,11 @@ class Site extends Common
         return $this->getList((new \app\admin\model\Site),$field);
     }
 
+    /**
+     * 清除站点缓存
+     * @param $id
+     * @return array
+     */
     public function clearCache($id)
     {
         $user = $this->getSessionUser();
@@ -310,6 +315,18 @@ class Site extends Common
         if(is_null($site)){
             return $this->resultArray('发送失败,无此记录!','failed');
         }
-        $this->open_start("正在清除,请");
+        $this->open_start("正在清除,请稍后....");
+        $this->sendCurlPost($site->url."/clearCache");
     }
+
+    /**
+     * 给站点发送curl get请求
+     * @param $url
+     * @param $data
+     */
+    public function sendCurlGet($url)
+    {
+        $this->curl_post($url);
+    }
+
 }
