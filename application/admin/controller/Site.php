@@ -316,7 +316,7 @@ class Site extends Common
             return $this->resultArray('发送失败,无此记录!','failed');
         }
         $this->open_start("正在清除,请稍后....");
-        $this->sendCurlPost($site->url."/clearCache");
+        $this->sendCurlGet($site->url."/clearCache");
     }
 
     /**
