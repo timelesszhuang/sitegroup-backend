@@ -326,7 +326,6 @@ class Site extends Common
      */
     public function sendCurlGet($url)
     {
-        file_put_contents("1.txt",$url);
         $this->curl_get($url);
     }
 
