@@ -343,30 +343,30 @@ class Site extends Common
      */
     public function getSwitchUrl($url,$name)
     {
-        $url='';
+        $NewUrl='';
         $msg='';
         switch($name){
             case "aKeyGeneration":
                 $msg="正在一键生成...";
-                $url=$url."/allstatic";
+                $NewUrl=$url."/allstatic";
                 break;
             case "generatIndex":
                 $msg="正在生成首页...";
-                $url=$url."/indexstatic";
+                $NewUrl=$url."/indexstatic";
                 break;
             case "generatArticle":
                 $msg="正在生成文章页...";
-                $url=$url."/artilestatic";
+                $NewUrl=$url."/artilestatic";
                 break;
             case "generatMenu":
                 $msg="正在生成栏目...";
-                $url=$url."/menustatic";
+                $NewUrl=$url."/menustatic";
                 break;
             case "clearCache":
                 $msg="正在清除...";
-                $url=$url."/clearCache";
+                $NewUrl=$url."/clearCache";
                 break;
         }
-        return [$url,$msg];
+        return [$NewUrl,$msg];
     }
 }
