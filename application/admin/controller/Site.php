@@ -195,7 +195,6 @@ class Site extends Common
      */
     public function uploadTemplateFile($dest,$path)
     {
-        file_put_contents("111.txt",$path);
         $dest = $dest.'/index.php/filemanage/uploadFile';
         $sync=$this->sendFile(ROOT_PATH ."public/". $path, $dest, 'template');
         return $sync;
@@ -259,8 +258,15 @@ class Site extends Common
     {
         $user = $this->getSessionUser();
         $nid = $user["user_node_id"];
-        pclose(popen("curl http://admin.mypc.com.cn/index.php/Site/syncTemplate/$id/$nid &", 'r'));
-        return $this->resultArray('模板正在同步中');
+        ob_start();
+        print_r(json_encode(['status' => "success", 'data' => '', 'msg' => "正在发送模板,请等待.."]));
+        $size = ob_get_length();
+        header("Content-Length: $size");
+        header('Connection: close');
+        ob_end_flush();
+        ob_flush();
+        flush();
+        $this->syncTemplate($id,$nid);
     }
 
     /**
@@ -272,7 +278,6 @@ class Site extends Common
      */
     public function syncTemplate($id,$nid)
     {
-        file_put_contents("222.txt","343");
         $where=[
             "id"=>$id,
             "node_id" => $nid
