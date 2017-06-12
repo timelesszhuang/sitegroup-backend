@@ -6,7 +6,7 @@ use app\common\controller\Common;
 use think\Request;
 use think\Session;
 use think\Validate;
-
+use app\common\traits\Obtrait;
 /**
  * 站点 最小的节点相关操作
  * @author xingzhuang
@@ -14,6 +14,7 @@ use think\Validate;
  */
 class Site extends Common
 {
+    use Obtrait;
     /**
      * 显示资源列表
      * @return \think\Response
@@ -258,14 +259,7 @@ class Site extends Common
     {
         $user = $this->getSessionUser();
         $nid = $user["user_node_id"];
-        ob_start();
-        print_r(json_encode(['status' => "success", 'data' => '', 'msg' => "正在发送模板,请等待.."]));
-        $size = ob_get_length();
-        header("Content-Length: $size");
-        header('Connection: close');
-        ob_end_flush();
-        ob_flush();
-        flush();
+        $this->open_start("正在发送模板,请等待..");
         $this->syncTemplate($id,$nid);
     }
 
@@ -302,5 +296,20 @@ class Site extends Common
     {
         $field="id,site_name as text";
         return $this->getList((new \app\admin\model\Site),$field);
+    }
+
+    public function clearCache($id)
+    {
+        $user = $this->getSessionUser();
+        $nid = $user["user_node_id"];
+        $where=[
+            "id"=>$id,
+            "node_id" => $nid
+        ];
+        $site=\app\admin\model\Site::where($where)->find();
+        if(is_null($site)){
+            return $this->resultArray('发送失败,无此记录!','failed');
+        }
+        $this->open_start("正在清除,请");
     }
 }
