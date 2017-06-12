@@ -301,28 +301,6 @@ class Site extends Common
     }
 
     /**
-     * 清除站点缓存
-     * @param $id
-     * @return array
-     */
-    public function clearCache($id)
-    {
-
-        $this->open_start("正在清除,请稍后....");
-        $this->sendCurlGet($site->url . "/clearCache");
-    }
-
-    /**
-     * 给站点发送curl get请求
-     * @param $url
-     * @param $data
-     */
-    public function sendCurlGet($url)
-    {
-        $this->curl_get($url);
-    }
-
-    /**
      * 统一站点发送get请求接口
      * @param $id
      * @param $name
@@ -353,14 +331,42 @@ class Site extends Common
     public function callGetClosure(closure $closure,$name)
     {
         $url=$closure();
-        $msg="";
+        list($newUrl,$msg)=$this->getSwitchUrl($url,$name);
+        $this->open_start($msg);
+        $this->curl_get($newUrl);
+    }
+
+    /**
+     * 根据name获取指定的url和msg
+     * @param $name
+     * @return array
+     */
+    public function getSwitchUrl($url,$name)
+    {
+        $url='';
+        $msg='';
         switch($name){
             case "aKeyGeneration":
-                $msg="正在一键生成";
+                $msg="正在一键生成...";
                 $url=$url."/allstatic";
-            break;
+                break;
+            case "generatIndex":
+                $msg="正在生成首页...";
+                $url=$url."/indexstatic";
+                break;
+            case "generatArticle":
+                $msg="正在生成文章页...";
+                $url=$url."/artilestatic";
+                break;
+            case "generatMenu":
+                $msg="正在生成栏目...";
+                $url=$url."/menustatic";
+                break;
+            case "clearCache":
+                $msg="正在清除...";
+                $url=$url."/clearCache";
+                break;
         }
-        $this->open_start($msg);
-        $this->curl_get($url);
+        return [$url,$msg];
     }
 }
