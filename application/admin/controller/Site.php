@@ -332,7 +332,9 @@ class Site extends Common
     {
         $url=$closure();
         list($newUrl,$msg)=$this->getSwitchUrl($url,$name);
+        //断开前台请求
         $this->open_start($msg);
+        //发送curl get请求
         $this->curl_get($newUrl);
     }
 

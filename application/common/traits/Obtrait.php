@@ -69,7 +69,6 @@ trait Obtrait{
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         //执行命令
         $data = curl_exec($curl);
-        file_put_contents("1.txt",print_r($data,true));
 
         //关闭URL请求
         curl_close($curl);
