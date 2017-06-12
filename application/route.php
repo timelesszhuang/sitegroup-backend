@@ -107,6 +107,11 @@ Route::get('Site/ignoreFrontend/:id','admin/Site/ignoreFrontend');
 Route::get('Site/syncTemplate/:id/:nid','admin/Site/syncTemplate');
 Route::get('Site/getSites','admin/Site/getSites');
 Route::get('Site/clearCache/:id','admin/Site/clearCache');
+//一键生成
+Route::get('Site/siteGetCurl/:id/:name','admin/Site/siteGetCurl');
+
+
+
 
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');

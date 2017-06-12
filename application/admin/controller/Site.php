@@ -7,6 +7,7 @@ use think\Request;
 use think\Session;
 use think\Validate;
 use app\common\traits\Obtrait;
+use Closure;
 /**
  * 站点 最小的节点相关操作
  * @author xingzhuang
@@ -15,6 +16,7 @@ use app\common\traits\Obtrait;
 class Site extends Common
 {
     use Obtrait;
+
     /**
      * 显示资源列表
      * @return \think\Response
@@ -53,42 +55,42 @@ class Site extends Common
     public function save(Request $request)
     {
         $rule = [
-            ['site_name','require','请填写网站名称'],
+            ['site_name', 'require', '请填写网站名称'],
             ['menu', 'require', "请选择菜单"],
-            ['template_id','require','请选择模板'],
-            ['support_hotline','require','请填写电话号码'],
-            ['domain_id','require','请选择域名'],
-            ['domain','require','请选择域名'],
-            ['site_type','require','请选择网站类型'],
-            ['user_id',"require","请选择用户"],
-            ["user_name","require","请选择用户名"],
-            ["site_type_name","require","请填写网站类型名称"],
-            ["keyword_ids","require","请填写关键字"],
-            ["url","require","请输入url"]
+            ['template_id', 'require', '请选择模板'],
+            ['support_hotline', 'require', '请填写电话号码'],
+            ['domain_id', 'require', '请选择域名'],
+            ['domain', 'require', '请选择域名'],
+            ['site_type', 'require', '请选择网站类型'],
+            ['user_id', "require", "请选择用户"],
+            ["user_name", "require", "请选择用户名"],
+            ["site_type_name", "require", "请填写网站类型名称"],
+            ["keyword_ids", "require", "请填写关键字"],
+            ["url", "require", "请输入url"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        if(!$this->searchHttp($data["url"])){
-            $data["url"]="http://".$data["url"];
+        if (!$this->searchHttp($data["url"])) {
+            $data["url"] = "http://" . $data["url"];
         }
-        if(!empty($data["link_id"])){
-            $data["link_id"]=",".implode(",",$data["link_id"]).",";
+        if (!empty($data["link_id"])) {
+            $data["link_id"] = "," . implode(",", $data["link_id"]) . ",";
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
-        $data["menu"]="," . implode(",",$data["menu"]) . ",";
-        $errorKey=$this->checkHasBC($data["keyword_ids"]);
+        $data["menu"] = "," . implode(",", $data["menu"]) . ",";
+        $errorKey = $this->checkHasBC($data["keyword_ids"]);
         //验证关键字是否在C类中存在
-        if(empty($errorKey)){
-            $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
-        }else{
-            return $this->resultArray($errorKey." 缺少B、C类关键词", 'failed');
+        if (empty($errorKey)) {
+            $data["keyword_ids"] = "," . implode(",", $data["keyword_ids"]) . ",";
+        } else {
+            return $this->resultArray($errorKey . " 缺少B、C类关键词", 'failed');
         }
         //公共代码
-        if(!empty($data["public_code"])){
-            $data["public_code"]=implode(",",$data["public_code"]);
+        if (!empty($data["public_code"])) {
+            $data["public_code"] = implode(",", $data["public_code"]);
         }
         if (!\app\admin\model\Site::create($data)) {
             return $this->resultArray('添加失败', 'failed');
@@ -103,12 +105,12 @@ class Site extends Common
      */
     public function checkHasBC($arr)
     {
-        $temp='';
-        foreach($arr as $item){
-            $keyB=\app\admin\model\Keyword::where(["path"=>["like","%,$item,%"],"tag"=>"C"])->find();
-            if(is_null($keyB)){
-                $getKey=\app\admin\model\Keyword::get($item);
-                $temp.=$getKey->name.",";
+        $temp = '';
+        foreach ($arr as $item) {
+            $keyB = \app\admin\model\Keyword::where(["path" => ["like", "%,$item,%"], "tag" => "C"])->find();
+            if (is_null($keyB)) {
+                $getKey = \app\admin\model\Keyword::get($item);
+                $temp .= $getKey->name . ",";
             }
         }
         return $temp;
@@ -146,34 +148,34 @@ class Site extends Common
     public function update(Request $request, $id)
     {
         $rule = [
-            ['site_name','require','请填写网站名称'],
+            ['site_name', 'require', '请填写网站名称'],
             ['menu', 'require', "请选择菜单"],
-            ['template_id','require','请选择模板'],
-            ['support_hotline','require','请填写电话号码'],
-            ['domain_id','require','请选择域名'],
-            ['domain','require','请选择域名'],
-            ['site_type','require','请选择网站类型'],
-            ["site_type_name","require","请填写网站类型名称"],
-            ["keyword_ids","require","请填写关键字"],
-            ["url","require","请输入url"]
+            ['template_id', 'require', '请选择模板'],
+            ['support_hotline', 'require', '请填写电话号码'],
+            ['domain_id', 'require', '请选择域名'],
+            ['domain', 'require', '请选择域名'],
+            ['site_type', 'require', '请选择网站类型'],
+            ["site_type_name", "require", "请填写网站类型名称"],
+            ["keyword_ids", "require", "请填写关键字"],
+            ["url", "require", "请输入url"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
-        $user=$this->getSessionUser();
-        $where=[
-            "id"=>$id,
-            "node_id"=>$user["user_node_id"]
+        $user = $this->getSessionUser();
+        $where = [
+            "id" => $id,
+            "node_id" => $user["user_node_id"]
         ];
-        if(!empty($data["link_id"])){
-            $data["link_id"]=",".implode(",",$data["link_id"]).",";
+        if (!empty($data["link_id"])) {
+            $data["link_id"] = "," . implode(",", $data["link_id"]) . ",";
         }
         //公共代码
-        if(!empty($data["public_code"])){
-            $data["public_code"]=implode(",",$data["public_code"]);
+        if (!empty($data["public_code"])) {
+            $data["public_code"] = implode(",", $data["public_code"]);
         }
-        $data["menu"]="," . implode(",",$data["menu"]) . ",";
-        $data["keyword_ids"]="," . implode(",",$data["keyword_ids"]) . ",";
-        if (!(new \app\admin\model\Site)->save($data,$where)) {
+        $data["menu"] = "," . implode(",", $data["menu"]) . ",";
+        $data["keyword_ids"] = "," . implode(",", $data["keyword_ids"]) . ",";
+        if (!(new \app\admin\model\Site)->save($data, $where)) {
             return $this->resultArray('修改失败', 'failed');
         }
         return $this->resultArray('修改成功');
@@ -194,10 +196,10 @@ class Site extends Common
      * 传输模板文件到站点服务器
      * @access public
      */
-    public function uploadTemplateFile($dest,$path)
+    public function uploadTemplateFile($dest, $path)
     {
-        $dest = $dest.'/index.php/filemanage/uploadFile';
-        $sync=$this->sendFile(ROOT_PATH ."public/". $path, $dest, 'template');
+        $dest = $dest . '/index.php/filemanage/uploadFile';
+        $sync = $this->sendFile(ROOT_PATH . "public/" . $path, $dest, 'template');
         return $sync;
     }
 
@@ -208,12 +210,12 @@ class Site extends Common
      */
     public function setMainSite($id)
     {
-        $main_site=$this->request->post("main_site");
-        if(empty($main_site)){
-            return $this->resultArray('请选择是否是主站','failed');
+        $main_site = $this->request->post("main_site");
+        if (empty($main_site)) {
+            return $this->resultArray('请选择是否是主站', 'failed');
         }
-        $data=["main_site"=>$main_site];
-        return $this->publicUpdate((new \app\admin\model\Site()),$data,$id);
+        $data = ["main_site" => $main_site];
+        return $this->publicUpdate((new \app\admin\model\Site()), $data, $id);
     }
 
     /**
@@ -223,14 +225,14 @@ class Site extends Common
      */
     public function saveFtp($id)
     {
-        $user=(new Common())->getSessionUser();
-        $where=[
-            "id"=>$id,
-            "node_id"=>$user["user_node_id"],
+        $user = (new Common())->getSessionUser();
+        $where = [
+            "id" => $id,
+            "node_id" => $user["user_node_id"],
         ];
-        $data=$this->request->put();
-        if(!\app\admin\model\Site::where($where)->update($data)){
-            return $this->resultArray('修改失败','failed');
+        $data = $this->request->put();
+        if (!\app\admin\model\Site::where($where)->update($data)) {
+            return $this->resultArray('修改失败', 'failed');
         }
         return $this->resultArray('修改成功');
     }
@@ -241,13 +243,13 @@ class Site extends Common
      */
     public function mobileSite()
     {
-        $user=$this->getSessionUser();
-        $where=[
-            "is_mobile"=>20,
-            "node_id"=>$user["user_node_id"],
-            ];
-        $data=(new \app\admin\model\Site)->where($where)->field("id,site_name as text")->select();
-        return $this->resultArray('','',$data);
+        $user = $this->getSessionUser();
+        $where = [
+            "is_mobile" => 20,
+            "node_id" => $user["user_node_id"],
+        ];
+        $data = (new \app\admin\model\Site)->where($where)->field("id,site_name as text")->select();
+        return $this->resultArray('', '', $data);
     }
 
     /**
@@ -260,7 +262,7 @@ class Site extends Common
         $user = $this->getSessionUser();
         $nid = $user["user_node_id"];
         $this->open_start("正在发送模板,请等待..");
-        $this->syncTemplate($id,$nid);
+        $this->syncTemplate($id, $nid);
     }
 
     /**
@@ -270,20 +272,20 @@ class Site extends Common
      * @param $nid
      * @return array
      */
-    public function syncTemplate($id,$nid)
+    public function syncTemplate($id, $nid)
     {
-        $where=[
-            "id"=>$id,
+        $where = [
+            "id" => $id,
             "node_id" => $nid
         ];
-        $site=\app\admin\model\Site::where($where)->find();
-        if(is_null($site)){
-            return $this->resultArray('模板发送失败,无此记录!','failed');
+        $site = \app\admin\model\Site::where($where)->find();
+        if (is_null($site)) {
+            return $this->resultArray('模板发送失败,无此记录!', 'failed');
         }
-        $template=\app\admin\model\Template::get($site->template_id);
-        $upload=$this->uploadTemplateFile($site->url,$template->path);
-        if($upload){
-            $site->template_status=10;
+        $template = \app\admin\model\Template::get($site->template_id);
+        $upload = $this->uploadTemplateFile($site->url, $template->path);
+        if ($upload) {
+            $site->template_status = 10;
             $site->save();
         }
     }
@@ -294,8 +296,8 @@ class Site extends Common
      */
     public function getSites()
     {
-        $field="id,site_name as text";
-        return $this->getList((new \app\admin\model\Site),$field);
+        $field = "id,site_name as text";
+        return $this->getList((new \app\admin\model\Site), $field);
     }
 
     /**
@@ -305,18 +307,9 @@ class Site extends Common
      */
     public function clearCache($id)
     {
-        $user = $this->getSessionUser();
-        $nid = $user["user_node_id"];
-        $where=[
-            "id"=>$id,
-            "node_id" => $nid
-        ];
-        $site=\app\admin\model\Site::where($where)->find();
-        if(is_null($site)){
-            return $this->resultArray('发送失败,无此记录!','failed');
-        }
+
         $this->open_start("正在清除,请稍后....");
-        $this->sendCurlGet($site->url."/clearCache");
+        $this->sendCurlGet($site->url . "/clearCache");
     }
 
     /**
@@ -329,4 +322,45 @@ class Site extends Common
         $this->curl_get($url);
     }
 
+    /**
+     * 统一站点发送get请求接口
+     * @param $id
+     * @param $name
+     */
+    public function siteGetCurl($id, $name)
+    {
+        $func = function () use ($id) {
+            $user = $this->getSessionUser();
+            $nid = $user["user_node_id"];
+            $where = [
+                "id" => $id,
+                "node_id" => $nid
+            ];
+            $site = \app\admin\model\Site::where($where)->find();
+            if (is_null($site)) {
+                return $this->resultArray('发送失败,无此记录!', 'failed');
+            }
+            return $site->url;
+        };
+        return $this->callGetClosure($func, $name);
+    }
+
+    /**
+     * 统一站点get调用接口
+     * @param Closure $closure
+     * @param $name
+     */
+    public function callGetClosure(closure $closure,$name)
+    {
+        $url=$closure();
+        $msg="";
+        switch($name){
+            case "aKeyGeneration":
+                $msg="正在一键生成";
+                $url=$url."/allstatic";
+            break;
+        }
+        $this->open_start($msg);
+        $this->curl_get($url);
+    }
 }
