@@ -326,7 +326,7 @@ class Site extends Common
      */
     public function sendCurlGet($url)
     {
-        $this->curl_post($url);
+        $this->curl_get($url);
     }
 
 }
