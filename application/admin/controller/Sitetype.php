@@ -127,4 +127,9 @@ class Sitetype extends Common
         return $this->getList((new \app\admin\model\SiteType),$field);
     }
 
+
+
+
+
+
 }
