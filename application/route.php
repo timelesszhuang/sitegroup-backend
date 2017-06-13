@@ -113,12 +113,6 @@ Route::get('Site/getSites','admin/Site/getSites');
 Route::get('Site/siteGetCurl/:id/:name','admin/Site/siteGetCurl');
 
 
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> d91d87adc0eca92e956f45e368d9bee4479d0d1e
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');
 
