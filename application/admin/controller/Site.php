@@ -8,6 +8,7 @@ use think\Session;
 use think\Validate;
 use app\common\traits\Obtrait;
 use Closure;
+
 /**
  * 站点 最小的节点相关操作
  * @author xingzhuang
@@ -328,14 +329,37 @@ class Site extends Common
      * @param Closure $closure
      * @param $name
      */
-    public function callGetClosure(closure $closure,$name)
+    public function callGetClosure(closure $closure, $name)
     {
-        $url=$closure();
-        list($newUrl,$msg)=$this->getSwitchUrl($url,$name);
-        //断开前台请求
-        $this->open_start($msg);
-        //发送curl get请求
-        $this->curl_get($newUrl);
+        $url = $closure();
+        $switchUrl = function () use ($url, $name) {
+            $NewUrl = '';
+            $msg = '';
+            switch ($name) {
+                case "aKeyGeneration":
+                    $msg = "正在一键生成...";
+                    $NewUrl = $url . "/allstatic";
+                    break;
+                case "generatIndex":
+                    $msg = "正在生成首页...";
+                    $NewUrl = $url . "/indexstatic";
+                    break;
+                case "generatArticle":
+                    $msg = "正在生成文章页...";
+                    $NewUrl = $url . "/articlestatic";
+                    break;
+                case "generatMenu":
+                    $msg = "正在生成栏目...";
+                    $NewUrl = $url . "/menustatic";
+                    break;
+                case "clearCache":
+                    $msg = "正在清除...";
+                    $NewUrl = $url . "/clearCache";
+                    break;
+            }
+            return [$NewUrl, $msg];
+        };
+        $this->getSwitchUrl($switchUrl);
     }
 
     /**
@@ -343,32 +367,13 @@ class Site extends Common
      * @param $name
      * @return array
      */
-    public function getSwitchUrl($url,$name)
+    public function getSwitchUrl(Closure $closure)
     {
-        $NewUrl='';
-        $msg='';
-        switch($name){
-            case "aKeyGeneration":
-                $msg="正在一键生成...";
-                $NewUrl=$url."/allstatic";
-                break;
-            case "generatIndex":
-                $msg="正在生成首页...";
-                $NewUrl=$url."/indexstatic";
-                break;
-            case "generatArticle":
-                $msg="正在生成文章页...";
-                $NewUrl=$url."/articlestatic";
-                break;
-            case "generatMenu":
-                $msg="正在生成栏目...";
-                $NewUrl=$url."/menustatic";
-                break;
-            case "clearCache":
-                $msg="正在清除...";
-                $NewUrl=$url."/clearCache";
-                break;
-        }
-        return [$NewUrl,$msg];
+        list($url, $msg) = $closure();
+        //断开前台请求
+        $this->open_start($msg);
+        //发送curl get请求
+        $this->curl_get($url);
     }
+
 }
