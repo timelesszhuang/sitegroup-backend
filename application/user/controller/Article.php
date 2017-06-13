@@ -7,9 +7,12 @@ use app\common\controller\Common;
 use think\Request;
 use think\Session;
 use think\Validate;
+use app\common\traits\Obtrait;
+use Closure;
 
 class Article extends Common
 {
+    use Obtrait;
     /**
      * 显示资源列表
      *
@@ -190,4 +193,72 @@ class Article extends Common
         }
         return $this->resultArray('', '', $count);
     }
+
+    public function siteGetCurl($id, $name)
+    {
+        $func = function () use ($id) {
+            $user = $this->getSessionUser();
+            $nid = $user["user_node_id"];
+            $where = [
+                "id" => $id,
+                "node_id" => $nid
+            ];
+            $site = \app\admin\model\Site::where($where)->find();
+            if (is_null($site)) {
+                return $this->resultArray('发送失败,无此记录!', 'failed');
+            }
+            return $site->url;
+        };
+        return $this->callGetClosure($func, $name);
+    }
+
+    /**
+     * 统一站点get调用接口
+     * @param Closure $closure
+     * @param $name
+     */
+    public function callGetClosure(closure $closure,$name)
+    {
+        $url=$closure();
+        list($newUrl,$msg)=$this->getSwitchUrl($url,$name);
+        //断开前台请求
+        $this->open_start($msg);
+        //发送curl get请求
+        $this->curl_get($newUrl);
+    }
+
+    /**
+     * 根据name获取指定的url和msg
+     * @param $name
+     * @return array
+     */
+    public function getSwitchUrl($url,$name)
+    {
+        $NewUrl='';
+        $msg='';
+        switch($name){
+            case "aKeyGeneration":
+                $msg="正在一键生成...";
+                $NewUrl=$url."/allstatic";
+                break;
+            case "generatIndex":
+                $msg="正在生成首页...";
+                $NewUrl=$url."/indexstatic";
+                break;
+            case "generatArticle":
+                $msg="正在生成文章页...";
+                $NewUrl=$url."/artilestatic";
+                break;
+            case "generatMenu":
+                $msg="正在生成栏目...";
+                $NewUrl=$url."/menustatic";
+                break;
+            case "clearCache":
+                $msg="正在清除...";
+                $NewUrl=$url."/clearCache";
+                break;
+        }
+        return [$NewUrl,$msg];
+    }
+
 }

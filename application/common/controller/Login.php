@@ -121,7 +121,7 @@ class Login extends Controller
         $systemConfig = cache('noAuth');
         if (empty($systemConfig)) {
             $systemConfig = $this->getDataList(0);
-            cache('noAuth');
+            cache('noAuth',$systemConfig);
         }
         return $this->resultArray('', '', $systemConfig);
     }
@@ -135,7 +135,6 @@ class Login extends Controller
     {
         $SystemConfig = new \app\common\model\SystemConfig();
         $auth_data = $SystemConfig->where(["need_auth" => $auth])->select();
-
         $data = array();
         foreach ($auth_data as $key => $val) {
             $data[$val['name']] = $val['value'];
