@@ -95,6 +95,8 @@ Route::get('siteuser/getUsers','admin/Siteuser/getUsers');
 //站点分类
 Route::resource('sitetype', 'admin/Sitetype');
 Route::get('sitetype/getSiteType','admin/Sitetype/getSiteType');
+//站点统计
+Route::get('site/SiteCount','admin/Site/SiteCount');
 
 //站点管理
 Route::resource('Site', 'admin/Site');
@@ -109,6 +111,7 @@ Route::get('Site/ignoreFrontend/:id','admin/Site/ignoreFrontend');
 Route::get('Site/getSites','admin/Site/getSites');
 //一键生成 生成文章 清除缓存 生成栏目 生成首页
 Route::get('Site/siteGetCurl/:id/:name','admin/Site/siteGetCurl');
+
 
 
 
@@ -148,8 +151,8 @@ Route::resource('user/pageInfo','user/PageInfo');
 
 //外部访问 操作 甩单、关键词等
 Route::resource('user/externalAccess','common/ExternalAccess');
-
-
+//小站点 一键生成 生成文章 清除缓存 生成栏目 生成首页
+Route::get('user/siteGetCurl/:id/:name','user/Article/siteGetCurl');
 
 
 

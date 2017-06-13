@@ -371,4 +371,26 @@ class Site extends Common
         }
         return [$NewUrl,$msg];
     }
+
+
+    public function SiteCount(){
+        $user=$this->getSessionUser();
+        $where = [
+            'node_id'=>$user["user_node_id"],
+        ];
+        $site = new \app\admin\model\Site();
+        $arr = $site->field('site_type_name,count(id) as nameCount')->where($where)->group('site_type_name')->order("nameCount","desc")->select();
+//        $arrcount = $site->where($where)->count();
+        $temp=[];
+        foreach ($arr as $k=>$v){
+            $temp[]=
+        [
+            "value"=>$v['nameCount'],
+            "name"=>$v['site_type_name']
+        ];
+        }
+
+        return $this->resultArray('','',$temp);
+    }
+
 }
