@@ -358,7 +358,7 @@ class Site extends Common
                 break;
             case "generatArticle":
                 $msg="正在生成文章页...";
-                $NewUrl=$url."/artilestatic";
+                $NewUrl=$url."/articlestatic";
                 break;
             case "generatMenu":
                 $msg="正在生成栏目...";
