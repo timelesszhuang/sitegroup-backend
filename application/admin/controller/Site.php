@@ -385,14 +385,13 @@ class Site extends Common
         $arr = $site->field('site_type_name,count(id) as nameCount')->where($where)->group('site_type_name')->order("nameCount","desc")->select();
 //        $arrcount = $site->where($where)->count();
         $temp=[];
+        $valueArr=[];
+        $nameArr=[];
         foreach ($arr as $k=>$v){
-            $temp[]=
-        [
-            "value"=>$v['nameCount'],
-            "name"=>$v['site_type_name']
-        ];
+            $valueArr[]=$v['nameCount'];
+            $nameArr[]=$v['site_type_name'];
         }
-
+        $temp=["value"=>$valueArr,"name"=>$nameArr];
         return $this->resultArray('','',$temp);
     }
 

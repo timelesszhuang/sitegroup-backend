@@ -20,6 +20,8 @@ use think\db\Connection;
 class Sqlite extends Connection
 {
 
+    protected $builder = '\\think\\db\\builder\\Sqlite';
+
     /**
      * 解析pdo连接的dsn信息
      * @access protected
@@ -40,7 +42,7 @@ class Sqlite extends Connection
      */
     public function getFields($tableName)
     {
-        $this->initConnect(true);
+        $this->initConnect(false);
         list($tableName) = explode(' ', $tableName);
         $sql             = 'PRAGMA table_info( ' . $tableName . ' )';
         // 调试开始
@@ -74,7 +76,7 @@ class Sqlite extends Connection
      */
     public function getTables($dbName = '')
     {
-        $this->initConnect(true);
+        $this->initConnect(false);
         $sql = "SELECT name FROM sqlite_master WHERE type='table' "
             . "UNION ALL SELECT name FROM sqlite_temp_master "
             . "WHERE type='table' ORDER BY name";

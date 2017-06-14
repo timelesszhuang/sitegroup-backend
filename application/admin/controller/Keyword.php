@@ -208,4 +208,22 @@ class Keyword extends Common
         }
         return $this->resultArray('添加成功');
     }
+    public function keywordCount(){
+        $user=$this->getSessionUser();
+        $where = [
+            'node_id'=>$user["user_node_id"],
+        ];
+        $keyword = new \app\admin\model\Keyword();
+        $arr = $keyword->field('tag,count(id) as tagCount')->where($where)->group('tag')->order("tagCount","desc")->select();
+        $arrcount = $keyword->where($where)->count();
+        $te=[];
+        foreach ($arr as $k=>$v){
+            $te[]=round($v['tagCount']/$arrcount*100,2);
+           $ar[]= $v['tag'];
+        }
+         $temp=["count" => $te, "name" =>$ar];
+         return $this->resultArray('','',$temp);
+    }
+
+
 }

@@ -31,6 +31,7 @@ Route::resource('keyword', 'admin/keyword');
 Route::post('keyword/insertA', 'admin/keyword/insertA');
 Route::post('keyword/uploadKeyword', 'admin/keyword/uploadKeyword');
 Route::post('keyword/insertKeyword', 'admin/keyword/insertKeyword');
+Route::get('keyword/KeywordCount', 'admin/keyword/KeywordCount');
 
 //文章分类
 Route::resource('articletype', 'admin/Articletype');
@@ -42,6 +43,8 @@ Route::post('article/sync','admin/Article/syncArticle');
 Route::get('article/getErrorInfo','admin/Article/getErrorInfo');
 Route::get('article/getErrorStatus','admin/Article/getErrorStatus');
 Route::post('article/changeErrorStatus/:id','admin/Article/changeErrorStatus');
+Route::get('articletype/articleCount', 'admin/Articletype/ArticleCount');
+
 
 //菜单
 Route::resource('menu', 'admin/Menu');
@@ -50,10 +53,12 @@ Route::get('menu/getMenu','admin/Menu/getMenu');
 //问答
 Route::resource('question', 'admin/Question');
 
+
 //问答分类
 Route::resource('questionType', 'admin/Questiontype');
 Route::get('questionType/list', 'admin/Questiontype/getQuestionType');
-
+//统计问答
+Route::get('questiontype/QuestionCount', 'admin/Questiontype/QuestionCount');
 //段落文章
 Route::resource('scatteredArticle', 'admin/Scatteredarticle');
 
@@ -111,7 +116,6 @@ Route::get('Site/ignoreFrontend/:id','admin/Site/ignoreFrontend');
 Route::get('Site/getSites','admin/Site/getSites');
 //一键生成 生成文章 清除缓存 生成栏目 生成首页
 Route::get('Site/siteGetCurl/:id/:name','admin/Site/siteGetCurl');
-
 
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');
