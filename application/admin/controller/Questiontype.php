@@ -15,14 +15,14 @@ class Questiontype extends Common
      */
     public function index()
     {
-        $request=$this->getLimit();
+        $request = $this->getLimit();
         $name = $this->request->get('name');
-        $where=[];
-        if(!empty($name)){
+        $where = [];
+        if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
         }
-        $user=$this->getSessionUser();
-        $where["node_id"]=$user["user_node_id"];
+        $user = $this->getSessionUser();
+        $where["node_id"] = $user["user_node_id"];
         $data = (new \app\admin\model\QuestionType())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
@@ -40,7 +40,7 @@ class Questiontype extends Common
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
@@ -63,18 +63,18 @@ class Questiontype extends Common
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\QuestionType()),$id);
+        return $this->getread((new \app\admin\model\QuestionType()), $id);
     }
 
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -85,8 +85,8 @@ class Questiontype extends Common
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param  \think\Request $request
+     * @param  int $id
      * @return \think\Response
      */
     public function update(Request $request, $id)
@@ -99,18 +99,18 @@ class Questiontype extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'faile');
         }
-        return $this->publicUpdate((new \app\admin\model\QuestionType),$data,$id);
+        return $this->publicUpdate((new \app\admin\model\QuestionType), $data, $id);
     }
 
     /**
      * 删除指定资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new \app\admin\model\QuestionType),$id);
+        return $this->deleteRecord((new \app\admin\model\QuestionType), $id);
     }
 
     /**
@@ -119,7 +119,43 @@ class Questiontype extends Common
      */
     public function getQuestionType()
     {
-        $field="id,name";
-        return $this->getList((new \app\admin\model\QuestionType()),$field);
+        $field = "id,name";
+        return $this->getList((new \app\admin\model\QuestionType()), $field);
     }
+
+
+    /**
+     *统计问答
+     */
+    public function QuestionCount()
+    {
+        $count = [];
+        $name = [];
+        foreach ($this->countQuestion() as $item) {
+            $count[] = $item["count"];
+            $name[] = $item["name"];
+        }
+        $arr = ["count" => $count, "name" => $name];
+        return $this->resultArray('','',$arr);
+    }
+
+    public function countQuestion()
+    {
+        $user = $this->getSessionUser();
+        $where = [
+            'node_id' => $user["user_node_id"],
+        ];
+        $articleTypes = \app\admin\model\QuestionType::all($where);
+        foreach ($articleTypes as $item) {
+            yield $this->foreachQuestion($item);
+        }
+    }
+
+    public function foreachQuestion($questionType)
+    {
+        $count = \app\admin\model\Question::where(["type_id" => $questionType->id])->count();
+        return ["count" => $count, "name" => $questionType->name];
+    }
+
+
 }
