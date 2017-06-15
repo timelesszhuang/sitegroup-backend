@@ -127,7 +127,7 @@ Route::get('links/getLinks','admin/Links/getLinks');
 Route::resource("count",'admin/Count');
 Route::resource("countkeyword",'admin/CountKeyword');
 
-//crontab任务,每天定时执行更新所有网站的
+//crontab任务,每天定时执行更新所有网站的静态页面
 Route::get('crontab','admin/CrontabTask/index');
 
 
