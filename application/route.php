@@ -110,6 +110,9 @@ Route::post('Site/setMainSite','admin/Site/setMainSite');
 Route::put('Site/saveFtp/:id','admin/Site/saveFtp');
 Route::get('Site/mobileSite','admin/Site/mobileSite');
 Route::get('Site/flow','admin/Site/flow');
+//统计搜索
+Route::get('enginecount','admin/Site/enginecount');
+
 //发送模板
 Route::get('Site/ignoreFrontend/:id','admin/Site/ignoreFrontend');
 

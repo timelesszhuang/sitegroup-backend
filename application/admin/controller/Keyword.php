@@ -215,10 +215,9 @@ class Keyword extends Common
         ];
         $keyword = new \app\admin\model\Keyword();
         $arr = $keyword->field('tag,count(id) as tagCount')->where($where)->group('tag')->order("tagCount","desc")->select();
-        $arrcount = $keyword->where($where)->count();
         $te=[];
         foreach ($arr as $k=>$v){
-            $te[]=round($v['tagCount']/$arrcount*100,2);
+            $te[]=$v['tagCount'];
            $ar[]= $v['tag'];
         }
          $temp=["count" => $te, "name" =>$ar];
