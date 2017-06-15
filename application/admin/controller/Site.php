@@ -2,7 +2,10 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Useragent;
 use app\common\controller\Common;
+use app\common\model\BrowseRecord;
+use think\Db;
 use think\Request;
 use think\Session;
 use think\Validate;
@@ -17,6 +20,7 @@ use Closure;
 class Site extends Common
 {
     use Obtrait;
+    public $all_count = [];
 
     /**
      * 显示资源列表
@@ -376,23 +380,113 @@ class Site extends Common
         $this->curl_get($url);
     }
 
-    public function SiteCount(){
-        $user=$this->getSessionUser();
+    /**
+     * 站点统计
+     * @return array
+     */
+    public function SiteCount()
+    {
+        $user = $this->getSessionUser();
         $where = [
-            'node_id'=>$user["user_node_id"],
+            'node_id' => $user["user_node_id"],
         ];
         $site = new \app\admin\model\Site();
-        $arr = $site->field('site_type_name,count(id) as nameCount')->where($where)->group('site_type_name')->order("nameCount","desc")->select();
+        $arr = $site->field('site_type_name,count(id) as nameCount')->where($where)->group('site_type_name')->order("nameCount", "desc")->select();
 //        $arrcount = $site->where($where)->count();
-        $temp=[];
-        $valueArr=[];
-        $nameArr=[];
-        foreach ($arr as $k=>$v){
-            $valueArr[]=$v['nameCount'];
-            $nameArr[]=$v['site_type_name'];
+        $temp = [];
+        $valueArr = [];
+        $nameArr = [];
+        foreach ($arr as $k => $v) {
+            $valueArr[] = $v['nameCount'];
+            $nameArr[] = $v['site_type_name'];
         }
-        $temp=["value"=>$valueArr,"name"=>$nameArr];
-        return $this->resultArray('','',$temp);
+        $temp = ["value" => $valueArr, "name" => $nameArr];
+        return $this->resultArray('', '', $temp);
+    }
+
+    public function enginecount()
+    {
+        $user = $this->getSessionUser();
+        $starttime = time() - 86400 * 9;
+        $stoptime = time();
+//        $time=strtotime(date("Y-m-d 0:0:0"))-86400*9;
+        $where = [];
+        $where['node_id'] = $user["user_node_id"];
+
+        $where['create_time'] = ['between', [$starttime, $stoptime]];
+
+        $userAgent = Db::name("useragent")->where($where)->field("engine,create_time")->select();
+        $Agent = [];
+        $Engine = [];
+        foreach ($userAgent as $v) {
+            $engine = $v['engine'];
+            if (!in_array($engine, $Engine)) {
+                array_push($Engine, $engine);
+            }
+            $date = date('m-d', $v['create_time']);
+            if (!array_key_exists($engine, $Agent)) {
+                $Agent[$engine] = [];
+            }
+            if (array_key_exists($date, $Agent[$engine])) {
+                $Agent[$engine][$date] += 1;
+            } else {
+                $Agent[$engine][$date] = 1;
+            }
+        }
+        $date_diff = $this->get_date_diff($starttime, $stoptime);
+        foreach ($Engine as $engine) {
+            foreach ($date_diff as $date) {
+                ksort($Agent[$engine]);
+                if (!array_key_exists($date, $Agent[$engine])) {
+                    $Agent[$engine][$date] = 0;
+                }
+            }
+        }
+        array_walk($Agent, [$this, "formatter"]);
+        $temp = ["time" => $date_diff, "type" => $this->all_count];
+        return $this->resultArray('', '', $temp);
+    }
+
+    /**
+     *获取某段时间内的时间显示
+     * @param $stime
+     * @param $etime
+     * @return array
+     */
+    public function get_date_diff($stime, $etime)
+    {
+        //将起始时间转换成 2014-05 年月的格式
+        $st = strtotime(date("Y-m-d", $stime));
+        $et = strtotime(date("Y-m-d", $etime));
+        $no_time = false;
+        if ($et > time()) {
+            $et = time();
+            $no_time = true;
+        }
+        $arr = array();
+        while ($st) {
+            array_push($arr, date("m-d", $st));
+            $st = strtotime("+1 day", $st);
+            if ($st >= $et) {
+                break;
+            }
+        }
+        if (!$no_time) {
+            array_push($arr, date("m-d", $st));
+        }
+        //返回格式 array("2014-01","2014-02",.....)的时间戳形式
+        return $arr;
+    }
+
+    public function formatter($value, $key)
+    {
+        $this->all_count[] = [
+            "name" => $key,
+            "data" => array_values($value),
+            "type" => "line",
+            "stack" => '总量',
+        ];
+
     }
 
 }
