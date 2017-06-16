@@ -39,6 +39,7 @@ class Login extends Controller
             exit(0);
         }
     }
+
     /**
      * 执行第一次的登陆操作
      * @access public
@@ -61,8 +62,8 @@ class Login extends Controller
 //        if (!captcha_check($post["verifyCode"])) {
 //            return  $this->resultArray('验证码错误', "failed");
 //        };
-        $user_arr=(new User())->checkUser($post["user_name"],$post["pwd"]);
-        return $this->resultArray($user_arr[0],$user_arr[1],$user_arr[2]);
+        $user_arr = (new User())->checkUser($post["user_name"], $post["pwd"]);
+        return $this->resultArray($user_arr[0], $user_arr[1], $user_arr[2]);
     }
 
     /**
@@ -72,23 +73,24 @@ class Login extends Controller
      */
     public function autoLogin()
     {
-        $post=$this->request->post();
+        $post = $this->request->post();
         if (empty($post["user_id"]) || empty($post["remember"])) {
             return $this->resultArray('', "failed");
         }
         $userInfo = User::get($post["user_id"]);
         $private = Config::get("crypt.cookiePrivate");
-        if($post["remember"]!=md5($userInfo["id"].$userInfo["salt"].$private)){
+        if ($post["remember"] != md5($userInfo["id"] . $userInfo["salt"] . $private)) {
             return $this->resultArray('', "failed");
         }
-        $user_arr=$userInfo->getData();
+        $user_arr = $userInfo->getData();
         unset($user_arr["pwd"]);
         //获取私钥
         $private = Config::get("crypt.cookiePrivate");
         $user_arr["remember"] = md5($user_arr["id"] . $user_arr["salt"] . $private);
         (new User)->setSession($user_arr);
-        return $this->resultArray('','',$user_arr);
+        return $this->resultArray('', '', $user_arr);
     }
+
     /**
      * 返回对象  默认不填为success 否则是failed
      * @param $array 响应数据
@@ -109,6 +111,7 @@ class Login extends Controller
             'msg' => $msg
         ];
     }
+
     /**
      * 调用resultArray方法
      * 返回json auth——name验证
@@ -121,10 +124,11 @@ class Login extends Controller
         $systemConfig = cache('noAuth');
         if (empty($systemConfig)) {
             $systemConfig = $this->getDataList(0);
-            cache('noAuth',$systemConfig);
+            cache('noAuth', $systemConfig);
         }
         return $this->resultArray('', '', $systemConfig);
     }
+
     /**
      * 获取配置列表
      * 重组数组
@@ -141,5 +145,6 @@ class Login extends Controller
         }
         return $data;
     }
+
 }
  

@@ -8,6 +8,7 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+
 use think\Route;
 
 //用户
@@ -110,15 +111,20 @@ Route::post('Site/setMainSite','admin/Site/setMainSite');
 Route::put('Site/saveFtp/:id','admin/Site/saveFtp');
 Route::get('Site/mobileSite','admin/Site/mobileSite');
 Route::get('Site/flow','admin/Site/flow');
+
+
+
 //统计搜索
 Route::get('enginecount','admin/Site/enginecount');
 
 //发送模板
-Route::get('Site/ignoreFrontend/:id','admin/Site/ignoreFrontend');
+Route::get('Site/ignoreFrontend/:id/:type','admin/Site/ignoreFrontend');
 
 Route::get('Site/getSites','admin/Site/getSites');
 //一键生成 生成文章 清除缓存 生成栏目 生成首页
 Route::get('Site/siteGetCurl/:id/:name','admin/Site/siteGetCurl');
+//获取活动模板信息
+Route::get('Site/getActivily/:id','admin/Site/getActivily');
 
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');
@@ -132,22 +138,22 @@ Route::resource("countkeyword",'admin/CountKeyword');
 Route::get("count/enginecount",'admin/Count/enginecount');
 Route::get("count/pv",'admin/Count/pv');
 
-//crontab任务,每天定时执行更新所有网站的
+//crontab任务,每天定时执行更新所有网站的静态页面
 Route::get('crontab','admin/CrontabTask/index');
 
 
 
-//小站点相关--------------------------------------------------------
-//小站点登录后的首页操作
+//站点相关--------------------------------------------------------
+//站点登录后的首页操作
 Route::post('user/siteInfo','user/index/siteInfo');
 
-//小站点文章
+//站点文章
 Route::resource('user/article','user/Article');
 Route::get('user/articleType','user/Article/getArticleType');
 Route::get('user/getErrorInfo','user/Article/getErrorInfo');
 Route::post('user/changeErrorStatus/:id','user/Article/changeErrorStatus');
 Route::get('user/getErrorStatus/','user/Article/getErrorStatus');
-//小站点统计
+//站点统计
 Route::resource('user/acount','user/Acount');
 Route::resource('user/keyword','user/Keyword');
 //问答
