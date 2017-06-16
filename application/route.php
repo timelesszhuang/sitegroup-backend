@@ -117,7 +117,7 @@ Route::get('Site/flow','admin/Site/flow');
 Route::get('enginecount','admin/Site/enginecount');
 
 //发送模板
-Route::get('Site/ignoreFrontend/:id/:type','admin/Site/ignoreFrontend');
+Route::get('Site/ignoreFrontend/:template_id/:site_id/:type','admin/Site/ignoreFrontend');
 
 Route::get('Site/getSites','admin/Site/getSites');
 //一键生成 生成文章 清除缓存 生成栏目 生成首页

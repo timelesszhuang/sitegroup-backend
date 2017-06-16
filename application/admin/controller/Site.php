@@ -201,11 +201,10 @@ class Site extends Common
      * 传输模板文件到站点服务器
      * @access public
      */
-    public function uploadTemplateFile($dest, $path)
+    public function uploadTemplateFile($dest, $path,$type,$id)
     {
         $dest = $dest . '/index.php/filemanage/uploadFile';
-        $sync = $this->sendFile(ROOT_PATH . "public/" . $path, $dest, 'template');
-        return $sync;
+        $this->sendFile(ROOT_PATH . "public/" . $path, $dest, $type,$id);
     }
 
     /**
@@ -259,46 +258,45 @@ class Site extends Common
 
     /**
      * 中断前台操作,继续执行后台请求
-     * @param $id
+     * @param $id 模板id
+     * @param $type
      * @return array
      */
-    public function ignoreFrontend($id, $type)
+    public function ignoreFrontend($template_id,$site_id,$type)
     {
-        $this->open_start("正在发送模板,请等待..");
-        $send = function () use ($type) {
-//                switch($type){
-//                    case "activily":
-//                        \app\admin\model\Activity::
-//                }
-        };
-        $this->syncTemplate($id, $type);
-    }
-
-    /**
-     * 同步模板
-     * @param $id
-     *
-     * @param $nid
-     * @return array
-     */
-    public function syncTemplate($id, $type)
-    {
+//        $this->open_start("正在发送模板,请等待..");
         $user = $this->getSessionUser();
         $nid = $user["user_node_id"];
         $where = [
-            "id" => $id,
+            "id" => $site_id,
             "node_id" => $nid
         ];
-        $site = \app\admin\model\Site::where($where)->find();
-        if (is_null($site)) {
-            return $this->resultArray('模板发送失败,无此记录!', 'failed');
-        }
-        $template = \app\admin\model\Template::get($site->template_id);
-        $upload = $this->uploadTemplateFile($site->url, $template->path);
-        if ($upload) {
-            $site->template_status = 10;
-            $site->save();
-        }
+        $send = function () use ($template_id,$site_id,$type,$where) {
+                switch($type){
+                    case "activity":
+                        $site = \app\admin\model\Site::where($where)->find();
+                        $template=\app\admin\model\Activity::where(["id"=>$template_id])->field("id,code_path as path")->find();
+                        $id=$template->id;
+                        break;
+                    case "template":
+                        $site = \app\admin\model\Site::where($where)->find();
+                        $template = \app\admin\model\Template::get($site->template_id);
+                        $id=$template->id;
+                        break;
+                }
+                return [$template,$site,$type,$id];
+        };
+        $this->runClosuse($send);
+    }
+
+    /**
+     * 执行发送模板
+     * @param Closure $closure
+     */
+    public function runClosuse(Closure $closure)
+    {
+        list($template,$site,$type,$id)=$closure();
+        $upload = $this->uploadTemplateFile($site->url, $template->path,$type,$id);
     }
 
     /**
@@ -428,12 +426,12 @@ class Site extends Common
         $arr='';
         if (!empty($sync_id)) {
             if (strpos($sync_id, "," . $item->id . ",")!==false) {
-                $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"已同步"];
+                $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"已同步","sync"=>"重新发送"];
             }else{
-                $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"未同步"];
+                $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"未同步","sync"=>"同步"];
             }
         }else{
-            $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"未同步"];
+            $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"未同步","sync"=>"同步"];
         }
         return $arr;
     }
