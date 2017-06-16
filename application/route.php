@@ -129,6 +129,8 @@ Route::get('links/getLinks','admin/Links/getLinks');
 //节点统计
 Route::resource("count",'admin/Count');
 Route::resource("countkeyword",'admin/CountKeyword');
+Route::get("count/enginecount",'admin/Count/enginecount');
+Route::get("count/pv",'admin/Count/pv');
 
 //crontab任务,每天定时执行更新所有网站的
 Route::get('crontab','admin/CrontabTask/index');

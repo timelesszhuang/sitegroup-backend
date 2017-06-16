@@ -208,6 +208,11 @@ class Keyword extends Common
         }
         return $this->resultArray('添加成功');
     }
+
+    /**
+     * @return array
+     * 关键词统计
+     */
     public function keywordCount(){
         $user=$this->getSessionUser();
         $where = [
@@ -218,7 +223,7 @@ class Keyword extends Common
         $te=[];
         foreach ($arr as $k=>$v){
             $te[]=$v['tagCount'];
-           $ar[]= $v['tag'];
+            $ar[]= $v['tag'];
         }
          $temp=["count" => $te, "name" =>$ar];
          return $this->resultArray('','',$temp);
