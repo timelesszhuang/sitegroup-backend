@@ -264,7 +264,7 @@ class Site extends Common
      */
     public function ignoreFrontend($template_id,$site_id,$type)
     {
-//        $this->open_start("正在发送模板,请等待..");
+        $this->open_start("正在发送模板,请等待..");
         $user = $this->getSessionUser();
         $nid = $user["user_node_id"];
         $where = [
