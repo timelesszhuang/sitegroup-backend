@@ -262,12 +262,16 @@ class Site extends Common
      * @param $id
      * @return array
      */
-    public function ignoreFrontend($id)
+    public function ignoreFrontend($id, $type)
     {
-        $user = $this->getSessionUser();
-        $nid = $user["user_node_id"];
         $this->open_start("正在发送模板,请等待..");
-        $this->syncTemplate($id, $nid);
+        $send = function () use ($type) {
+//                switch($type){
+//                    case "activily":
+//                        \app\admin\model\Activity::
+//                }
+        };
+        $this->syncTemplate($id, $type);
     }
 
     /**
@@ -277,8 +281,10 @@ class Site extends Common
      * @param $nid
      * @return array
      */
-    public function syncTemplate($id, $nid)
+    public function syncTemplate($id, $type)
     {
+        $user = $this->getSessionUser();
+        $nid = $user["user_node_id"];
         $where = [
             "id" => $id,
             "node_id" => $nid
@@ -378,6 +384,58 @@ class Site extends Common
         $this->open_start($msg);
         //发送curl get请求
         $this->curl_get($url);
+    }
+
+    /**
+     * 获取活动模板
+     * @param $id
+     */
+    public function getActivily($id)
+    {
+        $arr=[];
+        foreach ($this->getSiteInfo($id) as $item) {
+            $arr[]=$item;
+        }
+        return $this->resultArray('', '', $arr);
+
+    }
+
+    /**
+     * 遍历site和activily
+     * @param $id
+     * @return \Generator
+     */
+    public function getSiteInfo($id)
+    {
+        $user = $this->getSessionUser();
+        $where = [
+            'node_id' => $user["user_node_id"],
+        ];
+        $activily = \app\admin\model\Activity::where($where)->field("id,name")->select();
+        $site = \app\admin\model\Site::get($id);
+        foreach ($activily as $item) {
+            yield $this->foreachActivily($item, $site->sync_id);
+        }
+    }
+
+    /**
+     * 检测是否已同步
+     * @param $item
+     * @param string $sync_id
+     */
+    public function foreachActivily($item, $sync_id = '')
+    {
+        $arr='';
+        if (!empty($sync_id)) {
+            if (strpos($sync_id, "," . $item->id . ",")!==false) {
+                $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"已同步"];
+            }else{
+                $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"未同步"];
+            }
+        }else{
+            $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"未同步"];
+        }
+        return $arr;
     }
 
     /**
