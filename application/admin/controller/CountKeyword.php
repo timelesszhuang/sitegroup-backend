@@ -10,7 +10,7 @@ use think\Validate;
 class CountKeyword extends Common
 {
     /**
-     * 显示资源列表
+     * 统计关键词
      * @return \think\Response
      */
     public function index()
@@ -22,21 +22,23 @@ class CountKeyword extends Common
         $where = [
             'node_id'=>$user["user_node_id"],
         ];
+        //判断前台是否传递参数
         if(isset($param["time"])){
             list($start_time,$stop_time)=$param['time'];
             $starttime = (!empty(intval($start_time)))?strtotime($start_time):$starttime;
             $stoptime=(!empty(intval($stop_time)))?strtotime($stop_time):$stoptime;
         }
         $where["create_time"]=['between',[$starttime,$stoptime]];
+        //判断前台有没有传递site——id参数
         if(!empty($param["site_id"])){
             $where['site_id']=$param['site_id'];
         }
         $browse=new BrowseRecord();
         $arr = $browse->field('keyword,count(id) as keyCount')->where($where)->group('keyword')->order("keyCount","desc")->select();
-
         $arrcount = $browse->where($where)->count();
         $temp=[];
         foreach ($arr as $k=>$v){
+            //数据组织成百分比的形式
             $temp[]=["value"=>round($v['keyCount']/$arrcount*100,2),"name"=>$v['keyword']];
         }
         return $this->resultArray('','',$temp);

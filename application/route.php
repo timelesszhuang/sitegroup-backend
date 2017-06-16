@@ -8,6 +8,7 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+
 use think\Route;
 
 //用户
@@ -134,23 +135,25 @@ Route::get('links/getLinks','admin/Links/getLinks');
 //节点统计
 Route::resource("count",'admin/Count');
 Route::resource("countkeyword",'admin/CountKeyword');
+Route::get("count/enginecount",'admin/Count/enginecount');
+Route::get("count/pv",'admin/Count/pv');
 
 //crontab任务,每天定时执行更新所有网站的静态页面
 Route::get('crontab','admin/CrontabTask/index');
 
 
 
-//小站点相关--------------------------------------------------------
-//小站点登录后的首页操作
+//站点相关--------------------------------------------------------
+//站点登录后的首页操作
 Route::post('user/siteInfo','user/index/siteInfo');
 
-//小站点文章
+//站点文章
 Route::resource('user/article','user/Article');
 Route::get('user/articleType','user/Article/getArticleType');
 Route::get('user/getErrorInfo','user/Article/getErrorInfo');
 Route::post('user/changeErrorStatus/:id','user/Article/changeErrorStatus');
 Route::get('user/getErrorStatus/','user/Article/getErrorStatus');
-//小站点统计
+//站点统计
 Route::resource('user/acount','user/Acount');
 Route::resource('user/keyword','user/Keyword');
 //问答

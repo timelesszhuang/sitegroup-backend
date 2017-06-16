@@ -35,10 +35,4 @@ class Keyword extends Model
         $data=$this->where($where)->field("id,name as label,tag")->select();
         return $data;
     }
-
-
-
-
-
-
 }

@@ -14,6 +14,7 @@ class Template extends Model
 {
     //只读字段
     protected $readonly=["node_id"];
+    
     /**
      * 获取所有 模板
      * @param $limit
