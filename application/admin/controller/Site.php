@@ -274,17 +274,16 @@ class Site extends Common
         $send = function () use ($template_id,$site_id,$type,$where) {
                 switch($type){
                     case "activity":
-                        $site = \app\admin\model\Site::where($where)->find();
                         $template=\app\admin\model\Activity::where(["id"=>$template_id])->field("id,code_path as path")->find();
                         $id=$template->id;
                         break;
                     case "template":
-                        $site = \app\admin\model\Site::where($where)->find();
                         $template = \app\admin\model\Template::get($site->template_id);
                         $id=$template->id;
                         break;
                 }
-                return [$template,$site,$type,$id];
+            $site = \app\admin\model\Site::where($where)->find();
+            return [$template,$site,$type,$id];
         };
         $this->runClosuse($send);
     }
