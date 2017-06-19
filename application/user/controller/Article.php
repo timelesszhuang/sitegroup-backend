@@ -286,8 +286,6 @@ class Article extends Common
         foreach ($articleTypes as $item) {
             yield $this->foreachArticle($item);
         }
-
-
     }
 
     public function foreachArticle($articleType)

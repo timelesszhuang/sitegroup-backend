@@ -134,10 +134,8 @@ Route::resource("count",'admin/Count');
 Route::resource("countkeyword",'admin/CountKeyword');
 Route::get("count/enginecount",'admin/Count/enginecount');
 Route::get("count/pv",'admin/Count/pv');
-Route::get("count/articlecount",'admin/Count/ArticleCount');
-//浏览量
-Route::resource('pv','admin/Pv');
-//crontab任务,每天定时执行更新所有网站的静态页面
+
+//crontab任务,每天定时执行更新所有网站的
 Route::get('crontab','admin/CrontabTask/index');
 
 

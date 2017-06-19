@@ -126,7 +126,8 @@ class Statistics extends Common
         {
             $param = $this->request->get();
             $site_id=Session::get("website")["id"];
-            $node_id=Session::get('login_site')["node_id"];
+            $user=$this->getSessionUser();
+            $node_id = $user["user_node_id"];
             $where = [
                 'node_id' => $node_id,
                 'site_id' =>$site_id,
@@ -185,11 +186,7 @@ class Statistics extends Common
             array_walk($Agent, [$this, "formatter"]);
             //重组数组返给前台
             $temp = ["time" => $date_diff, "type" => $this->all_count];
-            if (empty($userAgent)) {
-                return $this->resultArray('没有查询到数据', 'failed', $temp);
-            } else {
-                return $this->resultArray('查询成功', '', $temp);
-            }
+            return $this->resultArray('', '', $temp);
         }
 
         /**
@@ -245,9 +242,11 @@ class Statistics extends Common
         {
             $param = $this->request->get();
             $site_id=Session::get("website")["id"];
-            $node_id=Session::get('login_site')["node_id"];
+            $user=$this->getSessionUser();
+            $node_id = $user["user_node_id"];
             $where = [
-                'node_id' =>   $node_id,
+                'node_id' =>$node_id,
+                'site_id'=>$site_id,
             ];
             //判断前台是否传递参数
             if (isset($param["time"])) {
@@ -303,11 +302,7 @@ class Statistics extends Common
             //array_walk() 数组的键名和键值是参数。
             array_walk($Pv, [$this, "for1"]);
             $temp = ["time" => $date_diff, "type" => $this->count];
-            if (empty($userpv)) {
-                return $this->resultArray('没有查询到数据', 'failed', $temp);
-            } else {
-                return $this->resultArray('查询成功', '', $temp);
-            }
+            return $this->resultArray('', '', $temp);
         }
 
         /**
@@ -329,10 +324,10 @@ class Statistics extends Common
     public function ArticleCount()
     {
         $count = [];
-        $name = [];
+        $name  = [];
         foreach ($this->countArticle() as $item) {
             $count[] = $item["count"];
-            $name[] = $item["name"];
+             $name[] = $item["name"];
         }
         $arr = ["count" => $count, "name" => $name];
         return $this->resultArray('','',$arr);
@@ -348,8 +343,6 @@ class Statistics extends Common
         foreach ($articleTypes as $item) {
             yield $this->foreachArticle($item);
         }
-
-
     }
 
     public function foreachArticle($articleType)
