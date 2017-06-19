@@ -111,8 +111,6 @@ Route::post('Site/setMainSite','admin/Site/setMainSite');
 Route::put('Site/saveFtp/:id','admin/Site/saveFtp');
 Route::get('Site/mobileSite','admin/Site/mobileSite');
 Route::get('Site/flow','admin/Site/flow');
-
-
 //统计搜索
 Route::get('enginecount','admin/Site/enginecount');
 
@@ -136,7 +134,9 @@ Route::resource("count",'admin/Count');
 Route::resource("countkeyword",'admin/CountKeyword');
 Route::get("count/enginecount",'admin/Count/enginecount');
 Route::get("count/pv",'admin/Count/pv');
-
+Route::get("count/articlecount",'admin/Count/ArticleCount');
+//浏览量
+Route::resource('pv','admin/Pv');
 //crontab任务,每天定时执行更新所有网站的静态页面
 Route::get('crontab','admin/CrontabTask/index');
 
@@ -152,9 +152,7 @@ Route::get('user/articleType','user/Article/getArticleType');
 Route::get('user/getErrorInfo','user/Article/getErrorInfo');
 Route::post('user/changeErrorStatus/:id','user/Article/changeErrorStatus');
 Route::get('user/getErrorStatus/','user/Article/getErrorStatus');
-//站点统计
-Route::resource('user/acount','user/Acount');
-Route::resource('user/keyword','user/Keyword');
+
 //问答
 Route::resource('user/question','user/question');
 
@@ -165,7 +163,15 @@ Route::resource('user/pageInfo','user/PageInfo');
 Route::resource('user/externalAccess','common/ExternalAccess');
 //小站点 一键生成 生成文章 清除缓存 生成栏目 生成首页
 Route::get('user/siteGetCurl/:id/:name','user/Article/siteGetCurl');
-
+//站点统计
+Route::resource('user/acount','user/Acount');
+Route::resource('user/keyword','user/Keyword');
+Route::get('user/articleCount','user/Article/ArticleCount');
+//ArticleCount
+//站点浏览量pv统计
+Route::resource('user/Statistics','user/Statistics');
+Route::get('user/pv','user/Statistics/pv');
+Route::get('user/enginecount','user/Statistics/enginecount');
 
 
 return [
