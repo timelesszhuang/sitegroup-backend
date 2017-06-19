@@ -267,7 +267,7 @@ class Common extends Controller
         if (file_exists($path)) {
             //文件不存在
         }
-//        $dest = 'upload/activity/activity/';
+//      $dest = 'upload/activity/activity/';
         $zip = new \ZipArchive;
         $res = $zip->open($path);
         if ($res === TRUE) {
