@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\controller;
+namespace app\user\controller;
 
 use app\common\model\BrowseRecord;
 use think\Db;
@@ -9,7 +9,7 @@ use app\common\controller\Common;
 use think\Session;
 use think\Validate;
 
-class Count extends Common
+class Statistics extends Common
 {
 
         public $all_count = [];
@@ -19,38 +19,21 @@ class Count extends Common
          * 搜索引擎站点统计
          * @return \think\Response
          */
-        public function index()
-        {
-            $param = $this->request->get();
-            $user = $this->getSessionUser();
-            $starttime = 0;
-            $stoptime = time();
-            $where = [
-                'node_id' => $user["user_node_id"],
-            ];
-            //判断前台是否传递参数
-            if (isset($param["time"])) {
-                list($start_time, $stop_time) = $param['time'];
-                $starttime = (!empty(intval($start_time))) ? strtotime($start_time) : $starttime;
-                $stoptime = (!empty(intval($stop_time))) ? strtotime($stop_time) : $stoptime;
-            }
-            $where["create_time"] = ['between', [$starttime, $stoptime]];
-            //判断前台有没有传递site——id参数
-            if (!empty($param["site_id"])) {
-                $where['site_id'] = $param['site_id'];
-            }
-            $browse = new BrowseRecord();
-            $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->order("keyCount", "desc")->select();
-            $arrcount = $browse->where($where)->count();
-            $temp = [];
-            foreach ($arr as $k => $v) {
-                //组织成前台所需要的百分比数据
-                $temp[] = ["value" => round($v['keyCount'] / $arrcount * 100, 2), "name" => $v['engine']];
-            }
-            return $this->resultArray('', '', $temp);
+    public function index()
+    {
+        $limits = $this->getLimit();
+        $site_id=Session::get("website")["id"];
+        $node_id=Session::get('login_site')["node_id"];
+        $where = [];
+        if (!empty($site_id)) {
+            $where['site_id'] = $site_id;
         }
+        $where["node_id"] = $node_id;
+        return $this->resultArray('', '', (new \app\admin\model\Pv())->getAll($limits['limit'], $limits['rows'], $where));
+    }
 
-        /**
+
+    /**
          * 显示创建资源表单页.
          *
          * @return \think\Response
@@ -142,9 +125,12 @@ class Count extends Common
         public function enginecount()
         {
             $param = $this->request->get();
-            $user = $this->getSessionUser();
+            $site_id=Session::get("website")["id"];
+            $user=$this->getSessionUser();
+            $node_id = $user["user_node_id"];
             $where = [
-                'node_id' => $user["user_node_id"],
+                'node_id' => $node_id,
+                'site_id' =>$site_id,
             ];
             //判断前台是否传递参数
             if (isset($param["time"])) {
@@ -159,9 +145,6 @@ class Count extends Common
             }
             $where["create_time"] = ['between', [$starttime, $stoptime]];
             //判断前台有没有传递site——id参数
-            if (!empty($param["site_id"])) {
-                $where['site_id'] = $param['site_id'];
-            }
             $userAgent = Db::name("useragent")->where($where)->field("engine,create_time")->select();
             $Agent = [];
             $Engine = [];
@@ -203,11 +186,7 @@ class Count extends Common
             array_walk($Agent, [$this, "formatter"]);
             //重组数组返给前台
             $temp = ["time" => $date_diff, "type" => $this->all_count];
-            if (empty($userAgent)) {
-                return $this->resultArray('没有查询到数据', 'failed', $temp);
-            } else {
-                return $this->resultArray('查询成功', '', $temp);
-            }
+            return $this->resultArray('', '', $temp);
         }
 
         /**
@@ -262,9 +241,12 @@ class Count extends Common
         public function pv()
         {
             $param = $this->request->get();
-            $user = $this->getSessionUser();
+            $site_id=Session::get("website")["id"];
+            $user=$this->getSessionUser();
+            $node_id = $user["user_node_id"];
             $where = [
-                'node_id' => $user["user_node_id"],
+                'node_id' =>$node_id,
+                'site_id'=>$site_id,
             ];
             //判断前台是否传递参数
             if (isset($param["time"])) {
@@ -279,7 +261,7 @@ class Count extends Common
             $where["create_time"] = ['between', [$starttime, $stoptime]];
             //判断前台有没有传递site——id参数
             if (!empty($param["site_id"])) {
-                $where['site_id'] = $param['site_id'];
+                $where['site_id'] = $site_id;
             }
             $userpv = Db::name("pv")->where($where)->field("node_id,create_time")->select();
             //循环$userpv 组织成vue前台series所需要的数据
@@ -320,11 +302,7 @@ class Count extends Common
             //array_walk() 数组的键名和键值是参数。
             array_walk($Pv, [$this, "for1"]);
             $temp = ["time" => $date_diff, "type" => $this->count];
-            if (empty($userpv)) {
-                return $this->resultArray('没有查询到数据', 'failed', $temp);
-            } else {
-                return $this->resultArray('查询成功', '', $temp);
-            }
+            return $this->resultArray('', '', $temp);
         }
 
         /**
@@ -346,10 +324,10 @@ class Count extends Common
     public function ArticleCount()
     {
         $count = [];
-        $name = [];
+        $name  = [];
         foreach ($this->countArticle() as $item) {
             $count[] = $item["count"];
-            $name[] = $item["name"];
+             $name[] = $item["name"];
         }
         $arr = ["count" => $count, "name" => $name];
         return $this->resultArray('','',$arr);
@@ -365,8 +343,6 @@ class Count extends Common
         foreach ($articleTypes as $item) {
             yield $this->foreachArticle($item);
         }
-
-
     }
 
     public function foreachArticle($articleType)

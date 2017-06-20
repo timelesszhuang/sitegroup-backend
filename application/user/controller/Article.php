@@ -60,6 +60,7 @@ class Article extends Common
         if(!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
+        $data['summary'] = $this->utf8chstringsubstr($data['content'], 75 * 3);
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -111,6 +112,7 @@ class Article extends Common
         if(!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
+        $data['summary'] = $this->utf8chstringsubstr($data['content'], 75 * 3);
         return $this->publicUpdate((new \app\admin\model\Article),$data,$id);
     }
 
@@ -181,7 +183,7 @@ class Article extends Common
      */
     public function getErrorStatus()
     {
-        $user=(new Common())->getSessionUser();
+        $user=$this->getSessionUser();
         $site_id=Session::get("website")["id"];
         $where=[
             "node_id"=>$user["user_node_id"],
@@ -261,5 +263,41 @@ class Article extends Common
         }
         return [$NewUrl,$msg];
     }
+    /**
+     * 统计文章
+     * @return array
+     */
+    public function ArticleCount()
+    {
+        $count = [];
+        $name = [];
+        foreach ($this->countArticle() as $item) {
+            $count[] = $item["count"];
+            $name[] = $item["name"];
+        }
+        $arr = ["count" => $count, "name" => $name];
+        return $this->resultArray('','',$arr);
+    }
+
+    public function countArticle()
+    {
+        $user=$this->getSessionUser();
+        $where = [
+            'node_id' => $user["user_node_id"],
+        ];
+        $articleTypes = \app\admin\model\Articletype::get($where);
+        foreach ($articleTypes as $item) {
+            yield $this->foreachArticle($item);
+        }
+    }
+
+    public function foreachArticle($articleType)
+    {
+        $count = \app\admin\model\Article::where(["articletype_id" => $articleType->id])->count();
+        return ["count" => $count, "name" => $articleType->name];
+
+    }
+
+
 
 }
