@@ -128,9 +128,10 @@ class Article extends Common
      * @param $id
      * @return array
      */
-    public function syncArticle($id)
+    public function syncArticle()
     {
         $is_sync = $this->request->post('is_sync');
+        $id=$this->request->post("id");
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $where["id"] = $id;
