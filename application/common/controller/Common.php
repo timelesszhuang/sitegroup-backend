@@ -167,10 +167,10 @@ class Common extends Controller
      */
     public function getSessionUser()
     {
-        $request=Request::instance();
+        $request = Request::instance();
         $module = $request->module();
         $arr = [];
-        switch($module){
+        switch ($module) {
             //大后台
             case "sysadmin":
                 $arr["user_id"] = Session::get("sys_id");
@@ -288,14 +288,14 @@ class Common extends Controller
      * @param $dest 传输到的地方 会是一个域名 追加 一个固定的位置
      * @param $type 类型 传输的文件的类型 比如 是 模板 template 还是创意 activity
      */
-    public function sendFile($file, $dest, $type,$id)
+    public function sendFile($file, $dest, $type, $id)
     {
         //测试发送文件操作
 //        $dest = 'http://local.sitegroup.com/index.php/testsendFile/index';
         $post = array(
             "file" => new \CURLFile($file),//这里是要上传的文件，key与后台处理文件对应
             "type" => $type,
-            "id"=>$id
+            "id" => $id
         );
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $dest);
@@ -344,6 +344,34 @@ class Common extends Controller
      */
     public function searchHttp($http)
     {
-        return strrchr("http",$http);
+        return strrchr("http", $http);
     }
+
+
+    /**
+     * 截取中文字符串 会过滤出数据 utf-8
+     * @param String $str 要截取的中文字符串
+     * @param $len
+     * @return
+     */
+    public function utf8chstringsubstr($str, $len)
+    {
+        $str = strip_tags($str);
+        for ($i = 0; $i < $len; $i++) {
+            $temp_str = substr($str, 0, 1);
+            if (ord($temp_str) > 127) {
+                $i++;
+                if ($i < $len) {
+                    $new_str[] = substr($str, 0, 3);
+                    $str = substr($str, 3);
+                }
+            } else {
+                $new_str[] = substr($str, 0, 1);
+                $str = substr($str, 1);
+            }
+        }
+        //把数组元素组合为string
+        return join($new_str);
+    }
+
 }
