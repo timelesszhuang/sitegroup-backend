@@ -31,9 +31,17 @@ class Site extends Common
     {
         $request = $this->getLimit();
         $site_name = $this->request->get('site_name');
+        $site_type = $this->request->get('site_type_id');
+        $url = $this->request->get('url');
         $where = [];
         if (!empty($site_name)) {
             $where["site_name"] = ["like", "%$site_name%"];
+        }
+        if (!empty($site_type)) {
+            $where["site_type"] =$site_type;
+        }
+        if (!empty($url)) {
+            $where["url"] = ["like", "%$url%"];
         }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
@@ -272,7 +280,8 @@ class Site extends Common
             "node_id" => $nid
         ];
         $send = function () use ($template_id,$site_id,$type,$where) {
-                switch($type){
+            $site = \app\admin\model\Site::where($where)->find();
+            switch($type){
                     case "activity":
                         $template=\app\admin\model\Activity::where(["id"=>$template_id])->field("id,code_path as path")->find();
                         $id=$template->id;
@@ -282,7 +291,7 @@ class Site extends Common
                         $id=$template->id;
                         break;
                 }
-            $site = \app\admin\model\Site::where($where)->find();
+
             return [$template,$site,$type,$id];
         };
         $this->runClosuse($send);
