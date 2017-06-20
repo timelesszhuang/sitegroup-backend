@@ -97,6 +97,7 @@ class Article extends Common
      */
     public function update(Request $request, $id)
     {
+        dump($this->getSiteSession('website'));die;
         $rule = [
             ["title", "require", "请输入标题"],
             ["content", "require", "请输入内容"],
