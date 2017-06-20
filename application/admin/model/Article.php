@@ -23,9 +23,11 @@ class Article extends Model
         // 文章阅读数量随机生成
         Article::event("before_write",function($article){
             $rule = '/<img[\s\S]*?src\s*=\s*[\"|\'](.*?)[\"|\'][\s\S]*?>/';
-            preg_match($rule,$article->content,$matches);
-            if(!empty($matches)){
-                $article->thumbnails=$matches[0];
+            if(isset($article->content)){
+                preg_match($rule,$article->content,$matches);
+                if(!empty($matches)){
+                    $article->thumbnails=$matches[0];
+                }
             }
             $article->readcount=rand(100,10000);
         });
