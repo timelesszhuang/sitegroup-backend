@@ -2,7 +2,6 @@
 
 namespace app\admin\controller;
 
-use think\Controller;
 use think\Request;
 use think\Validate;
 use app\common\controller\Common;
@@ -46,9 +45,9 @@ class Domain extends Common
     public function save(Request $request)
     {
         $rule = [
-            ['registrant_user', "require", "请填写注册人"],
-            ['registrant_tel', 'require', "请填写手机号"],
-            ["registrant_email","require","请填写邮箱"],
+//            ['registrant_user', "require", "请填写注册人"],
+//            ['registrant_tel', 'require', "请填写手机号"],
+//            ["registrant_email","require","请填写邮箱"],
             ["domain","require","请填写域名"]
         ];
         $validate = new Validate($rule);
