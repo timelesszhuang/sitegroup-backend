@@ -204,6 +204,7 @@ class Keyword extends Common
         }
         $user = $this->getSessionUser();
         $data["node_id"] = $user["user_node_id"];
+        $data['name'] = trim($data['name']);
         if (!\app\admin\model\Keyword::create($data)) {
             return $this->resultArray('添加失败', "faile");
         }
