@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<SCRIPT>
+    var referrer = document.referrer;
+    var obj = {};
+    var sendInfo = {};
+    if (referrer.indexOf("www.sogou.com") !== -1) {
+        strs = referrer.split("&");
+        for (var i = 0; i < strs.length; i++) {
+            obj[strs[i].split("=")[0]] = strs[i].split("=")[1];
+        }
+        sendInfo.keyword = obj.query;
+        sendInfo.engine = "sogou";
+    } else if (referrer.indexOf("www.so.com") !== -1) {
+        strs = referrer.split("&");
+        for (var i = 0; i < strs.length; i++) {
+            obj[strs[i].split("=")[0]] = strs[i].split("=")[1];
+        }
+        sendInfo.keyword = obj.q;
+        sendInfo.engine = obj.src;
+    } else if (referrer.indexOf("www.baidu.com") !== -1) {
+        sendInfo.keyword = "";
+        sendInfo.engine = "百度";
+        console.log(sendInfo)
+    } else {
+        sendInfo.keyword = "其他";
+        sendInfo.engine = "其他";
+    }
+    sendInfo.keyword = decodeURI(sendInfo.keyword);
+    sendInfo.referrer = referrer;
+    sendInfo.origin_web = window.location.href
+    $(function () {
+        var url = "index.php/externalAccess";
+        $.ajax({
+                type: "post",
+                url: url,
+                data: sendInfo,
+                success: function () {
+                }
+            }
+        )
+    })
+</SCRIPT>
+
+</body>
+</html>
