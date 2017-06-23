@@ -111,6 +111,8 @@ Route::post('Site/setMainSite','admin/Site/setMainSite');
 Route::put('Site/saveFtp/:id','admin/Site/saveFtp');
 Route::get('Site/mobileSite','admin/Site/mobileSite');
 Route::get('Site/flow','admin/Site/flow');
+//站点静态化配置
+Route::resource('Staticconfig', 'admin/Staticconfig');
 //统计搜索
 Route::get('enginecount','admin/Site/enginecount');
 
@@ -172,8 +174,10 @@ Route::get('user/articleCount','user/Article/ArticleCount');
 Route::resource('user/Statistics','user/Statistics');
 Route::get('user/pv','user/Statistics/pv');
 Route::get('user/enginecount','user/Statistics/enginecount');
-
-
+//小站点插入href
+Route::resource('user/ArticleInsertA','user/ArticleInsertA');
+//小站点替换关键词
+Route::resource('user/Substitution','user/Substitution');
 return [
     '__pattern__' => [
         'name' => '\w+',
