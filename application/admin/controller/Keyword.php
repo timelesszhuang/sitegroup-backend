@@ -54,7 +54,7 @@ class Keyword extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Keyword),$id);
+        return $this->getread((new \app\admin\model\Keyword), $id);
     }
 
     /**
@@ -136,9 +136,10 @@ class Keyword extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $model = new \app\admin\model\Keyword();
-        $file_info=$this->getKeywordInfo($post["path"], $post["id"],$model);
+        $file_info = $this->getKeywordInfo($post["path"], $post["id"], $model);
         while ($key = fgets($file_info["file"])) {
-            $getkey = $model->where(["name" => $key,"parent_id"=>$post["id"]])->find();
+            $key = str_replace(PHP_EOL, '', trim($key));
+            $getkey = $model->where(["name" => $key, "parent_id" => $post["id"]])->find();
             if (!empty($getkey)) {
                 continue;
             }
@@ -161,7 +162,7 @@ class Keyword extends Common
      * @return array
      * @author guozhen
      */
-    public function getKeywordInfo($file_path, $id,$model)
+    public function getKeywordInfo($file_path, $id, $model)
     {
         $file_path = "upload/" . $file_path;
         if (file_exists($file_path)) {
@@ -177,10 +178,10 @@ class Keyword extends Common
             $file = fopen($file_path, "r");
             $user = $this->getSessionUser();
             return [
-                "tag"=>$tag,
-                "path"=>$path,
-                "file"=>$file,
-                "user_node_id"=>$user["user_node_id"]
+                "tag" => $tag,
+                "path" => $path,
+                "file" => $file,
+                "user_node_id" => $user["user_node_id"]
             ];
         }
         exit(json_encode($this->resultArray('文件不存在', "failed")));
@@ -193,18 +194,19 @@ class Keyword extends Common
      */
     public function insertA()
     {
-        $rule=[
-            ["name","require","请填写A类关键词"],
+        $rule = [
+            ["name", "require", "请填写A类关键词"],
         ];
-        $validate=new Validate($rule);
-        $data=$this->request->post();
-        if(!$validate->check($data)){
-            return $this->resultArray($validate->getError(),'faile');
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'faile');
         }
-        $user=$this->getSessionUser();
-        $data["node_id"]=$user["user_node_id"];
-        if(!\app\admin\model\Keyword::create($data)){
-            return $this->resultArray('添加失败',"faile");
+        $user = $this->getSessionUser();
+        $data["node_id"] = $user["user_node_id"];
+        $data['name'] = trim($data['name']);
+        if (!\app\admin\model\Keyword::create($data)) {
+            return $this->resultArray('添加失败', "faile");
         }
         return $this->resultArray('添加成功');
     }
@@ -213,20 +215,21 @@ class Keyword extends Common
      * @return array
      * 关键词统计
      */
-    public function keywordCount(){
-        $user=$this->getSessionUser();
+    public function keywordCount()
+    {
+        $user = $this->getSessionUser();
         $where = [
-            'node_id'=>$user["user_node_id"],
+            'node_id' => $user["user_node_id"],
         ];
         $keyword = new \app\admin\model\Keyword();
-        $arr = $keyword->field('tag,count(id) as tagCount')->where($where)->group('tag')->order("tagCount","desc")->select();
-        $te=[];
-        foreach ($arr as $k=>$v){
-            $te[]=$v['tagCount'];
-            $ar[]= $v['tag'];
+        $arr = $keyword->field('tag,count(id) as tagCount')->where($where)->group('tag')->order("tagCount", "desc")->select();
+        $te = [];
+        foreach ($arr as $k => $v) {
+            $te[] = $v['tagCount'];
+            $ar[] = $v['tag'];
         }
-         $temp=["count" => $te, "name" =>$ar];
-         return $this->resultArray('','',$temp);
+        $temp = ["count" => $te, "name" => $ar];
+        return $this->resultArray('', '', $temp);
     }
 
 
