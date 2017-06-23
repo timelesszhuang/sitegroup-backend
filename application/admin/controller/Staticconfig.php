@@ -10,7 +10,7 @@ use think\Request;
 class Staticconfig extends Common
 {
     /**
-     * @return array
+     *@return array
      */
     public function index()
     {
@@ -68,6 +68,7 @@ class Staticconfig extends Common
         }
         $where = [];
         $where['site_id'] = $data['site_id'];
+        $where['type']=$data['type'];
         $Staticdata = (new \app\admin\model\SiteStaticconfig())->where($where)->select();
         foreach ($Staticdata as $k => $v) {
             if (!(strtotime($data['stoptime']) < strtotime($v['starttime']) || strtotime($data['starttime']) > strtotime($v['stoptime']))) {
@@ -114,6 +115,7 @@ class Staticconfig extends Common
         }
         $where = [];
         $where['site_id'] = $data['site_id'];
+        $where['type']=$data['type'];
         $Staticdata = (new \app\admin\model\SiteStaticconfig())->where($where)->select();
         foreach ($Staticdata as $k => $v) {
             if (!(strtotime($data['stoptime']) < strtotime($v['starttime']) || strtotime($data['starttime']) > strtotime($v['stoptime']))) {
