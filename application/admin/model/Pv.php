@@ -18,7 +18,7 @@ class   Pv extends Model
     public function getAll($limit,$rows,$where)
     {
         $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->field("create_time,update_time",true)->select();
+        $data = $this->limit($limit, $rows)->where($where)->field("create_time",true)->select();
         foreach ($data as $v){
            $v['Provincecities']=$v['region'].$v['city'];
         }

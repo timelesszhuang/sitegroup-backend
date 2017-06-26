@@ -135,7 +135,9 @@ Route::get('links/getLinks','admin/Links/getLinks');
 Route::resource("count",'admin/Count');
 Route::resource("countkeyword",'admin/CountKeyword');
 Route::get("count/enginecount",'admin/Count/enginecount');
+Route::get("count/en",'admin/Count/en');
 Route::get("count/pv",'admin/Count/pv');
+Route::get("count/show",'admin/Count/show');
 Route::get("count/articlecount",'admin/Count/ArticleCount');
 //浏览量
 Route::resource('pv','admin/Pv');
@@ -178,6 +180,8 @@ Route::get('user/enginecount','user/Statistics/enginecount');
 Route::resource('user/ArticleInsertA','user/ArticleInsertA');
 //小站点替换关键词
 Route::resource('user/Substitution','user/Substitution');
+//小站点静态化配置
+Route::resource('user/Staticconfig','user/Staticconfig');
 return [
     '__pattern__' => [
         'name' => '\w+',

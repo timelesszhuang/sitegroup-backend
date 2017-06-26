@@ -88,9 +88,15 @@ class Template extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
+        $template = \app\admin\model\Template::get($id);
+        if($data['path']!=$template['path']){
+            unlink($template['path']);
+            $data['path'] = self::$templatepath . $data['path'];
+        }
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
+
         return $this->publicUpdate((new \app\admin\model\Template()), $data, $id);
     }
 

@@ -69,7 +69,7 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $data['summary'] = $this->utf8chstringsubstr($data['content'], 75 * 3);
+        $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -106,7 +106,7 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $data['summary'] = $this->utf8chstringsubstr($data['content'], 75 * 3);
+        $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
