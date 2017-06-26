@@ -30,7 +30,6 @@ class CrontabTask extends Controller{
         foreach($sites as $item){
             yield $this->getUrl($item);
         }
-
     }
 
     /**
@@ -40,7 +39,7 @@ class CrontabTask extends Controller{
      */
     public function getUrl($item)
     {
-        return $item->url."/allstatic";
+        return $item->url."/crontabstatic";
     }
 
 
