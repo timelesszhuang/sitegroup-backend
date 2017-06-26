@@ -19,7 +19,7 @@ return [
     // 用户名
     'username'        => 'sitegroup',
     // 密码
-    'password'        => 'LiuRui123$%^',
+    'password'        => 'Liurui123$%^',
     // 端口
     'hostport'        => '',
     // 连接dsn

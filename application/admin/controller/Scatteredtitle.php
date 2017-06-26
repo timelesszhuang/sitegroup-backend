@@ -58,6 +58,9 @@ class Scatteredtitle extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
+        if(\app\admin\model\ScatteredArticle::where(["articletype_id"=>$data['articletype_id']])->count()<15){
+            return $this->resultArray("当前零散分类文章少于15篇,请先补充文章", 'failed');
+        }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\ScatteredTitle::create($data)) {
             return $this->resultArray('添加失败', 'failed');
@@ -103,6 +106,9 @@ class Scatteredtitle extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
+        if(\app\admin\model\ScatteredArticle::where(["articletype_id"=>$data['articletype_id']])->count()<15){
+            return $this->resultArray("当前零散分类文章少于15篇,请先补充文章", 'failed');
+        }
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
