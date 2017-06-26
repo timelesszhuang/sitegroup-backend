@@ -1,1 +1,0 @@
-{"id":12,"name":"手机测试站","detail":"手机测试站","site_id":"","node_id":15,"path":"upload\/template\/20170624\/4603307ecc7c9ee80921bd83787d8aa2.zip","update_time":"2017-06-24 09:29:46","create_time":"2017-06-24 09:29:46"}
