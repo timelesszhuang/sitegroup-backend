@@ -109,10 +109,14 @@ class Scatteredtitle extends Common
         if(\app\admin\model\ScatteredArticle::where(["articletype_id"=>$data['articletype_id']])->count()<15){
             return $this->resultArray("当前零散分类文章少于15篇,请先补充文章", 'failed');
         }
+        $data["update_time"]=time();
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        return $this->publicUpdate((new \app\admin\model\ScatteredTitle),$data,$id);
+        if (!(new \app\admin\model\ScatteredTitle)->save($data, ["id" => $id])) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
     }
 
     /**
