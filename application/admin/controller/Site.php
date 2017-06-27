@@ -226,7 +226,14 @@ class Site extends Common
         if (empty($main_site)) {
             return $this->resultArray('请选择是否是主站', 'failed');
         }
+        if($main_site!=10){
+            Db::name('site')
+            ->where('main_site',20)
+            ->setField('main_site', '10');
+        }
         $data = ["main_site" => $main_site];
+
+
         return $this->publicUpdate((new \app\admin\model\Site()), $data, $id);
     }
 
