@@ -514,6 +514,20 @@ class Site extends Common
             }
         }
         array_walk($Agent, [$this, "formatter"]);
+        if (empty($userAgent)) {
+            $this->all_count[0] = [
+                "name" => "sougou",
+                "data" => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "type" => "line",
+                "stack" => '总量',
+            ];
+            $this->all_count[1] = [
+                "name" => "baidu",
+                "data" => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "type" => "line",
+                "stack" => '总量',
+            ];
+        }
         $temp = ["time" => $date_diff, "type" => $this->all_count];
         return $this->resultArray('', '', $temp);
     }
