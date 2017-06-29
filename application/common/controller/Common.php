@@ -172,6 +172,7 @@ class Common extends Controller
         $arr = [];
         switch ($module) {
             //大后台
+            case "common":
             case "sysadmin":
                 $arr["user_id"] = Session::get("sys_id");
                 $arr["user_name"] = Session::get("sys_user_name");

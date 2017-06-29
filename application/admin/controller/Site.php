@@ -226,7 +226,14 @@ class Site extends Common
         if (empty($main_site)) {
             return $this->resultArray('请选择是否是主站', 'failed');
         }
+        if($main_site!=10){
+            Db::name('site')
+            ->where('main_site',20)
+            ->setField('main_site', '10');
+        }
         $data = ["main_site" => $main_site];
+
+
         return $this->publicUpdate((new \app\admin\model\Site()), $data, $id);
     }
 
@@ -507,6 +514,20 @@ class Site extends Common
             }
         }
         array_walk($Agent, [$this, "formatter"]);
+        if (empty($userAgent)) {
+            $this->all_count[0] = [
+                "name" => "sougou",
+                "data" => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "type" => "line",
+                "stack" => '总量',
+            ];
+            $this->all_count[1] = [
+                "name" => "baidu",
+                "data" => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                "type" => "line",
+                "stack" => '总量',
+            ];
+        }
         $temp = ["time" => $date_diff, "type" => $this->all_count];
         return $this->resultArray('', '', $temp);
     }
