@@ -145,6 +145,15 @@ Route::resource('pv','admin/Pv');
 Route::resource('Rejection','admin/Rejection');
 //crontab任务,每天定时执行更新所有网站的静态页面
 Route::get('crontab','admin/CrontabTask/index');
+//模板管理 获取对应site_id的信息
+Route::get("mobileTemplate/:site_id","admin/MobileTemplate/index");
+// 模板管理 读取模板
+Route::get("templateRead/:site_id/:name","admin/MobileTemplate/templateRead");
+// 模板管理 修改模板
+Route::post("templateSave/:site_id/:name","admin/MobileTemplate/save");
+//模板管理 新加模板
+Route::post("templateAdd/:site_id/:name","admin/MobileTemplate/read");
+
 
 
 
