@@ -141,6 +141,7 @@ Route::get("count/show",'admin/Count/show');
 Route::get("count/articlecount",'admin/Count/ArticleCount');
 //浏览量
 Route::resource('pv','admin/Pv');
+
 //甩单
 Route::resource('Rejection','admin/Rejection');
 //crontab任务,每天定时执行更新所有网站的静态页面
