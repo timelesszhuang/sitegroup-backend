@@ -118,6 +118,9 @@ class Staticconfig extends Common
         $where['type']=$data['type'];
         $Staticdata = (new \app\admin\model\SiteStaticconfig())->where($where)->select();
         foreach ($Staticdata as $k => $v) {
+            if($v['id']==$data['id']){
+                continue;
+            }
             if (!(strtotime($data['stoptime']) < strtotime($v['starttime']) || strtotime($data['starttime']) > strtotime($v['stoptime']))) {
                 return $this->resultArray("当前时间段已有相关配置,请查证后再试", "failed");
             }
