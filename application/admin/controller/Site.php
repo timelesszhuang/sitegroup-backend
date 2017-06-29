@@ -291,10 +291,16 @@ class Site extends Common
             switch($type){
                     case "activity":
                         $template=\app\admin\model\Activity::where(["id"=>$template_id])->field("id,code_path as path")->find();
+                        if(!$template){
+                            exit("未找到模板");
+                        }
                         $id=$template->id;
                         break;
                     case "template":
                         $template = \app\admin\model\Template::get($site->template_id);
+                        if(!$template){
+                            exit("未找到模板");
+                        }
                         $id=$template->id;
                         break;
                 }
