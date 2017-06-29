@@ -24,6 +24,9 @@ class SiteStaticconfig extends Model
     {
         $count = $this->where($where)->count();
         $data = $this->limit($limit, $rows)->where($where)->select();
+        foreach ($data as $v){
+            $v['time']=$v['starttime'].'-'.$v['stoptime'];
+        }
         return [
             "total" => $count,
             "rows" => $data
