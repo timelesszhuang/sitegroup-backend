@@ -60,7 +60,9 @@ class Template extends Common
         $data = $this->request->put();
         $template = \app\admin\model\Template::get($id);
         if($data['path']!=$template['path']){
-            unlink($template['path']);
+            if(file_exists($template)){
+                unlink($template['path']);
+            }
             $data['path'] = self::$templatepath . $data['path'];
         }
         if (!$validate->check($data)) {
