@@ -97,9 +97,9 @@ class Activity extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $activity=\app\admin\model\Activity::get($id);
-        if($activity->code_path!=$data["code_path"]){
-           is_file($activity->code_path) && unlink($activity->code_path);
+        $activity = \app\admin\model\Activity::get($id);
+        if ($activity->code_path != $data["code_path"]) {
+            is_file($activity->code_path) && unlink($activity->code_path);
         }
         return $this->publicUpdate((new \app\admin\model\Activity()), $data, $id);
     }
@@ -138,7 +138,6 @@ class Activity extends Common
         $info = $file->move(ROOT_PATH . 'public/' . self::$activitypath);
         //要解压到的位置
         $dest = 'upload/activity/activity/';
-//      $path = 'upload/activity/zipactivity/demo.zip';
         $file_savename = $info->getSaveName();
         $pathinfo = pathinfo($file_savename);
         $file_name = $pathinfo['filename'];
@@ -148,7 +147,7 @@ class Activity extends Common
             $status = '文件解压缩成功';
         }
         if ($info) {
-            return $this->resultArray('上传成功', '', ['code_path' => $dest.$file_savename, 'status' => $status]);
+            return $this->resultArray('上传成功', '', ['code_path' => self::$activitypath . '/' . $file_savename, 'status' => $status]);
         } else {
             // 上传失败获取错误信息
             return $this->resultArray('上传失败', 'failed', $info->getError());
@@ -175,7 +174,7 @@ class Activity extends Common
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $post['code_path'] = self::$activitypath . '/' . $post['code_path'];
+        $post['code_path'] = $post['code_path'];
         $post['demo_path'] = 'upload/activity/activity/' . $post['directory_name'];
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
