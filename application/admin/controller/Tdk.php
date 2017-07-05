@@ -35,4 +35,14 @@ class Tdk extends Common
         $data = (new SitePageinfo)->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
+
+    /**
+     * 获取单条记录
+     * @param $id
+     * @return array
+     */
+    public function read($id)
+    {
+        return $this->getread((new SitePageinfo),$id);
+    }
 }

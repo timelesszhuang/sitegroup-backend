@@ -158,7 +158,8 @@ Route::post("templateAdd/:site_id/:name","admin/template/readFile");
 Route::put("tdk/:id",'admin/Tdk/save');
 //大站点统一查询小站点
 Route::get("getTdk/:id",'admin/Tdk/search');
-
+//大站点获取小站点的一条记录
+Route::get("getTdkOne/:id",'admin/Tdk/read');
 
 
 
