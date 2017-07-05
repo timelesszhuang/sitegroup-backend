@@ -156,7 +156,8 @@ Route::post("templateSave/:site_id/:name","admin/template/save");
 Route::post("templateAdd/:site_id/:name","admin/template/readFile");
 //大站点可以统一修改小站点的tdk
 Route::put("tdk/:id",'admin/Tdk/save');
-
+//大站点统一查询小站点
+Route::get("getTdk/:id",'admin/Tdk/search');
 
 
 
