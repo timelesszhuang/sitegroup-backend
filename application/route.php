@@ -154,6 +154,10 @@ Route::get("templateRead/:site_id/:name","admin/template/templateRead");
 Route::post("templateSave/:site_id/:name","admin/template/save");
 //模板管理 新加模板
 Route::post("templateAdd/:site_id/:name","admin/template/readFile");
+//大站点可以统一修改小站点的tdk
+Route::put("tdk/:id",'admin/Tdk/save');
+
+
 
 
 

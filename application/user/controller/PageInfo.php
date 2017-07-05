@@ -90,16 +90,14 @@ class PageInfo extends Common
      * @param  int  $id
      * @return \think\Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
         $rule = [
             ["page_id", "require", "请输入页面id"],
         ];
         $validate = new Validate($rule);
-        $data = $request->post();
-        $data['node_id'] =$this->getSiteSession('login_site')["node_id"];
-        $data["site_id"] =$this->getSiteSession('website')["id"];
-        $data["site_name"] =$this->getSiteSession('website')["site_name"];
+        $request=Request::instance();
+        $data = $request->put();
         if(!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
