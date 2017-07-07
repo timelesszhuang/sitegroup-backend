@@ -48,12 +48,17 @@ class Siteuser extends Common
             ['name','require','请填写昵称'],
             ['pwd', 'require', "请填写密码"],
             ['account','require','请填写帐号'],
+            ['confirmPwd',"require","请填写确认密码"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
+        if($data["pwd"]!=$data["confirmPwd"]){
+            return $this->resultArray('两次输入的密码不同', 'failed');
+        }
+        unset($data["confirmPwd"]);
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\SiteUser::create($data)) {
             return $this->resultArray('添加失败', 'failed');
@@ -69,7 +74,7 @@ class Siteuser extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('', '', (new \app\admin\model\SiteUser)->where(["id" => $id])->field("id,name,account,com_name,is_on")->find());
+        return $this->resultArray('', '', (new \app\admin\model\SiteUser)->where(["id" => $id])->field("id,name,account,com_name,is_on,email")->find());
     }
 
     /**
@@ -98,7 +103,9 @@ class Siteuser extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
-        $data['pwd'] = md5($data['pwd'].$data['account']);
+        if(isset($data["pwd"])){
+            $data['pwd'] = md5($data['pwd'].$data['account']);
+        }
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
