@@ -4,7 +4,7 @@ namespace app\admin\model;
 
 use think\Model;
 
-class   Pv extends Model
+class  Pv extends Model
 {
     //只读字段
     protected $readonly=["node_id"];
