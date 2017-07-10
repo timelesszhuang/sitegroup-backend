@@ -28,4 +28,26 @@ class Template extends Controller
         return (new AdminTemplate)->templateRead($site_id,$name);
     }
 
+    /**
+     * 修改模板
+     * @param $site_id
+     * @param $name
+     * @return \think\Response
+     */
+    public function save($site_id,$name)
+    {
+        return (new AdminTemplate)->save($site_id,$name);
+    }
+
+    /**
+     * 添加模板
+     * @param $site_id
+     * @param $name
+     * @return \think\Response
+     */
+    public function story($site_id,$name)
+    {
+        return (new AdminTemplate)->readFile($site_id,$name);
+    }
+
 }

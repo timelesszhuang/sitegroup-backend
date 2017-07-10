@@ -204,7 +204,10 @@ Route::resource('user/Staticconfig','user/Staticconfig');
 Route::post('user/template/:site_id','user/Template/index');
 //小站点 获取模板内容
 Route::post('user/readtemplate/:site_id/:name','user/Template/read');
-
+//小站点 修改模板
+Route::post('user/savetemplate/:site_id/:name','user/Template/save');
+//小站点 添加模板
+Route::post('user/addtemplate/:site_id/:name','user/Template/story');
 return [
     '__pattern__' => [
         'name' => '\w+',
