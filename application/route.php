@@ -200,6 +200,8 @@ Route::resource('user/ArticleInsertA','user/ArticleInsertA');
 Route::resource('user/Substitution','user/Substitution');
 //小站点静态化配置
 Route::resource('user/Staticconfig','user/Staticconfig');
+//小站点 查询模板文件
+Route::post('user/template/:site_id','user/Template/index');
 return [
     '__pattern__' => [
         'name' => '\w+',
