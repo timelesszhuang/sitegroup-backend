@@ -17,4 +17,15 @@ class Template extends Controller
         return (new AdminTemplate)->filelist($site_id);
     }
 
+    /**
+     * 获取模板内容
+     * @param $site_id
+     * @param $name
+     * @return \think\Response
+     */
+    public function read($site_id,$name)
+    {
+        return (new AdminTemplate)->templateRead($site_id,$name);
+    }
+
 }

@@ -202,6 +202,9 @@ Route::resource('user/Substitution','user/Substitution');
 Route::resource('user/Staticconfig','user/Staticconfig');
 //小站点 查询模板文件
 Route::post('user/template/:site_id','user/Template/index');
+//小站点 获取模板内容
+Route::post('user/readtemplate/:site_id/:name','user/Template/read');
+
 return [
     '__pattern__' => [
         'name' => '\w+',
