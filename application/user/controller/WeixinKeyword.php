@@ -4,7 +4,6 @@ namespace app\user\controller;
 
 use app\common\controller\Common;
 use think\Request;
-use \app\user\model\WeixinKeyword as Skeyword;
 class WeixinKeyword extends Common
 {
     protected $conn='';
@@ -13,7 +12,7 @@ class WeixinKeyword extends Common
      */
     public function _initialize()
     {
-        $this->conn=new Skeyword();
+        $this->conn=new \app\user\model\WeixinKeyword();
     }
     /**
      * 显示资源列表
