@@ -1,11 +1,11 @@
 <?php
 
-namespace app\admin\controller;
+namespace app\user\controller;
 
-use app\common\controller\Common;
+use think\Controller;
 use think\Request;
-use \app\admin\model\WeixinKeyword as Scrapy;
-class WeixinKeyword extends Common
+use \app\user\model\WeixinKeyword as Scrapy;
+class WeixinKeyword extends Controller
 {
     protected $conn='';
     /**
@@ -16,7 +16,7 @@ class WeixinKeyword extends Common
         $this->conn=new Scrapy();
     }
     /**
-     * 获取关键字
+     * 显示资源列表
      *
      * @return \think\Response
      */
@@ -28,21 +28,19 @@ class WeixinKeyword extends Common
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
         }
+        $where["status"]=10;
         $data = $this->conn->getKeyword($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
     /**
-     * 添加操作
+     * 显示创建资源表单页.
      *
      * @return \think\Response
      */
-    public function create($name)
+    public function create()
     {
-        if($this->conn->addKeyword($name)){
-            return $this->resultArray('添加成功');
-        }
-        return $this->resultArray('添加失败', 'failed');
+        //
     }
 
     /**
@@ -51,23 +49,53 @@ class WeixinKeyword extends Common
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function save($id,$name)
+    public function save(Request $request)
     {
-        if($this->conn->editKeyword($id,$name)){
-            return $this->resultArray('修改成功');
-        }
-        return $this->resultArray('修改失败', 'failed');
+        //
     }
 
     /**
-     * 获取一条数据
+     * 显示指定的资源
      *
      * @param  int  $id
      * @return \think\Response
      */
     public function read($id)
     {
-        return $this->resultArray('','',$this->conn->getOne($id));
+        //
     }
 
+    /**
+     * 显示编辑资源表单页.
+     *
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * 保存更新的资源
+     *
+     * @param  \think\Request  $request
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * 删除指定资源
+     *
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function delete($id)
+    {
+        //
+    }
 }

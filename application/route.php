@@ -218,6 +218,16 @@ Route::post('user/readtemplate/:site_id/:name','user/Template/read');
 Route::post('user/savetemplate/:site_id/:name','user/Template/save');
 //小站点 添加模板
 Route::post('user/addtemplate/:site_id/:name','user/Template/story');
+//爬虫数据库scrapy的关键字查询
+Route::get('user/scrapy/getKeyword',"user/WeixinKeyword/index");
+
+
+
+
+
+
+
+
 return [
     '__pattern__' => [
         'name' => '\w+',
