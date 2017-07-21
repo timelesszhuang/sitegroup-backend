@@ -220,7 +220,8 @@ Route::post('user/savetemplate/:site_id/:name','user/Template/save');
 Route::post('user/addtemplate/:site_id/:name','user/Template/story');
 //爬虫数据库scrapy的关键字查询
 Route::get('user/scrapy/getKeyword',"user/WeixinKeyword/index");
-
+//爬虫数据库scrapy添加关键字
+Route::get('user/scrapy/addKeyword/:name','user/WeixinKeyword/create');
 
 
 
