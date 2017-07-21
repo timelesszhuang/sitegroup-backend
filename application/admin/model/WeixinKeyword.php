@@ -54,7 +54,7 @@ class WeixinKeyword extends Model
      */
     public function addKeyword($name)
     {
-        return self::create(["name"=>$name]);
+        return self::create(["name"=>$name,"status"=>10]);
     }
 
     /**
