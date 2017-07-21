@@ -40,7 +40,10 @@ class WeixinKeyword extends Common
      */
     public function create()
     {
-        //
+        if($this->conn->addKeyword($name)){
+            return $this->resultArray('添加成功');
+        }
+        return $this->resultArray('添加失败', 'failed');
     }
 
     /**
