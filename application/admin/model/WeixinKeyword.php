@@ -65,9 +65,7 @@ class WeixinKeyword extends Model
      */
     public function editKeyword($id,$name)
     {
-        $key=self::get($id);
-        $key->name=$name;
-        return $key->save();
+         return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id"=>$id])->update(["name"=>$name]);
     }
 
     /**
