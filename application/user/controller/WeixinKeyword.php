@@ -54,8 +54,12 @@ class WeixinKeyword extends Common
      * @param  \think\Request  $request
      * @return \think\Response
      */
-    public function save($id,$name)
+    public function save($id)
     {
+        $name= $this->request->get('name');
+        if(empty($name)){
+            return;
+        }
         if($this->conn->editKeyword($id,$name)){
             return $this->resultArray('修改成功');
         }
