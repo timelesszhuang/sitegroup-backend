@@ -2,10 +2,10 @@
 
 namespace app\admin\controller;
 
-use think\Controller;
+use app\common\controller\Common;
 use think\Request;
 use \app\admin\model\WeixinKeyword as Scrapy;
-class WeixinKeyword extends Controller
+class WeixinKeyword extends Common
 {
     protected $conn='';
     /**
@@ -22,7 +22,15 @@ class WeixinKeyword extends Controller
      */
     public function index()
     {
-        return $this->conn->getKeyword();
+        $request = $this->getLimit();
+        $name= $this->request->get('name');
+        $where = [];
+        if (!empty($name)) {
+            $where["name"] = ["like", "%$name%"];
+        }
+        $user = $this->getSessionUser();
+        $data = $this->conn->getKeyword($request["limit"], $request["rows"], $where);
+        return $this->resultArray('', '', $data);
     }
 
     /**

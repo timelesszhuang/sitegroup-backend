@@ -37,9 +37,14 @@ class WeixinKeyword extends Model
      * 获取所有关键字
      * @return false|\PDOStatement|string|\think\Collection
      */
-    public function getKeyword()
+    public function getKeyword($limit, $rows, $where = [])
     {
-        return self::field("name")->order("id","desc")->select();
+        $count = $this->where($where)->count();
+        $data = $this->limit($limit, $rows)->where($where)->order('id desc')->select();
+        return [
+            "total" => $count,
+            "rows" => $data
+        ];
     }
 
 
