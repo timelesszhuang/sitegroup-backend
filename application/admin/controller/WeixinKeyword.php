@@ -34,13 +34,16 @@ class WeixinKeyword extends Common
     }
 
     /**
-     * 显示创建资源表单页.
+     * 添加操作
      *
      * @return \think\Response
      */
-    public function create()
+    public function create($name)
     {
-        //
+        if($this->conn->addKeyword($name)){
+            return $this->resultArray('添加成功');
+        }
+        return $this->resultArray('添加失败', 'failed');
     }
 
     /**

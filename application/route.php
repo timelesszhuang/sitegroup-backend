@@ -160,8 +160,10 @@ Route::put("tdk/:id",'admin/Tdk/save');
 Route::get("getTdk/:id",'admin/Tdk/search');
 //大站点获取小站点的一条记录
 Route::get("getTdkOne/:id",'admin/Tdk/read');
-//爬虫数据库scrapy的内容获取
+//爬虫数据库scrapy的关键字查询
 Route::get('scrapy/getKeyword','admin/WeixinKeyword/index');
+//爬虫数据库scrapy添加关键字
+Route::get('scrapy/addKeyword','admin/WeixinKeyword/create');
 
 
 
