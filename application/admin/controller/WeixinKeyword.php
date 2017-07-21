@@ -67,7 +67,7 @@ class WeixinKeyword extends Common
      */
     public function read($id)
     {
-        return $this->conn->getOne($id);
+        return $this->resultArray('','',$this->conn->getOne($id));
     }
 
     /**
