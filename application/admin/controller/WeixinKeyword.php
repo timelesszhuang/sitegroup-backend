@@ -70,4 +70,14 @@ class WeixinKeyword extends Common
         return $this->resultArray('','',$this->conn->getOne($id));
     }
 
+    /**
+     * 停止爬取
+     * @param $id
+     * @return array
+     */
+    public function stopScrapy($id)
+    {
+        return $this->resultArray('','',$this->conn->stopScrapy($id));
+    }
+
 }

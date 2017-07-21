@@ -79,4 +79,14 @@ class WeixinKeyword extends Model
         return $key;
     }
 
+    /**
+     * 当期关键字停止爬取
+     * @param $id
+     * @return int|string
+     */
+    public function stopScrapy($id)
+    {
+        return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id"=>$id])->update(["scrapystatus"=>20]);
+    }
+
 }

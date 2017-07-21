@@ -168,7 +168,8 @@ Route::get('scrapy/addKeyword/:name','admin/WeixinKeyword/create');
 Route::get('scrapy/saveKeyword/:id/:name','admin/WeixinKeyword/save');
 //爬虫数据库scrapy根据id获取关键字
 Route::get('scrapy/getOneKeyword/:id','admin/WeixinKeyword/read');
-
+//爬虫数据库scrapy根据id获取关键字
+Route::get('scrapy/stopScrapy/:id','admin/WeixinKeyword/stopScrapy');
 
 
 
