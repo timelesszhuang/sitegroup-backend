@@ -37,7 +37,7 @@ class WeixinKeyword extends Common
      *
      * @return \think\Response
      */
-    public function create()
+    public function create($name)
     {
         if($this->conn->addKeyword($name)){
             return $this->resultArray('添加成功');
