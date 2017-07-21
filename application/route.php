@@ -223,7 +223,7 @@ Route::get('user/scrapy/getKeyword',"user/WeixinKeyword/index");
 //爬虫数据库scrapy添加关键字
 Route::get('user/scrapy/Keyword',"user/WeixinKeyword/create");
 //爬虫数据库scrapy修改关键字
-Route::get('user/scrapy/saveKeyword/:id/','user/WeixinKeyword/save');
+Route::get('user/scrapy/saveKeyword/','user/WeixinKeyword/save');
 return [
     '__pattern__' => [
         'name' => '\w+',
