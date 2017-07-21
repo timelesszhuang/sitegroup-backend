@@ -54,9 +54,9 @@ class WeixinKeyword extends Common
     public function save($id,$name)
     {
         if($this->conn->editKeyword($id,$name)){
-            return $this->resultArray('添加成功');
+            return $this->resultArray('修改成功');
         }
-        return $this->resultArray('添加失败', 'failed');
+        return $this->resultArray('修改失败', 'failed');
     }
 
     /**
