@@ -2,10 +2,10 @@
 
 namespace app\user\controller;
 
-use think\Controller;
+use app\common\controller\Common;
 use think\Request;
 use \app\user\model\WeixinKeyword as Scrapy;
-class WeixinKeyword extends Controller
+class WeixinKeyword extends Common
 {
     protected $conn='';
     /**
