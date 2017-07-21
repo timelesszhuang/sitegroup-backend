@@ -222,6 +222,8 @@ Route::post('user/addtemplate/:site_id/:name','user/Template/story');
 Route::get('user/scrapy/getKeyword',"user/WeixinKeyword/index");
 //爬虫数据库scrapy添加关键字
 Route::get('user/scrapy/Keyword',"user/WeixinKeyword/create");
+//爬虫数据库scrapy修改关键字
+Route::get('user/scrapy/saveKeyword/:id/:name','user/WeixinKeyword/save');
 return [
     '__pattern__' => [
         'name' => '\w+',

@@ -54,6 +54,17 @@ class WeixinKeyword extends Model
      */
     public function addKeyword($name)
     {
-        return self::create(["name"=>$name,"status"=>10]);
+        return self::create(["name"=>$name]);
+    }
+
+    /**
+     * 修改关键词
+     * @param $id
+     * @param $name
+     * @return false|int
+     */
+    public function editKeyword($id,$name)
+    {
+        return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id"=>$id])->update(["name"=>$name,"status"=>10]);
     }
 }
