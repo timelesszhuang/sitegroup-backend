@@ -37,10 +37,10 @@ class WeixinKeyword extends Model
      * 获取所有关键字
      * @return false|\PDOStatement|string|\think\Collection
      */
-    public function getKeyword($limit, $rows, $where = [])
+    public function getKeyword($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->order('id desc')->select();
+        $data=Db::connect($this->connection)->table("sc_weixin_keyword")->select();
         return [
             "total" => $count,
             "rows" => $data

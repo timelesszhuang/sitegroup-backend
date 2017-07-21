@@ -28,7 +28,6 @@ class WeixinKeyword extends Common
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
         }
-        $user = $this->getSessionUser();
         $data = $this->conn->getKeyword($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
