@@ -60,14 +60,14 @@ class WeixinKeyword extends Common
     }
 
     /**
-     * 显示指定的资源
+     * 获取一条数据
      *
      * @param  int  $id
      * @return \think\Response
      */
     public function read($id)
     {
-        //
+        return $this->conn->getOne($id);
     }
 
     /**

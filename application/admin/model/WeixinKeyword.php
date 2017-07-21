@@ -70,4 +70,15 @@ class WeixinKeyword extends Model
         return $key->save();
     }
 
+    /**
+     * 获取一条数据
+     * @param $id
+     * @return null|static
+     */
+    public function getOne($id)
+    {
+        $key=self::get($id);
+        return $key;
+    }
+
 }
