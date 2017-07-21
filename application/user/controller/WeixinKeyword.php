@@ -4,7 +4,7 @@ namespace app\user\controller;
 
 use app\common\controller\Common;
 use think\Request;
-use \app\user\model\WeixinKeyword as Scrapy;
+use \app\user\model\WeixinKeyword as Skeyword;
 class WeixinKeyword extends Common
 {
     protected $conn='';
@@ -13,7 +13,7 @@ class WeixinKeyword extends Common
      */
     public function _initialize()
     {
-        $this->conn=new Scrapy();
+        $this->conn=new Skeyword();
     }
     /**
      * 显示资源列表
