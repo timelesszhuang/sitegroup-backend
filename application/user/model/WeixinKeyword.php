@@ -65,6 +65,6 @@ class WeixinKeyword extends Model
      */
     public function editKeyword($id,$name)
     {
-        return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id"=>$id])->update(["name"=>$name,"status"=>10]);
+        return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id"=>$id])->update(["name"=>$name,"status"=>20]);
     }
 }
