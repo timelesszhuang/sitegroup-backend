@@ -57,4 +57,17 @@ class WeixinKeyword extends Model
         return self::create(["name"=>$name]);
     }
 
+    /**
+     * 修改关键词
+     * @param $id
+     * @param $name
+     * @return false|int
+     */
+    public function editKeyword($id,$name)
+    {
+        $key=self::get($id);
+        $key->name=$name;
+        return $key->save();
+    }
+
 }
