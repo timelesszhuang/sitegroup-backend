@@ -54,7 +54,6 @@ class WeixinKeyword extends Model
      */
     public function addKeyword($name)
     {
-        Db::connect($this->connection)->table("sc_weixin_keyword")->select();
         return self::create(["name"=>$name]);
     }
 
