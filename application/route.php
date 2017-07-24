@@ -26,7 +26,21 @@ Route::rule('company/getAll', 'sysadmin/Company/getAll');
 //节点
 Route::resource('node', 'sysadmin/Node');
 Route::rule('node/status', 'sysadmin/Node/status');
+//采集关键词
+Route::get('sys/getKeyword','sysadmin/Keyword/index');
 
+
+
+
+
+
+
+
+
+
+
+
+//=========节点后台
 //关键词
 Route::resource('keyword', 'admin/keyword');
 Route::post('keyword/insertA', 'admin/keyword/insertA');
