@@ -28,13 +28,13 @@ class WeixinArticle extends Common
     {
         $request = $this->getLimit();
         $title= $this->request->get('title');
-        $keyword= $this->request->get('keyword');
+        $keyword= $this->request->get('keyword_id');
         $where = [];
         if (!empty($title)) {
             $where["title"] = ["like", "%$title%"];
         }
         if(!empty($keyword)){
-            $where["keyword"]=$keyword;
+            $where["keyword_id"]=$keyword;
         }
         $data = $this->conn->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
