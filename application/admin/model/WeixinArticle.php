@@ -53,7 +53,7 @@ class WeixinArticle extends Model
      * @param $value
      * @param $key
      */
-    public function formatter_date($value,$key)
+    public function formatter_date(&$value,$key)
     {
         if($value['scrapytime']){
             $value['scrapytime']=date("Y-m-d H:i:s",$value['scrapytime']);
