@@ -69,4 +69,17 @@ class WeixinArticle extends Common
         return $this->resultArray('修改失败', 'failed');
     }
 
+    /**
+     * 删除文章
+     * @param $id
+     * @return array
+     */
+    public function delete($id)
+    {
+        if($this->conn->deleteOne($id)){
+            return $this->resultArray('删除成功');
+        }
+        return $this->resultArray('删除失败', 'failed');
+    }
+
 }
