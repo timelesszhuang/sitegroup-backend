@@ -119,4 +119,13 @@ class WeixinKeyword extends Model
         return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id"=>$id])->update(["scrapystatus"=>20]);
     }
 
+    /**
+     * 获取列表格式的数据
+     * @return false|\PDOStatement|string|\think\Collection
+     */
+    public function getKeyList()
+    {
+        return Db::connect($this->connection)->table("sc_weixin_keyword")->field("id,name as text")->select();
+    }
+
 }

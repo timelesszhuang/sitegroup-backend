@@ -94,4 +94,5 @@ class WeixinArticle extends Model
     {
        return  Db::connect($this->connection)->table("sc_weixin_keywordarticle")->delete($id);
     }
+
 }

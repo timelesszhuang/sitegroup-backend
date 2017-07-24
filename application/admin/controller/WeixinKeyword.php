@@ -80,4 +80,13 @@ class WeixinKeyword extends Common
         return $this->resultArray('','',$this->conn->stopScrapy($id));
     }
 
+    /**
+     * 获取列表
+     * @return array
+     */
+    public function getKeyList()
+    {
+        return $this->resultArray('','',$this->conn->getKeyList());
+    }
+
 }

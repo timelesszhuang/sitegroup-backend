@@ -194,12 +194,17 @@ Route::get('scrapy/addKeyword/:name','admin/WeixinKeyword/create');
 Route::get('scrapy/saveKeyword/:id/:name','admin/WeixinKeyword/save');
 //爬虫数据库scrapy根据id获取关键字
 Route::get('scrapy/getOneKeyword/:id','admin/WeixinKeyword/read');
+//爬虫数据库scrapy获取列表
+Route::get('scrapy/getlist','admin/WeixinKeyword/getKeyList');
 //wechat采集文章列表
 Route::get('wechat/article','admin/WeixinArticle/index');
 //wechat采集文章添加到文章库
 Route::post('wechat/addArticle','admin/WeixinArticle/create');
 //wechat获取一篇采集文章
 Route::get('wechat/getOneArticle/:id','admin/WeixinArticle/read');
+
+
+
 
 
 //站点相关--------------------------------------------------------
