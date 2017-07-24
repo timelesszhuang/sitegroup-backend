@@ -34,6 +34,36 @@ class Keyword extends Common
     }
 
     /**
+     * 未授权爬取
+     * @param $id
+     * @return array
+     */
+    public function stopStatus($id)
+    {
+        return $this->resultArray('','',$this->conn->stopStatus($id));
+    }
+
+    /**
+     * 已授权关键词爬取
+     * @param $id
+     * @return array
+     */
+    public function startStatus($id)
+    {
+        return $this->resultArray('','',$this->conn->startStatus($id));
+    }
+
+    /**
+     * 启用爬取
+     * @param $id
+     * @return array
+     */
+    public function startScrapy($id)
+    {
+        return $this->resultArray('','',$this->conn->startScrapy($id));
+    }
+
+    /**
      * 停止爬取
      * @param $id
      * @return array
@@ -43,13 +73,6 @@ class Keyword extends Common
         return $this->resultArray('','',$this->conn->stopScrapy($id));
     }
 
-    /**
-     * 启用关键词爬取
-     * @param $id
-     * @return array
-     */
-    public function startScrapy($id)
-    {
-        return $this->resultArray('','',$this->conn->startScrapy($id));
-    }
+
+
 }
