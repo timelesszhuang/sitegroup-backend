@@ -46,4 +46,30 @@ class WeixinArticle extends Model
             "rows" => $data
         ];
     }
+
+    /**
+     * 获取单篇文章
+     * @param $id
+     * @return null|static
+     */
+    public function getOne($id)
+    {
+        $key=self::field("id,title,content")->where(["id"=>$id])->find();
+        return $key;
+    }
+
+    /**
+     * 修改文章
+     * @param $id
+     * @param $title
+     * @param $content
+     * @return int|string
+     */
+    public function editKeyword($id,$title,$content)
+    {
+        return Db::connect($this->connection)->table("sc_weixin_keywordarticle")->where(["id"=>$id])->update([
+            "title"=>$title,
+            "content"=>$content
+        ]);
+    }
 }

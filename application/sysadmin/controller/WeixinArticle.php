@@ -6,6 +6,8 @@ use think\Controller;
 use think\Request;
 use app\common\controller\Common;
 use \app\admin\model\WeixinArticle as Weixin;
+use think\Validate;
+
 class WeixinArticle extends Common
 {
     protected $conn='';
@@ -32,6 +34,39 @@ class WeixinArticle extends Common
         }
         $data = $this->conn->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
+    }
+
+    /**
+     * 获取某一篇文章
+     * @param $id
+     * @return array
+     */
+    public function getOne($id)
+    {
+        return $this->resultArray('','',$this->conn->getOne($id));
+    }
+
+    /**
+     * 修改文章
+     * @param Request $request
+     * @return array
+     */
+    public function edit(Request $request)
+    {
+        $rule=[
+            ["id","require","请选择文章"],
+            ["title","require","请填写标题"],
+            ["content","require","请填写内容"]
+        ];
+        $validate=new Validate($rule);
+        $data=$request->post();
+        if(!$validate->check($data)){
+            return $this->resultArray($validate->getError(),"failed");
+        }
+        if($this->conn->editKeyword($data["id"],$data["title"],$data["content"])){
+            return $this->resultArray('修改成功');
+        }
+        return $this->resultArray('修改失败', 'failed');
     }
 
 }

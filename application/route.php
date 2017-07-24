@@ -38,6 +38,8 @@ Route::get('sys/startScrapy/:id','sysadmin/Keyword/startScrapy');
 Route::get('sys/stopScrapy/:id','sysadmin/Keyword/stopScrapy');
 //微信采集文章列表
 Route::get('sys/wecatArticle','sysadmin/WeixinArticle/index');
+//微信采集文章获取某一篇文章
+Route::get('sys/wecatArticleOne/:id','sysadmin/WeixinArticle/getOne');
 
 
 
