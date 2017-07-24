@@ -67,7 +67,7 @@ class WeixinArticle extends Model
      */
     public function getOne($id)
     {
-        $key=self::field("id,title,content")->where(["id"=>$id])->find();
+        $key=self::get($id);
         return $key;
     }
 
