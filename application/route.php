@@ -36,6 +36,8 @@ Route::get('sys/startStatus/:id','sysadmin/Keyword/startStatus');
 Route::get('sys/startScrapy/:id','sysadmin/Keyword/startScrapy');
 //爬虫数据库停止某个关键字
 Route::get('sys/stopScrapy/:id','sysadmin/Keyword/stopScrapy');
+//微信采集文章列表
+Route::get('sys/wecatArticle','sysadmin/WeixinArticle/index');
 
 
 
