@@ -41,10 +41,23 @@ class WeixinArticle extends Model
     {
         $count = $this->where($where)->count();
         $data=Db::connect($this->connection)->table("sc_weixin_keywordarticle")->where($where)->order('id desc')->limit($limit, $rows)->select();
+        array_walk($data,[$this,'formatter_date']);
         return [
             "total" => $count,
             "rows" => $data
         ];
+    }
+
+    /**
+     * 格式化日期
+     * @param $value
+     * @param $key
+     */
+    public function formatter_date($value,$key)
+    {
+        if($value['scrapytime']){
+            $value['scrapytime']=date("Y-m-d H:i:s",$value['scrapytime']);
+        }
     }
 
     /**

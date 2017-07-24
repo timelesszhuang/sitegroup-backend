@@ -252,6 +252,12 @@ Route::get('user/scrapy/getKeyword',"user/WeixinKeyword/index");
 Route::get('user/scrapy/Keyword',"user/WeixinKeyword/create");
 //爬虫数据库scrapy修改关键字
 Route::get('user/scrapy/saveKeyword/','user/WeixinKeyword/save');
+//wechat文章列表
+Route::get('user/wechat/article','user/WechatArticle/index');
+//wechat获取一条数据
+Route::get('user/wechat/getArticleOne/:id','user/WechatArticle/read');
+//wechat添加到文章库
+Route::post('user/wechat/addArticle','user/WechatArticle/create');
 return [
     '__pattern__' => [
         'name' => '\w+',
