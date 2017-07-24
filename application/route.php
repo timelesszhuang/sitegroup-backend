@@ -35,7 +35,7 @@ Route::get('sys/startStatus/:id','sysadmin/Keyword/startStatus');
 //爬虫数据库启用某个关键字
 Route::get('sys/startScrapy/:id','sysadmin/Keyword/startScrapy');
 //爬虫数据库停止某个关键字
-Route::get('sys/startScrapy/:id','sysadmin/Keyword/stopScrapy');
+Route::get('sys/stopScrapy/:id','sysadmin/Keyword/stopScrapy');
 
 
 
