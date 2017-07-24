@@ -5,7 +5,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Request;
 use app\common\controller\Common;
-use \app\admin\model\WeixinArticle as Weixin;
+use app\admin\model\WeixinArticle as Weixin;
 class WeixinArticle extends Common
 {
     protected $conn='';
