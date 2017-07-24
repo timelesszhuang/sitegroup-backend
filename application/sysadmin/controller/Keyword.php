@@ -15,6 +15,7 @@ class Keyword extends Common
     {
         $this->conn=new Scrapy();
     }
+
     /**
      * 获取所有关键词
      *
@@ -32,4 +33,13 @@ class Keyword extends Common
         return $this->resultArray('', '', $data);
     }
 
+    /**
+     * 停止爬取
+     * @param $id
+     * @return array
+     */
+    public function stopScrapy($id)
+    {
+        return $this->resultArray('','',$this->conn->stopScrapy($id));
+    }
 }

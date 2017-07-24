@@ -28,7 +28,8 @@ Route::resource('node', 'sysadmin/Node');
 Route::rule('node/status', 'sysadmin/Node/status');
 //采集关键词
 Route::get('sys/getKeyword','sysadmin/Keyword/index');
-
+//爬虫数据库scrapy根据id获取关键字
+Route::get('sys/stopScrapy/:id','sysadmin/Keyword/stopScrapy');
 
 
 
@@ -182,8 +183,7 @@ Route::get('scrapy/addKeyword/:name','admin/WeixinKeyword/create');
 Route::get('scrapy/saveKeyword/:id/:name','admin/WeixinKeyword/save');
 //爬虫数据库scrapy根据id获取关键字
 Route::get('scrapy/getOneKeyword/:id','admin/WeixinKeyword/read');
-//爬虫数据库scrapy根据id获取关键字
-Route::get('scrapy/stopScrapy/:id','admin/WeixinKeyword/stopScrapy');
+
 
 
 
