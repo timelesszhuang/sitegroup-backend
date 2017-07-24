@@ -63,4 +63,14 @@ class WeixinArticle extends Common
         return $this->resultArray("添加成功");
     }
 
+    /**
+     * 获取某个文章
+     * @param $id
+     * @return array
+     */
+    public function read($id)
+    {
+        return $this->resultArray('','',$this->conn->getOne($id));
+    }
+
 }

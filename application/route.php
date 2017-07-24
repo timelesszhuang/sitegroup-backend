@@ -198,8 +198,8 @@ Route::get('scrapy/getOneKeyword/:id','admin/WeixinKeyword/read');
 Route::get('wechat/article','admin/WeixinArticle/index');
 //wechat采集文章添加到文章库
 Route::post('wechat/addArticle','admin/WeixinArticle/create');
-
-
+//wechat获取一篇采集文章
+Route::get('wechat/getOneArticle/:id','admin/WeixinArticle/read');
 
 
 //站点相关--------------------------------------------------------
