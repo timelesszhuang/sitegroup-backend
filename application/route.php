@@ -26,10 +26,12 @@ Route::rule('company/getAll', 'sysadmin/Company/getAll');
 //节点
 Route::resource('node', 'sysadmin/Node');
 Route::rule('node/status', 'sysadmin/Node/status');
-//采集关键词
+//爬虫数据库采集关键词列表
 Route::get('sys/getKeyword','sysadmin/Keyword/index');
-//爬虫数据库scrapy根据id获取关键字
+//爬虫数据库停止某个关键字
 Route::get('sys/stopScrapy/:id','sysadmin/Keyword/stopScrapy');
+//爬虫数据库启用某个关键字
+Route::get('sys/startScrapy/:id','sysadmin/Keyword/startScrapy');
 
 
 

@@ -89,4 +89,14 @@ class WeixinKeyword extends Model
         return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id"=>$id])->update(["scrapystatus"=>20]);
     }
 
+    /**
+     * 关键字启用爬取
+     * @param $id
+     * @return int|string
+     */
+    public function startScrapy($id)
+    {
+        return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id"=>$id])->update(["scrapystatus"=>10]);
+    }
+
 }

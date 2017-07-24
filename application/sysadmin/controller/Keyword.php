@@ -42,4 +42,14 @@ class Keyword extends Common
     {
         return $this->resultArray('','',$this->conn->stopScrapy($id));
     }
+
+    /**
+     * 启用关键词爬取
+     * @param $id
+     * @return array
+     */
+    public function startScrapy($id)
+    {
+        return $this->resultArray('','',$this->conn->startScrapy($id));
+    }
 }
