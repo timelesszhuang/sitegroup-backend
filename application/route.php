@@ -41,8 +41,9 @@ Route::get('sys/wecatArticle','sysadmin/WeixinArticle/index');
 //微信采集文章获取某一篇文章
 Route::get('sys/wecatArticleOne/:id','sysadmin/WeixinArticle/getOne');
 //微信采集文章修改某一篇文章
-Route::get('sys/changeWecatArticle','sysadmin/WeixinArticle/edit');
-
+Route::post('sys/changeWecatArticle','sysadmin/WeixinArticle/edit');
+//微信采集文章删除某一篇文章
+Route::post('sys/deleteWecatArticle/:id','sysadmin/WeixinArticle/delete');
 
 
 

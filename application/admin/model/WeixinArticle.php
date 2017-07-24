@@ -72,4 +72,13 @@ class WeixinArticle extends Model
             "content"=>$content
         ]);
     }
+
+    /**
+     * 删除文章
+     * @param $id
+     */
+    public function delete($id)
+    {
+       return  Db::connect($this->connection)->table("sc_weixin_keywordarticle")->delete($id);
+    }
 }
