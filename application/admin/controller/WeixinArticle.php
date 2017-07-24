@@ -41,7 +41,7 @@ class WeixinArticle extends Common
      */
     public function delete($id)
     {
-        if($this->conn->delete($id)){
+        if($this->conn->deleteOne($id)){
             return $this->resultArray('删除成功');
         }
         return $this->resultArray('删除失败', 'failed');

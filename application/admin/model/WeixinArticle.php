@@ -77,7 +77,7 @@ class WeixinArticle extends Model
      * 删除文章
      * @param $id
      */
-    public function delete($id)
+    public function deleteOne($id)
     {
        return  Db::connect($this->connection)->table("sc_weixin_keywordarticle")->delete($id);
     }
