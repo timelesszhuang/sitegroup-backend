@@ -93,4 +93,17 @@ class WangyiArticle extends Model
     {
         return  Db::connect($this->connection)->table($this->table)->delete($id);
     }
+
+    /**
+     * 获取所有分类
+     */
+    public function allTypes()
+    {
+        $arr=[
+            ["id"=>1,"text"=>"科技"],
+            ["id"=>2,"text"=>"教育类"],
+            ["id"=>3,'text'=>"财经类"]
+        ];
+        return $arr;
+    }
 }

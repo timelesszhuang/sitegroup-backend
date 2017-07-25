@@ -37,4 +37,5 @@ class WangyiArticle extends Common
         $data = $this->conn->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
+
 }

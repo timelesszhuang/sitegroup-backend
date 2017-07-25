@@ -60,7 +60,8 @@ Route::get('sys/qqArticleOne/:id','sysadmin/QicqArticle/getOne');
 Route::post('sys/changeQqArticle','sysadmin/QicqArticle/edit');
 //qq删除文章
 Route::get('sys/deleteQqArticle/:id','sysadmin/QicqArticle/delete');
-
+//获取qq和网易所有分类
+Route::get('sys/articleAllType','sysadmin/WangyiArticle/getTypes');
 
 
 
@@ -216,6 +217,11 @@ Route::get('wechat/article','admin/WeixinArticle/index');
 Route::post('wechat/addArticle','admin/WeixinArticle/create');
 //wechat获取一篇采集文章
 Route::get('wechat/getOneArticle/:id','admin/WeixinArticle/read');
+
+
+
+
+
 
 
 

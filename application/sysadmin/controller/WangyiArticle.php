@@ -5,7 +5,7 @@ namespace app\sysadmin\controller;
 use think\Controller;
 use think\Request;
 use app\common\controller\Common;
-use \app\admin\model\WeixinArticle as Weixin;
+use \app\admin\model\WangyiArticle as Weixin;
 use think\Validate;
 class WangyiArticle extends Common
 {
@@ -80,4 +80,14 @@ class WangyiArticle extends Common
         }
         return $this->resultArray('删除失败', 'failed');
     }
+
+    /**
+     * 获取所有分类
+     * @return array
+     */
+    public function getTypes()
+    {
+        return $this->resultArray('','',$this->conn->allTypes());
+    }
+
 }
