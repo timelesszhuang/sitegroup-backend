@@ -52,6 +52,15 @@ Route::get('sys/wangyiArticleOne/:id','sysadmin/WangyiArticle/getOne');
 Route::post('sys/changewangyiArticle','sysadmin/WangyiArticle/edit');
 //网易采集文章删除一条
 Route::get('sys/deleteWangyiArticle/:id','sysadmin/WangyiArticle/delete');
+//qq采集文章获取列表
+Route::get('sys/qqArticle','sysadmin/QicqArticle/index');
+//qq采集获取一条
+Route::get('sys/qqArticleOne/:id','sysadmin/QicqArticle/getOne');
+//qq编辑文章
+Route::post('sys/changeQqArticle','sysadmin/QicqArticle/edit');
+//qq删除文章
+Route::get('sys/deleteQqArticle/:id','sysadmin/QicqArticle/delete');
+
 
 
 

@@ -8,79 +8,79 @@ use app\common\controller\Common;
 use app\admin\model\QicqArticle as QQ;
 class QicqArticle extends Common
 {
+    protected $conn='';
     /**
-     * 显示资源列表
+     * 初始化操作
+     */
+    public function _initialize()
+    {
+        $this->conn=new QQ();
+    }
+
+    /**
+     * 获取所有qq爬虫文章
      *
      * @return \think\Response
      */
     public function index()
     {
-        //
+        $request = $this->getLimit();
+        $title= $this->request->get('title');
+        $type_id= $this->request->get('type_id');
+        $where = [];
+        if (!empty($title)) {
+            $where["title"] = ["like", "%$title%"];
+        }
+        if(!empty($type_id)){
+            $where["type_id"]=$type_id;
+        }
+        $data = $this->conn->getArticle($request["limit"], $request["rows"], $where);
+        return $this->resultArray('', '', $data);
     }
 
     /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
+     * 获取某一篇文章
+     * @param $id
+     * @return array
      */
-    public function create()
+    public function getOne($id)
     {
-        //
+        return $this->resultArray('','',$this->conn->getOne($id));
     }
 
     /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
+     * 修改文章
+     * @param Request $request
+     * @return array
      */
-    public function save(Request $request)
+    public function edit(Request $request)
     {
-        //
+        $rule=[
+            ["id","require","请选择文章"],
+            ["title","require","请填写标题"],
+            ["content","require","请填写内容"]
+        ];
+        $validate=new Validate($rule);
+        $data=$request->post();
+        if(!$validate->check($data)){
+            return $this->resultArray($validate->getError(),"failed");
+        }
+        if($this->conn->editKeyword($data["id"],$data["title"],$data["content"])){
+            return $this->resultArray('修改成功');
+        }
+        return $this->resultArray('修改失败', 'failed');
     }
 
     /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function read($id)
-    {
-        //
-    }
-
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * 删除指定资源
-     *
-     * @param  int  $id
-     * @return \think\Response
+     * 删除文章
+     * @param $id
+     * @return array
      */
     public function delete($id)
     {
-        //
+        if($this->conn->deleteOne($id)){
+            return $this->resultArray('删除成功');
+        }
+        return $this->resultArray('删除失败', 'failed');
     }
 }

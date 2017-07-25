@@ -54,8 +54,8 @@ class QicqArticle extends Model
      */
     public function formatter_date(&$value,$key)
     {
-        if($value['createtime']){
-            $value['createtime']=date("Y-m-d H:i:s",$value['createtime']);
+        if($value['create_time']){
+            $value['create_time']=date("Y-m-d H:i:s",$value['create_time']);
         }
     }
 
