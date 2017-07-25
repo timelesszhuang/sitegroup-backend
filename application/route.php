@@ -268,6 +268,8 @@ Route::get('user/wechat/article','user/WechatArticle/index');
 Route::get('user/wechat/getArticleOne/:id','user/WechatArticle/read');
 //wechat添加到文章库
 Route::post('user/wechat/addArticle','user/WechatArticle/create');
+//关键词列表
+Route::get('user/keywordGetlist','user/WeixinKeyword/getKeyList');
 return [
     '__pattern__' => [
         'name' => '\w+',

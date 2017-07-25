@@ -12,7 +12,7 @@ class WeixinKeyword extends Common
      */
     public function _initialize()
     {
-        $this->conn=new \app\user\model\WeixinKeyword();
+        $this->conn=new \app\admin\model\WeixinKeyword();
     }
     /**
      * 显示资源列表
@@ -68,47 +68,11 @@ class WeixinKeyword extends Common
     }
 
     /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
+     * 获取列表
+     * @return array
      */
-    public function read($id)
+    public function getKeyList()
     {
-        //
-    }
-
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * 删除指定资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function delete($id)
-    {
-        //
+        return $this->resultArray('','',$this->conn->getKeyList());
     }
 }
