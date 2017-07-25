@@ -6,6 +6,8 @@ use think\Controller;
 use think\Request;
 use app\common\controller\Common;
 use app\admin\model\WeixinArticle as Weixin;
+use think\Validate;
+
 class WechatArticle extends Common
 {
     protected $conn='';

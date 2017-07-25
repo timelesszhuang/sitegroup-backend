@@ -4,8 +4,9 @@ namespace app\sysadmin\controller;
 
 use think\Controller;
 use think\Request;
-
-class QicqArticle extends Controller
+use app\common\controller\Common;
+use app\admin\model\QicqArticle as QQ;
+class QicqArticle extends Common
 {
     /**
      * 显示资源列表
