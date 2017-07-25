@@ -25,10 +25,13 @@ class WechatArticle extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $title= $this->request->get('title');
+        $keyword= $this->request->get('keyword_id');
         $where = [];
         if (!empty($title)) {
             $where["title"] = ["like", "%$title%"];
+        }
+        if(!empty($keyword)){
+            $where["keyword_id"]=$keyword;
         }
         $data = $this->conn->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
