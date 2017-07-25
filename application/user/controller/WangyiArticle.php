@@ -7,7 +7,7 @@ use think\Request;
 use app\common\controller\Common;
 use app\admin\model\WangyiArticle as Wangyi;
 use think\Validate;
-class WangyiArticle extends Controller
+class WangyiArticle extends Common
 {
     protected $conn='';
     /**
@@ -83,5 +83,14 @@ class WangyiArticle extends Controller
             return $this->resultArray('删除成功');
         }
         return $this->resultArray('删除失败', 'failed');
+    }
+
+    /**
+     * 获取所有分类
+     * @return array
+     */
+    public function getTypes()
+    {
+        return $this->resultArray('','',$this->conn->allTypes());
     }
 }
