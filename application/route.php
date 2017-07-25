@@ -224,7 +224,7 @@ Route::post('wangyi/addArticle','admin/WangyiArticle/create');
 //网易采集文章获取一篇采集文章
 Route::get('wangyi/getOneArticle/:id','admin/WangyiArticle/read');
 //qq采集文章列表
-
+Route::get('qq/article','admin/QicqArticle/index');
 
 
 
