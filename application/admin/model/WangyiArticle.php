@@ -101,8 +101,8 @@ class WangyiArticle extends Model
     {
         $arr=[
             ["id"=>1,"text"=>"科技"],
-            ["id"=>2,"text"=>"教育类"],
-            ["id"=>3,'text'=>"财经类"]
+            ["id"=>2,"text"=>"教育"],
+            ["id"=>3,'text'=>"财经"]
         ];
         return $arr;
     }
