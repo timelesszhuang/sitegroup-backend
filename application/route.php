@@ -225,6 +225,10 @@ Route::post('wangyi/addArticle','admin/WangyiArticle/create');
 Route::get('wangyi/getOneArticle/:id','admin/WangyiArticle/read');
 //qq采集文章列表
 Route::get('qq/article','admin/QicqArticle/index');
+//qq采集文章添加到文章库
+Route::post('qq/addArticle','admin/QicqArticle/create');
+//qq采集文章获取一篇采集文章
+Route::get('qq/getOneArticle/:id','admin/QicqArticle/read');
 
 
 
