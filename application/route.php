@@ -44,9 +44,14 @@ Route::get('sys/wecatArticleOne/:id','sysadmin/WeixinArticle/getOne');
 Route::post('sys/changeWecatArticle','sysadmin/WeixinArticle/edit');
 //微信采集文章删除某一篇文章
 Route::post('sys/deleteWecatArticle/:id','sysadmin/WeixinArticle/delete');
-
-
-
+//网易采集文章列表
+Route::get('sys/wangyiArticle','sysadmin/WangyiArticle/index');
+//网易采集文章获取一条
+Route::get('sys/wangyiArticleOne/:id','sysadmin/WangyiArticle/getOne');
+//网易采集文章修改一条
+Route::post('sys/changewangyiArticle','sysadmin/WangyiArticle/edit');
+//网易采集文章删除一条
+Route::get('sys/deleteWangyiArticle/:id','sysadmin/WangyiArticle/delete');
 
 
 
