@@ -217,9 +217,13 @@ Route::get('wechat/article','admin/WeixinArticle/index');
 Route::post('wechat/addArticle','admin/WeixinArticle/create');
 //wechat获取一篇采集文章
 Route::get('wechat/getOneArticle/:id','admin/WeixinArticle/read');
-
-
-
+//网易采集文章列表
+Route::get('wangyi/article','admin/WangyiArticle/index');
+//网易采集文章添加到文章库
+Route::post('wangyi/addArticle','admin/WangyiArticle/create');
+//网易采集文章获取一篇采集文章
+Route::get('wangyi/getOneArticle/:id','admin/WangyiArticle/read');
+//qq采集文章列表
 
 
 
