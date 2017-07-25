@@ -229,7 +229,8 @@ Route::get('qq/article','admin/QicqArticle/index');
 Route::post('qq/addArticle','admin/QicqArticle/create');
 //qq采集文章获取一篇采集文章
 Route::get('qq/getOneArticle/:id','admin/QicqArticle/read');
-
+//网易和qq获取分类
+Route::get('article/articleAllType','admin/WangyiArticle/getTypes');
 
 
 
@@ -293,6 +294,12 @@ Route::get('user/wechat/getArticleOne/:id','user/WechatArticle/read');
 Route::post('user/wechat/addArticle','user/WechatArticle/create');
 //关键词列表
 Route::get('user/keywordGetlist','user/WeixinKeyword/getKeyList');
+//网易采集文章列表
+Route::get('qq/article','admin/QicqArticle/index');
+//网易采集文章添加到文章库
+Route::post('qq/addArticle','admin/QicqArticle/create');
+//网易采集文章获取一篇采集文章
+Route::get('qq/getOneArticle/:id','admin/QicqArticle/read');
 return [
     '__pattern__' => [
         'name' => '\w+',
