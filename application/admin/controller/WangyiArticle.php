@@ -6,6 +6,8 @@ use think\Controller;
 use think\Request;
 use app\common\controller\Common;
 use app\admin\model\WangyiArticle as Wangyi;
+use think\Validate;
+
 class WangyiArticle extends Common
 {
     protected $conn='';
