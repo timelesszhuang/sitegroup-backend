@@ -299,13 +299,13 @@ Route::get('user/wangyiArticle','user/WangyiArticle/index');
 //网易采集文章添加到文章库
 Route::post('user/addArticle','user/WangyiArticle/create');
 //网易采集文章获取一篇采集文章
-Route::get('user/getOneArticle/:id','user/WangyiArticle/read');
+Route::get('user/WangyiOneArticle/:id','user/WangyiArticle/read');
 //qq采集文章列表
 Route::get('user/qqArticle','user/QicqArticle/index');
 //qq采集文章添加到文章库
 Route::post('user/addArticle','user/QicqArticle/create');
 //qq采集文章获取一篇采集文章
-Route::get('user/getOneArticle/:id','user/QicqArticle/read');
+Route::get('user/QQOneArticle/:id','user/QicqArticle/read');
 //网易和qq获取分类
 Route::get('user/articleAllType','user/WangyiArticle/getTypes');
 return [
