@@ -297,13 +297,13 @@ Route::get('user/keywordGetlist','user/WeixinKeyword/getKeyList');
 //网易采集文章列表
 Route::get('user/wangyiArticle','user/WangyiArticle/index');
 //网易采集文章添加到文章库
-Route::post('user/addArticle','user/WangyiArticle/create');
+Route::post('user/wangyiAddArticle','user/WangyiArticle/create');
 //网易采集文章获取一篇采集文章
 Route::get('user/WangyiOneArticle/:id','user/WangyiArticle/getOne');
 //qq采集文章列表
 Route::get('user/qqArticle','user/QicqArticle/index');
 //qq采集文章添加到文章库
-Route::post('user/addArticle','user/QicqArticle/create');
+Route::post('user/QQaddArticle','user/QicqArticle/create');
 //qq采集文章获取一篇采集文章
 Route::get('user/QQOneArticle/:id','user/QicqArticle/getOne');
 //网易和qq获取分类

@@ -50,26 +50,29 @@ class QicqArticle extends Common
     }
 
     /**
-     * 修改文章
+     * 添加wechat文章
      * @param Request $request
      * @return array
      */
-    public function edit(Request $request)
+    public function create(Request $request)
     {
-        $rule=[
-            ["id","require","请选择文章"],
-            ["title","require","请填写标题"],
-            ["content","require","请填写内容"]
+        $rule = [
+            ["title", "require", "请输入标题"],
+            ["content", "require", "请输入内容"],
+            ["articletype_id", "require", "请选择文章分类"],
         ];
-        $validate=new Validate($rule);
-        $data=$request->post();
-        if(!$validate->check($data)){
-            return $this->resultArray($validate->getError(),"failed");
+        $validate = new Validate($rule);
+        $data = $request->post();
+        $user = $this->getSessionUser();
+        $data['node_id'] = $user['user_node_id'];
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
         }
-        if($this->conn->editKeyword($data["id"],$data["title"],$data["content"])){
-            return $this->resultArray('修改成功');
+        $data["is_collection"]=20;
+        if (!\app\admin\model\Article::create($data)) {
+            return $this->resultArray("添加失败", "failed");
         }
-        return $this->resultArray('修改失败', 'failed');
+        return $this->resultArray("添加成功");
     }
 
     /**
