@@ -6,6 +6,7 @@ use think\Controller;
 use think\Request;
 use app\common\controller\Common;
 use app\admin\model\QicqArticle as QQ;
+use think\Validate;
 class QicqArticle extends Common
 {
     protected $conn='';
