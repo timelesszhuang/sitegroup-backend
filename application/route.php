@@ -63,7 +63,7 @@ Route::get('sys/deleteQqArticle/:id','sysadmin/QicqArticle/delete');
 //获取qq和网易所有分类
 Route::get('sys/articleAllType','sysadmin/WangyiArticle/getTypes');
 //微信获取关键词分类
-Route::get('sys/weixinKeyList','sysadmin/WangyiArticle/getKeyList');
+Route::get('sys/weixinKeyList','sysadmin/WeixinArticle/getKeyList');
 
 
 
