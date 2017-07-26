@@ -2,6 +2,7 @@
 
 namespace app\sysadmin\controller;
 
+use app\admin\model\WeixinKeyword;
 use think\Controller;
 use think\Request;
 use app\common\controller\Common;
@@ -81,5 +82,12 @@ class WeixinArticle extends Common
         }
         return $this->resultArray('删除失败', 'failed');
     }
-
+    /**
+     * 获取列表
+     * @return array
+     */
+    public function getKeyList()
+    {
+        return $this->resultArray('','',(new WeixinKeyword())->getKeyList());
+    }
 }
