@@ -61,14 +61,16 @@ class WeixinArticle extends Common
         $rule=[
             ["id","require","请选择文章"],
             ["title","require","请填写标题"],
-            ["content","require","请填写内容"]
+            ["content","require","请填写内容"],
+            ['summary','require','请填写简介'],
+            ['source','require','请填写来源']
         ];
         $validate=new Validate($rule);
         $data=$request->post();
         if(!$validate->check($data)){
             return $this->resultArray($validate->getError(),"failed");
         }
-        if($this->conn->editKeyword($data["id"],$data["title"],$data["content"])){
+        if($this->conn->editKeyword($data["id"],$data["title"],$data["content"],$data["summary"],$data['source'])){
             return $this->resultArray('修改成功');
         }
         return $this->resultArray('修改失败', 'failed');

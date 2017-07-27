@@ -78,12 +78,19 @@ class WeixinArticle extends Model
      * @param $content
      * @return int|string
      */
-    public function editKeyword($id,$title,$content)
+    public function editKeyword($id,$title,$content,$summary='',$source='')
     {
-        return Db::connect($this->connection)->table("sc_weixin_keywordarticle")->where(["id"=>$id])->update([
+        $update=[
             "title"=>$title,
             "content"=>$content
-        ]);
+        ];
+        if(!empty($summary)){
+            $update["summary"]=$summary;
+        }
+        if(!empty($source)){
+            $update["source"]=$source;
+        }
+        return Db::connect($this->connection)->table("sc_weixin_keywordarticle")->where(["id"=>$id])->update($update);
     }
 
     /**
