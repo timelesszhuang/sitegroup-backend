@@ -77,12 +77,19 @@ class WangyiArticle extends Model
      * @param $content
      * @return int|string
      */
-    public function editKeyword($id,$title,$content)
+    public function editKeyword($id,$title,$content,$digest='',$source='')
     {
-        return Db::connect($this->connection)->table($this->table)->where(["id"=>$id])->update([
+        $update=[
             "title"=>$title,
             "content"=>$content
-        ]);
+        ];
+        if(!empty($digest)){
+            $update["digest"]=$digest;
+        }
+        if(!empty($source)){
+            $update["source"]=$source;
+        }
+        return Db::connect($this->connection)->table("sc_163news")->where(["id"=>$id])->update($update);
     }
 
     /**
