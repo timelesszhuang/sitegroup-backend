@@ -27,7 +27,7 @@ class ArticleInsertA extends Common
         $where["node_id"] = $node_id["node_id"];
         $where["site_id"] = $this->getSiteSession('website')["id"];
         $data = (new \app\admin\model\ArticleInsertA())->getAll($request["limit"], $request["rows"], $where);
-        return $this->resultArray('','',$data);
+        return $this->resultArray('', '', $data);
     }
 
     /**
@@ -55,6 +55,10 @@ class ArticleInsertA extends Common
         ];
         $validate = new Validate($rule);
         $data = $request->post();
+        $url = strstr($data['href'], "http://");
+        if (empty($url)) {
+            return $this->resultArray('请输入http://', "failed");
+        }
         $user = $this->getSessionUser();
         $data['node_id'] = $this->getSiteSession('login_site')["node_id"];
         $data["site_id"] = $this->getSiteSession('website')["id"];
