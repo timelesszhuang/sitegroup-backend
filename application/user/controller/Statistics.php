@@ -133,7 +133,7 @@ class Statistics extends Common
             'site_id' => $site_id,
         ];
         //判断前台是否传递参数
-        if (isset($param["time"])) {
+        if (!empty($param["time"])) {
             list($start_time, $stop_time) = $param['time'];
             $starttime = (!empty(intval($start_time))) ? strtotime($start_time) : time() - 86400 * 9;
             $stoptime = (!empty(intval($stop_time))) ? strtotime($stop_time) : time();
@@ -270,7 +270,6 @@ class Statistics extends Common
         } else {
             $starttime = time() - 86400 * 9;
             $stoptime = time();
-
         }
         $where["create_time"] = ['between', [$starttime, $stoptime]];
         //判断前台有没有传递site——id参数

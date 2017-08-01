@@ -28,4 +28,24 @@ class Menu extends Model
             "rows" => $data
         ];
     }
+
+    /**
+     *
+     *  获取栏目名称 分类 详情数据
+     * @param $where
+     * @param $field
+     * @return false|\PDOStatement|string|\think\Collection
+     */
+    public function getlist($where,$field)
+    {
+        $data = $this->where($where)->field($field)->select();
+        foreach ($data as $k=>$v){
+            if(!empty(trim($v['type_name']))){
+                $v['typeName']='—'.$v['type_name'];
+            }
+        }
+        return $data;
+    }
+
+
 }
