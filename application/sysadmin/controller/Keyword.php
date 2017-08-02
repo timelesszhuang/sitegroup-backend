@@ -5,6 +5,8 @@ namespace app\sysadmin\controller;
 use app\common\controller\Common;
 use think\Request;
 use \app\admin\model\WeixinKeyword as Scrapy;
+use think\Validate;
+
 class Keyword extends Common
 {
     protected $conn='';
