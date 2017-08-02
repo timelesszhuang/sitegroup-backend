@@ -72,7 +72,8 @@ Route::post('sys/addKeywordType','sysadmin/KeywordType/addKeywordType');
 Route::post('sys/editKeywordType','sysadmin/KeywordType/editKeywordType');
 //获取一条
 Route::get('sys/gettype/:id','sysadmin/KeywordType/read');
-
+//获取分类列表
+Route::post('sys/getKeyTypeList','sysadmin/KeywordType/getKeyTypeList');
 
 //=========节点后台
 //关键词

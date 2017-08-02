@@ -85,6 +85,14 @@ class KeywordType extends Common
         }
         return $this->resultArray("修改成功");
     }
+    /**
+     * 获取列表
+     * @return array
+     */
+    public function getKeyTypeList()
+    {
+        return $this->resultArray('','',$this->conn->getKeyTypeList());
+    }
 
 
 
