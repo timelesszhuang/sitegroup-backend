@@ -105,7 +105,7 @@ class Keyword extends Common
     /**
      * 修改关键词分类
      */
-    public function editKeywordType()
+    public function editKeyword()
     { $rule = [
         ['name', 'require', "请填关键词"],
         ["detail", "require", "请填详情"],
