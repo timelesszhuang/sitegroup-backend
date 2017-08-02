@@ -67,7 +67,7 @@ Route::get('sys/weixinKeyList','sysadmin/WeixinArticle/getKeyList');
 //爬虫数据库关键字分类
 Route::get('sys/getKeywordType','sysadmin/KeywordType/index');
 //分类添加
-Route::get('sys/addKeywordType','sysadmin/KeywordType/addKeywordType');
+Route::post('sys/addKeywordType','sysadmin/KeywordType/addKeywordType');
 
 
 
