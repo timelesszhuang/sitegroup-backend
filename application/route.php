@@ -71,7 +71,7 @@ Route::post('sys/addKeywordType','sysadmin/KeywordType/addKeywordType');
 //分类修改
 Route::post('sys/editKeywordType','sysadmin/KeywordType/editKeywordType');
 //获取一条
-Route::post('sys/gettype','sysadmin/KeywordType/read');
+Route::get('sys/gettype/:id','sysadmin/KeywordType/read');
 
 
 //=========节点后台

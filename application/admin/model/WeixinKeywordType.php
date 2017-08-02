@@ -92,11 +92,7 @@ class WeixinKeywordType extends Model
         return $key;
     }
 
-
-
-
-
-    public function getKeyTypeList()
+ public function getKeyTypeList()
     {
         return Db::connect($this->connection)->table("sc_weixin_keyword_type")->field("id,name as text")->select();
     }
