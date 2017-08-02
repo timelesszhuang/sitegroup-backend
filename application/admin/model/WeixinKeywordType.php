@@ -33,6 +33,18 @@ class WeixinKeywordType extends Model
         'prefix'      => 'sc_',
     ];
 
+
+    /**
+     * 格式化日期
+     * @param $value
+     * @param $key
+     */
+    public function formatter_date(&$value,$key)
+    {
+        if($value['create_time']){
+            $value['create_time']=date("Y-m-d H:i:s",$value['create_time']);
+        }
+    }
     /**
      * 获取所有关键字分类
      * @return false|\PDOStatement|string|\think\Collection
@@ -41,6 +53,7 @@ class WeixinKeywordType extends Model
     {
         $count = $this->where($where)->count();
         $data=Db::connect($this->connection)->table("sc_weixin_keyword_type")->where($where)->limit($limit, $rows)->select();
+        array_walk($data,[$this,'formatter_date']);
         return [
             "total" => $count,
             "rows" => $data

@@ -55,6 +55,17 @@ class KeywordType extends Common
         }
         return $this->resultArray("添加成功");
     }
+
+    /**
+     * 获取一条数据
+     */
+    public function read($id)
+    {
+
+
+    }
+
+
     /**
      * 修改关键词分类
      */
