@@ -125,7 +125,10 @@ class WeixinKeyword extends Model
      */
     public function getKeyList()
     {
-        return Db::connect($this->connection)->table("sc_weixin_keyword")->field("id,name as text")->select();
+        $where=[];
+        $where['status']=10;
+        return Db::connect($this->connection)->table("sc_weixin_keyword")->where($where)->field("id,name as text,scrapystatus")->select();
     }
+
 
 }
