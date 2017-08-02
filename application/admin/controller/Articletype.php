@@ -57,11 +57,13 @@ class Articletype extends Common
     public function save(Request $request)
     {
         $rule = [
-            ["name", "require|unique:Articletype", "请输入文章分类名|文章分类名重复"],
+//            ["name", "require", "请输入文章分类名"],
             ["detail", "require", "请输入详情"],
+            ["tag","require","请输入此分类的标签"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
+//        dump($data);die;
         $user = $this->getSessionUser();
         $data['node_id'] = $user['user_node_id'];
         if (!$validate->check($data)) {
@@ -95,8 +97,9 @@ class Articletype extends Common
     {
         //
         $rule = [
-            ["name", "require|unique:Articletype", "请输入文章分类名|文章分类名重复"],
+            ["name", "require", "请输入文章分类名"],
             ["detail", "require", "请输入详情"],
+            ["tag","require","请输入此分类的标签"]
         ];
         $data = $this->request->put();
         $validate = new Validate($rule);
