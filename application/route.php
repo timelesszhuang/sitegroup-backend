@@ -74,6 +74,12 @@ Route::post('sys/editKeywordType','sysadmin/KeywordType/editKeywordType');
 Route::get('sys/gettype/:id','sysadmin/KeywordType/read');
 //获取分类列表
 Route::post('sys/getKeyTypeList','sysadmin/KeywordType/getKeyTypeList');
+//添加爬虫关键词
+Route::post('sys/addKeyword','sysadmin/Keyword/addKeyword');
+//修改爬虫关键词
+Route::post('sys/editKeyword','sysadmin/Keyword/editKeyword');
+//爬虫数据库scrapy获取单条数据
+Route::get('sys/gettype/:id','sysadmin/Keyword/read');
 
 //=========节点后台
 //关键词

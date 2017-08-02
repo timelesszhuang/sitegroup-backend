@@ -72,7 +72,53 @@ class Keyword extends Common
     {
         return $this->resultArray('','',$this->conn->stopScrapy($id));
     }
+    /**
+     * 添加关键词
+     */
+    public function addKeyword()
+    {
+        $rule = [
+            ['name', 'require', "请填关键词"],
+            ["detail", "require", "请填详情"],
+            ["type_name", "require", "请填关键词分类"],
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
+        }
+        if (!Scrapy::create($data)) {
+            return $this->resultArray("添加失败", "failed");
+        }
+        return $this->resultArray("添加成功");
+    }
+    /**
+     * 获取一条数据
+     */
+    public function read($id)
+    {
+        return $this->resultArray('','',$this->conn->getOne($id));
 
+    }
+    /**
+     * 修改关键词分类
+     */
+    public function editKeywordType()
+    { $rule = [
+        ['name', 'require', "请填关键词"],
+        ["detail", "require", "请填详情"],
+        ["type_name", "require", "请填关键词分类"],
+    ];
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
+        }
+        if (!Scrapy::update($data)) {
+            return $this->resultArray("修改失败", "failed");
+        }
+        return $this->resultArray("修改成功");
+    }
 
 
 }
