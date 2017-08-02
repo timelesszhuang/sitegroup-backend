@@ -68,7 +68,8 @@ Route::get('sys/weixinKeyList','sysadmin/WeixinArticle/getKeyList');
 Route::get('sys/getKeywordType','sysadmin/KeywordType/index');
 //分类添加
 Route::post('sys/addKeywordType','sysadmin/KeywordType/addKeywordType');
-
+//分类修改
+Route::post('sys/editKeywordType','sysadmin/KeywordType/editKeywordType');
 
 
 //=========节点后台

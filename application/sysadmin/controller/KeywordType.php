@@ -55,6 +55,26 @@ class KeywordType extends Common
         }
         return $this->resultArray("添加成功");
     }
+    /**
+     * 修改关键词分类
+     */
+    public function editKeywordType()
+    {
+        $rule = [
+            ['name', 'require', "请填分类名"],
+            ["detail", "require", "请填详情"],
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
+        }
+        if (!Type::update($data)) {
+            return $this->resultArray("修改失败", "failed");
+        }
+        return $this->resultArray("修改成功");
+    }
+
 
 
 }
