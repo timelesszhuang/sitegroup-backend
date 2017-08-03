@@ -26,10 +26,15 @@ class Keyword extends Common
     public function index()
     {
         $request = $this->getLimit();
+        $id=$this->request->get('keyword_typename');
         $name= $this->request->get('name');
+//        $typeid = $this->$request->get('');
         $where = [];
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
+        }
+        if (!empty($id)) {
+            $where["type_id"] = $id;
         }
         $data = $this->conn->getKeyword($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
