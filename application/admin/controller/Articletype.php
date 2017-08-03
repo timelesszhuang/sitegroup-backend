@@ -119,6 +119,7 @@ class Articletype extends Common
         $where = [];
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
+//        $id = new \app\admin\model\Site()->
         $data = (new \app\admin\model\Articletype())->getArttype($where);
         return $this->resultArray('', '', $data);
     }
