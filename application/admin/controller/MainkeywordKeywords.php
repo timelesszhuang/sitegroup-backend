@@ -27,7 +27,7 @@ class MainkeywordKeywords extends Common
         $name= $this->request->get('mainkeyword_name');
         $where = [];
         if (!empty($name)) {
-            $where["name"] = ["like", "%$name%"];
+            $where["mainkeyword_name"] = ["like", "%$name%"];
         }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
