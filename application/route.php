@@ -246,6 +246,8 @@ Route::get('qq/getOneArticle/:id','admin/QicqArticle/read');
 //网易和qq获取分类
 Route::get('article/articleAllType','admin/WangyiArticle/getTypes');
 
+//推荐关键词
+Route::get('admin/mainkeywords','admin/MainkeywordKeywords/index');
 
 
 
