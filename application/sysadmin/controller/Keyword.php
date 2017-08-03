@@ -118,6 +118,8 @@ class Keyword extends Common
     ];
         $validate = new Validate($rule);
         $data = $this->request->post();
+        $data['create_time']=strtotime($data['create_time']);
+        $data['update_time']=strtotime($data['update_time']);
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
