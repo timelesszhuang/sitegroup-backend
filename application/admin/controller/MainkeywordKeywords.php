@@ -24,7 +24,7 @@ class MainkeywordKeywords extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $name= $this->request->get('keyword');
+        $name= $this->request->get('mainkeyword_name');
         $where = [];
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
