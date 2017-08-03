@@ -120,18 +120,17 @@ class Articletype extends Common
         $where = [];
         $wh['id'] = $this->request->session()['website']['id'];
         $Site = new \app\admin\model\Site();
-        $menuid = $Site->where($wh)->field('menu')->find();
-        dump(json_encode($menuid));die;
+        $menuid = $Site->where($wh)->field('menu')->find()->menu;
         $Menuid = explode(',',$menuid);
-
-
-
-
-
+//        dump($Menuid);die;
+        $where['id'] = $Menuid;
         $menu = new \app\admin\model\Menu();
-        $Menudata = $menu->where($menu['id'])->select();
-        dump($Menudata);die;
-        $data = (new \app\admin\model\Articletype())->getArttype($where);
+        $dat = $menu->where('id','in',$Menuid)->whereNotIn('type_name','')->field('type_name')->select();
+        $arr=[];
+        foreach ($dat as $k=>$v ){
+         $arr[$k] = $v->type_name;
+        }
+        $data = (new \app\admin\model\Articletype())->where('name','in',$arr)->select();
         return $this->resultArray('', '', $data);
     }
 
