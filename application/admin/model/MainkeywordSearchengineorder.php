@@ -47,12 +47,29 @@ class  MainkeywordSearchengineorder extends Model
     }
     /**
      * 获取所有数据
+     * 组织数据
      * @return false|\PDOStatement|string|\think\Collection
      */
     public function getType($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
-        $data=Db::connect($this->connection)->table("sc_mainkeyword_searchengineorder")->where($where)->limit($limit, $rows)->order('id desc')->select();
+        $arr=Db::connect($this->connection)->table("sc_mainkeyword_searchengineorder")->where($where)->limit($limit, $rows)->order('id desc')->select();
+        $data=[];
+        foreach ($arr as $k=>$v){
+            if($v['url']){
+                $v['a_href'] = $v['url'];
+                $v['a_text'] = $v['url'];
+            }else if(empty($v['url']) || !empty($v['show_url'])){
+                $v['a_href'] = $v['baiduurl'];
+                $v['a_text']=$v['showurl'];
+            }else if(empty($v['show_url']) || !empty($v['baiduurl'])){
+                $v['a_href'] = $v['baiduurl'];
+                $v['a_text'] = '未获取到网址，点击跳转';
+            }else{
+                $v['a_text']="未获取到链接";
+            }
+            $data[$k]=$v;
+        }
         array_walk($data,[$this,'formatter_date']);
         return [
             "total" => $count,

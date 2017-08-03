@@ -32,6 +32,7 @@ class MainkeywordSearch extends Common
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $data = $this->conn->getType($request["limit"], $request["rows"], $where);
+
         return $this->resultArray('', '', $data);
     }
 
