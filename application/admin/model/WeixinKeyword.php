@@ -127,7 +127,7 @@ class WeixinKeyword extends Model
     {
         $where=[];
         $where['status']=10;
-        return Db::connect($this->connection)->table("sc_weixin_keyword")->where($where)->field("id,name as text,scrapystatus")->select();
+        return Db::connect($this->connection)->table("sc_weixin_keyword")->where($where)->field("id,name as text,scrapystatus,type_name")->select();
     }
 
 
