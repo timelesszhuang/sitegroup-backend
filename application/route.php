@@ -248,6 +248,7 @@ Route::get('article/articleAllType','admin/WangyiArticle/getTypes');
 
 //推荐关键词
 Route::get('admin/mainkeywords','admin/MainkeywordKeywords/index');
+Route::get('admin/searchkeywords','admin/MainkeywordSearch/index');
 
 
 

@@ -5,10 +5,10 @@ namespace app\admin\model;
 use think\Db;
 use think\Model;
 
-class  MainkeywordKeywords extends Model
+class  MainkeywordSearchengineorder extends Model
 {
     // 设置当前模型对应的完整数据表名称
-    protected $table = 'sc_mainkeyword_keywords';
+    protected $table = 'sc_mainkeyword_searchengineorder';
 
     protected $connection = [
         // 数据库类型
@@ -46,13 +46,13 @@ class  MainkeywordKeywords extends Model
         }
     }
     /**
-     * 获取所有关键字分类
+     * 获取所有数据
      * @return false|\PDOStatement|string|\think\Collection
      */
     public function getType($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
-        $data=Db::connect($this->connection)->table("sc_mainkeyword_keywords")->where($where)->limit($limit, $rows)->order('count desc')->select();
+        $data=Db::connect($this->connection)->table("sc_mainkeyword_searchengineorder")->where($where)->limit($limit, $rows)->order('id desc')->select();
         array_walk($data,[$this,'formatter_date']);
         return [
             "total" => $count,

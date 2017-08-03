@@ -4,9 +4,9 @@ namespace app\admin\controller;
 
 use app\common\controller\Common;
 use think\Request;
-use \app\admin\model\MainkeywordKeywords as Main;
+use \app\admin\model\MainkeywordSearchengineorder as Search;
 use think\Validate;
-class MainkeywordKeywords extends Common
+class MainkeywordSearch extends Common
 {
     protected $conn='';
     /**
@@ -14,10 +14,10 @@ class MainkeywordKeywords extends Common
      */
     public function _initialize()
     {
-        $this->conn=new Main();
+        $this->conn=new Search();
     }
     /**
-     * 获取关键字
+     * 获取所有数据
      *
      * @return \think\Response
      */
