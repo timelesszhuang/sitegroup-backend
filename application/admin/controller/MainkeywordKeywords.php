@@ -17,27 +17,18 @@ class MainkeywordKeywords extends Common
         $this->conn=new Main();
     }
     /**
-     * 获取关键字
+     * 获取
+     *
      * @return \think\Response
      */
     public function index()
     {
         $request = $this->getLimit();
-        $time = $this->request->get('time');
         $name= $this->request->get('mainkeyword_name');
         $where = [];
         if (!empty($name)) {
             $where["mainkeyword_name"] = ["like", "%$name%"];
         }
-        if (!empty($param["time"])) {
-            $starttime = strtotime($time);
-            $stoptime = starttime($time)-86400;
-        }
-        else {
-            $starttime = time() - 86400;
-            $stoptime = time();
-        }
-        $where['create_time'] = ['between', [$starttime, $stoptime]];
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $data = $this->conn->getType($request["limit"], $request["rows"], $where);

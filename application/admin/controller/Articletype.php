@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use app\common\controller\Common;
+use think\Db;
 use think\Validate;
 use think\Request;
 
@@ -117,9 +118,19 @@ class Articletype extends Common
     public function getType()
     {
         $where = [];
-        $user = $this->getSessionUser();
-        $where["node_id"] = $user["user_node_id"];
-//        $id = new \app\admin\model\Site()->
+        $wh['id'] = $this->request->session()['website']['id'];
+        $Site = new \app\admin\model\Site();
+        $menuid = $Site->where($wh)->field('menu')->find();
+        dump(json_encode($menuid));die;
+        $Menuid = explode(',',$menuid);
+
+
+
+
+
+        $menu = new \app\admin\model\Menu();
+        $Menudata = $menu->where($menu['id'])->select();
+        dump($Menudata);die;
         $data = (new \app\admin\model\Articletype())->getArttype($where);
         return $this->resultArray('', '', $data);
     }
