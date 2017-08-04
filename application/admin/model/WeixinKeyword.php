@@ -47,15 +47,7 @@ class WeixinKeyword extends Model
         ];
     }
 
-    /**
-     * 添加关键字
-     * @param $name
-     * @return $this
-     */
-    public function addKeyword($name)
-    {
-        return self::create(["name" => $name, "status" => 10]);
-    }
+
 
     /**
      * 修改关键词

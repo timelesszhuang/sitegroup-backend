@@ -61,7 +61,7 @@ class KeywordType extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('','',$this->conn->getOne($id));
+        return $this->resultArray('', '', $this->conn->getOne($id));
 
     }
 
@@ -85,15 +85,15 @@ class KeywordType extends Common
         }
         return $this->resultArray("修改成功");
     }
+
     /**
      * 获取列表
      * @return array
      */
     public function getKeyTypeList()
     {
-        return $this->resultArray('','',$this->conn->getKeyTypeList());
+        return $this->resultArray('', '', $this->conn->getKeyTypeList());
     }
-
 
 
 }

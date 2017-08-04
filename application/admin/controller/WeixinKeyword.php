@@ -6,16 +6,19 @@ use app\common\controller\Common;
 use think\Request;
 use \app\admin\model\WeixinKeyword as Scrapy;
 use think\Validate;
+
 class WeixinKeyword extends Common
 {
-    protected $conn='';
+    protected $conn = '';
+
     /**
      * 初始化操作
      */
     public function _initialize()
     {
-        $this->conn=new Scrapy();
+        $this->conn = new Scrapy();
     }
+
     /**
      * 获取关键字
      *
@@ -24,10 +27,14 @@ class WeixinKeyword extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $name= $this->request->get('name');
+        $name = $this->request->get('name');
+        $id = $this->request->get('keyword_typeid');
         $where = [];
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
+        }
+        if (!empty($id)) {
+            $where["type_id"] = $id;
         }
         $data = $this->conn->getKeyword($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
@@ -38,37 +45,61 @@ class WeixinKeyword extends Common
      *
      * @return \think\Response
      */
-    public function create($name)
+    public function create()
     {
-        if($this->conn->addKeyword($name)){
-            return $this->resultArray('添加成功');
+        $rule = [
+            ['name', 'require', "请填写关键词名字"],
+            ["detail", "require", "请填详情"],
+            ['type_name', 'require', '请填写分类名']
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
         }
-        return $this->resultArray('添加失败', 'failed');
+        if (!Scrapy::create($data)) {
+            return $this->resultArray("添加失败", "failed");
+        }
+        return $this->resultArray("添加成功");
     }
 
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
-    public function save($id,$name)
+    public function save()
     {
-        if($this->conn->editKeyword($id,$name)){
-            return $this->resultArray('修改成功');
+        $rule = [
+            ['name', 'require', "请填写关键词名字"],
+            ["detail", "require", "请填详情"],
+            ['type_name', 'require', '请填写分类名']
+        ];
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        $data['create_time'] = strtotime($data['create_time']);
+        $data['update_time'] = strtotime($data['update_time']);
+        $data['status'] = 20;
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
         }
-        return $this->resultArray('修改失败', 'failed');
+        if (!Scrapy::update($data)) {
+            return $this->resultArray("修改失败", "failed");
+        }
+        return $this->resultArray("修改成功");
     }
 
     /**
      * 获取一条数据
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function read($id)
     {
-        return $this->resultArray('','',$this->conn->getOne($id));
+        return $this->resultArray('', '', $this->conn->getOne($id));
     }
 
     /**
@@ -78,7 +109,7 @@ class WeixinKeyword extends Common
      */
     public function stopScrapy($id)
     {
-        return $this->resultArray('','',$this->conn->stopScrapy($id));
+        return $this->resultArray('', '', $this->conn->stopScrapy($id));
     }
 
     /**
@@ -87,7 +118,8 @@ class WeixinKeyword extends Common
      */
     public function getKeyList()
     {
-        return $this->resultArray('','',$this->conn->getKeyList());
+        return $this->resultArray('', '', $this->conn->getKeyList());
     }
+
 
 }

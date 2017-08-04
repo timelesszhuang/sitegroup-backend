@@ -27,59 +27,59 @@ Route::rule('company/getAll', 'sysadmin/Company/getAll');
 Route::resource('node', 'sysadmin/Node');
 Route::rule('node/status', 'sysadmin/Node/status');
 //爬虫数据库采集关键词列表
-Route::get('sys/getKeyword','sysadmin/Keyword/index');
+Route::get('sys/getKeyword', 'sysadmin/Keyword/index');
 //爬虫数据库未审核某个关键字
-Route::get('sys/stopStatus/:id','sysadmin/Keyword/stopStatus');
+Route::get('sys/stopStatus/:id', 'sysadmin/Keyword/stopStatus');
 //爬虫数据库已审核某个关键字
-Route::get('sys/startStatus/:id','sysadmin/Keyword/startStatus');
+Route::get('sys/startStatus/:id', 'sysadmin/Keyword/startStatus');
 //爬虫数据库启用某个关键字
-Route::get('sys/startScrapy/:id','sysadmin/Keyword/startScrapy');
+Route::get('sys/startScrapy/:id', 'sysadmin/Keyword/startScrapy');
 //爬虫数据库停止某个关键字
-Route::get('sys/stopScrapy/:id','sysadmin/Keyword/stopScrapy');
+Route::get('sys/stopScrapy/:id', 'sysadmin/Keyword/stopScrapy');
 //微信采集文章列表
-Route::get('sys/wecatArticle','sysadmin/WeixinArticle/index');
+Route::get('sys/wecatArticle', 'sysadmin/WeixinArticle/index');
 //微信采集文章获取某一篇文章
-Route::get('sys/wecatArticleOne/:id','sysadmin/WeixinArticle/getOne');
+Route::get('sys/wecatArticleOne/:id', 'sysadmin/WeixinArticle/getOne');
 //微信采集文章修改某一篇文章
-Route::post('sys/changeWecatArticle','sysadmin/WeixinArticle/edit');
+Route::post('sys/changeWecatArticle', 'sysadmin/WeixinArticle/edit');
 //微信采集文章删除某一篇文章
-Route::post('sys/deleteWecatArticle/:id','sysadmin/WeixinArticle/delete');
+Route::post('sys/deleteWecatArticle/:id', 'sysadmin/WeixinArticle/delete');
 //网易采集文章列表
-Route::get('sys/wangyiArticle','sysadmin/WangyiArticle/index');
+Route::get('sys/wangyiArticle', 'sysadmin/WangyiArticle/index');
 //网易采集文章获取一条
-Route::get('sys/wangyiArticleOne/:id','sysadmin/WangyiArticle/getOne');
+Route::get('sys/wangyiArticleOne/:id', 'sysadmin/WangyiArticle/getOne');
 //网易采集文章修改一条
-Route::post('sys/changewangyiArticle','sysadmin/WangyiArticle/edit');
+Route::post('sys/changewangyiArticle', 'sysadmin/WangyiArticle/edit');
 //网易采集文章删除一条
-Route::get('sys/deleteWangyiArticle/:id','sysadmin/WangyiArticle/delete');
+Route::get('sys/deleteWangyiArticle/:id', 'sysadmin/WangyiArticle/delete');
 //qq采集文章获取列表
-Route::get('sys/qqArticle','sysadmin/QicqArticle/index');
+Route::get('sys/qqArticle', 'sysadmin/QicqArticle/index');
 //qq采集获取一条
-Route::get('sys/qqArticleOne/:id','sysadmin/QicqArticle/getOne');
+Route::get('sys/qqArticleOne/:id', 'sysadmin/QicqArticle/getOne');
 //qq编辑文章
-Route::post('sys/changeQqArticle','sysadmin/QicqArticle/edit');
+Route::post('sys/changeQqArticle', 'sysadmin/QicqArticle/edit');
 //qq删除文章
-Route::get('sys/deleteQqArticle/:id','sysadmin/QicqArticle/delete');
+Route::get('sys/deleteQqArticle/:id', 'sysadmin/QicqArticle/delete');
 //获取qq和网易所有分类
-Route::get('sys/articleAllType','sysadmin/WangyiArticle/getTypes');
+Route::get('sys/articleAllType', 'sysadmin/WangyiArticle/getTypes');
 //微信获取关键词分类
-Route::get('sys/weixinKeyList','sysadmin/WeixinArticle/getKeyList');
+Route::get('sys/weixinKeyList', 'sysadmin/WeixinArticle/getKeyList');
 //爬虫数据库关键字分类
-Route::get('sys/getKeywordType','sysadmin/KeywordType/index');
+Route::get('sys/getKeywordType', 'sysadmin/KeywordType/index');
 //分类添加
-Route::post('sys/addKeywordType','sysadmin/KeywordType/addKeywordType');
+Route::post('sys/addKeywordType', 'sysadmin/KeywordType/addKeywordType');
 //分类修改
-Route::post('sys/editKeywordType','sysadmin/KeywordType/editKeywordType');
+Route::post('sys/editKeywordType', 'sysadmin/KeywordType/editKeywordType');
 //获取一条
-Route::get('sys/gettype/:id','sysadmin/KeywordType/read');
+Route::get('sys/gettype/:id', 'sysadmin/KeywordType/read');
 //获取分类列表
-Route::post('sys/getKeyTypeList','sysadmin/KeywordType/getKeyTypeList');
+Route::post('sys/getKeyTypeList', 'sysadmin/KeywordType/getKeyTypeList');
 //添加爬虫关键词
-Route::post('sys/addKeyword','sysadmin/Keyword/addKeyword');
+Route::post('sys/addKeyword', 'sysadmin/Keyword/addKeyword');
 //修改爬虫关键词
-Route::post('sys/editKeyword','sysadmin/Keyword/editKeyword');
+Route::post('sys/editKeyword', 'sysadmin/Keyword/editKeyword');
 //爬虫数据库scrapy获取单条数据
-Route::get('sys/gettype/:id','sysadmin/Keyword/read');
+Route::get('sys/gettype/:id', 'sysadmin/Keyword/read');
 
 //=========节点后台
 //关键词
@@ -95,16 +95,16 @@ Route::rule('articletype/gettype', 'admin/Articletype/getType');
 
 //文章
 Route::resource('article', 'admin/Article');
-Route::post('article/sync','admin/Article/syncArticle');
-Route::get('article/getErrorInfo','admin/Article/getErrorInfo');
-Route::get('article/getErrorStatus','admin/Article/getErrorStatus');
-Route::post('article/changeErrorStatus/:id','admin/Article/changeErrorStatus');
+Route::post('article/sync', 'admin/Article/syncArticle');
+Route::get('article/getErrorInfo', 'admin/Article/getErrorInfo');
+Route::get('article/getErrorStatus', 'admin/Article/getErrorStatus');
+Route::post('article/changeErrorStatus/:id', 'admin/Article/changeErrorStatus');
 Route::get('articletype/articleCount', 'admin/Articletype/ArticleCount');
 
 
 //菜单
 Route::resource('menu', 'admin/Menu');
-Route::get('menu/getMenu','admin/Menu/getMenu');
+Route::get('menu/getMenu', 'admin/Menu/getMenu');
 
 //问答
 Route::resource('question', 'admin/Question');
@@ -124,18 +124,18 @@ Route::get('scatteredTitle/getArrticleJoinTitle', 'admin/Scatteredtitle/getArrti
 
 //公共代码
 Route::resource('code', 'admin/Code');
-Route::get('code/getAll','admin/Code/getCodes');
+Route::get('code/getAll', 'admin/Code/getCodes');
 
 //域名管理
 Route::resource('domain', 'admin/domain');
-Route::get('domain/getDomain','admin/domain/getDomain');
-Route::get('domain/getOffice','admin/domain/getOffice');
+Route::get('domain/getDomain', 'admin/domain/getDomain');
+Route::get('domain/getOffice', 'admin/domain/getOffice');
 
 //模板相关操作
 Route::resource('template', 'admin/template');
 Route::post('template/uploadTemplate', 'admin/template/uploadTemplate');
 Route::post('template/addTemplate', 'admin/template/addTemplate');
-Route::get('template/getTemplate','admin/Template/getTemplate');
+Route::get('template/getTemplate', 'admin/Template/getTemplate');
 
 //活动相关操作
 Route::resource('activity', 'admin/activity');
@@ -146,186 +146,187 @@ Route::put('activity/changeActivityStatus', 'admin/activity/changeActivityStatus
 
 //联系方式
 Route::resource('contactway', 'admin/Contactway');
-Route::get('contactway/getContactway','admin/Contactway/getContactway');
+Route::get('contactway/getContactway', 'admin/Contactway/getContactway');
 
 //站点用户
 Route::resource('siteuser', 'admin/Siteuser');
 Route::put('siteuser/enable', 'admin/Siteuser/enable');
-Route::get('siteuser/getUsers','admin/Siteuser/getUsers');
+Route::get('siteuser/getUsers', 'admin/Siteuser/getUsers');
 
 //站点分类
 Route::resource('sitetype', 'admin/Sitetype');
-Route::get('sitetype/getSiteType','admin/Sitetype/getSiteType');
+Route::get('sitetype/getSiteType', 'admin/Sitetype/getSiteType');
 //站点统计
-Route::get('site/SiteCount','admin/Site/SiteCount');
+Route::get('site/SiteCount', 'admin/Site/SiteCount');
 
 //站点管理
 Route::resource('Site', 'admin/Site');
 Route::get('Site/uploadTemplateFile', 'admin/Site/uploadTemplateFile');
-Route::post('Site/setMainSite','admin/Site/setMainSite');
-Route::put('Site/saveFtp/:id','admin/Site/saveFtp');
-Route::get('Site/mobileSite','admin/Site/mobileSite');
-Route::get('Site/flow','admin/Site/flow');
+Route::post('Site/setMainSite', 'admin/Site/setMainSite');
+Route::put('Site/saveFtp/:id', 'admin/Site/saveFtp');
+Route::get('Site/mobileSite', 'admin/Site/mobileSite');
+Route::get('Site/flow', 'admin/Site/flow');
 //站点静态化配置
 Route::resource('Staticconfig', 'admin/Staticconfig');
 //统计搜索
-Route::get('enginecount','admin/Site/enginecount');
+Route::get('enginecount', 'admin/Site/enginecount');
 
 //发送模板
-Route::get('Site/ignoreFrontend/:template_id/:site_id/:type','admin/Site/ignoreFrontend');
+Route::get('Site/ignoreFrontend/:template_id/:site_id/:type', 'admin/Site/ignoreFrontend');
 
-Route::get('Site/getSites','admin/Site/getSites');
+Route::get('Site/getSites', 'admin/Site/getSites');
 //一键生成 生成文章 清除缓存 生成栏目 生成首页
-Route::get('Site/siteGetCurl/:id/:name','admin/Site/siteGetCurl');
+Route::get('Site/siteGetCurl/:id/:name', 'admin/Site/siteGetCurl');
 //获取活动模板信息
-Route::get('Site/getActivily/:id','admin/Site/getActivily');
+Route::get('Site/getActivily/:id', 'admin/Site/getActivily');
 
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');
 
 //友情链接
-Route::resource('links','admin/Links');
-Route::get('links/getLinks','admin/Links/getLinks');
+Route::resource('links', 'admin/Links');
+Route::get('links/getLinks', 'admin/Links/getLinks');
 //节点统计
-Route::resource("count",'admin/Count');
-Route::resource("countkeyword",'admin/CountKeyword');
-Route::get("count/enginecount",'admin/Count/enginecount');
-Route::get("count/en",'admin/Count/en');
-Route::get("count/pv",'admin/Count/pv');
-Route::get("count/show",'admin/Count/show');
-Route::get("count/articlecount",'admin/Count/ArticleCount');
+Route::resource("count", 'admin/Count');
+Route::resource("countkeyword", 'admin/CountKeyword');
+Route::get("count/enginecount", 'admin/Count/enginecount');
+Route::get("count/en", 'admin/Count/en');
+Route::get("count/pv", 'admin/Count/pv');
+Route::get("count/show", 'admin/Count/show');
+Route::get("count/articlecount", 'admin/Count/ArticleCount');
 //浏览量
-Route::resource('pv','admin/Pv');
+Route::resource('pv', 'admin/Pv');
 
 //甩单
-Route::resource('Rejection','admin/Rejection');
+Route::resource('Rejection', 'admin/Rejection');
 //crontab任务,每天定时执行更新所有网站的静态页面
-Route::get('crontab','admin/CrontabTask/index');
+Route::get('crontab', 'admin/CrontabTask/index');
 //模板管理 获取对应site_id的信息
-Route::get("templateList/:site_id","admin/template/filelist");
+Route::get("templateList/:site_id", "admin/template/filelist");
 // 模板管理 读取模板
-Route::get("templateRead/:site_id/:name","admin/template/templateRead");
+Route::get("templateRead/:site_id/:name", "admin/template/templateRead");
 // 模板管理 修改模板
-Route::post("templateSave/:site_id/:name","admin/template/save");
+Route::post("templateSave/:site_id/:name", "admin/template/save");
 //模板管理 新加模板
-Route::post("templateAdd/:site_id/:name","admin/template/readFile");
+Route::post("templateAdd/:site_id/:name", "admin/template/readFile");
 //大站点可以统一修改小站点的tdk
-Route::put("tdk/:id",'admin/Tdk/save');
+Route::put("tdk/:id", 'admin/Tdk/save');
 //大站点统一查询小站点
-Route::get("getTdk/:id",'admin/Tdk/search');
+Route::get("getTdk/:id", 'admin/Tdk/search');
 //大站点获取小站点的一条记录
-Route::get("getTdkOne/:id",'admin/Tdk/read');
+Route::get("getTdkOne/:id", 'admin/Tdk/read');
 //爬虫数据库scrapy的关键字查询
-Route::get('scrapy/getKeyword','admin/WeixinKeyword/index');
+Route::get('scrapy/getKeyword', 'admin/WeixinKeyword/index');
 //爬虫数据库scrapy添加关键字
-Route::get('scrapy/addKeyword/:name','admin/WeixinKeyword/create');
+Route::post('scrapy/addKeyword', 'admin/WeixinKeyword/create');
 //爬虫数据库scrapy修改关键字
-Route::get('scrapy/saveKeyword/:id/:name','admin/WeixinKeyword/save');
+Route::post('scrapy/saveKeyword', 'admin/WeixinKeyword/save');
 //爬虫数据库scrapy根据id获取关键字
-Route::get('scrapy/getOneKeyword/:id','admin/WeixinKeyword/read');
+Route::get('scrapy/getOneKeyword/:id', 'admin/WeixinKeyword/read');
 //爬虫数据库scrapy获取列表
-Route::get('scrapy/getlist','admin/WeixinKeyword/getKeyList');
+Route::get('scrapy/getlist', 'admin/WeixinKeyword/getKeyList');
 //wechat采集文章列表
-Route::get('wechat/article','admin/WeixinArticle/index');
+Route::get('wechat/article', 'admin/WeixinArticle/index');
 //wechat采集文章添加到文章库
-Route::post('wechat/addArticle','admin/WeixinArticle/create');
+Route::post('wechat/addArticle', 'admin/WeixinArticle/create');
 //wechat获取一篇采集文章
-Route::get('wechat/getOneArticle/:id','admin/WeixinArticle/read');
+Route::get('wechat/getOneArticle/:id', 'admin/WeixinArticle/read');
 //网易采集文章列表
-Route::get('wangyi/article','admin/WangyiArticle/index');
+Route::get('wangyi/article', 'admin/WangyiArticle/index');
 //网易采集文章添加到文章库
-Route::post('wangyi/addArticle','admin/WangyiArticle/create');
+Route::post('wangyi/addArticle', 'admin/WangyiArticle/create');
 //网易采集文章获取一篇采集文章
-Route::get('wangyi/getOneArticle/:id','admin/WangyiArticle/read');
+Route::get('wangyi/getOneArticle/:id', 'admin/WangyiArticle/read');
 //qq采集文章列表
-Route::get('qq/article','admin/QicqArticle/index');
+Route::get('qq/article', 'admin/QicqArticle/index');
 //qq采集文章添加到文章库
-Route::post('qq/addArticle','admin/QicqArticle/create');
+Route::post('qq/addArticle', 'admin/QicqArticle/create');
 //qq采集文章获取一篇采集文章
-Route::get('qq/getOneArticle/:id','admin/QicqArticle/read');
+Route::get('qq/getOneArticle/:id', 'admin/QicqArticle/read');
 //网易和qq获取分类
-Route::get('article/articleAllType','admin/WangyiArticle/getTypes');
+Route::get('article/articleAllType', 'admin/WangyiArticle/getTypes');
 
 //推荐关键词
-Route::get('admin/mainkeywords','admin/MainkeywordKeywords/index');
-Route::get('admin/searchkeywords','admin/MainkeywordSearch/index');
+Route::get('admin/mainkeywords', 'admin/MainkeywordKeywords/index');
+Route::get('admin/searchkeywords', 'admin/MainkeywordSearch/index');
 
 //A类关键词分类
-Route::get('admin/mainkeyword','admin/MainkeywordSearch/mainkeyword');
+Route::get('admin/mainkeyword', 'admin/MainkeywordSearch/mainkeyword');
+Route::get('admin/getKeyTypeList', 'admin/KeywordType/getKeyTypeList');
 
 
 //站点相关--------------------------------------------------------
 //站点登录后的首页操作
-Route::post('user/siteInfo','user/index/siteInfo');
+Route::post('user/siteInfo', 'user/index/siteInfo');
 
 //站点文章
-Route::resource('user/article','user/Article');
-Route::get('user/articleType','user/Article/getArticleType');
-Route::get('user/getErrorInfo','user/Article/getErrorInfo');
-Route::post('user/changeErrorStatus/:id','user/Article/changeErrorStatus');
-Route::get('user/getErrorStatus/','user/Article/getErrorStatus');
+Route::resource('user/article', 'user/Article');
+Route::get('user/articleType', 'user/Article/getArticleType');
+Route::get('user/getErrorInfo', 'user/Article/getErrorInfo');
+Route::post('user/changeErrorStatus/:id', 'user/Article/changeErrorStatus');
+Route::get('user/getErrorStatus/', 'user/Article/getErrorStatus');
 
 //问答
-Route::resource('user/question','user/question');
+Route::resource('user/question', 'user/question');
 
 //页面tdk修改
-Route::resource('user/pageInfo','user/PageInfo');
+Route::resource('user/pageInfo', 'user/PageInfo');
 
 //外部访问 操作 甩单、关键词等
-Route::resource('user/externalAccess','common/ExternalAccess');
+Route::resource('user/externalAccess', 'common/ExternalAccess');
 //小站点 一键生成 生成文章 清除缓存 生成栏目 生成首页
-Route::get('user/siteGetCurl/:id/:name','user/Article/siteGetCurl');
+Route::get('user/siteGetCurl/:id/:name', 'user/Article/siteGetCurl');
 //站点统计
-Route::resource('user/acount','user/Acount');
-Route::resource('user/keyword','user/Keyword');
-Route::get('user/articleCount','user/Article/ArticleCount');
+Route::resource('user/acount', 'user/Acount');
+Route::resource('user/keyword', 'user/Keyword');
+Route::get('user/articleCount', 'user/Article/ArticleCount');
 //ArticleCount
 //站点浏览量pv统计
-Route::resource('user/Statistics','user/Statistics');
-Route::get('user/pv','user/Statistics/pv');
-Route::get('user/enginecount','user/Statistics/enginecount');
+Route::resource('user/Statistics', 'user/Statistics');
+Route::get('user/pv', 'user/Statistics/pv');
+Route::get('user/enginecount', 'user/Statistics/enginecount');
 //小站点插入href
-Route::resource('user/ArticleInsertA','user/ArticleInsertA');
+Route::resource('user/ArticleInsertA', 'user/ArticleInsertA');
 //小站点替换关键词
-Route::resource('user/Substitution','user/Substitution');
+Route::resource('user/Substitution', 'user/Substitution');
 //小站点静态化配置
-Route::resource('user/Staticconfig','user/Staticconfig');
+Route::resource('user/Staticconfig', 'user/Staticconfig');
 //小站点 查询模板文件
-Route::post('user/template/:site_id','user/Template/index');
+Route::post('user/template/:site_id', 'user/Template/index');
 //小站点 获取模板内容
-Route::post('user/readtemplate/:site_id/:name','user/Template/read');
+Route::post('user/readtemplate/:site_id/:name', 'user/Template/read');
 //小站点 修改模板
-Route::post('user/savetemplate/:site_id/:name','user/Template/save');
+Route::post('user/savetemplate/:site_id/:name', 'user/Template/save');
 //小站点 添加模板
-Route::post('user/addtemplate/:site_id/:name','user/Template/story');
+Route::post('user/addtemplate/:site_id/:name', 'user/Template/story');
 //爬虫数据库scrapy的关键字查询
-Route::get('user/scrapy/getKeyword',"user/WeixinKeyword/index");
+Route::get('user/scrapy/getKeyword', "user/WeixinKeyword/index");
 //爬虫数据库scrapy添加关键字
-Route::get('user/scrapy/Keyword',"user/WeixinKeyword/create");
+Route::get('user/scrapy/Keyword', "user/WeixinKeyword/create");
 //爬虫数据库scrapy修改关键字
-Route::get('user/scrapy/saveKeyword/','user/WeixinKeyword/save');
+Route::get('user/scrapy/saveKeyword/', 'user/WeixinKeyword/save');
 //wechat文章列表
-Route::get('user/wechat/article','user/WechatArticle/index');
+Route::get('user/wechat/article', 'user/WechatArticle/index');
 //wechat获取一条数据
-Route::get('user/wechat/getArticleOne/:id','user/WechatArticle/read');
+Route::get('user/wechat/getArticleOne/:id', 'user/WechatArticle/read');
 //wechat添加到文章库
-Route::post('user/wechat/addArticle','user/WechatArticle/create');
+Route::post('user/wechat/addArticle', 'user/WechatArticle/create');
 //关键词列表
-Route::get('user/keywordGetlist','user/WeixinKeyword/getKeyList');
+Route::get('user/keywordGetlist', 'user/WeixinKeyword/getKeyList');
 //网易采集文章列表
-Route::get('user/wangyiArticle','user/WangyiArticle/index');
+Route::get('user/wangyiArticle', 'user/WangyiArticle/index');
 //网易采集文章添加到文章库
-Route::post('user/wangyiAddArticle','user/WangyiArticle/create');
+Route::post('user/wangyiAddArticle', 'user/WangyiArticle/create');
 //网易采集文章获取一篇采集文章
-Route::get('user/WangyiOneArticle/:id','user/WangyiArticle/getOne');
+Route::get('user/WangyiOneArticle/:id', 'user/WangyiArticle/getOne');
 //qq采集文章列表
-Route::get('user/qqArticle','user/QicqArticle/index');
+Route::get('user/qqArticle', 'user/QicqArticle/index');
 //qq采集文章添加到文章库
-Route::post('user/QQaddArticle','user/QicqArticle/create');
+Route::post('user/QQaddArticle', 'user/QicqArticle/create');
 //qq采集文章获取一篇采集文章
-Route::get('user/QQOneArticle/:id','user/QicqArticle/getOne');
+Route::get('user/QQOneArticle/:id', 'user/QicqArticle/getOne');
 //网易和qq获取分类
-Route::get('user/articleAllType','user/WangyiArticle/getTypes');
+Route::get('user/articleAllType', 'user/WangyiArticle/getTypes');
 //文章分类
 //Route::get('user/articleAllType','user/WangyiArticle/getTypes');
 return [
