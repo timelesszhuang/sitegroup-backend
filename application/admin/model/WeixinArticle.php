@@ -40,7 +40,7 @@ class WeixinArticle extends Model
     public function getArticle($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
-        $data=Db::connect($this->connection)->table("sc_weixin_keywordarticle")->where($where)->order('id desc')->limit($limit, $rows)->select();
+        $data=Db::connect($this->connection)->table("sc_weixin_keywordarticle")->where($where)->order('id desc')->field('content',true)->limit($limit, $rows)->select();
         array_walk($data,[$this,'formatter_date']);
         return [
             "total" => $count,
