@@ -250,7 +250,9 @@ Route::get('article/articleAllType','admin/WangyiArticle/getTypes');
 Route::get('admin/mainkeywords','admin/MainkeywordKeywords/index');
 Route::get('admin/searchkeywords','admin/MainkeywordSearch/index');
 
-
+//A类关键词分类
+//
+Route::get('admin/mainkeyword','admin/MainkeywordSearch/mainkeyword');
 
 
 //站点相关--------------------------------------------------------

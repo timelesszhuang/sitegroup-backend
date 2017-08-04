@@ -24,12 +24,12 @@ class MainkeywordSearch extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $name= $this->request->get('mainkeyword_name');
+        $mainkeyword_id = $this->request->get('mainkeyword_id');
         $time = $this->request->get('time');
         $url = $this->request->get('url');
         $where = [];
-        if (!empty($name)) {
-            $where["mainkeyword_name"] = ["like", "%$name%"];
+        if (!empty($mainkeyword_id)) {
+            $where["mainkeyword_id"] = $mainkeyword_id;
         }
         if (!empty($time)) {
             $starttime = strtotime($time);
@@ -46,7 +46,11 @@ class MainkeywordSearch extends Common
         $data = $this->conn->getType($request["limit"], $request["rows"], $where,$url);
         return $this->resultArray('', '', $data);
     }
+   public function mainkeyword(){
+       $data = (new \app\admin\model\Keyword())->keyword();
+       return $this->resultArray('','',$data);
 
+   }
 
 
 }

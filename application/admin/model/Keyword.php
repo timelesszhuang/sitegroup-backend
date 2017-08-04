@@ -35,4 +35,12 @@ class Keyword extends Model
         $data=$this->where($where)->field("id,name as label,tag")->select();
         return $data;
     }
+
+    public function keyword(){
+        $where=[];
+        $where['tag']="A";
+        $data = $this->where($where)->field('id,name as text')->select();
+        return $data;
+
+    }
 }
