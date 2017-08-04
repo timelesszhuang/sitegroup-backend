@@ -42,7 +42,7 @@ class  MainkeywordSearchengineorder extends Model
     public function formatter_date(&$value, $key)
     {
         if ($value['create_time']) {
-            $value['create_time'] = date("Y-m-d H:i:s", $value['create_time']);
+            $value['create_time'] = date("Y-m-d", $value['create_time']);
         }
     }
 

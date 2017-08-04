@@ -73,6 +73,6 @@ class WeixinKeyword extends Common
      */
     public function getKeyList()
     {
-        return $this->resultArray('','',$this->conn->getlist());
+        return $this->resultArray('','',$this->conn->getKeyList());
     }
 }
