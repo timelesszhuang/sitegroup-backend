@@ -118,6 +118,20 @@ class Articletype extends Common
     public function getType()
     {
         $where = [];
+        $data = (new \app\admin\model\Articletype())->getArttype($where);
+        return $this->resultArray('', '', $data);
+    }
+
+
+
+
+    /**
+     * 获取站点文章分类
+     * @return array
+     */
+    public function getsitetype()
+    {
+        $where = [];
         $wh['id'] = $this->request->session()['website']['id'];
         $Site = new \app\admin\model\Site();
         $menuid = $Site->where($wh)->field('menu')->find()->menu;

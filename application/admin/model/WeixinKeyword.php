@@ -135,5 +135,11 @@ class WeixinKeyword extends Model
        return $arr;
     }
 
+    public function getlist(){
+        $where['status'] = 10;
+        $data = Db::connect($this->connection)->table("sc_weixin_keyword")->where($where)->field("id,name as text,scrapystatus,type_name")->order('type_name')->select();
+        return $data;
+    }
+
 
 }
