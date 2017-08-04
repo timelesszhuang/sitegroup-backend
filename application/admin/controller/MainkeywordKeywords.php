@@ -24,10 +24,10 @@ class MainkeywordKeywords extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $name= $this->request->get('mainkeyword_name');
+        $name= $this->request->get('mainkeyword_id');
         $where = [];
         if (!empty($name)) {
-            $where["mainkeyword_name"] = ["like", "%$name%"];
+            $where["mainkeyword_id"] = ["like", "%$name%"];
         }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
