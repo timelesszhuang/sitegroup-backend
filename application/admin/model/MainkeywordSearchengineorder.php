@@ -54,7 +54,7 @@ class  MainkeywordSearchengineorder extends Model
     public function getType($limit, $rows, $where = 0,$url='')
     {
         $count = $this->where($where)->where('url','like',"%$url%")->count();
-        $arr = Db::connect($this->connection)->table("sc_mainkeyword_searchengineorder")->where($where)->where('url|showurl|baiduurl','like',"%$url%")->limit($limit, $rows)->order('all_order asc,mainkeyword_id asc')->select();
+        $arr = Db::connect($this->connection)->table("sc_mainkeyword_searchengineorder")->where($where)->where('url|showurl|baiduurl','like',"%$url%")->limit($limit, $rows)->order('mainkeyword_id asc,all_order asc')->select();
         $data = [];
         foreach ($arr as $k => $v) {
             if ($v['url']) {
