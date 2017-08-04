@@ -133,6 +133,7 @@ class Articletype extends Common
     {
         $where = [];
         $wh['id'] = $this->request->session()['website']['id'];
+//        dump($wh['id']);die;
         $Site = new \app\admin\model\Site();
         $menuid = $Site->where($wh)->field('menu')->find()->menu;
         $Menuid = explode(',',$menuid);

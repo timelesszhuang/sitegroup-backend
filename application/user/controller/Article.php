@@ -134,7 +134,7 @@ class Article extends Common
      */
     public function getArticleType()
     {
-        return (new Articletype)->getType();
+        return (new Articletype)->getsitetype();
     }
 
     /**
@@ -299,6 +299,7 @@ class Article extends Common
         return ["count" => $count, "name" => $articleType->name];
 
     }
+
 
 
 }
