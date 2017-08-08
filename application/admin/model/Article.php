@@ -30,7 +30,7 @@ class Article extends Model
                 if (!empty($matches)) {
                     $imgs=explode('<img',$matches[0]);
                     //给图片添加alt属性
-                    $lastImg="'<img' alt="."$article->title".$imgs[1];
+                    $lastImg="<img alt="."'$article->title'".$imgs[1];
                     $article->thumbnails = $lastImg;
                 }
             }
