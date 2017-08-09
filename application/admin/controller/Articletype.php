@@ -119,6 +119,9 @@ class Articletype extends Common
     {
         $where = [];
         $data = (new \app\admin\model\Articletype())->getArttype($where);
+        foreach ($data as$k=>$v){
+            $v['name'] = $v['name'].'['.$v['tag'].']';
+        }
         return $this->resultArray('', '', $data);
     }
 
