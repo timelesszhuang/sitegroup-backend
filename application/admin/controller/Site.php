@@ -332,7 +332,7 @@ class Site extends Common
         $Site = $SiteData['data'];
         $arr = [];
         foreach ($Site as $k=>$v){
-         $v['text']= $v['site_name'].'--'.$v['url'];
+         $v['text']= $v['site_name'].'['.$v['url'].']';
             $arr[$k] = $v;
         }
         return $this->resultArray('','',$Site);
