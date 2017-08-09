@@ -253,6 +253,23 @@ Route::get('admin/searchkeywords', 'admin/MainkeywordSearch/index');
 //A类关键词分类
 Route::get('admin/mainkeyword', 'admin/MainkeywordSearch/mainkeyword');
 Route::get('admin/getKeyTypeList', 'admin/KeywordType/getKeyTypeList');
+//零散段落的分类下拉获取
+Route::get('sca/getType','admin/Scatteredarticletype/getType');
+//零散段落表格数据
+Route::resource('sca/all','admin/Scatteredarticletype');
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //站点相关--------------------------------------------------------

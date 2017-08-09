@@ -2,6 +2,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Scatteredarticletype;
 use think\Request;
 use app\common\controller\Common;
 use think\Validate;
@@ -148,6 +149,7 @@ class Scatteredtitle extends Common
         $title['content'] = $article;
         return $this->resultArray('', '', $title);
     }
+
 
 
 }
