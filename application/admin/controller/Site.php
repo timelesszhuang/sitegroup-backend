@@ -326,8 +326,18 @@ class Site extends Common
      */
     public function getSites()
     {
-        $field = "id,site_name as text,url";
-        return $this->getList((new \app\admin\model\Site), $field);
+        $field = "id,site_name,url";
+
+        $SiteData = $this->getList((new \app\admin\model\Site), $field);
+        $Site = $SiteData['data'];
+        $arr = [];
+        foreach ($Site as $k=>$v){
+         $v['text']= $v['site_name'].'--'.$v['url'];
+            $arr[$k] = $v;
+        }
+        return $this->resultArray('','',$Site);
+
+
     }
 
     /**
