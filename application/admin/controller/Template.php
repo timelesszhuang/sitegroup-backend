@@ -153,6 +153,7 @@ class Template extends Common
     {
         $url="templatelist";
         $site=\app\admin\model\Site::get($site_id);
+//        dump($site->url."/index.php/$url?site_id=".$site_id);die;
         if($site){
             $siteData=$this->curl_get($site->url."/index.php/$url?site_id=".$site_id);
             $data=json_decode($siteData,true);

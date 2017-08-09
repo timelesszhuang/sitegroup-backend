@@ -36,9 +36,15 @@ class Keyword extends Model
         return $data;
     }
 
+    /**
+     * 获取A类关键词
+     * @return false|\PDOStatement|string|\think\Collection
+     */
     public function keyword(){
         $where=[];
         $where['tag']="A";
+        $user=(new Common)->getSessionUser();
+        $where["node_id"]=$user["user_node_id"];
         $data = $this->where($where)->field('id,name as text')->select();
         return $data;
 

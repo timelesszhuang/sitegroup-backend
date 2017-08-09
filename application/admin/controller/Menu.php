@@ -15,9 +15,13 @@ class Menu extends Common
     {
         $request = $this->getLimit();
         $name = $this->request->get('name');
+        $flag = $this->request->get('flag');
         $where = [];
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
+        }
+        if(!empty($flag)){
+            $where['flag'] = $flag;
         }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
