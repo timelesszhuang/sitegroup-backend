@@ -321,12 +321,12 @@ class Site extends Common
     }
 
     /**
-     * 获取所有code
+     * 获取
      * @return array
      */
     public function getSites()
     {
-        $field = "id,site_name as text";
+        $field = "id,site_name as text,url";
         return $this->getList((new \app\admin\model\Site), $field);
     }
 

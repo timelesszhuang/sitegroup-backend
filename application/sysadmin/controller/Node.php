@@ -2,6 +2,7 @@
 namespace app\sysadmin\controller;
 use app\common\controller\Common;
 
+use app\common\model\User;
 use think\Controller;
 use think\Request;
 use think\Validate;
@@ -94,21 +95,9 @@ class Node extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $node=new \app\sysadmin\model\Node();
-        $node->startTrans();
         if (!\app\sysadmin\model\Node::update($data)) {
             return $this->resultArray('修改失败', 'failed');
         }
-        $where['user_id']= $data['user_id'];
-        $nodeTemp = $node->where($where)->find();
-        $user=\app\common\model\User::get($nodeTemp->user_id);
-
-        $user->node_id=$nodeTemp["id"];
-        $user->node_name = $data['name'];
-        if(!$user->save()){
-            $node->rollback();
-        }
-        $node->commit();
         return $this->resultArray('修改成功');
     }
 
