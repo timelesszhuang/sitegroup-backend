@@ -7,19 +7,21 @@
  */
 
 namespace app\admin\model;
+
 use think\Model;
 
 class Menu extends Model
 {
     //只读字段
-    protected $readonly=["node_id"];
+    protected $readonly = ["node_id"];
+
     /**
      * @param $limit
      * @param $rows
      * @param $where
      * @return array
      */
-    public function getMenu($limit,$rows,$where)
+    public function getMenu($limit, $rows, $where)
     {
         $count = $this->where($where)->count();
         $data = $this->limit($limit, $rows)->where($where)->select();
@@ -36,16 +38,24 @@ class Menu extends Model
      * @param $field
      * @return false|\PDOStatement|string|\think\Collection
      */
-    public function getlist($where,$field)
+    public function getlist($where, $field)
     {
         $data = $this->where($where)->field($field)->select();
-        foreach ($data as $k=>$v){
-            if(!empty(trim($v['type_name']))){
-                $v['typeName']='—'.$v['type_name'];
+        foreach ($data as $k => $v) {
+            if (!empty(trim($v['type_name']))) {
+                $v['typeName'] = '—' . $v['type_name'];
             }
         }
         return $data;
     }
 
+//    /**
+//     * 获取栏目分类
+//     */
+//    public function getmenutype()
+//    {
+//
+//
+//    }
 
 }
