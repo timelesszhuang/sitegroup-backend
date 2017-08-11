@@ -4,7 +4,7 @@ namespace app\admin\controller;
 
 use think\Controller;
 use think\Request;
-use app\admin\model\Hotnews as hot;
+use app\admin\model\HotNews as hot;
 use app\common\controller\Common;
 use think\Validate;
 
