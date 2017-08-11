@@ -262,7 +262,8 @@ Route::get('admin/getKeyTypeList', 'admin/KeywordType/getKeyTypeList');
 Route::get('sca/getType','admin/Scatteredarticletype/getType');
 //零散段落表格数据
 Route::resource('sca/all','admin/Scatteredarticletype');
-
+//hotnews获取
+Route::resource('admin/hotnews','admin/Hotnews');
 
 
 
