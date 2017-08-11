@@ -80,7 +80,12 @@ Route::post('sys/addKeyword', 'sysadmin/Keyword/addKeyword');
 Route::post('sys/editKeyword', 'sysadmin/Keyword/editKeyword');
 //爬虫数据库scrapy获取单条数据
 Route::get('sys/gettype/:id', 'sysadmin/Keyword/read');
-
+//最热新闻所有数据
+Route::get('sys/hotnews', 'sysadmin/Hotnews/index');
+//修改
+Route::post('sys/editnews', 'sysadmin/Hotnews/editnews');
+//一条数据
+Route::get('sys/getonenews/:id', 'sysadmin/Hotnews/getOne');
 //=========节点后台
 //关键词
 Route::resource('keyword', 'admin/keyword');
