@@ -111,4 +111,14 @@ class Menutag extends Common
     {
         //
     }
+
+    /**
+     * 获取所有code
+     * @return array
+     */
+    public function getTags()
+    {
+        $field="id,name as text";
+        return $this->getList((new mtag),$field);
+    }
 }
