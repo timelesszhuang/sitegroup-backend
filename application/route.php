@@ -264,7 +264,8 @@ Route::get('sca/getType','admin/Scatteredarticletype/getType');
 Route::resource('sca/all','admin/Scatteredarticletype');
 //hotnews获取
 Route::resource('admin/hotnews','admin/Hotnews');
-
+//栏目分类
+Route::resource('admin/menutag','admin/Menutag');
 
 
 
