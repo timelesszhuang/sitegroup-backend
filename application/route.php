@@ -350,8 +350,8 @@ Route::post('user/QQaddArticle', 'user/QicqArticle/create');
 Route::get('user/QQOneArticle/:id', 'user/QicqArticle/getOne');
 //网易和qq获取分类
 Route::get('user/articleAllType', 'user/WangyiArticle/getTypes');
-//文章分类
-//Route::get('user/articleAllType','user/WangyiArticle/getTypes');
+//热点新闻
+Route::resource('user/hotnews','user/Hotnews');
 return [
     '__pattern__' => [
         'name' => '\w+',
