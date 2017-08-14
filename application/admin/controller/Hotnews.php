@@ -33,7 +33,7 @@ class Hotnews extends Common
         if (!empty($title)) {
             $where["title"] = ["like", "%$title%"];
         }
-        $data = $this->conn->getArticle($request["limit"], $request["rows"], $where);
+        $data = $this->conn->getHot($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
