@@ -21,7 +21,7 @@ class Menutag extends Common
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
         }
-        $data = (new \app\admin\model\Article())->getArticle($request["limit"], $request["rows"], $where);
+        $data = (new mtag())->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
