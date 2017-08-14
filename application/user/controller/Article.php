@@ -134,7 +134,12 @@ class Article extends Common
      */
     public function getArticleType()
     {
-        return (new Articletype)->getsitetype();
+        $data = (new Articletype)->getsitetype();
+
+        foreach ($data['data'] as$k=>$v){
+            $v['text'] = $v['name'].'['.$v['tag'].']';
+        }
+        return $data;
     }
 
     /**

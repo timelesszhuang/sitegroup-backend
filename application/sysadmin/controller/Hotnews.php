@@ -29,14 +29,10 @@ class Hotnews extends Common
     {
         $request = $this->getLimit();
         $title = $this->request->get('title');
-        $type_id = $this->request->get('type_id');
         $where = [];
-//        if (!empty($title)) {
-//            $where["title"] = ["like", "%$title%"];
-//        }
-//        if(!empty($type_id)){
-//            $where["type_id"]=$type_id;
-//        }
+        if (!empty($title)) {
+            $where["title"] = ["like", "%$title%"];
+        }
         $data = $this->conn->getHot($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
