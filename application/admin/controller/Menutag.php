@@ -119,6 +119,7 @@ class Menutag extends Common
     public function getTags()
     {
         $field="id,name as text";
-        return $this->getList((new mtag),$field);
+        $data = (new mtag)->field($field)->select();
+        return $this->resultArray('', '', $data);
     }
 }
