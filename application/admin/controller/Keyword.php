@@ -294,6 +294,40 @@ class Keyword extends Common
         return $this->resultArray("添加成功!");
     }
 
+    /**
+     * 删除所有关键词
+     * @return array
+     */
+    public function deleteAll()
+    {
+        $rule=[
+            ["id","require","请传入id"]
+        ];
+        $validate=new Validate($rule);
+        $data=$this->request->post();
+        if(!$validate->check($data)){
+            return $this->resultArray($validate->getError(),'faile');
+        }
+        foreach($this->forEachId($data["id"]) as $item){
+            $item();
+        }
+        return $this->resultArray("删除成功!");
+    }
+
+    /**
+     * 遍历数据
+     * @param $data
+     */
+    public function forEachId($data)
+    {
+        foreach($data as $item){
+            $find=\app\admin\model\Keyword::where(["parent_id"=>$item])->find();
+            if(empty($find)){
+                continue;
+            }
+            \app\admin\model\Keyword::destroy($item);
+        }
+    }
 
 
 
