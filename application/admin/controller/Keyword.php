@@ -308,10 +308,13 @@ class Keyword extends Common
         if(!$validate->check($data)){
             return $this->resultArray($validate->getError(),'faile');
         }
+        $message='删除成功!';
         foreach($this->forEachId($data["id"]) as $item){
-            $item();
+            if($item()==1){
+                $message="包含下级节点的父类无法删除";
+            }
         }
-        return $this->resultArray("删除成功!");
+        return $this->resultArray($message);
     }
 
     /**
@@ -325,7 +328,9 @@ class Keyword extends Common
                 $find=\app\admin\model\Keyword::where(["parent_id"=>$item])->find();
                 if(empty($find)){
                     \app\admin\model\Keyword::destroy($item);
+                    return 1;
                 }
+                return 0;
             };
         }
     }
