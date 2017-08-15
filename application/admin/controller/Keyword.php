@@ -264,7 +264,7 @@ class Keyword extends Common
                 break;
             case 'B':
                 $parent_id=$data["id"];
-                $path=$data["path"].$data["id"];
+                $path=$currentKey["path"].$data["id"].',';
                 $tag='C';
                 break;
             default:
