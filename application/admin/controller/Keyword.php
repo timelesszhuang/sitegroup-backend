@@ -236,5 +236,66 @@ class Keyword extends Common
         return $this->resultArray('', '', $temp);
     }
 
+    /**
+     * 插入A类或B类关键词
+     * @return array
+     */
+    public function insertByTag()
+    {
+        $rule=[
+            ["id","require","请传递id"],
+            ["content","require","请提交关键词"]
+        ];
+        $request=Request::create();
+        $data=$request->post();
+        $validate=new Validate($rule);
+        if(!$validate->check($data)){
+            return $this->resultArray($validate->getError(),'faile');
+        }
+        $currentKey=\app\admin\model\Keyword::where(["id" => $data["id"]])->find();
+        if(!isset($currentKey['tag'])){
+            return $this->resultArray("当前关键词不存在",'faile');
+        }
+
+        switch($currentKey['tag']){
+            case 'A':
+                $parent_id=$data["id"];
+                $path=",".$data["id"].",";
+                $tag='B';
+                break;
+            case 'B':
+                $parent_id=$data["id"];
+                $path=$data["path"].$data["id"];
+                $tag='C';
+                break;
+            default:
+                return $this->resultArray("当前关键词非法",'faile');
+        }
+
+        //关键词数组
+        $keyArr=explode('\n',$data['content']);
+        $user = $this->getSessionUser();
+        $node_id = $user["user_node_id"];
+        if(empty($keyArr) || !is_array($keyArr)){
+            return $this->resultArray("请提交关键词",'faile');
+        }
+
+        foreach($keyArr as $item){
+            if(empty(trim($item))){
+                continue;
+            }
+            \app\admin\model\Keyword::create([
+                "name"=>$item,
+                "parent_id"=>$parent_id,
+                "path"=>$path,
+                "node_id"=>$node_id,
+                "tag"=>$tag,
+            ]);
+        }
+
+    }
+
+
+
 
 }

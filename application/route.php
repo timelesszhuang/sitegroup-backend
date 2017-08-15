@@ -268,7 +268,8 @@ Route::resource('admin/hotnews','admin/Hotnews');
 Route::resource('admin/menutag','admin/Menutag');
 //获取分类列表
 Route::get('admin/menutag/list','admin/Menutag/getTags');
-
+//textarea的格式插入关键词
+Route::post('admin/insertTag','admin/Keyword/insertByTag');
 
 
 
