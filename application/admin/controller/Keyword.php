@@ -272,7 +272,7 @@ class Keyword extends Common
         }
 
         //关键词数组
-        $keyArr=explode('\n',$data['content']);
+        $keyArr=explode("\n",$data['content']);
         $user = $this->getSessionUser();
         $node_id = $user["user_node_id"];
         if(empty($keyArr) || !is_array($keyArr)){
