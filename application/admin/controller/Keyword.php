@@ -321,7 +321,7 @@ class Keyword extends Common
     public function forEachId($data)
     {
         foreach($data as $item){
-            yield function () {
+            yield function () user ($item){
                 $find=\app\admin\model\Keyword::where(["parent_id"=>$item])->find();
                 if(!empty($find)){
                     \app\admin\model\Keyword::destroy($item);
