@@ -246,7 +246,7 @@ class Keyword extends Common
             ["id","require","请传递id"],
             ["content","require","请提交关键词"]
         ];
-        $data = $this->request->post();->post();
+        $data = $this->request->post();
         $validate=new Validate($rule);
         if(!$validate->check($data)){
             return $this->resultArray($validate->getError(),'faile');
