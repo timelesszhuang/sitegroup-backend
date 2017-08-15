@@ -323,7 +323,7 @@ class Keyword extends Common
         foreach($data as $item){
             yield function () use ($item){
                 $find=\app\admin\model\Keyword::where(["parent_id"=>$item])->find();
-                if(!empty($find)){
+                if(empty($find)){
                     \app\admin\model\Keyword::destroy($item);
                 }
             };
