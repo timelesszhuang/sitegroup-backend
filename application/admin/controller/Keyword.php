@@ -310,7 +310,7 @@ class Keyword extends Common
         }
         $message='删除成功!';
         foreach($this->forEachId($data["id"]) as $item){
-            if($item()==1){
+            if($item()==0){
                 $message="包含下级节点的父类无法删除";
             }
         }
