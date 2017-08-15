@@ -132,7 +132,7 @@ class Menu extends Common
      */
     public function getMenu()
     {
-        $field="id,name as text,flag_name,title,type_name";
+        $field="id,name as text,flag_name,title,type_name,tag_name";
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $data = (new \app\admin\model\Menu())->getlist($where,$field);
