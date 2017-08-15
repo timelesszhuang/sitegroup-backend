@@ -53,7 +53,7 @@ class Hotnews extends Model
     public function getHot($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
-        $data = Db::connect($this->connection)->table("sc_hotnews")->where($where)->limit($limit, $rows)->select();
+        $data = Db::connect($this->connection)->table("sc_hotnews")->where($where)->order('id desc')->limit($limit, $rows)->select();
         array_walk($data, [$this, 'formatter_date']);
         return [
             "total" => $count,
