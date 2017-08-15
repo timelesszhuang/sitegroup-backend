@@ -291,7 +291,7 @@ class Keyword extends Common
                 "tag"=>$tag,
             ]);
         }
-
+        return $this->resultArray("添加成功!");
     }
 
 
