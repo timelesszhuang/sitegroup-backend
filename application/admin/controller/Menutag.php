@@ -18,6 +18,8 @@ class Menutag extends Common
         $request = $this->getLimit();
         $name = $this->request->get('name');
         $where = [];
+        $user = $this->getSessionUser();
+        $where['node_id'] = $user['user_node_id'];
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
         }
@@ -49,6 +51,8 @@ class Menutag extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
+        $user = $this->getSessionUser();
+        $data['node_id'] = $user['user_node_id'];
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
@@ -95,6 +99,8 @@ class Menutag extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
+        $user = $this->getSessionUser();
+        $data['node_id'] = $user['user_node_id'];
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }

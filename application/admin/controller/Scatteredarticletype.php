@@ -15,8 +15,9 @@ class Scatteredarticletype extends Common
      */
     public function getType()
     {
-
-        $data=sca::field("id,name as text")->order("id","desc")->select();
+        $user = $this->getSessionUser();
+        $where['node_id'] = $user['user_node_id'];
+        $data=sca::field("id,name as text")->where($where)->order("id","desc")->select();
         return $this->resultArray('', '', $data);
     }
 
