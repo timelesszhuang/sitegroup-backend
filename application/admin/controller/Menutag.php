@@ -125,7 +125,10 @@ class Menutag extends Common
     public function getTags()
     {
         $field="id,name as text";
-        $data = (new mtag)->field($field)->select();
+        $where=[];
+        $user = $this->getSessionUser();
+        $where['node_id'] = $user['user_node_id'];
+        $data = (new mtag)->field($field)->where($where)->select();
         return $this->resultArray('', '', $data);
     }
 }
