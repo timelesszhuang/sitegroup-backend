@@ -46,6 +46,11 @@ class Tdk extends Common
         return $this->getread((new SitePageinfo), $id);
     }
 
+    /**
+     * @param $id
+     * @return array
+     * 获取A关键词
+     */
     public function getAkeyword($id)
     {
         $wh['id'] = $id;
@@ -58,6 +63,18 @@ class Tdk extends Common
         $data = $keyword->where('id','in',$keyword_ids)->field('id,name as text')->select();
 
        return $this->resultArray('', '', $data);
+
+
+    }
+
+    public function editpageinfo(){
+        $data = $this->request->post();
+
+        if (!SitePageinfo::update($data)) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
+
 
 
     }
