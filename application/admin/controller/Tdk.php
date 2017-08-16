@@ -28,10 +28,10 @@ class Tdk extends Common
      */
     public function search($id)
     {
-        $request=$this->getLimit();
+        $request = $this->getLimit();
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        $where["site_id"]=$id;
+        $where["site_id"] = $id;
         $data = (new SitePageinfo)->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
@@ -43,6 +43,24 @@ class Tdk extends Common
      */
     public function read($id)
     {
-        return $this->getread((new SitePageinfo),$id);
+        return $this->getread((new SitePageinfo), $id);
     }
+
+    public function getAkeyword($id)
+    {
+        $wh['id'] = $id;
+        $Site = new \app\admin\model\Site();
+        $keyword_id = $Site->where($wh)->field('keyword_ids')->find()->keyword_ids;
+//        dump($keyword_ids);die;
+        $keyword_ids = explode(',',$keyword_id);
+        $where['id'] = $keyword_ids;
+        $keyword = new \app\admin\model\Keyword();
+        $data = $keyword->where('id','in',$keyword_ids)->field('id,name as text')->select();
+
+       return $this->resultArray('', '', $data);
+
+
+    }
+
+
 }

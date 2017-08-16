@@ -273,6 +273,8 @@ Route::post('admin/insertTag','admin/Keyword/insertByTag');
 //删除所有关键词 只要没有下级
 Route::post('admin/deleAll','admin/Keyword/deleteAll');
 
+Route::get('admin/getAkeywordA/:id','admin/Tdk/getAkeyword');
+
 
 
 
