@@ -139,6 +139,9 @@ class Keyword extends Common
         $file_info = $this->getKeywordInfo($post["path"], $post["id"], $model);
         while ($key = fgets($file_info["file"])) {
             $key = str_replace(PHP_EOL, '', trim($key));
+            if(empty($key)){
+                continue;
+            }
             $getkey = $model->where(["name" => $key, "parent_id" => $post["id"]])->find();
             if (!empty($getkey)) {
                 continue;
@@ -232,6 +235,106 @@ class Keyword extends Common
         $temp = ["count" => $te, "name" => $ar];
         return $this->resultArray('', '', $temp);
     }
+
+    /**
+     * 插入A类或B类关键词
+     * @return array
+     */
+    public function insertByTag()
+    {
+        $rule=[
+            ["id","require","请传递id"],
+            ["content","require","请提交关键词"]
+        ];
+        $data = $this->request->post();
+        $validate=new Validate($rule);
+        if(!$validate->check($data)){
+            return $this->resultArray($validate->getError(),'faile');
+        }
+        $currentKey=\app\admin\model\Keyword::where(["id" => $data["id"]])->find();
+        if(!isset($currentKey['tag'])){
+            return $this->resultArray("当前关键词不存在",'faile');
+        }
+
+        switch($currentKey['tag']){
+            case 'A':
+                $parent_id=$data["id"];
+                $path=",".$data["id"].",";
+                $tag='B';
+                break;
+            case 'B':
+                $parent_id=$data["id"];
+                $path=$currentKey["path"].$data["id"].',';
+                $tag='C';
+                break;
+            default:
+                return $this->resultArray("当前关键词非法",'faile');
+        }
+
+        //关键词数组
+        $keyArr=explode("\n",$data['content']);
+        $user = $this->getSessionUser();
+        $node_id = $user["user_node_id"];
+        if(empty($keyArr) || !is_array($keyArr)){
+            return $this->resultArray("请提交关键词",'faile');
+        }
+
+        foreach($keyArr as $item){
+            if(empty(trim($item))){
+                continue;
+            }
+            \app\admin\model\Keyword::create([
+                "name"=>$item,
+                "parent_id"=>$parent_id,
+                "path"=>$path,
+                "node_id"=>$node_id,
+                "tag"=>$tag,
+            ]);
+        }
+        return $this->resultArray("添加成功!");
+    }
+
+    /**
+     * 删除所有关键词
+     * @return array
+     */
+    public function deleteAll()
+    {
+        $rule=[
+            ["id","require","请传入id"]
+        ];
+        $validate=new Validate($rule);
+        $data=$this->request->post();
+        if(!$validate->check($data)){
+            return $this->resultArray($validate->getError(),'faile');
+        }
+        $message='删除成功!';
+        foreach($this->forEachId($data["id"]) as $item){
+            if($item()==0){
+                $message="包含下级节点的父类无法删除";
+            }
+        }
+        return $this->resultArray($message);
+    }
+
+    /**
+     * 遍历数据
+     * @param $data
+     */
+    public function forEachId($data)
+    {
+        foreach($data as $item){
+            yield function () use ($item){
+                $find=\app\admin\model\Keyword::where(["parent_id"=>$item])->find();
+                if(empty($find)){
+                    \app\admin\model\Keyword::destroy($item);
+                    return 1;
+                }
+                return 0;
+            };
+        }
+    }
+
 
 
 }

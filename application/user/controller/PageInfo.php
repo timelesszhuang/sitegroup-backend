@@ -2,6 +2,7 @@
 
 namespace app\user\controller;
 
+use app\admin\model\Site;
 use app\user\model\SitePageinfo;
 use think\Controller;
 use think\Request;
@@ -17,11 +18,11 @@ class PageInfo extends Common
      */
     public function index()
     {
-        $request=$this->getLimit();
-        $node_id=$this->getSiteSession('login_site');
-        $where=[];
-        $where["node_id"]=$node_id["node_id"];
-        $where["site_id"]=$this->getSiteSession('website')["id"];
+        $request = $this->getLimit();
+        $node_id = $this->getSiteSession('login_site');
+        $where = [];
+        $where["node_id"] = $node_id["node_id"];
+        $where["site_id"] = $this->getSiteSession('website')["id"];
         $data = (new SitePageinfo)->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
@@ -39,7 +40,7 @@ class PageInfo extends Common
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
@@ -49,10 +50,10 @@ class PageInfo extends Common
         ];
         $validate = new Validate($rule);
         $data = $request->post();
-        $data['node_id'] =$this->getSiteSession('login_site')["node_id"];
-        $data["site_id"] =$this->getSiteSession('website')["id"];
-        $data["site_name"] =$this->getSiteSession('website')["site_name"];
-        if(!$validate->check($data)) {
+        $data['node_id'] = $this->getSiteSession('login_site')["node_id"];
+        $data["site_id"] = $this->getSiteSession('website')["id"];
+        $data["site_name"] = $this->getSiteSession('website')["site_name"];
+        if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
         if (!SitePageinfo::create($data)) {
@@ -64,18 +65,18 @@ class PageInfo extends Common
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function read($id)
     {
-        return $this->getread((new SitePageinfo),$id);
+        return $this->getread((new SitePageinfo), $id);
     }
 
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -86,8 +87,8 @@ class PageInfo extends Common
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param  \think\Request $request
+     * @param  int $id
      * @return \think\Response
      */
     public function update($id)
@@ -96,22 +97,59 @@ class PageInfo extends Common
             ["page_id", "require", "请输入页面id"],
         ];
         $validate = new Validate($rule);
-        $request=Request::instance();
+        $request = Request::instance();
         $data = $request->put();
-        if(!$validate->check($data)) {
+        if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        return $this->publicUpdate((new SitePageinfo),$data,$id);
+        return $this->publicUpdate((new SitePageinfo), $data, $id);
     }
 
     /**
      * 删除指定资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new SitePageinfo),$id);
+        return $this->deleteRecord((new SitePageinfo), $id);
     }
+
+    /**
+     * @param $id
+     * @return array
+     * 获取A关键词
+     */
+    public function getAkeyword()
+    {
+
+        $site_id = $this->getSiteSession('website')["id"];
+        $wh['id'] = $site_id;
+        $Site = new Site();
+        $keyword_id = $Site->where($wh)->field('keyword_ids')->find()->keyword_ids;
+//        dump($keyword_ids);die;
+        $keyword_ids = explode(',', $keyword_id);
+        $where['id'] = $keyword_ids;
+        $keyword = new \app\admin\model\Keyword();
+        $data = $keyword->where('id', 'in', $keyword_ids)->field('id,name as text')->select();
+        return $this->resultArray('', '', $data);
+    }
+
+    /**
+     * @return array
+     * 修改tdk中的akeyword_id
+     */
+    public function editpageinfo()
+    {
+        $data = $this->request->post();
+        if ($data['akeyword_id'] == 0) {
+            return $this->resultArray('首页关键词不能修改', 'failed');
+        }
+        if (!SitePageinfo::update($data)) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
+    }
+
 }

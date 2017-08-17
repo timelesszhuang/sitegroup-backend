@@ -63,6 +63,7 @@ class WechatArticle extends Common
         ];
         $validate = new Validate($rule);
         $data = $request->post();
+//        dump($/home/qiangbi/桌面/template/index.htmldata);die;
         $user = $this->getSessionUser();
         $data['node_id'] = $user['user_node_id'];
         if (!$validate->check($data)) {

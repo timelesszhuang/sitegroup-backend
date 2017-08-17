@@ -80,7 +80,12 @@ Route::post('sys/addKeyword', 'sysadmin/Keyword/addKeyword');
 Route::post('sys/editKeyword', 'sysadmin/Keyword/editKeyword');
 //爬虫数据库scrapy获取单条数据
 Route::get('sys/gettype/:id', 'sysadmin/Keyword/read');
-
+//最热新闻所有数据
+Route::get('sys/hotnews', 'sysadmin/Hotnews/index');
+//修改
+Route::post('sys/editnews', 'sysadmin/Hotnews/editnews');
+//一条数据
+Route::get('sys/getonenews/:id', 'sysadmin/Hotnews/getOne');
 //=========节点后台
 //关键词
 Route::resource('keyword', 'admin/keyword');
@@ -253,6 +258,32 @@ Route::get('admin/searchkeywords', 'admin/MainkeywordSearch/index');
 //A类关键词分类
 Route::get('admin/mainkeyword', 'admin/MainkeywordSearch/mainkeyword');
 Route::get('admin/getKeyTypeList', 'admin/KeywordType/getKeyTypeList');
+//零散段落的分类下拉获取
+Route::get('sca/getType','admin/Scatteredarticletype/getType');
+//零散段落表格数据
+Route::resource('sca/all','admin/Scatteredarticletype');
+//hotnews获取
+Route::resource('admin/hotnews','admin/Hotnews');
+//栏目分类
+Route::resource('admin/menutag','admin/Menutag');
+//获取分类列表
+Route::get('admin/menutag/list','admin/Menutag/getTags');
+//textarea的格式插入关键词
+Route::post('admin/insertTag','admin/Keyword/insertByTag');
+//删除所有关键词 只要没有下级
+Route::post('admin/deleAll','admin/Keyword/deleteAll');
+//获取tdk中的a类关键词
+Route::get('admin/getAkeywordA/:id','admin/Tdk/getAkeyword');
+//修改a类关键词pageinfo
+Route::post('admin/editpageinfo','admin/Tdk/editpageinfo');
+
+
+
+
+
+
+
+
 
 
 //站点相关--------------------------------------------------------
@@ -327,8 +358,13 @@ Route::post('user/QQaddArticle', 'user/QicqArticle/create');
 Route::get('user/QQOneArticle/:id', 'user/QicqArticle/getOne');
 //网易和qq获取分类
 Route::get('user/articleAllType', 'user/WangyiArticle/getTypes');
-//文章分类
-//Route::get('user/articleAllType','user/WangyiArticle/getTypes');
+//热点新闻
+Route::resource('user/hotnews','user/Hotnews');
+//获取tdk中的a类关键词
+Route::get('user/getAkeyword','user/PageInfo/getAkeyword');
+//修改a类关键词pageinfo
+Route::post('user/editpageinfo','user/PageInfo/editpageinfo');
+
 return [
     '__pattern__' => [
         'name' => '\w+',

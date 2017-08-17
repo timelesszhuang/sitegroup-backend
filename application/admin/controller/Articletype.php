@@ -118,7 +118,12 @@ class Articletype extends Common
     public function getType()
     {
         $where = [];
+        $user = $this->getSessionUser();
+        $where['node_id'] = $user['user_node_id'];
         $data = (new \app\admin\model\Articletype())->getArttype($where);
+        foreach ($data as$k=>$v){
+            $v['text'] = $v['name'].'['.$v['tag'].']';
+        }
         return $this->resultArray('', '', $data);
     }
 

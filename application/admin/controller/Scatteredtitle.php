@@ -2,6 +2,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Scatteredarticletype;
 use think\Request;
 use app\common\controller\Common;
 use think\Validate;
@@ -59,7 +60,7 @@ class Scatteredtitle extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         if(\app\admin\model\ScatteredArticle::where(["articletype_id"=>$data['articletype_id']])->count()<15){
-            return $this->resultArray("当前零散分类文章少于15篇,请先补充文章", 'failed');
+            return $this->resultArray("当前文章段落文章少于15篇,请先补充文章", 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\ScatteredTitle::create($data)) {
@@ -107,7 +108,7 @@ class Scatteredtitle extends Common
         $validate = new Validate($rule);
         $data = $this->request->put();
         if(\app\admin\model\ScatteredArticle::where(["articletype_id"=>$data['articletype_id']])->count()<15){
-            return $this->resultArray("当前零散分类文章少于15篇,请先补充文章", 'failed');
+            return $this->resultArray("当前文章段落文章少于15篇,请先补充文章", 'failed');
         }
         $data["update_time"]=time();
         if (!$validate->check($data)) {
@@ -148,6 +149,7 @@ class Scatteredtitle extends Common
         $title['content'] = $article;
         return $this->resultArray('', '', $title);
     }
+
 
 
 }

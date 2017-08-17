@@ -15,9 +15,17 @@ class Menu extends Common
     {
         $request = $this->getLimit();
         $name = $this->request->get('name');
+        $flag = $this->request->get('flag');
+        $tag_id=$this->request->get('tag_id');
         $where = [];
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
+        }
+        if(!empty($flag)){
+            $where['flag'] = $flag;
+        }
+        if(!empty($tag_id)){
+            $where["tag_id"]=$tag_id;
         }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
@@ -47,7 +55,9 @@ class Menu extends Common
             ['name', 'require', "请填写菜单"],
             ["flag", "require", "请选择栏目类型"],
             ["flag_name", "require", "请选择栏目类型"],
-            ["generate_name",'require','请填写栏目生成名']
+            ["generate_name",'require','请填写栏目生成名'],
+            ["tag_id","require","请填写分类"],
+            ["tag_name",'require',"请填写分类"]
         ];
         if (intval($flag) > 1) {
             array_push($rule, ["type_id", "require", "请选择分类id"]);
@@ -84,7 +94,9 @@ class Menu extends Common
             ['name', 'require', "请填写菜单"],
             ["flag", "require", "请选择栏目类型"],
             ["flag_name", "require", "请选择栏目类型"],
-            ["generate_name",'require','请填写栏目生成名']
+            ["generate_name",'require','请填写栏目生成名'],
+            ["tag_id","require","请填写分类"],
+            ["tag_name",'require',"请填写分类"]
         ];
         if (intval($flag) > 1) {
             array_push($rule, ["type_id", "require", "请选择分类id"]);
@@ -120,7 +132,7 @@ class Menu extends Common
      */
     public function getMenu()
     {
-        $field="id,name as text,flag_name,title,type_name";
+        $field="id,name as text,flag_name,title,type_name,tag_name";
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $data = (new \app\admin\model\Menu())->getlist($where,$field);
