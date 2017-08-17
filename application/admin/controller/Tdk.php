@@ -57,26 +57,30 @@ class Tdk extends Common
         $Site = new \app\admin\model\Site();
         $keyword_id = $Site->where($wh)->field('keyword_ids')->find()->keyword_ids;
 //        dump($keyword_ids);die;
-        $keyword_ids = explode(',',$keyword_id);
+        $keyword_ids = explode(',', $keyword_id);
         $where['id'] = $keyword_ids;
         $keyword = new \app\admin\model\Keyword();
-        $data = $keyword->where('id','in',$keyword_ids)->field('id,name as text')->select();
+        $data = $keyword->where('id', 'in', $keyword_ids)->field('id,name as text')->select();
 
-       return $this->resultArray('', '', $data);
+        return $this->resultArray('', '', $data);
 
 
     }
 
-    public function editpageinfo(){
+    /**
+     * @return array
+     * 修改tdk中的akeyword_id
+     */
+    public function editpageinfo()
+    {
         $data = $this->request->post();
-
+        if ($data['akeyword_id'] == 0) {
+            return $this->resultArray('首页关键词不能修改', 'failed');
+        }
         if (!SitePageinfo::update($data)) {
             return $this->resultArray('修改失败', 'failed');
         }
         return $this->resultArray('修改成功');
-
-
-
     }
 
 

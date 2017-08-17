@@ -360,6 +360,11 @@ Route::get('user/QQOneArticle/:id', 'user/QicqArticle/getOne');
 Route::get('user/articleAllType', 'user/WangyiArticle/getTypes');
 //热点新闻
 Route::resource('user/hotnews','user/Hotnews');
+//获取tdk中的a类关键词
+Route::get('user/getAkeyword/:id','user/PageInfo/getAkeyword');
+//修改a类关键词pageinfo
+Route::post('user/editpageinfo','user/PageInfo/editpageinfo');
+
 return [
     '__pattern__' => [
         'name' => '\w+',
