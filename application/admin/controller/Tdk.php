@@ -77,8 +77,10 @@ class Tdk extends Common
         if ($data['akeyword_id'] == 0) {
             return $this->resultArray('首页关键词不能修改', 'failed');
         }
-        if (!SitePageinfo::update($data)) {
-            return $this->resultArray('修改失败', 'failed');
+        if (SitePageinfo::update($data)) {
+            return $this->resultArray('修改成功');
+        }else{
+            return $this->resultArray('修改失败','failed');
         }
         return $this->resultArray('修改成功');
     }
