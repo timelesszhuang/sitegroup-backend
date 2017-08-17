@@ -361,7 +361,7 @@ Route::get('user/articleAllType', 'user/WangyiArticle/getTypes');
 //热点新闻
 Route::resource('user/hotnews','user/Hotnews');
 //获取tdk中的a类关键词
-Route::get('user/getAkeyword/:id','user/PageInfo/getAkeyword');
+Route::get('user/getAkeyword','user/PageInfo/getAkeyword');
 //修改a类关键词pageinfo
 Route::post('user/editpageinfo','user/PageInfo/editpageinfo');
 
