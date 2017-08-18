@@ -69,10 +69,7 @@ class Menu extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
-        $old_generate=\app\admin\model\Menu::where(["generate_name"=>$data["generate_name"],"node_id"=>$data["node_id"]])->find();
-        if($old_generate){
-            return $this->resultArray('英文名重复', 'failed');
-        }
+
         if (!\app\admin\model\Menu::create($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
@@ -104,11 +101,7 @@ class Menu extends Common
         }
         $validate = new Validate($rule);
         $data = $this->request->post();
-        $node_id = $this->getSessionUser()['user_node_id'];
-        $old_generate=\app\admin\model\Menu::where(["generate_name"=>$data["generate_name"],"node_id"=>$node_id])->find();
-        if($old_generate && ($old_generate->id!=$id)){
-            return $this->resultArray('英文名重复', 'failed');
-        }
+
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
