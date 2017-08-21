@@ -55,6 +55,8 @@ class UserDefinedForm extends Common
         $data['detail'] = $pdata['detail'];
         $data['form_info'] = serialize($field);
         $data['tag'] = md5(uniqid(rand(), true));
+        $user = $this->getSessionUser();
+        $data["node_id"] = $user["user_node_id"];
         if (!UserForm::create($data)) {
             return $this->resultArray('添加失败', 'faile');
         }
