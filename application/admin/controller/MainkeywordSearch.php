@@ -31,13 +31,14 @@ class MainkeywordSearch extends Common
         if (!empty($mainkeyword_id)) {
             $where["mainkeyword_id"] = $mainkeyword_id;
         }
-        if (!empty($time)) {
-            $starttime = strtotime($time);
-            $stoptime = strtotime($time)+86400;
+        if (empty($time)) {
+            $starttime = strtotime(date('Y-m-d',time()))-86400;
+            $stoptime = strtotime(date('Y-m-d',time()));
         }
         else {
-            $starttime = time() - 86400;
-            $stoptime = time();
+            $starttime = strtotime($time);
+            $stoptime = strtotime($time)+86400;
+
         }
 
         $user = $this->getSessionUser();
