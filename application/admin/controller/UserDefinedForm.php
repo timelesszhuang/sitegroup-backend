@@ -151,15 +151,23 @@ class UserDefinedForm extends Common
         $tag = $defined_info->tag;
         $form_info = unserialize($defined_info->form_info);
         $form_field = '';
+        $js_field = '';
         foreach ($form_info as $k => $v) {
             $type = $v['type'];
             $name = $v['name'];
             $placeholder = $v['placeholder'];
+            $require = $v['require'];
+            $require_tag = '*';
+            if (!$require) {
+                $require_tag = '';
+            }
+            $per_field = '';
             if ($type == 'text') {
                 $per_field = <<<code
                 <div>
                     <span class="name">{$name}：</span>
                     <input name="{$k}" id="{$k}" type="text" placeholder="{$placeholder}">
+                    <span>{$require_tag}</span>
                 </div>
 code;
             } else {
@@ -167,17 +175,49 @@ code;
                 <div>
                     <span class="name">{$name}：</span>
                     <textarea name="{$k}" id="{$k}" type="text" placeholder="{$placeholder}"></textarea>
+                    <span>{$require_tag}</span>
                 </div>
 code;
+            }
+            if ($require) {
+                $js_code = <<<code
+                if(!$('#{$k}').val()){
+                         alert('{$name}为必填字段');
+                         return false;
+                }
+code;
+                $js_field .= $js_code;
             }
             $form_field .= $per_field;
         }
         $form = <<<code
-            <form action="/DefinedRejection" method="POST" name="userdefinedform" id="userdefinedform">
+            <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
+            <!--请首先判断 页面中是否已经引用了 jquery-->
+            <form action="" method="POST" name="userdefinedform" id="userdefinedform" >
                 <input type="hidden" name="tag" value="{$tag}">
                 {$form_field}
-                <input name="button" class="button" id="submit" value="提交数据" type="button">
+                <input name="submit_bottom" class="submit_bottom" id="submit_bottom" value="提交数据" type="button">
             </form>
+            <script>
+            $('#submit_bottom').click(function () {
+                {$js_field}
+                var data = $('#userdefinedform').serialize();
+                var url = '/DefinedRejection';
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    async: true,
+                    url: url,
+                    data: data,
+                    success: function (data) {
+                        alert(data.msg);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('尊敬的用户，服务暂时不可用，请稍后再试或联系我们');
+                    }
+                });
+            });
+            </script>
 code;
         $this->resultArray('获取自定义表单代码成功', '', $form);
     }
