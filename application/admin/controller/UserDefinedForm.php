@@ -94,7 +94,7 @@ class UserDefinedForm extends Common
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -106,7 +106,26 @@ class UserDefinedForm extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule = [
+            ['detail', 'require', '请填写描述'],
+        ];
+        $validate = new Validate($rule);
+        $pdata = $request->post();
+        if (!$validate->check($pdata)) {
+            return $this->resultArray($validate->getError(), 'faile');
+        }
+        $data = [];
+        $field = [];
+        for ($i = 1; $i <= 4; $i++) {
+            if (isset($pdata['field' . $i]) && isset($pdata['field' . $i]['name']) && !empty($pdata['field' . $i]['name'])) {
+                $field['field' . $i][] = $pdata['field' . $i];
+            }
+        }
+        $data['detail'] = $pdata['detail'];
+        $data['form_info'] = serialize($field);
+        $data['tag'] = md5(uniqid(rand(), true));
+        $user = $this->getSessionUser();
+        return $this->publicUpdate((new UserForm), $data, $id);
     }
 
     /**

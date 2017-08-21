@@ -6,6 +6,8 @@ use think\Model;
 
 class UserDefinedForm extends Model
 {
+    //只读字段
+    protected $readonly=["node_id"];
     /**
      * 获取
      * @param $limit
