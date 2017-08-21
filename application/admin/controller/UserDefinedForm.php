@@ -58,7 +58,6 @@ class UserDefinedForm extends Common
             return $this->resultArray('添加失败', 'faile');
         }
         return $this->resultArray('添加成功');
-
     }
 
     /**
