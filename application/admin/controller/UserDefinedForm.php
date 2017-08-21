@@ -53,7 +53,7 @@ class UserDefinedForm extends Common
             }
         }
         $data['detail'] = $pdata['detail'];
-        $data['from_info'] = serialize($field);
+        $data['form_info'] = serialize($field);
         $data['tag'] = md5(uniqid(rand(), true));
         if (!UserForm::create($data)) {
             return $this->resultArray('添加失败', 'faile');
