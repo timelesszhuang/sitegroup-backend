@@ -81,8 +81,8 @@ class UserDefinedForm extends Common
      */
     public function read($id)
     {
-        $data=(new UserForm)->where(["id" => $id])->field("create_time,update_time", true)->find();
-        $data['form_info']=unserialize($data['form_info']);
+        $data = (new UserForm)->where(["id" => $id])->field("create_time,update_time", true)->find();
+        $data['form_info'] = unserialize($data['form_info']);
         return $this->resultArray('', '', $data);
     }
 
@@ -144,52 +144,42 @@ class UserDefinedForm extends Common
     public function getFormCode($id)
     {
         //唯一id
-        $tag = '';
+        $defined_info = UserForm::get($id);
+        if (!$defined_info) {
+            return $this->resultArray('该条记录不存在，请查证', 'failed', []);
+        }
+        $tag = $defined_info->tag;
+        $form_info = unserialize($defined_info->form_info);
+        $form_field = '';
+        foreach ($form_info as $k => $v) {
+            $type = $v['type'];
+            $name = $v['name'];
+            $placeholder = $v['placeholder'];
+            if ($type == 'text') {
+                $per_field = <<<code
+                <div>
+                    <span class="name">{$name}：</span>
+                    <input name="{$k}" id="{$k}" type="text" placeholder="{$placeholder}">
+                </div>
+code;
+            } else {
+                $per_field = <<<code
+                <div>
+                    <span class="name">{$name}：</span>
+                    <textarea name="{$k}" id="{$k}" type="text" placeholder="{$placeholder}"></textarea>
+                </div>
+code;
+            }
+            $form_field .= $per_field;
+        }
         $form = <<<code
             <form action="/DefinedRejection" method="POST" name="userdefinedform" id="userdefinedform">
-            <input type="hidden" name="tag" value="{$tag}"
-                <div class="bannerBox_input">
-                    <span class="name">姓名：</span>
-                    <input name="name" id="userNameSales" class="input try_blur" value="" placeholder="请输入联系人姓名">
-                    <span class="hint_phone" style="display:none"></span>
-                    <a href="#" class="validate close" style="display:none"></a>
-                </div>
-                <div class="bannerBox_input">
-                    <span class="name">电话：</span>
-                    <input name="phone" type="text" class="input  try_blur " value="" placeholder="电话号码／手机号码">
-                    <span class="hint_phone" style="display:none"></span>
-                    <a href="#" class="validate close" style="display:none"></a>
-                </div>
-                <div class="bannerBox_input">
-                    <span class="name">邮箱：</span>
-                    <input name="email" id="email" class="input try_blur email" type="text" placeholder="请输入邮箱地址">
-                    <span class="hint_phone" style="display:none"></span>
-                    <a href="#" class="validate close" style="display:none"></a>
-                </div>
-                <div class="bannerBox_input">
-                    <span class="name">公司：</span>
-                    <input name="company" id="company" type="text" class="input try_blur" placeholder="请输入公司名称">
-                    <!--隐藏表单-->
-                    <input type="hidden" value="" name="ip">
-                    <input type="hidden" value="input" name="query_string">
-                    <!--这个参数是从搜索引擎中来-->
-                    <input type="hidden" value="" name="key_word">
-                    <!--搜索引擎-->
-                    <input type="hidden" value="" name="search_engine">
-                    <!--搜索引擎传递过来的地域信息-->
-                    <input type="hidden" value="" name="s_val">
-                    <!--位置信息 比如是qiangbi  还是胜途的区分-->
-                    <input type="hidden" value="yizhixin" name="pos">
-                    <!--表示是谁的客户 表示salesmen 中的 职员的id-->
-                    <input type="hidden" value="0" name="s">
-                    <span class="hint_phone" style="display:none"></span>
-                    <a href="#" class="validate close" style="display:none"></a>
-                </div>
-                <input name="button" class="button" id="submit" value="提交申请" type="button">
+                <input type="hidden" name="tag" value="{$tag}">
+                {$form_field}
+                <input name="button" class="button" id="submit" value="提交数据" type="button">
             </form>
-
 code;
-
+        $this->resultArray('获取自定义表单代码成功', '', $form);
     }
 
 }
