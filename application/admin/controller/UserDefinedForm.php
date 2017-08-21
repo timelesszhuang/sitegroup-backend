@@ -123,7 +123,6 @@ class UserDefinedForm extends Common
         }
         $data['detail'] = $pdata['detail'];
         $data['form_info'] = serialize($field);
-        $user = $this->getSessionUser();
         return $this->publicUpdate((new UserForm), $data, $id);
     }
 
