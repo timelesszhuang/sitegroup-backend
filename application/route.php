@@ -262,29 +262,28 @@ Route::get('admin/searchkeywords', 'admin/MainkeywordSearch/index');
 Route::get('admin/mainkeyword', 'admin/MainkeywordSearch/mainkeyword');
 Route::get('admin/getKeyTypeList', 'admin/KeywordType/getKeyTypeList');
 //零散段落的分类下拉获取
-Route::get('sca/getType','admin/Scatteredarticletype/getType');
+Route::get('sca/getType', 'admin/Scatteredarticletype/getType');
 //零散段落表格数据
-Route::resource('sca/all','admin/Scatteredarticletype');
+Route::resource('sca/all', 'admin/Scatteredarticletype');
 //hotnews获取
-Route::resource('admin/hotnews','admin/Hotnews');
+Route::resource('admin/hotnews', 'admin/Hotnews');
 //栏目分类
-Route::resource('admin/menutag','admin/Menutag');
+Route::resource('admin/menutag', 'admin/Menutag');
 //获取分类列表
-Route::get('admin/menutag/list','admin/Menutag/getTags');
+Route::get('admin/menutag/list', 'admin/Menutag/getTags');
 //textarea的格式插入关键词
-Route::post('admin/insertTag','admin/Keyword/insertByTag');
+Route::post('admin/insertTag', 'admin/Keyword/insertByTag');
 //删除所有关键词 只要没有下级
-Route::post('admin/deleAll','admin/Keyword/deleteAll');
+Route::post('admin/deleAll', 'admin/Keyword/deleteAll');
 //获取tdk中的a类关键词
-Route::get('admin/getAkeywordA/:id','admin/Tdk/getAkeyword');
+Route::get('admin/getAkeywordA/:id', 'admin/Tdk/getAkeyword');
 //修改a类关键词pageinfo
-Route::post('admin/editpageinfo','admin/Tdk/editpageinfo');
+Route::post('admin/editpageinfo', 'admin/Tdk/editpageinfo');
 
 //自定义表单设置
 Route::resource('admin/userdefinedform', 'admin/UserDefinedForm');
-
-
-
+//获取自定义表单代码
+Route::get('admin/getuserdefinedformcode/:id', 'admin/UserDefinedForm/getFormCode');
 
 
 //站点相关--------------------------------------------------------
@@ -360,11 +359,11 @@ Route::get('user/QQOneArticle/:id', 'user/QicqArticle/getOne');
 //网易和qq获取分类
 Route::get('user/articleAllType', 'user/WangyiArticle/getTypes');
 //热点新闻
-Route::resource('user/hotnews','user/Hotnews');
+Route::resource('user/hotnews', 'user/Hotnews');
 //获取tdk中的a类关键词
-Route::get('user/getAkeyword','user/PageInfo/getAkeyword');
+Route::get('user/getAkeyword', 'user/PageInfo/getAkeyword');
 //修改a类关键词pageinfo
-Route::post('user/editpageinfo','user/PageInfo/editpageinfo');
+Route::post('user/editpageinfo', 'user/PageInfo/editpageinfo');
 
 
 
