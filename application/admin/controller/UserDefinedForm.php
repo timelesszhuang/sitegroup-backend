@@ -38,15 +38,22 @@ class UserDefinedForm extends Common
     {
         $rule=[
             ['detail','require','请填写描述'],
-            ['from_info','require','请输入表单']
         ];
         $validate=new Validate($rule);
         $pdata=$request->post();
         if(!$validate->check($pdata)){
              return $this->resultArray($validate->getError(),'faile');
         }
-        foreach ($pdata as $key=>$item){
+        $data=[];
+        $field=[];
+        for ($i=1;$i<=4;$i++){
+            if(isset($pdata['field'.$i]) && isset($pdata['field'.$i]['name']) && !empty($pdata['field'.$i]['name'])){
+                $field['field'.$i][]=$pdata['field'.$i];
+            }
         }
+        $data['detail']=$pdata['detail'];
+        $data['from_info']=$field;
+        $data['tag']=md5 ( uniqid ( rand (), true ));
 
     }
 
