@@ -16,7 +16,16 @@ class UserDefinedForm extends Common
      */
     public function index()
     {
-
+        $request = $this->getLimit();
+        $name = $this->request->get('detail');
+        $where = [];
+        if (!empty($detail)) {
+            $where["detail"] = ["like", "%$detail%"];
+        }
+        $user = $this->getSessionUser();
+        $where["node_id"] = $user["user_node_id"];
+        $data = (new UserForm())->getAll($request["limit"], $request["rows"], $where);
+        return $this->resultArray('', '', $data);
     }
 
     /**
