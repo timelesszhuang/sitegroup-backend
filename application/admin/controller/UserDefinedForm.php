@@ -5,7 +5,7 @@ namespace app\admin\controller;
 use app\common\controller\Common;
 use think\Request;
 use think\Validate;
-
+use app\admin\model\UserDefinedForm as UserForm;
 class UserDefinedForm extends Common
 {
     /**
