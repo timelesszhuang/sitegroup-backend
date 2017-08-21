@@ -25,6 +25,7 @@ class UserDefinedForm extends Common
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $data = (new UserForm())->getAll($request["limit"], $request["rows"], $where);
+
         return $this->resultArray('', '', $data);
     }
 
