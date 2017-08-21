@@ -118,9 +118,9 @@ class UserDefinedForm extends Common
         $data = [];
         $field = [];
         for ($i = 1; $i <= 4; $i++) {
-            if (isset($pdata['field' . $i]) && isset($pdata['field' . $i]['name']) && !empty($pdata['field' . $i]['name'])) {
-                $pdata['field' . $i]['require']=(boolean)$pdata['field' . $i]['require'];
-                $field['field' . $i] = $pdata['field' . $i];
+            if (isset($pdata['form_info']['field' . $i]) && isset($pdata['form_info']['field' . $i]['name']) && !empty($pdata['form_info']['field' . $i]['name'])) {
+                $pdata['form_info']['field' . $i]['require']=(boolean)$pdata['form_info']['field' . $i]['require'];
+                $field['field' . $i] = $pdata['form_info']['field' . $i];
             }
         }
         $data['detail'] = $pdata['detail'];
