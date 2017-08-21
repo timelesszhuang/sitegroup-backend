@@ -81,8 +81,8 @@ class UserDefinedForm extends Common
      */
     public function read($id)
     {
-        $data=(new UserForm)->where(["id" => $id])->field("create_time,update_time", true)->find();
-        $data['form_info']=unserialize($data['form_info']);
+        $data = (new UserForm)->where(["id" => $id])->field("create_time,update_time", true)->find();
+        $data['form_info'] = unserialize($data['form_info']);
         return $this->resultArray('', '', $data);
     }
 
@@ -144,38 +144,42 @@ class UserDefinedForm extends Common
     public function getFormCode($id)
     {
         //唯一id
-        print_r($id);
-        $tag = '';
         $defined_info = UserForm::get($id);
-        print_r($defined_info->tag);
+        if (!$defined_info) {
+            return $this->resultArray('该条记录不存在，请查证', 'failed', []);
+        }
+        $tag = $defined_info->tag;
         $form_info = unserialize($defined_info->form_info);
-        print_r($form_info);
+        $form_field = '';
         foreach ($form_info as $k => $v) {
-
+            $type = $v['type'];
+            $name = $v['name'];
+            $placeholder = $v['placeholder'];
+            if ($type == 'text') {
+                $per_field = <<<code
+                <div>
+                    <span class="name">{$name}：</span>
+                    <input name="{$k}" id="{$k}" type="text" placeholder="{$placeholder}">
+                </div>
+code;
+            } else {
+                $per_field = <<<code
+                <div>
+                    <span class="name">{$name}：</span>
+                    <textarea name="{$k}" id="{$k}" type="text" placeholder="{$placeholder}"></textarea>
+                </div>
+code;
+            }
+            $form_field .= $per_field;
         }
         $form = <<<code
             <form action="/DefinedRejection" method="POST" name="userdefinedform" id="userdefinedform">
-                <input type="hidden" name="tag" value="{$tag}"
-                <div class="bannerBox_input">
-                    <span class="name">：</span>
-                    <input name="name" id="userNameSales" class="input" value="" placeholder="">
-                </div>
-                <div class="bannerBox_input">
-                    <span class="name">：</span>
-                    <input name="phone" type="text" class="input " value="" placeholder="">
-                </div>
-                <div class="bannerBox_input">
-                    <span class="name">：</span>
-                    <input name="email" id="email" class="input" type="text" placeholder="">
-                </div>
-                <div class="bannerBox_input">
-                    <span class="name">：</span>
-                    <input name="company" id="company" type="text" class="input try_blur" placeholder="">
-                </div>
+                <input type="hidden" name="tag" value="{$tag}">
+                {$form_field}
                 <input name="button" class="button" id="submit" value="提交数据" type="button">
             </form>
 code;
-
+        $this->resultArray('获取自定义表单代码成功', '', $form);
     }
 
 }
