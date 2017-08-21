@@ -59,6 +59,7 @@ class UserDefinedForm extends Common
         $field = [];
         for ($i = 1; $i <= 4; $i++) {
             if (isset($pdata['field' . $i]) && isset($pdata['field' . $i]['name']) && !empty($pdata['field' . $i]['name'])) {
+                $pdata['field' . $i]['require']=(boolean)$pdata['field' . $i]['require'];
                 $field['field' . $i] = $pdata['field' . $i];
             }
         }
