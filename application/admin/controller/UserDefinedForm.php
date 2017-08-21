@@ -81,7 +81,9 @@ class UserDefinedForm extends Common
      */
     public function read($id)
     {
-        //
+        $data=(new UserForm)->where(["id" => $id])->field("create_time,update_time", true)->find();
+        $data['form_info']=unserialize($data['form_info']);
+        return $this->resultArray('', '', $data);
     }
 
     /**
