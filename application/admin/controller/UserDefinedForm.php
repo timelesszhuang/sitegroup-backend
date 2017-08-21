@@ -46,7 +46,6 @@ class UserDefinedForm extends Common
              return $this->resultArray($validate->getError(),'faile');
         }
         foreach ($pdata as $key=>$item){
-
         }
 
     }
