@@ -11,6 +11,7 @@
 
 use think\Route;
 
+//======================================== 系统管理后台
 //用户
 Route::resource('user', 'common/User');
 Route::rule('user/getAll', 'common/User/getAll');
@@ -86,7 +87,9 @@ Route::get('sys/hotnews', 'sysadmin/Hotnews/index');
 Route::post('sys/editnews', 'sysadmin/Hotnews/editnews');
 //一条数据
 Route::get('sys/getonenews/:id', 'sysadmin/Hotnews/getOne');
-//=========节点后台
+
+//====================================================================节点后台
+
 //关键词
 Route::resource('keyword', 'admin/keyword');
 Route::post('keyword/insertA', 'admin/keyword/insertA');
@@ -277,10 +280,8 @@ Route::get('admin/getAkeywordA/:id','admin/Tdk/getAkeyword');
 //修改a类关键词pageinfo
 Route::post('admin/editpageinfo','admin/Tdk/editpageinfo');
 
-
-
-
-
+//自定义表单设置
+Route::resource('admin/userdefinedform', 'admin/UserDefinedForm');
 
 
 
@@ -365,12 +366,14 @@ Route::get('user/getAkeyword','user/PageInfo/getAkeyword');
 //修改a类关键词pageinfo
 Route::post('user/editpageinfo','user/PageInfo/editpageinfo');
 
-return [
-    '__pattern__' => [
-        'name' => '\w+',
-    ],
-    '[hello]' => [
-        ':id' => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
-        ':name' => ['index/hello', ['method' => 'post']],
-    ],
-];
+
+
+//return [
+//    '__pattern__' => [
+//        'name' => '\w+',
+//    ],
+//    '[hello]' => [
+//        ':id' => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
+//        ':name' => ['index/hello', ['method' => 'post']],
+//    ],
+//];
