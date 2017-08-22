@@ -34,7 +34,6 @@ class Article extends Model
                     $article->thumbnails = $lastImg;
                     // 如果是base64的图片
                     if (preg_match('/(data:image\/(\w+);base64,)/',$lastImg,$result)){
-                        file_put_contents("111.txt",2332);
                         $type = $result[2];
                         $article->thumbnails_name=md5(uniqid(rand(), true)).".$type";
                     }
