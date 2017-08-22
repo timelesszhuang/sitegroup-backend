@@ -1,2 +1,4 @@
 .idea
 application/database.php
+/public/
+将删除 public/upload/template/

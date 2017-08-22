@@ -32,6 +32,11 @@ class Article extends Model
                     //给图片添加alt属性
                     $lastImg="<img alt="."'$article->title'".$imgs[1];
                     $article->thumbnails = $lastImg;
+                    // 如果是base64的图片
+                    if (preg_match('/(data:\s*image\/(\w+);base64,)/',$lastImg,$result)){
+                        $type = $result[2];
+                        $article->thumbnails_name=md5(uniqid(rand(), true)).".$type";
+                    }
                 }
             }
             $article->readcount = rand(100, 10000);
