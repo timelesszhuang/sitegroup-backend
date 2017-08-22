@@ -33,7 +33,7 @@ class Article extends Model
                     $lastImg="<img alt="."'$article->title'".$imgs[1];
                     $article->thumbnails = $lastImg;
                     // 如果是base64的图片
-                    if (preg_match('/^(data:\s*image\/(\w+);base64,)/',$imgs[1],$result)){
+                    if (preg_match('/^(data:\s*image\/(\w+);base64,)/',$lastImg,$result)){
                         $type = $result[2];
                         $article->thumbnails_name=md5(uniqid(rand(), true)).".$type";
                     }
