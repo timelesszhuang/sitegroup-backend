@@ -284,6 +284,8 @@ Route::post('admin/editpageinfo', 'admin/Tdk/editpageinfo');
 Route::resource('admin/userdefinedform', 'admin/UserDefinedForm');
 //获取自定义表单代码
 Route::get('admin/userdefinedformcode/:id', 'admin/UserDefinedForm/getFormCode');
+//获取所有类型
+Route::get('admin/userdefine', 'admin/Rejection/getUserDefind');
 
 
 //站点相关--------------------------------------------------------

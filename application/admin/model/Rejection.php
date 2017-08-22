@@ -18,7 +18,7 @@ class Rejection extends Model
     public function getAll($limit,$rows,$where)
     {
         $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->order('id desc')->field("update_time",true)->select();
+        $data = $this->limit($limit, $rows)->where($where)->order('id desc')->field('field1')->field("update_time",true)->select();
         foreach ($data as $v){
             $v['Provincecities']=$v['region'].$v['city'];
         }
