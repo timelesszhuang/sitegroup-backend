@@ -59,7 +59,7 @@ class UserDefinedForm extends Common
         $field = [];
         for ($i = 1; $i <= 4; $i++) {
             if (isset($pdata['field' . $i]) && isset($pdata['field' . $i]['name']) && !empty($pdata['field' . $i]['name'])) {
-                $pdata['field' . $i]['require']=(boolean)$pdata['field' . $i]['require'];
+                $pdata['field' . $i]['require'] = (boolean)$pdata['field' . $i]['require'];
                 $field['field' . $i] = $pdata['field' . $i];
             }
         }
@@ -119,7 +119,7 @@ class UserDefinedForm extends Common
         $field = [];
         for ($i = 1; $i <= 4; $i++) {
             if (isset($pdata['form_info']['field' . $i]) && isset($pdata['form_info']['field' . $i]['name']) && !empty($pdata['form_info']['field' . $i]['name'])) {
-                $pdata['form_info']['field' . $i]['require']=(boolean)$pdata['form_info']['field' . $i]['require'];
+                $pdata['form_info']['field' . $i]['require'] = (boolean)$pdata['form_info']['field' . $i]['require'];
                 $field['field' . $i] = $pdata['form_info']['field' . $i];
             }
         }
@@ -221,7 +221,7 @@ code;
             });
             </script>
 code;
-        $this->resultArray('获取自定义表单代码成功', '', $form);
+        return $this->resultArray('获取自定义表单代码成功', '', $form);
     }
 
 }
