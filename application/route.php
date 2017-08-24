@@ -286,9 +286,14 @@ Route::resource('admin/userdefinedform', 'admin/UserDefinedForm');
 Route::get('admin/userdefinedformcode/:id', 'admin/UserDefinedForm/getFormCode');
 //获取所有类型
 Route::get('admin/userdefine', 'admin/Rejection/getUserDefind');
+//产品分类
+Route::resource('admin/productType','admin/ProductType');
+//获取产品分类列表
+Route::get('admin/getProductType','admin/ProductType/getType');
 //产品
 Route::resource('admin/productType','admin/ProductType');
-
+//产品图片
+Route::post('admin/uploadProductImg','admin/uploadImage');
 
 
 
