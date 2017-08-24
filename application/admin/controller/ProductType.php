@@ -119,4 +119,14 @@ class ProductType extends Common
     {
         return $this->deleteRecord((new produ), $id);
     }
+
+    /**
+     * 获取所有type
+     * @return array
+     */
+    public function getTypes()
+    {
+        $field="id,name as text";
+        return $this->getList((new produ),$field);
+    }
 }
