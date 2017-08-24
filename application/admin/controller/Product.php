@@ -53,13 +53,13 @@ class Product extends Common
             ["name", "require", "请输入产品名称"],
             ["summary", "require", "请输入摘要"],
             ["detail", "require", "请输入详情"],
-            ["img",'require',"请上传图片"]
+            ["image",'require',"请上传图片"]
         ];
         $validate = new Validate($rule);
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $post["base64"]=$this->base64EncodeImage("static/".$post['img']);
+        $post["base64"]=$this->base64EncodeImage("static/".$post['image']);
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new productM();
