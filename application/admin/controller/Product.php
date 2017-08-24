@@ -123,7 +123,7 @@ class Product extends Common
             if(file_exists($file)){
                 unlink($file);
             }
-            $post["base64"]=$this->base64EncodeImage("/static/".$post['image']);
+            $post["base64"]=$this->base64EncodeImage(ROOT_PATH."public/static/".$post['image']);
         }
         if (!(new productM)->save($post, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
