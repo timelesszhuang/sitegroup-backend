@@ -6,6 +6,8 @@ use app\common\controller\Common;
 
 use think\Request;
 use app\common\traits\Obtrait;
+use think\Validate;
+
 class Product extends Common
 {
     use Obtrait;
