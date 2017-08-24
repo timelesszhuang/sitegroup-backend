@@ -53,7 +53,10 @@ class Product extends Common
             ["name", "require", "请输入产品名称"],
             ["summary", "require", "请输入摘要"],
             ["detail", "require", "请输入详情"],
-            ["image",'require',"请上传图片"]
+            ["image",'require',"请上传图片"],
+            ["type_id",'require',"请上传分类"],
+            ['type_name','require',"请上传分类名称"]
+
         ];
         $validate = new Validate($rule);
         if (!$validate->check($post)) {
