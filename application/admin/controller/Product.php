@@ -119,9 +119,10 @@ class Product extends Common
         }
         if(!empty($post["image"])){
             $model=productM::where(["id"=>$id])->find();
-            $file="static/".$model->image;
-            if(file_exists("static/".$model->image)){
-                @unlink($file);
+            $file="/static/".$model->image;
+            return $file;
+            if(file_exists($file)){
+                unlink($file);
             }
             $post["base64"]=$this->base64EncodeImage("static/".$post['image']);
         }
