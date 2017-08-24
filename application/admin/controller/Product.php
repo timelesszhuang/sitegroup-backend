@@ -20,9 +20,13 @@ class Product extends Common
     {
         $request = $this->getLimit();
         $name = $this->request->get('name');
+        $type_id=$this->request->get('type_id');
         $where = [];
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
+        }
+        if(!empty($type_id)){
+            $where["type_id"] = $type_id;
         }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
