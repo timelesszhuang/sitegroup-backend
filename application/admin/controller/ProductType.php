@@ -5,6 +5,8 @@ namespace app\admin\controller;
 use app\common\controller\Common;
 use think\Request;
 use app\admin\model\Producttype as produ;
+use think\Validate;
+
 class ProductType extends Common
 {
     /**
