@@ -117,7 +117,7 @@ class Product extends Common
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        if($post["image"]){
+        if(!empty($post["image"])){
             $model=productM::where(["id"=>$id])->find();
             $file="static/".$model->image;
             if(file_exists("static/".$model->image)){
@@ -125,14 +125,10 @@ class Product extends Common
             }
             $post["base64"]=$this->base64EncodeImage("static/".$post['image']);
         }
-        $user = $this->getSessionUser();
-        $post["node_id"] = $user["user_node_id"];
-        $model = new productM();
-        $model->save($post);
-        if ($model->id) {
-            return $this->resultArray("添加成功");
+        if (!(new productM)->save($post, ["id" => $id])) {
+            return $this->resultArray('修改失败', 'failed');
         }
-        return $this->resultArray('添加失败', 'failed');
+        return $this->resultArray('修改成功');
     }
 
     /**
