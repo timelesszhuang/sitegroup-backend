@@ -78,11 +78,16 @@ trait Obtrait{
         return $data;
     }
 
+    /**
+     * 图片文件转base64
+     * @param $image_file
+     * @return string
+     */
     public function base64EncodeImage ($image_file) {
         $base64_image = '';
         $image_info = getimagesize($image_file);
         $image_data = fread(fopen($image_file, 'r'), filesize($image_file));
-        $base64_image = '<img src=data:' . $image_info['mime'] . ';base64,' . chunk_split(base64_encode($image_data)).'>';
+        $base64_image = 'data:' . $image_info['mime'] . ';base64,' . chunk_split(base64_encode($image_data));
         return $base64_image;
     }
 }
