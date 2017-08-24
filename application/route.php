@@ -286,6 +286,10 @@ Route::resource('admin/userdefinedform', 'admin/UserDefinedForm');
 Route::get('admin/userdefinedformcode/:id', 'admin/UserDefinedForm/getFormCode');
 //获取所有类型
 Route::get('admin/userdefine', 'admin/Rejection/getUserDefind');
+//产品
+Route::resource('admin/productType','admin/ProductType');
+
+
 
 
 //站点相关--------------------------------------------------------
