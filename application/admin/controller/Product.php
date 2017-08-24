@@ -7,7 +7,7 @@ use app\common\controller\Common;
 use think\Request;
 use app\common\traits\Obtrait;
 use think\Validate;
-
+use app\admin\model\Product as productM;
 class Product extends Common
 {
     use Obtrait;
@@ -26,7 +26,7 @@ class Product extends Common
         }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        $data = (new produ())->getAll($request["limit"], $request["rows"], $where);
+        $data = (new productM())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
@@ -62,7 +62,7 @@ class Product extends Common
         $post["base64"]=$this->base64EncodeImage("static/".$post['img']);
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
-        $model = new \app\admin\model\Template();
+        $model = new productM();
         $model->save($post);
         if ($model->id) {
             return $this->resultArray("添加成功");
