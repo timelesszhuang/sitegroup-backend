@@ -118,13 +118,12 @@ class Product extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         if(!empty($post["image"])){
-            $model=productM::where(["id"=>$id])->find();
+            $model=(new productM)->where(["id"=>$id])->find();
             $file="/static/".$model->image;
-            return $file;
             if(file_exists($file)){
                 unlink($file);
             }
-            $post["base64"]=$this->base64EncodeImage("static/".$post['image']);
+            $post["base64"]=$this->base64EncodeImage("/static/".$post['image']);
         }
         if (!(new productM)->save($post, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
