@@ -69,7 +69,7 @@ class ProductType extends Common
      */
     public function read($id)
     {
-        //
+        return $this->getread((new produ), $id);
     }
 
     /**
@@ -92,7 +92,19 @@ class ProductType extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule = [
+            ["name", "require", "请输入产品分类"],
+            ["detail", "require", "请输入描述"],
+        ];
+        $data = $request->put();
+        $validate = new Validate($rule);
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'failed');
+        }
+        if (!(new produ)->save($data, ["id" => $id])) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
     }
 
     /**
@@ -103,6 +115,6 @@ class ProductType extends Common
      */
     public function delete($id)
     {
-        //
+        return $this->deleteRecord((new produ), $id);
     }
 }
