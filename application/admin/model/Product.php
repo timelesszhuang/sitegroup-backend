@@ -16,7 +16,7 @@ class Product extends Model
     public function getAll($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->field('update_time,image',true)->order('id desc')->select();
+        $data = $this->limit($limit, $rows)->where($where)->field('update_time',true)->order('id desc')->select();
         return [
             "total" => $count,
             "rows" => $data
