@@ -81,7 +81,7 @@ class Product extends Common
      */
     public function read($id)
     {
-        //
+        return $this->getread((new productM), $id);
     }
 
     /**
