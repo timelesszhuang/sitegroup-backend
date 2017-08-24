@@ -5,9 +5,10 @@ namespace app\admin\controller;
 use app\common\controller\Common;
 
 use think\Request;
-
+use app\common\traits\Obtrait;
 class Product extends Common
 {
+    use Obtrait;
     /**
      * 显示资源列表
      *
@@ -56,6 +57,7 @@ class Product extends Common
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
+        $post["image"]=$this->base64EncodeImage($post['image']);
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new \app\admin\model\Template();
