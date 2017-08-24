@@ -104,7 +104,35 @@ class Product extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = $request->post();
+        $rule = [
+            ["name", "require", "请输入产品名称"],
+            ["summary", "require", "请输入摘要"],
+            ["detail", "require", "请输入详情"],
+            ["type_id",'require',"请上传分类"],
+            ['type_name','require',"请上传分类名称"]
+
+        ];
+        $validate = new Validate($rule);
+        if (!$validate->check($post)) {
+            return $this->resultArray($validate->getError(), 'failed');
+        }
+        if($post["image"]){
+            $model=productM::where(["id"=>$id])->find();
+            $file="static/".$model->image;
+            if(file_exists("static/".$model->image)){
+                @unlink($file);
+            }
+            $post["base64"]=$this->base64EncodeImage("static/".$post['image']);
+        }
+        $user = $this->getSessionUser();
+        $post["node_id"] = $user["user_node_id"];
+        $model = new productM();
+        $model->save($post);
+        if ($model->id) {
+            return $this->resultArray("添加成功");
+        }
+        return $this->resultArray('添加失败', 'failed');
     }
 
     /**
