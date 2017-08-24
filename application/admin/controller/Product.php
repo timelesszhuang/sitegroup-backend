@@ -149,7 +149,7 @@ class Product extends Common
     public function uploadImage()
     {
         $file = request()->file('file_name');
-        $info = $file->move(ROOT_PATH . 'public/static');
+        $info = $file->move(ROOT_PATH . 'public/static/');
         if ($info) {
             return $this->resultArray('上传成功', '', $info->getSaveName());
         } else {
