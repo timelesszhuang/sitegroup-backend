@@ -293,7 +293,7 @@ Route::get('admin/getProductType','admin/ProductType/getTypes');
 //产品
 Route::resource('admin/productType','admin/ProductType');
 //产品图片
-Route::post('admin/uploadProductImg','admin/uploadImage');
+Route::post('admin/uploadProductImg','admin/Product/uploadImage');
 
 
 
