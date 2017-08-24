@@ -291,7 +291,7 @@ Route::resource('admin/productType','admin/ProductType');
 //获取产品分类列表
 Route::get('admin/getProductType','admin/ProductType/getTypes');
 //产品
-Route::resource('admin/productType','admin/ProductType');
+Route::resource('admin/product','admin/Product');
 //产品图片
 Route::post('admin/uploadProductImg','admin/Product/uploadImage');
 
