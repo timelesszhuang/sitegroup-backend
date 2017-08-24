@@ -119,8 +119,7 @@ class Product extends Common
         }
         if(!empty($post["image"])){
             $model=(new productM)->where(["id"=>$id])->find();
-            return ROOT_PATH;
-            $file="/static/".$model->image;
+            $file=ROOT_PATH."public/static/".$model->image;
             return file_exists($file);
             if(file_exists($file)){
                 unlink($file);
