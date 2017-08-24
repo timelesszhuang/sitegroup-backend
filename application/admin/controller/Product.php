@@ -59,7 +59,7 @@ class Product extends Common
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $post["image"]=$this->base64EncodeImage("static/".$post['image']);
+        $post["base64"]=$this->base64EncodeImage("static/".$post['image']);
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new \app\admin\model\Template();
