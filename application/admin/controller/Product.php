@@ -90,7 +90,7 @@ class Product extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('', '', (new productM)->where(["id" => $id])->field("create_time,update_time,base64", true)->find());
+        return $this->resultArray('', '', (new productM)->where(["id" => $id])->field("create_time,update_time", true)->find());
     }
 
     /**
