@@ -67,6 +67,11 @@ class Product extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $post["base64"]=$this->base64EncodeImage("static/".$post['image']);
+        // 如果是base64的图片
+        if (preg_match('/(data:\s*image\/(\w+);base64,)/',$post["base64"],$result)){
+            $type = $result[2];
+            $post['image_name']=md5(uniqid(rand(), true)).".$type";
+        }
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new productM();
@@ -128,6 +133,11 @@ class Product extends Common
                 unlink($file);
             }
             $post["base64"]=$this->base64EncodeImage(ROOT_PATH."public/static/".$post['image']);
+            // 如果是base64的图片
+            if (preg_match('/(data:\s*image\/(\w+);base64,)/',$post["base64"],$result)){
+                $type = $result[2];
+                $post['image_name']=md5(uniqid(rand(), true)).".$type";
+            }
         }
         if (!(new productM)->save($post, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
