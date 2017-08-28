@@ -140,6 +140,8 @@ class Question extends Common
                             "searchType" => 'question',
                             "type" => $data['type_id']
                         ];
+//                        dump($send);
+//                        dump($value['url']."/index.php/generateHtml");die;
                         $this->curl_post($value['url']."/index.php/generateHtml",$send);
                     }
                 }
