@@ -115,7 +115,7 @@ class Question extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-//        $this->publicUpdate((new \app\admin\model\Question),$data,$id);
+        $this->publicUpdate((new \app\admin\model\Question),$data,$id);
 //        dump($data);die;
         $this->open_start('正在修改中');
         $where['type_id'] = $data['type_id'];
