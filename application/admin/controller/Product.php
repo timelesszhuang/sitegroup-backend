@@ -142,7 +142,38 @@ class Product extends Common
         if (!(new productM)->save($post, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
-        return $this->resultArray('修改成功');
+        $this->open_start('正在修改中');
+        $where['type_id'] = $post['type_id'];
+        $where['flag'] = 5;
+        $menu = (new \app\admin\model\Menu())->where($where)->select();
+        dump($menu);die;
+        $user = $this->getSessionUser();
+        $wh['node_id'] = $user['user_node_id'];
+        $sitedata = \app\admin\model\Site::where($wh)->select();
+//        dump($sitedata);
+        $arr = [];
+        $ar = [];
+        foreach ($menu as $k => $v) {
+            $arr[] = $v['id'];
+            foreach ($sitedata as $kk => $vv) {
+                $a=strstr($vv["menu"],",".$v["id"].",");
+                if($a){
+                    $Site = new \app\admin\model\Site();
+                    $dat = $Site->where('id','in',$vv['id'])->field('url')->select();
+                    foreach ($dat as $key=>$value){
+                        $send = [
+                            "id" => $post['id'],
+                            "searchType" => 'product',
+                            "type" => $post['type_id']
+                        ];
+//                        dump($send);
+//                        dump($value['url']."/index.php/generateHtml");die;
+                        $this->curl_post($value['url']."/index.php/generateHtml",$send);
+                    }
+                }
+            }
+
+        }
     }
 
     /**
