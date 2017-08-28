@@ -146,7 +146,7 @@ class Product extends Common
         $where['type_id'] = $post['type_id'];
         $where['flag'] = 5;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
-        dump($menu);die;
+//        dump($menu);die;
         $user = $this->getSessionUser();
         $wh['node_id'] = $user['user_node_id'];
         $sitedata = \app\admin\model\Site::where($wh)->select();
