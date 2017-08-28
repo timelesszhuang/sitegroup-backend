@@ -117,10 +117,11 @@ class Article extends Common
 //        dump($data);die;
         $this->open_start('正在修改中');
         $where['type_id'] = $data['articletype_id'];
+        $where['flag'] = 1;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
         $user = $this->getSessionUser();
         $wh['node_id'] = $user['user_node_id'];
-        $sitedata = \app\admin\model\Site::where($wh)->field('')->select();
+        $sitedata = \app\admin\model\Site::where($wh)->select();
 //        dump($sitedata);
         $arr = [];
         $ar = [];
