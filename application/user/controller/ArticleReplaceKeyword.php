@@ -125,6 +125,6 @@ class ArticleReplaceKeyword extends Common
      */
     public function delete($id)
     {
-        //
+        return $this->deleteRecord((new AreplaceKeyword),$id);
     }
 }
