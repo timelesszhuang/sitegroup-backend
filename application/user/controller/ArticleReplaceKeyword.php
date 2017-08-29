@@ -59,7 +59,7 @@ class ArticleReplaceKeyword extends Common
         $node_id = $this->getSiteSession('login_site');
         $data["node_id"] = $node_id["node_id"];
         $data["site_id"] = $this->getSiteSession('website')["id"];
-        $data['replaceLink']='<a href="'.$data['link'].'"  title="'.$data['title'].'">'.$data['keyword'].'</a>';
+        $data['replaceLink']='<a href="'.$data['link'].'" target="_blank" title="'.$data['title'].'">'.$data['keyword'].'</a>';
         if (!AreplaceKeyword::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -97,7 +97,24 @@ class ArticleReplaceKeyword extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule = [
+            ["keyword", "require", "请输入关键词"],
+            ["title", "require", "请输入title"],
+            ["link", "require", "请输入链接"],
+        ];
+        $validate = new Validate($rule);
+        $data = $request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
+        }
+        $node_id = $this->getSiteSession('login_site');
+        $data["node_id"] = $node_id["node_id"];
+        $data["site_id"] = $this->getSiteSession('website')["id"];
+        $data['replaceLink']='<a href="'.$data['link'].'" target="_blank" title="'.$data['title'].'">'.$data['keyword'].'</a>';
+        if (!(new AreplaceKeyword)->save($data, ["id" => $id])) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
     }
 
     /**
