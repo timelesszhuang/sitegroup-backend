@@ -59,7 +59,7 @@ class ArticleReplaceKeyword extends Common
         $node_id = $this->getSiteSession('login_site');
         $data["node_id"] = $node_id["node_id"];
         $data["site_id"] = $this->getSiteSession('website')["id"];
-        $data['link']='<a href="'.$data['link'].'"  title="'.$data['title'].'">'.$data['keyword'].'</a>';
+        $data['replaceLink']='<a href="'.$data['link'].'"  title="'.$data['title'].'">'.$data['keyword'].'</a>';
         if (!AreplaceKeyword::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
