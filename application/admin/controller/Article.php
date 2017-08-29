@@ -6,9 +6,13 @@ use app\common\controller\Common;
 use think\Session;
 use think\Validate;
 use think\Request;
+use app\common\traits\Obtrait;
+use think\View;
 
 class Article extends Common
 {
+    use Obtrait;
+
     /**
      * @return array
      */
@@ -110,7 +114,39 @@ class Article extends Common
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
-        return $this->resultArray('修改成功');
+//        dump($data);die;
+        $this->open_start('正在修改中');
+        $where['type_id'] = $data['articletype_id'];
+        $where['flag'] = 1;
+        $menu = (new \app\admin\model\Menu())->where($where)->select();
+        $user = $this->getSessionUser();
+        $wh['node_id'] = $user['user_node_id'];
+        $sitedata = \app\admin\model\Site::where($wh)->select();
+//        dump($sitedata);
+        $arr = [];
+        $ar = [];
+        foreach ($menu as $k => $v) {
+            $arr[] = $v['id'];
+            foreach ($sitedata as $kk => $vv) {
+                $a=strstr($vv["menu"],",".$v["id"].",");
+                if($a){
+                    $Site = new \app\admin\model\Site();
+                    $dat = $Site->where('id','in',$vv['id'])->field('url')->select();
+                    foreach ($dat as $key=>$value){
+                        $send = [
+                            "id" => $data['id'],
+                            "searchType" => 'article',
+                            "type" => $data['articletype_id']
+                        ];
+                        file_put_contents('11.txt','111');
+                        $this->curl_post($value['url']."/index.php/generateHtml",$send);
+
+//                       dump( $value['url']."/index.php/tool/".$data['id'].'/article/'.$data['articletype_id']);
+                    }
+                }
+            }
+
+        }
     }
 
     /**
@@ -131,7 +167,7 @@ class Article extends Common
     public function syncArticle()
     {
         $is_sync = $this->request->post('is_sync');
-        $id=$this->request->post("id");
+        $id = $this->request->post("id");
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $where["id"] = $id;

@@ -5,9 +5,11 @@ namespace app\admin\controller;
 use think\Request;
 use app\common\controller\Common;
 use think\Validate;
+use app\common\traits\Obtrait;
 
 class Question extends Common
 {
+    use Obtrait;
     /**
      * 显示资源列表
      *
@@ -113,7 +115,39 @@ class Question extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        return $this->publicUpdate((new \app\admin\model\Question),$data,$id);
+        $this->publicUpdate((new \app\admin\model\Question),$data,$id);
+//        dump($data);die;
+        $this->open_start('正在修改中');
+        $where['type_id'] = $data['type_id'];
+        $where['flag'] = 2;
+        $menu = (new \app\admin\model\Menu())->where($where)->select();
+        $user = $this->getSessionUser();
+        $wh['node_id'] = $user['user_node_id'];
+        $sitedata = \app\admin\model\Site::where($wh)->select();
+//        dump($sitedata);
+        $arr = [];
+        $ar = [];
+        foreach ($menu as $k => $v) {
+            $arr[] = $v['id'];
+            foreach ($sitedata as $kk => $vv) {
+                $a=strstr($vv["menu"],",".$v["id"].",");
+                if($a){
+                    $Site = new \app\admin\model\Site();
+                    $dat = $Site->where('id','in',$vv['id'])->field('url')->select();
+                    foreach ($dat as $key=>$value){
+                        $send = [
+                            "id" => $data['id'],
+                            "searchType" => 'question',
+                            "type" => $data['type_id']
+                        ];
+//                        dump($send);
+//                        dump($value['url']."/index.php/generateHtml");die;
+                        $this->curl_post($value['url']."/index.php/generateHtml",$send);
+                    }
+                }
+            }
+
+        }
     }
 
     /**
