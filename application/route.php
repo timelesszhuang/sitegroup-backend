@@ -297,6 +297,7 @@ Route::post('admin/uploadProductImg','admin/Product/uploadImage');
 
 
 
+
 //站点相关--------------------------------------------------------
 //站点登录后的首页操作
 Route::post('user/siteInfo', 'user/index/siteInfo');
@@ -375,7 +376,8 @@ Route::resource('user/hotnews', 'user/Hotnews');
 Route::get('user/getAkeyword', 'user/PageInfo/getAkeyword');
 //修改a类关键词pageinfo
 Route::post('user/editpageinfo', 'user/PageInfo/editpageinfo');
-
+//关键词替换指定的链接
+Route::resource('user/articleReplaceKeyword','user/ArticleReplaceKeyword');
 
 
 //return [
