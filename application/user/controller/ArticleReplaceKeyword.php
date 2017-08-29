@@ -54,11 +54,10 @@ class ArticleReplaceKeyword extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $siteinfo = Site::getSiteInfo();
-        $site_id = $siteinfo['id'];
-        $node_id = $siteinfo['node_id'];
-        $data["site_id"]=$site_id;
-        $data["node_id"]=$node_id;
+        $node_id = $this->getSiteSession('login_site');
+        $data["node_id"] = $node_id["node_id"];
+        $data["site_id"] = $this->getSiteSession('website')["id"];
+        $data['link']='<a href="'.$data['link'].'"  title="'.$data['title'].'">'.$data['keyword'].'</a>';
         if (!AreplaceKeyword::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
