@@ -4,6 +4,8 @@ namespace app\user\controller;
 
 use app\common\controller\Common;
 use think\Request;
+use app\user\model\ArticleReplaceKeyword as AreplaceKeyword;
+use think\Validate;
 
 class ArticleReplaceKeyword extends Common
 {
