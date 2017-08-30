@@ -2,7 +2,7 @@
 
 namespace app\user\controller;
 
-use app\admin\model\SiteType;
+use  app\admin\model\SiteType;
 use app\common\controller\Common;
 use think\Session;
 use think\Validate;

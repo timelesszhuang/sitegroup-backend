@@ -135,7 +135,13 @@ class Common extends Controller
     {
         $user = $this->getSessionUser();
         if (empty($user["user_id"])) {
-            exit(json_encode($this->resultArray('请先登录', 'failed')));
+            exit(json_encode(
+                [
+                    'status' => "loginout",
+                    'data' => '',
+                    'msg' => "请先登录"
+                ]
+            ));
         }
     }
 

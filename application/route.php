@@ -374,6 +374,10 @@ Route::get('user/articleAllType', 'user/WangyiArticle/getTypes');
 Route::resource('user/hotnews', 'user/Hotnews');
 //获取tdk中的a类关键词
 Route::get('user/getAkeyword', 'user/PageInfo/getAkeyword');
+//文章tdk修改
+Route::get('user/articletdk', 'user/PageInfo/articletdk');
+Route::get('user/articletdksave', 'user/PageInfo/articletdksave');
+Route::post('user/articletdkedit', 'user/PageInfo/articletdkedit');
 //修改a类关键词pageinfo
 Route::post('user/editpageinfo', 'user/PageInfo/editpageinfo');
 //关键词替换指定的链接

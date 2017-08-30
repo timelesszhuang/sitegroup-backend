@@ -8,9 +8,12 @@ use think\Controller;
 use think\Request;
 use think\Validate;
 use app\common\controller\Common;
+use app\common\traits\Obtrait;
 
 class PageInfo extends Common
 {
+    use  Obtrait;
+
     /**
      * 显示资源列表
      *
@@ -151,5 +154,70 @@ class PageInfo extends Common
         }
         return $this->resultArray('修改成功');
     }
+
+    /**
+     * @return array
+     * 文章详情页tdk修改获取显示数据
+     */
+    public function articletdk()
+    {
+        $page = $this->request->get('page');
+        if (empty($page)) {
+            $page = 1;
+        }
+        $site_id = $this->getSiteSession('website')["id"];
+        $where['id'] = $site_id;
+        $site = (new Site())->where($where)->select();
+        foreach ($site as $k => $v) {
+            $sitedata = $this->curl_get($v['url'] . "/index.php/showStaticList/article/" . $page);
+            $data = json_decode($sitedata, true);
+        }
+//        dump($data);die;
+        return $this->resultArray($data["msg"], '', $data["data"]);
+
+
+    }
+
+    /**
+     * @return array
+     * 文章详情页获取当前的tdk
+     */
+    public function articletdksave()
+    {
+        $edit = $this->request->get('edit');
+        $et = strstr($edit, '.', TRUE);
+        $site_id = $this->getSiteSession('website')["id"];
+        $where['id'] = $site_id;
+        $site = (new Site())->where($where)->select();
+        foreach ($site as $k => $v) {
+            $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/article/" . $et);
+            $data = json_decode($sitedata, true);
+        }
+//        dump($v['url'] . "/index.php/etStaticOne/article/" . $et);
+//        die;
+        return $this->resultArray($data["msg"], '', $data["data"]);
+
+    }
+
+    /**
+     * 文章详情页修改当前的tdk
+     */
+
+    public function articletdkedit()
+    {
+        $this->open_start('正在修改中');
+        $content = $this->request->post('content');
+        $filename = $this->request->post('filename');
+        $site_id = $this->getSiteSession('website')["id"];
+        $where['id'] = $site_id;
+        $site = (new Site())->where($where)->select();
+        foreach ($site as $k => $v) {
+            $send = [
+                "content" => $content
+            ];
+            $this->curl_post($v['url'] . "/index.php/generateOne/article/".$filename ,$send);
+        }
+    }
+
 
 }
