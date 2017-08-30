@@ -6,6 +6,7 @@ use app\admin\model\Site;
 use app\user\model\SitePageinfo;
 use think\Controller;
 use think\Request;
+use think\Session;
 use think\Validate;
 use app\common\controller\Common;
 use app\common\traits\Obtrait;
@@ -161,21 +162,33 @@ class PageInfo extends Common
      */
     public function articletdk()
     {
-        $page = $this->request->get('page');
-        if (empty($page)) {
-            $page = 1;
-        }
+        $request = $this->getLimit();
         $site_id = $this->getSiteSession('website')["id"];
         $where['id'] = $site_id;
-        $site = (new Site())->where($where)->select();
-        foreach ($site as $k => $v) {
-            $sitedata = $this->curl_get($v['url'] . "/index.php/showStaticList/article/" . $page);
-            $data = json_decode($sitedata, true);
+        $Site = new \app\admin\model\Site();
+        $menuid = $Site->where($where)->field('menu')->find()->menu;
+        $Menuid = explode(',', $menuid);
+//        dump($Menuid);
+        $menu = new \app\admin\model\Menu();
+        $wh['flag'] = 3;
+        $dat = $menu->where('id', 'in', $Menuid)->where($wh)->field('type_id')->select();
+        if ($dat) {
+            foreach ($dat as $k => $v) {
+                $typeid[$k] = $v['type_id'];
+            }
+        } else {
+            return $this->resultArray('没有数据', 'failed');
         }
-//        dump($data);die;
-        return $this->resultArray($data["msg"], '', $data["data"]);
-
-
+        $wheresite['site_id'] = $site_id;
+        $w['node_id'] = Session::get('login_site')["node_id"];
+        $w['is_sync'] = 20;
+        $wheretype_id = $typeid;
+        $name = $this->request->get('title');
+        if(!empty($name)){
+            $w['title'] = ["like", "%$name%"];
+        }
+        $data = (new \app\admin\model\Article())->getArticletdk($request["limit"], $request["rows"], $w, $wheresite, $wheretype_id);
+        return $this->resultArray('', '', $data);
     }
 
     /**
@@ -185,24 +198,24 @@ class PageInfo extends Common
     public function articletdksave()
     {
         $edit = $this->request->get('edit');
-        $et = strstr($edit, '.', TRUE);
         $site_id = $this->getSiteSession('website')["id"];
         $where['id'] = $site_id;
         $site = (new Site())->where($where)->select();
         foreach ($site as $k => $v) {
-            $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/article/" . $et);
+            $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/article/" . $edit);
             $data = json_decode($sitedata, true);
         }
-//        dump($v['url'] . "/index.php/etStaticOne/article/" . $et);
-//        die;
-        return $this->resultArray($data["msg"], '', $data["data"]);
+//        dump($v['url'] . "/index.php/getStaticOne/article/". $edit);die;
+        if ($data['status'] == "success") {
+            $data['status'] = '';
+        }
+        return $this->resultArray($data["msg"], $data["status"], $data["data"]);
 
     }
 
     /**
      * 文章详情页修改当前的tdk
      */
-
     public function articletdkedit()
     {
         $this->open_start('正在修改中');
@@ -215,7 +228,156 @@ class PageInfo extends Common
             $send = [
                 "content" => $content
             ];
-            $this->curl_post($v['url'] . "/index.php/generateOne/article/".$filename ,$send);
+            $this->curl_post($v['url'] . "/index.php/generateOne/article/" . $filename, $send);
+        }
+    }
+
+    /**
+     * @return array
+     * 问答页tdk展示数据
+     */
+    public function questiontdk()
+    {
+        $request = $this->getLimit();
+        $site_id = $this->getSiteSession('website')["id"];
+        $where['id'] = $site_id;
+        $Site = new \app\admin\model\Site();
+        $menuid = $Site->where($where)->field('menu')->find()->menu;
+        $Menuid = explode(',', $menuid);
+        $menu = new \app\admin\model\Menu();
+        $wh['flag'] = 2;
+        $dat = $menu->where('id', 'in', $Menuid)->where($wh)->field('type_id')->select();
+        if ($dat) {
+            foreach ($dat as $k => $v) {
+                $typeid[$k] = $v['type_id'];
+            }
+        } else {
+            return $this->resultArray('没有数据', 'failed');
+        }
+        $w['node_id'] = Session::get('login_site')["node_id"];
+        $wheretype_id = $typeid;
+        $name = $this->request->get('question');
+        if(!empty($name)){
+            $w['question'] = ["like", "%$name%"];
+        }
+        $data = (new \app\admin\model\Question())->getQuestiontdk($request["limit"], $request["rows"],$w, $wheretype_id);
+        return $this->resultArray('', '', $data);
+    }
+
+
+    /**
+     * @return array
+     * 问答页面tdk单条数据
+     */
+    public function questiontdksave()
+    {
+        $edit = $this->request->get('edit');
+        $site_id = $this->getSiteSession('website')["id"];
+        $where['id'] = $site_id;
+        $site = (new Site())->where($where)->select();
+        foreach ($site as $k => $v) {
+            $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/question/" . $edit);
+            $data = json_decode($sitedata, true);
+        }
+        if ($data['status'] == "success") {
+            $data['status'] = '';
+        }
+        return $this->resultArray($data["msg"], $data["status"], $data["data"]);
+
+    }
+
+    /**
+     * 问答页面tdk修改
+     */
+    public function questiontdkedit()
+    {
+        $this->open_start('正在修改中');
+        $content = $this->request->post('content');
+        $filename = $this->request->post('filename');
+        $site_id = $this->getSiteSession('website')["id"];
+        $where['id'] = $site_id;
+        $site = (new Site())->where($where)->select();
+        foreach ($site as $k => $v) {
+            $send = [
+                "content" => $content
+            ];
+            $this->curl_post($v['url'] . "/index.php/generateOne/question/" . $filename, $send);
+//            dump($v['url'] . "/index.php/generateOne/question/" . $filename);
+        }
+    }
+
+    /**
+     * @return array
+     * 产品tdk展示数据
+     */
+    public function producttdk()
+    {
+        $request = $this->getLimit();
+        $site_id = $this->getSiteSession('website')["id"];
+        $where['id'] = $site_id;
+        $Site = new \app\admin\model\Site();
+        $menuid = $Site->where($where)->field('menu')->find()->menu;
+        $Menuid = explode(',', $menuid);
+//        dump($Menuid);
+        $menu = new \app\admin\model\Menu();
+        $wh['flag'] = 5;
+        $dat = $menu->where('id', 'in', $Menuid)->where($wh)->field('type_id')->select();
+        if ($dat) {
+            foreach ($dat as $k => $v) {
+                $typeid[$k] = $v['type_id'];
+            }
+        } else {
+            return $this->resultArray('没有数据', 'failed');
+        }
+
+        $w['node_id'] = Session::get('login_site')["node_id"];
+        $wheretype_id = $typeid;
+        $name = $this->request->get('name');
+        if(!empty($name)){
+            $w['name'] = ["like", "%$name%"];
+        }
+        $data = (new \app\admin\model\Product())->getProducttdk($request["limit"], $request["rows"], $w, $wheretype_id);
+        return $this->resultArray('', '', $data);
+    }
+    /**
+     * @return array
+     * 产品tdk单条数据
+     */
+    public function producttdksave()
+    {
+        $edit = $this->request->get('edit');
+        $site_id = $this->getSiteSession('website')["id"];
+        $where['id'] = $site_id;
+        $site = (new Site())->where($where)->select();
+        foreach ($site as $k => $v) {
+            $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/product/" . $edit);
+            $data = json_decode($sitedata, true);
+        }
+        if ($data['status'] == "success") {
+            $data['status'] = '';
+        }
+        return $this->resultArray($data["msg"], $data["status"], $data["data"]);
+
+    }
+
+    /**
+     * 问答页面tdk修改
+     */
+    public function producttdkedit()
+    {
+        $this->open_start('正在修改中');
+        $content = $this->request->post('content');
+        $filename = $this->request->post('filename');
+//        dump($this->request->post());die;
+        $site_id = $this->getSiteSession('website')["id"];
+        $where['id'] = $site_id;
+        $site = (new Site())->where($where)->select();
+        foreach ($site as $k => $v) {
+            $send = [
+                "content" => $content
+            ];
+            $this->curl_post($v['url'] . "/index.php/generateOne/product/" . $filename, $send);
+//            dump($v['url'] . "/index.php/generateOne/question/" . $filename);
         }
     }
 

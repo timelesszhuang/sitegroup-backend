@@ -59,4 +59,23 @@ class Article extends Model
             "rows" => $data
         ];
     }
+
+    /**
+     * 获取所有 文章
+     * @param $limit
+     * @param $rows
+     * @param int $where
+     * @return array
+     */
+    public function getArticletdk($limit, $rows, $w = '',$wheresite='',$wheretype_id='')
+    {
+        $count = $this->where('articletype_id', 'in', $wheretype_id)->where($w)->whereOr($wheresite)->count();
+        $articledata = $this->limit($limit, $rows)->where('articletype_id', 'in', $wheretype_id)->where($w)->whereOr($wheresite)->field('id,title,create_time')->order('id desc')->select();
+        return [
+            "total" => $count,
+            "rows" => $articledata
+        ];
+    }
+
+
 }

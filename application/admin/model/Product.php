@@ -22,4 +22,17 @@ class Product extends Model
             "rows" => $data
         ];
     }
+
+
+    public function getProducttdk($limit, $rows, $w = '',$wheretype_id='')
+    {
+
+        $count = $this->where('type_id', 'in', $wheretype_id)->where($w)->count();
+        $productdata = $this->limit($limit, $rows)->where('type_id', 'in', $wheretype_id)->where($w)->field('id,name,create_time')->order('id desc')->select();
+        return [
+            "total" => $count,
+            "rows" => $productdata
+        ];
+    }
+
 }

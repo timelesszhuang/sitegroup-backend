@@ -378,6 +378,14 @@ Route::get('user/getAkeyword', 'user/PageInfo/getAkeyword');
 Route::get('user/articletdk', 'user/PageInfo/articletdk');
 Route::get('user/articletdksave', 'user/PageInfo/articletdksave');
 Route::post('user/articletdkedit', 'user/PageInfo/articletdkedit');
+//问答tdk修改
+Route::get('user/questiontdk', 'user/PageInfo/questiontdk');
+Route::get('user/questiontdksave', 'user/PageInfo/questiontdksave');
+Route::post('user/questiontdkedit', 'user/PageInfo/questiontdkedit');
+//产品tdk修改
+Route::get('user/producttdk', 'user/PageInfo/producttdk');
+Route::get('user/producttdksave', 'user/PageInfo/producttdksave');
+Route::post('user/producttdkedit', 'user/PageInfo/producttdkedit');
 //修改a类关键词pageinfo
 Route::post('user/editpageinfo', 'user/PageInfo/editpageinfo');
 //关键词替换指定的链接
