@@ -184,7 +184,7 @@ class PageInfo extends Common
         $w['is_sync'] = 20;
         $wheretype_id = $typeid;
         $name = $this->request->get('title');
-        if(!empty($name)){
+        if (!empty($name)) {
             $w['title'] = ["like", "%$name%"];
         }
         $data = (new \app\admin\model\Article())->getArticletdk($request["limit"], $request["rows"], $w, $wheresite, $wheretype_id);
@@ -203,8 +203,15 @@ class PageInfo extends Common
         $site = (new Site())->where($where)->select();
         foreach ($site as $k => $v) {
             $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/article/" . $edit);
+            dump($sitedata);
+            die;
+            //            print_r((array)$sitedata);die;
             $data = json_decode($sitedata, true);
+            print_r($data);
+            die;
         }
+//        dump($data);
+//        die;
 //        dump($v['url'] . "/index.php/getStaticOne/article/". $edit);die;
         if ($data['status'] == "success") {
             $data['status'] = '';
@@ -257,10 +264,10 @@ class PageInfo extends Common
         $w['node_id'] = Session::get('login_site')["node_id"];
         $wheretype_id = $typeid;
         $name = $this->request->get('question');
-        if(!empty($name)){
+        if (!empty($name)) {
             $w['question'] = ["like", "%$name%"];
         }
-        $data = (new \app\admin\model\Question())->getQuestiontdk($request["limit"], $request["rows"],$w, $wheretype_id);
+        $data = (new \app\admin\model\Question())->getQuestiontdk($request["limit"], $request["rows"], $w, $wheretype_id);
         return $this->resultArray('', '', $data);
     }
 
@@ -329,16 +336,16 @@ class PageInfo extends Common
         } else {
             return $this->resultArray('没有数据', 'failed');
         }
-
         $w['node_id'] = Session::get('login_site')["node_id"];
         $wheretype_id = $typeid;
         $name = $this->request->get('name');
-        if(!empty($name)){
+        if (!empty($name)) {
             $w['name'] = ["like", "%$name%"];
         }
         $data = (new \app\admin\model\Product())->getProducttdk($request["limit"], $request["rows"], $w, $wheretype_id);
         return $this->resultArray('', '', $data);
     }
+
     /**
      * @return array
      * 产品tdk单条数据
