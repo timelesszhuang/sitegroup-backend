@@ -205,14 +205,11 @@ class PageInfo extends Common
             $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/article/" . $edit);
             $data = json_decode($sitedata, true);
         }
-        dump($sitedata);
-        dump($data);die;
-//        die;
-//        dump($v['url'] . "/index.php/getStaticOne/article/". $edit);die;
         if ($data['status'] == "success") {
             $data['status'] = '';
         }
-        return $this->resultArray($data["msg"], $data["status"], $data["data"]);
+//        dump($data);die;
+        return $this->resultArray($data["msg"], $data["status"], $data['data']);
 
     }
 
@@ -284,6 +281,9 @@ class PageInfo extends Common
         }
         if ($data['status'] == "success") {
             $data['status'] = '';
+        }
+        if(!isset($data['data'])){
+            $data['data'] = '';
         }
         return $this->resultArray($data["msg"], $data["status"], $data["data"]);
 
