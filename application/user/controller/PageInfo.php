@@ -205,7 +205,8 @@ class PageInfo extends Common
             $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/article/" . $edit);
             $data = json_decode($sitedata, true);
         }
-//        dump($data);die;
+        dump($sitedata);
+        dump($data);die;
 //        die;
 //        dump($v['url'] . "/index.php/getStaticOne/article/". $edit);die;
         if ($data['status'] == "success") {
