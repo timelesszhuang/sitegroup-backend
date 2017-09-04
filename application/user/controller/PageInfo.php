@@ -203,20 +203,13 @@ class PageInfo extends Common
         $site = (new Site())->where($where)->select();
         foreach ($site as $k => $v) {
             $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/article/" . $edit);
-            dump($sitedata);
-            die;
-            //            print_r((array)$sitedata);die;
             $data = json_decode($sitedata, true);
-            print_r($data);
-            die;
         }
-//        dump($data);
-//        die;
-//        dump($v['url'] . "/index.php/getStaticOne/article/". $edit);die;
         if ($data['status'] == "success") {
             $data['status'] = '';
         }
-        return $this->resultArray($data["msg"], $data["status"], $data["data"]);
+//        dump($data);die;
+        return $this->resultArray($data["msg"], $data["status"], $data['data']);
 
     }
 
@@ -288,6 +281,9 @@ class PageInfo extends Common
         }
         if ($data['status'] == "success") {
             $data['status'] = '';
+        }
+        if(!isset($data['data'])){
+            $data['data'] = '';
         }
         return $this->resultArray($data["msg"], $data["status"], $data["data"]);
 
