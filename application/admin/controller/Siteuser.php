@@ -103,9 +103,6 @@ class Siteuser extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
-        if(isset($data["pwd"])){
-            $data['pwd'] = md5($data['pwd'].$data['account']);
-        }
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
