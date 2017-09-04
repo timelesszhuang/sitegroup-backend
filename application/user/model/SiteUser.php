@@ -23,6 +23,7 @@ class SiteUser extends Model
         if (empty($user_info)) {
             return ["用户名错误", "failed",''];
         }
+
         $user_info_arr = $user_info->toArray();
         if (md5($pwd . $username) != $user_info_arr["pwd"]) {
             return ["用户名或密码错误", "failed",''];
