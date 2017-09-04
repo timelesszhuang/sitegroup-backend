@@ -114,6 +114,7 @@ class Siteuser extends Common
             "id"=>$id,
             "node_id"=>$user["user_node_id"]
         ];
+
         //前台可能会提交id过来,为了防止错误,所以将其删除掉
         if(array_key_exists('id',$data)){
             unset($data["id"]);
