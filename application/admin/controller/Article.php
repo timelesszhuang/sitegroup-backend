@@ -114,34 +114,31 @@ class Article extends Common
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
-//        dump($data);die;
         $this->open_start('正在修改中');
         $where['type_id'] = $data['articletype_id'];
-        $where['flag'] = 1;
+        $where['flag'] = 3;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
         $user = $this->getSessionUser();
         $wh['node_id'] = $user['user_node_id'];
         $sitedata = \app\admin\model\Site::where($wh)->select();
-//        dump($sitedata);
         $arr = [];
         $ar = [];
         foreach ($menu as $k => $v) {
             $arr[] = $v['id'];
             foreach ($sitedata as $kk => $vv) {
-                $a=strstr($vv["menu"],",".$v["id"].",");
-                if($a){
+                $a = strstr($vv["menu"], "," . $v["id"] . ",");
+                if ($a) {
                     $Site = new \app\admin\model\Site();
-                    $dat = $Site->where('id','in',$vv['id'])->field('url')->select();
-                    foreach ($dat as $key=>$value){
+                    $dat = $Site->where('id', 'in', $vv['id'])->field('url')->select();
+                    foreach ($dat as $key => $value) {
                         $send = [
                             "id" => $data['id'],
                             "searchType" => 'article',
                             "type" => $data['articletype_id']
                         ];
-                        file_put_contents('11.txt','111');
-                        $this->curl_post($value['url']."/index.php/generateHtml",$send);
+//                        file_put_contents('11.txt','111');
+                        $this->curl_post($value['url'] . "/index.php/generateHtml", $send);
 
-//                       dump( $value['url']."/index.php/tool/".$data['id'].'/article/'.$data['articletype_id']);
                     }
                 }
             }
