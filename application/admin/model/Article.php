@@ -26,6 +26,7 @@ class Article extends Model
         Article::event("before_write", function ($article) {
             $rule = '/<img[\s\S]*?src\s*=\s*[\"|\'](.*?)[\"|\'][\s\S]*?>/';
             if (isset($article->content)) {
+                self::replaceBase64($article->content);
                 preg_match($rule, $article->content, $matches);
                 if (!empty($matches)) {
                     $imgs=explode('<img',$matches[0]);

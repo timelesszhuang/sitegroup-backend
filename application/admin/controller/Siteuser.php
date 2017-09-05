@@ -103,9 +103,6 @@ class Siteuser extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
-        if(isset($data["pwd"])){
-            $data['pwd'] = md5($data['pwd'].$data['account']);
-        }
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
@@ -114,6 +111,7 @@ class Siteuser extends Common
             "id"=>$id,
             "node_id"=>$user["user_node_id"]
         ];
+
         //前台可能会提交id过来,为了防止错误,所以将其删除掉
         if(array_key_exists('id',$data)){
             unset($data["id"]);
