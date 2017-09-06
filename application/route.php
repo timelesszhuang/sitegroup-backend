@@ -90,9 +90,9 @@ Route::get('sys/getonenews/:id', 'sysadmin/Hotnews/getOne');
 //营销创意
 Route::resource('sys/Marketingmode','sysadmin/Marketingmode');
 //节点列表
-Route::get('sys/getNodelist','sysadmin/Node');
+Route::get('sys/getNodelist','sysadmin/Node/nodeList');
 //系统推送
-Route::resource('sys/SystemNotice'.'sysadmin/SystemNotice');
+Route::resource('sys/systemNotice'.'sysadmin/SystemNotice');
 
 //====================================================================节点后台
 
