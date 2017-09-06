@@ -298,7 +298,8 @@ Route::get('admin/getProductType','admin/ProductType/getTypes');
 Route::resource('admin/product','admin/Product');
 //产品图片
 Route::post('admin/uploadProductImg','admin/Product/uploadImage');
-
+//营销策略
+Route::resource('admin/Marketingmode','admin/Marketingmode');
 
 
 
