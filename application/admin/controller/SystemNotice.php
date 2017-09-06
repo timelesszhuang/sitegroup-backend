@@ -65,10 +65,15 @@ class SystemNotice extends Common
     public function read($id)
     {
         $user = $this->getSessionUser();
-        SystemNoticeRead::create([
+        if(!SystemNoticeRead::where([
             "node_id"=>$user["user_node_id"],
             "notice_id"=>$id
-        ]);
+        ])->find()){
+            SystemNoticeRead::create([
+                "node_id"=>$user["user_node_id"],
+                "notice_id"=>$id
+            ]);
+        }
         return $this->getread((new Sys), $id);
     }
 
