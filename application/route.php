@@ -87,6 +87,8 @@ Route::get('sys/hotnews', 'sysadmin/Hotnews/index');
 Route::post('sys/editnews', 'sysadmin/Hotnews/editnews');
 //一条数据
 Route::get('sys/getonenews/:id', 'sysadmin/Hotnews/getOne');
+//营销创意
+Route::resource('sys/Marketingmode','sysadmin/Marketingmode');
 
 //====================================================================节点后台
 
