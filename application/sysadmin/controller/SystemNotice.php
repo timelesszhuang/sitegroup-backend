@@ -105,6 +105,7 @@ class SystemNotice extends Common
         if (!(new Sys)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
+        return $this->resultArray('修改成功');
     }
 
     /**
