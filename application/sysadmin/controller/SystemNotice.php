@@ -102,7 +102,7 @@ class SystemNotice extends Common
         }
         $ids=implode(",",$data["node_ids"]);
         $data["node_ids"]=",".$ids.",";
-        if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
+        if (!(new Sys)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
     }
