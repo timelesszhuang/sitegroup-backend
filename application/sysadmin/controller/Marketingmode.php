@@ -19,12 +19,17 @@ class Marketingmode extends Common
         $request = $this->getLimit();
         $content = $this->request->get('content');
         $keyword = $this->request->get('keyword');
+        $industry_id = $this->request->get('industry_id');
+
         $where = [];
         if (!empty($content)) {
             $where["content"] = ["like", "%$content%"];
         }
         if (!empty($keyword)) {
             $where["keyword"] = ["like", "%$keyword%"];
+        }
+        if(!empty($industry_id)){
+            $where["industry_id"]=$industry_id;
         }
         $data = (new Mark())->getList($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
