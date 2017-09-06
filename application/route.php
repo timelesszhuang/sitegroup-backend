@@ -300,6 +300,10 @@ Route::resource('admin/product','admin/Product');
 Route::post('admin/uploadProductImg','admin/Product/uploadImage');
 //营销策略
 Route::resource('admin/Marketingmode','admin/Marketingmode');
+//获取行业分类
+Route::get('admin/getIndustry','admin/Industry/getIndustry');
+
+
 
 
 
