@@ -5,6 +5,8 @@ namespace app\sysadmin\controller;
 use app\common\controller\Common;
 use think\Request;
 use app\sysadmin\model\SystemNotice as Sys;
+use think\Validate;
+
 class SystemNotice extends Common
 {
     /**
