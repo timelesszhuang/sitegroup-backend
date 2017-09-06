@@ -69,7 +69,7 @@ class SystemNotice extends Common
     {
         $find=Sys::where(["id"=>$id])->field("create_time,update_time", true)->find();
         if(!empty($find["node_ids"])){
-            $find["node_ids"]=explode(",",trim($find["node_ids"],","));
+            $find["node_ids"]=trim($find["node_ids"],",");
         }
         return $this->resultArray("","",$find);
     }
