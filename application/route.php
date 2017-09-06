@@ -92,7 +92,7 @@ Route::resource('sys/Marketingmode','sysadmin/Marketingmode');
 //节点列表
 Route::get('sys/getNodelist','sysadmin/Node/nodeList');
 //系统推送
-Route::resource('sys/systemNotice'.'sysadmin/SystemNotice');
+Route::resource('sys/systemNotice','sysadmin/SystemNotice');
 
 //====================================================================节点后台
 
