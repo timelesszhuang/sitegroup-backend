@@ -53,6 +53,7 @@ class SystemNotice extends Common
         }
         $ids=implode(",",$data["node_ids"]);
         $data["node_ids"]=",".$ids.",";
+        $data["push_ids"]=$data["node_ids"];
         if (!Sys::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -106,6 +107,8 @@ class SystemNotice extends Common
         }
         $ids=implode(",",$data["node_ids"]);
         $data["node_ids"]=",".$ids.",";
+        // 修改过后会重新推送
+        $data["push_ids"]=$data["node_ids"];
         if (!(new Sys)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
