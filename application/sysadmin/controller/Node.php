@@ -125,4 +125,14 @@ class Node extends Common
             return $this->resultArray('修改成功');
         }
     }
+
+    /**
+     * 获取node列表
+     * @return array
+     */
+    public function nodeList()
+    {
+        $data=\app\sysadmin\model\Node::where(1)->field(["id,name"])->select();
+        return $this->resultArray('','',$data);
+    }
 }
