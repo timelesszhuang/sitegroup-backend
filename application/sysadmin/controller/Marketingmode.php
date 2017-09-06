@@ -72,7 +72,10 @@ class Marketingmode extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('','',Mark::get($id));
+        $mark=Mark::get($id);
+        $mark->readcount++;
+        $mark->save();
+        return $this->resultArray('','',$mark);
     }
 
     /**

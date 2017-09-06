@@ -90,6 +90,8 @@ Route::get('sys/getonenews/:id', 'sysadmin/Hotnews/getOne');
 //营销创意
 Route::resource('sys/Marketingmode','sysadmin/Marketingmode');
 
+
+
 //====================================================================节点后台
 
 //关键词
