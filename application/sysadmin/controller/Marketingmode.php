@@ -5,6 +5,8 @@ namespace app\sysadmin\controller;
 use app\common\controller\Common;
 use think\Request;
 use app\sysadmin\model\Marketingmode as Mark;
+use think\Validate;
+
 class Marketingmode extends Common
 {
     /**
