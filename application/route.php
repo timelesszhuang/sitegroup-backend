@@ -304,7 +304,8 @@ Route::post('admin/uploadProductImg','admin/Product/uploadImage');
 Route::resource('admin/Marketingmode','admin/Marketingmode');
 //获取行业分类
 Route::get('admin/getIndustry','admin/Industry/getIndustry');
-
+//系统推送
+Route::resource('admin/systemNotice','admin/SystemNotice');
 
 
 

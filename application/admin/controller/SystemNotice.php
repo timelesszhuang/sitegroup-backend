@@ -25,8 +25,8 @@ class SystemNotice extends Common
     public function create()
     {
         $user = $this->getSessionUser();
-        $where["push_ids"]=["like"=>",".$user["user_node_id"].","];
-        $count=Sys::where($where)->count();
+        $where["push_ids"]=["like","%,".$user["user_node_id"].",%"];
+        $count=(new Sys())->where($where)->count();
         return $this->resultArray('','',$count);
     }
 
