@@ -15,15 +15,11 @@ class SystemNotice extends Common
      */
     public function index()
     {
-        $request = $this->getLimit();
         $user = $this->getSessionUser();
-        $read=SystemNoticeRead::where(["node_id"=>$user["user_node_id"]])->field(["notice_id"])->select();
+        $node_id=$user["user_node_id"];
+        $request = $this->getLimit();
         $where=[];
-        if(!empty($read)){
-            $data=collection($read)->toArray();
-            $where["id"]=["not in", array_column($data,"notice_id")];
-        }
-        $data = (new Sys())->getList($request["limit"], $request["rows"], $where);
+        $data = (new Sys())->getList($request["limit"], $request["rows"],$node_id, $where);
         return $this->resultArray('', '', $data);
     }
 

@@ -13,10 +13,10 @@ class SystemNotice extends Model
      * @param int $where
      * @return array
      */
-    public function getList($limit, $rows, $where = 0)
+    public function getList($limit, $rows, $node_id,$where = 0)
     {
-        $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->field('update_time',true)->order('id desc')->select();
+        $count=  $this->alias("a")->join("system_notice_read b","b.notice_id=a.id and b.node_id=$node_id","LEFT")->field(["a.*,b.id as readid"])->count();
+        $data=  $this->alias("a")->join("system_notice_read b","b.notice_id=a.id and b.node_id=$node_id","LEFT")->field(["a.*,b.id as readid"])->limit($limit, $rows)->order('id desc')->select();
         return [
             "total" => $count,
             "rows" => $data
