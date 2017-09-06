@@ -2,6 +2,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\SystemNoticeRead;
 use app\common\controller\Common;
 use think\Request;
 use app\admin\model\SystemNotice as Sys;
@@ -14,7 +15,16 @@ class SystemNotice extends Common
      */
     public function index()
     {
-        //
+        $request = $this->getLimit();
+        $user = $this->getSessionUser();
+        $read=SystemNoticeRead::where(["node_id"=>$user["user_node_id"]])->field(["notice_id"])->select();
+        $where=[];
+        if(!empty($read)){
+            $data=collection($read)->toArray();
+            $where["id"]=["not in", array_column($data,"notice_id")];
+        }
+        $data = (new Sys())->getList($request["limit"], $request["rows"], $where);
+        return $this->resultArray('', '', $data);
     }
 
     /**
@@ -25,8 +35,13 @@ class SystemNotice extends Common
     public function create()
     {
         $user = $this->getSessionUser();
-        $where["push_ids"]=["like","%,".$user["user_node_id"].",%"];
-        $count=(new Sys())->where($where)->count();
+        $read=SystemNoticeRead::where(["node_id"=>$user["user_node_id"]])->field(["notice_id"])->select();
+        $where=[];
+        if(!empty($read)){
+            $data=collection($read)->toArray();
+            $where["id"]=["not in", array_column($data,"notice_id")];
+        }
+        $count=Sys::where($where)->count();
         return $this->resultArray('','',$count);
     }
 
