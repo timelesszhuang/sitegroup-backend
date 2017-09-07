@@ -4,6 +4,7 @@ namespace app\user\model;
 
 
 use app\admin\model\Site;
+use app\common\model\LoginLog;
 use think\Config;
 use think\Model;
 use think\Session;
@@ -34,6 +35,23 @@ class SiteUser extends Model
         $user_info_arr["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
         $this->setSession($user_info_arr);
         $site_info=$this->getSiteInfo($user_info->id);
+        $request=Request::instance();
+        $ip=$request->ip();
+        $location_info="未获取到";
+        // 获取ip信息
+        $ip_info=$this->get_ip_info($ip);
+        if(!empty($ip_info)){
+            $location_info=$ip_info['data']['country'].$ip_info['data']['region'].$ip_info['data']['city'];
+        }
+        //记录日志
+        LoginLog::create([
+            "ip"=>$request->ip(),
+            "node_id"=>$user_info["node_id"],
+            "name"=>$user_info["account"],
+            "type_name"=>"站点后台",
+            "location"=>$location_info,
+            "site_id"=>$user_info["id"]
+        ]);
         return ["登录成功", '', ["user_info"=>$user_info_arr,"site_info"=>$site_info]];
     }
 
