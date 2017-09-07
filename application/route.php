@@ -307,7 +307,8 @@ Route::resource('admin/Marketingmode','admin/Marketingmode');
 Route::get('admin/getIndustry','admin/Industry/getIndustry');
 //系统推送
 Route::resource('admin/systemNotice','admin/SystemNotice');
-
+//案例中心
+Route::resource('admin/CaseCenter','admin/CaseCenter');
 
 
 
