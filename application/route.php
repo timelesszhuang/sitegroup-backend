@@ -96,7 +96,7 @@ Route::resource('sys/systemNotice','sysadmin/SystemNotice');
 //营销中心
 Route::resource('sys/CaseCenter',"sysadmin/CaseCenter");
 //营销模式上传缩略图
-Route::get('sys/uploadMarketingmode','sysadmin/Marketingmode/uploadImage');
+Route::post('sys/uploadMarketingmode','sysadmin/Marketingmode/uploadImage');
 
 
 
