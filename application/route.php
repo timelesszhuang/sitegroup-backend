@@ -87,7 +87,14 @@ Route::get('sys/hotnews', 'sysadmin/Hotnews/index');
 Route::post('sys/editnews', 'sysadmin/Hotnews/editnews');
 //一条数据
 Route::get('sys/getonenews/:id', 'sysadmin/Hotnews/getOne');
-
+//营销创意
+Route::resource('sys/Marketingmode','sysadmin/Marketingmode');
+//节点列表
+Route::get('sys/getNodelist','sysadmin/Node/nodeList');
+//系统推送
+Route::resource('sys/systemNotice','sysadmin/SystemNotice');
+//营销中心
+Route::resource('sys/CaseCenter',"sysadmin/CaseCenter");
 //====================================================================节点后台
 
 //关键词
@@ -294,7 +301,14 @@ Route::get('admin/getProductType','admin/ProductType/getTypes');
 Route::resource('admin/product','admin/Product');
 //产品图片
 Route::post('admin/uploadProductImg','admin/Product/uploadImage');
-
+//营销策略
+Route::resource('admin/Marketingmode','admin/Marketingmode');
+//获取行业分类
+Route::get('admin/getIndustry','admin/Industry/getIndustry');
+//系统推送
+Route::resource('admin/systemNotice','admin/SystemNotice');
+//案例中心
+Route::resource('admin/CaseCenter','admin/CaseCenter');
 
 
 

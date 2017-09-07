@@ -26,7 +26,7 @@ class Article extends Model
         Article::event("before_write", function ($article) {
             $rule = '/<img[\s\S]*?src\s*=\s*[\"|\'](.*?)[\"|\'][\s\S]*?>/';
             if (isset($article->content)) {
-                self::replaceBase64($article->content);
+//                self::replaceBase64($article->content);
                 preg_match($rule, $article->content, $matches);
                 if (!empty($matches)) {
                     $imgs=explode('<img',$matches[0]);
@@ -54,7 +54,7 @@ class Article extends Model
     public function getArticle($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->field('summary,update_time,readcount',true)->order('id desc')->select();
+        $data = $this->limit($limit, $rows)->where($where)->field('content,summary,update_time,readcount',true)->order('id desc')->select();
         return [
             "total" => $count,
             "rows" => $data
