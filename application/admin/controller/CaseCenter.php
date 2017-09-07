@@ -19,6 +19,7 @@ class CaseCenter extends Common
         $request = $this->getLimit();
         $title = $this->request->get('title');
         $keyword = $this->request->get('keyword');
+        $content = $this->request->get('content');
         $industry_id = $this->request->get("industry_id");
         $where = [];
         if (!empty($title)) {
@@ -29,6 +30,9 @@ class CaseCenter extends Common
         }
         if (!empty($industry_id)) {
             $where['industry_id'] = $industry_id;
+        }
+        if(!empty($content)){
+            $where["content"]=$content;
         }
         $data = (new CaseC())->getList($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
