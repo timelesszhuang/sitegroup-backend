@@ -5,6 +5,8 @@ namespace app\sysadmin\controller;
 use app\common\controller\Common;
 use think\Request;
 use app\sysadmin\model\CaseCenter as CaCenter;
+use think\Validate;
+
 class CaseCenter extends Common
 {
     /**
