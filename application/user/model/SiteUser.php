@@ -7,6 +7,7 @@ use app\admin\model\Site;
 use app\common\model\LoginLog;
 use think\Config;
 use think\Model;
+use think\Request;
 use think\Session;
 
 class SiteUser extends Model
