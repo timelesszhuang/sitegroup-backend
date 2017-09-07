@@ -44,15 +44,23 @@ class SystemNotice extends Common
         $rule = [
             ["title", "require", "请输入标题"],
             ["content", "require", "请输入内容"],
-            ["node_ids", "require", "请选择id"],
         ];
         $validate = new Validate($rule);
         $data = $request->post();
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $ids=implode(",",$data["node_ids"]);
-        $data["node_ids"]=",".$ids.",";
+        if(isset($data["node_ids"]) && !empty($data["node_ids"])){
+            $ids=implode(",",$data["node_ids"]);
+            $data["node_ids"]=",".$ids.",";
+        }else{
+            $nodeCollection=\app\sysadmin\model\Node::all();
+            if(!empty($nodeCollection)){
+                $nodeArr=collection($nodeCollection)->toArray();
+                $nodeStr=implode(",",array_column($nodeArr,"id"));
+                $data["node_ids"]=",".$nodeStr.",";
+            }
+        }
         if (!Sys::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -97,15 +105,23 @@ class SystemNotice extends Common
         $rule = [
             ["title", "require", "请输入标题"],
             ["content", "require", "请输入内容"],
-            ["node_ids", "require", "请选择id"],
         ];
         $validate = new Validate($rule);
         $data = $request->post();
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $ids=implode(",",$data["node_ids"]);
-        $data["node_ids"]=",".$ids.",";
+        if(isset($data["node_ids"]) && !empty($data["node_ids"])){
+            $ids=implode(",",$data["node_ids"]);
+            $data["node_ids"]=",".$ids.",";
+        }else{
+            $nodeCollection=\app\sysadmin\model\Node::all();
+            if(!empty($nodeCollection)){
+                $nodeArr=collection($nodeCollection)->toArray();
+                $nodeStr=implode(",",array_column($nodeArr,"id"));
+                $data["node_ids"]=",".$nodeStr.",";
+            }
+        }
         if (!(new Sys)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
