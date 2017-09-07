@@ -11,10 +11,12 @@ use think\Config;
 use think\Db;
 use think\Model;
 use app\common\controller\Common;
+use think\Request;
 use think\Session;
-
+use app\common\traits\Obtrait;
 class User extends Model
 {
+    use Obtrait;
     /**
      * 初始化操作
      * @author guozhen
@@ -50,6 +52,22 @@ class User extends Model
         $private = Config::get("crypt.cookiePrivate");
         $user_info["remember"] = md5($user_info["id"] . $user_info["salt"] . $private);
         $this->setSession($user_info_arr);
+        $request=Request::instance();
+        $ip=$request->ip();
+        $location_info="未获取到";
+        // 获取ip信息
+        $ip_info=$this->get_ip_info($ip);
+        if(!empty($ip_info)){
+            $location_info=$ip_info['data']['country'].$ip_info['data']['region'].$ip_info['data']['city'];
+        }
+        //记录日志
+        LoginLog::create([
+            "ip"=>$request->ip(),
+            "node_id"=>$user_info["node_id"],
+            "name"=>$user_info["user_name"],
+            "type_name"=>$user_info["type_name"],
+            "location"=>$location_info
+        ]);
         return ["登录成功", '', $user_info,''];
     }
 

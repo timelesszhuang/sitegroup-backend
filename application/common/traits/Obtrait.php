@@ -90,4 +90,23 @@ trait Obtrait{
         $base64_image = 'data:' . $image_info['mime'] . ';base64,' . chunk_split(base64_encode($image_data));
         return $base64_image;
     }
+
+    /**
+     * @param $ip
+     * @return mixed
+     * 调用接口根据ip查询地址
+     */
+    public function get_ip_info($ip)
+    {
+        $curl = curl_init(); //这是curl的handle
+        $url = "http://ip.taobao.com/service/getIpInfo.php?ip=$ip";
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 2);
+        curl_setopt($curl, CURLOPT_HEADER, 0); //don't show header
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); //相当关键，这句话是让curl_exec($ch)返回的结果可以进行赋值给其他的变量进行，json的数据操作，如果没有这句话，则curl返回的数据不可以进行人为的去操作（如json_decode等格式操作）
+        curl_setopt($curl, CURLOPT_TIMEOUT, 2);
+        $data = curl_exec($curl);
+        return json_decode($data, true);
+    }
 }
