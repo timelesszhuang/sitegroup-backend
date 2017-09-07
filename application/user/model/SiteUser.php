@@ -9,9 +9,10 @@ use think\Config;
 use think\Model;
 use think\Request;
 use think\Session;
-
+use app\common\traits\Obtrait;
 class SiteUser extends Model
 {
+    use Obtrait;
     /**
      * 用户验证
      * @param $usrname
