@@ -76,7 +76,8 @@ class CaseCenter extends Common
      */
     public function read($id)
     {
-        //
+        $CaCenter=CaCenter::get($id);
+        return $this->resultArray('','',$CaCenter);
     }
 
     /**
