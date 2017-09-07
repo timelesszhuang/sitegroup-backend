@@ -61,7 +61,8 @@ class CaseCenter extends Common
             ["content", "require", "请输入内容"],
             ["industry_id", "require", "请选择行业分类"],
             ["industry_name","require","请选择行业分类"],
-            ["keyword","require","请填写关键词"]
+            ["keyword","require","请填写关键词"],
+            ["summary","require","请输入核心解读"]
         ];
         $validate = new Validate($rule);
         $data = $request->post();
@@ -111,7 +112,8 @@ class CaseCenter extends Common
             ["content", "require", "请输入内容"],
             ["industry_id", "require", "请选择行业分类"],
             ["industry_name","require","请选择行业分类"],
-            ["keyword","require","请填写关键词"]
+            ["keyword","require","请填写关键词"],
+            ["summary","require","请输入核心解读"]
         ];
         $validate = new Validate($rule);
         $data = $request->post();
