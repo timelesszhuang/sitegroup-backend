@@ -73,7 +73,7 @@ class SiteUser extends Model
      */
     public function getSiteInfo($user_id)
     {
-        $siteInfo=Site::where(["user_id"=>$user_id])->field("id,domain,site_name")->select();
+        $siteInfo=Site::where(["user_id"=>$user_id])->field("id,url,site_name")->select();
         return $siteInfo;
     }
 
