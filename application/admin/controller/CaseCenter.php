@@ -32,7 +32,7 @@ class CaseCenter extends Common
             $where['industry_id'] = $industry_id;
         }
         if(!empty($content)){
-            $where["content"]=$content;
+            $where["content"]=["like", "%$content%"];;
         }
         $data = (new CaseC())->getList($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
