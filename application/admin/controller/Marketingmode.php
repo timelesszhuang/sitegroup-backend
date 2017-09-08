@@ -15,17 +15,13 @@ class Marketingmode extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $title = $this->request->get('title');
         $content = $this->request->get('content');
         $keyword = $this->request->get('keyword');
         $industry_id = $this->request->get('industry_id');
 
         $where = [];
-        if (!empty($title)) {
-            $where["title"] = ["like", "%$title%"];
-        }
         if (!empty($content)) {
-            $where["content"] = ["like", "%$content%"];
+            $where["title|content|summary"] = ["like", "%$content%"];
         }
         if (!empty($keyword)) {
             $where["keyword"] = ["like", "%$keyword%"];
