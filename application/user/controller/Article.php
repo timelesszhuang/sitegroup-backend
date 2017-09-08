@@ -131,15 +131,28 @@ class Article extends Common
     /**
      * 获取文章类型
      * @return array
-     */
+     *//**
+ * 获取站点文章分类
+ * @return array
+ */
     public function getArticleType()
     {
-        $data = (new Articletype)->getsitetype();
 
-        foreach ($data['data'] as$k=>$v){
-            $v['text'] = $v['name'].'['.$v['tag'].']';
+
+        $where = [];
+        $wh['id'] = $this->request->session()['website']['id'];
+        $Site = new \app\admin\model\Site();
+        $menuid = $Site->where($wh)->field('menu')->find()->menu;
+        $Menuid = explode(',',$menuid);
+        $where['id'] = $Menuid;
+        $menu = new \app\admin\model\Menu();
+        $whe['flag'] = 3;
+        $data = $menu->where('id','in',$Menuid)->where($whe)->field('type_id,type_name,tag_name')->select();
+        foreach ($data as$k=>$v){
+            $v['text'] = $v['type_name'].'['.$v['tag_name'].']';
+            $v['id'] = $v['type_id'];
         }
-        return $data;
+        return $this->resultArray('','',$data);
     }
 
     /**
