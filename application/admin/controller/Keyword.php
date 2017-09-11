@@ -137,6 +137,11 @@ class Keyword extends Common
         }
         $model = new \app\admin\model\Keyword();
         $file_info = $this->getKeywordInfo($post["path"], $post["id"], $model);
+        //如果是A 那么当前上传的就是B类
+        $count=\app\admin\model\Keyword::where(["path"=>["like","%,".$post['id'].",%"]])->count();
+            if($count>20){
+                return $this->resultArray("当前分类下面关键词超过20个");
+        }
         while ($key = fgets($file_info["file"])) {
             $key = str_replace(PHP_EOL, '', trim($key));
             if(empty($key)){
@@ -255,7 +260,11 @@ class Keyword extends Common
         if(!isset($currentKey['tag'])){
             return $this->resultArray("当前关键词不存在",'faile');
         }
-
+        //如果是A 那么当前上传的就是B类
+        $count=\app\admin\model\Keyword::where(["path"=>["like","%,".$data['id'].",%"]])->count();
+        if($count>20){
+            return $this->resultArray("当前分类下面关键词超过20个");
+        }
         switch($currentKey['tag']){
             case 'A':
                 $parent_id=$data["id"];
