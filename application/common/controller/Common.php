@@ -27,7 +27,6 @@ class Common extends Controller
     public function __construct()
     {
         $this->checkSession();
-        session_write_close();
         parent::__construct();
     }
 
