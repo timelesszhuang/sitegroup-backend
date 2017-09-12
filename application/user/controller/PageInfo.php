@@ -164,6 +164,7 @@ class PageInfo extends Common
     {
         $request = $this->getLimit();
         $site_id = $this->getSiteSession('website')["id"];
+        dump($site_id);
         $where['id'] = $site_id;
         $Site = new \app\admin\model\Site();
         $menuid = $Site->where($where)->field('menu')->find()->menu;
