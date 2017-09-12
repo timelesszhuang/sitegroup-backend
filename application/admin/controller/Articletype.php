@@ -130,29 +130,7 @@ class Articletype extends Common
 
 
 
-    /**
-     * 获取站点文章分类
-     * @return array
-     */
-    public function getsitetype()
-    {
-        $where = [];
-        $wh['id'] = $this->request->session()['website']['id'];
-//        dump($wh['id']);die;
-        $Site = new \app\admin\model\Site();
-        $menuid = $Site->where($wh)->field('menu')->find()->menu;
-        $Menuid = explode(',',$menuid);
-//        dump($Menuid);die;
-        $where['id'] = $Menuid;
-        $menu = new \app\admin\model\Menu();
-        $dat = $menu->where('id','in',$Menuid)->whereNotIn('type_name','')->field('type_name')->select();
-        $arr=[];
-        foreach ($dat as $k=>$v ){
-         $arr[$k] = $v->type_name;
-        }
-        $data = (new \app\admin\model\Articletype())->where('name','in',$arr)->select();
-        return $this->resultArray('', '', $data);
-    }
+
 
     /**
      * 统计文章

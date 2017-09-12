@@ -10,13 +10,14 @@ use think\Validate;
 
 class WeixinArticle extends Common
 {
-    protected $conn='';
+    protected $conn = '';
+
     /**
      * 初始化操作
      */
     public function _initialize()
     {
-        $this->conn=new Weixin();
+        $this->conn = new Weixin();
     }
 
     /**
@@ -27,14 +28,14 @@ class WeixinArticle extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $title= $this->request->get('title');
-        $keyword= $this->request->get('keyword_id');
+        $title = $this->request->get('title');
+        $keyword = $this->request->get('keyword_id');
         $where = [];
         if (!empty($title)) {
             $where["title"] = ["like", "%$title%"];
         }
-        if(!empty($keyword)){
-            $where["keyword_id"]=$keyword;
+        if (!empty($keyword)) {
+            $where["keyword_id"] = $keyword;
         }
         $data = $this->conn->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
@@ -54,13 +55,12 @@ class WeixinArticle extends Common
         ];
         $validate = new Validate($rule);
         $data = $request->post();
-
         $user = $this->getSessionUser();
         $data['node_id'] = $user['user_node_id'];
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $data["is_collection"]=20;
+        $data["is_collection"] = 20;
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -74,7 +74,7 @@ class WeixinArticle extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('','',$this->conn->getOne($id));
+        return $this->resultArray('', '', $this->conn->getOne($id));
     }
 
 }

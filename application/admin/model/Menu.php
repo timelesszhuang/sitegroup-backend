@@ -24,7 +24,7 @@ class Menu extends Model
     public function getMenu($limit, $rows, $where)
     {
         $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->order('id desc')->select();
+        $data = $this->limit($limit, $rows)->where($where)->order('id desc,sort asc')->select();
         return [
             "total" => $count,
             "rows" => $data
