@@ -331,7 +331,8 @@ Route::get('admin/getIndustry','admin/Industry/getIndustry');
 Route::resource('admin/systemNotice','admin/SystemNotice');
 //案例中心
 Route::resource('admin/CaseCenter','admin/CaseCenter');
-
+//修改关键词根据id和名称
+Route::get('admin/updateKeyword/:id/:name','admin/Keyword/updateKeyword');
 
 
 //站点相关--------------------------------------------------------
