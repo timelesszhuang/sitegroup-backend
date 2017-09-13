@@ -344,6 +344,20 @@ class Keyword extends Common
         }
     }
 
-
+    /**
+     * 修改关键字名称
+     * @param $id
+     * @param $name
+     * @return array
+     */
+    public function updateKeyword($id,$name)
+    {
+        $keyword=\app\admin\model\Keyword::get($id);
+        $keyword->name=$name;
+        if($keyword->save()){
+            return $this->resultArray('修改成功!!');
+        }
+        return $this->resultArray('修改失败', "faile");
+    }
 
 }
