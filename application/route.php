@@ -97,8 +97,10 @@ Route::resource('sys/systemNotice','sysadmin/SystemNotice');
 Route::resource('sys/CaseCenter',"sysadmin/CaseCenter");
 //营销模式上传缩略图
 Route::post('sys/uploadMarketingmode','sysadmin/Marketingmode/uploadImage');
+//营销事件活动
+Route::resource('sys/eventmarketholiday','sysadmin/Eventmarketingholiday');
 
-
+Route::get('sys/ceee','sysadmin/Eventmarketingholiday/ceshi');
 
 
 
