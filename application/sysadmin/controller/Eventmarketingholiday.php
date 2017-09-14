@@ -5,6 +5,8 @@ namespace app\sysadmin\controller;
 use app\common\controller\Common;
 use think\Request;
 use app\common\model\EventMarketingHoliday as mark;
+use think\Validate;
+
 class Eventmarketingholiday extends Common
 {
     /**
