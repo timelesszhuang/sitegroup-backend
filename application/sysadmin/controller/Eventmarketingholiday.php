@@ -107,13 +107,16 @@ class Eventmarketingholiday extends Common
     {
         $rule = [
             ["name", "require|unique:Industry", "请输入节日|节日重复"],
-            ['startday', 'require', '请输入起始日期'],
+            ['time', 'require', '请输入起始日期'],
         ];
         $data = $this->request->post();
         $validate = new Validate($rule);
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
+        $data["startday"]=date("Y-m-d",strtotime($data["time"][0]));
+        $data["endday"]=date("Y-m-d",strtotime($data["time"][1]));
+        unset($data["time"]);
         if (!mark::update($data)) {
             return $this->resultArray('修改失败', 'failed');
         }
