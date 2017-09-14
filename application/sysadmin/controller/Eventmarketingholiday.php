@@ -16,7 +16,24 @@ class Eventmarketingholiday extends Common
      */
     public function index()
     {
-        $data=(new mark())->field(["id,name,startday"])->select();
+        $year=date("Y");
+        $data=(new mark())->field(["id,name,startday"])->where(["startday"=>["like","%".$year."%"]])->order("id","desc")->select();
+        $arrData=collection($data)->toArray();
+        $temp=array_column($arrData,"startday");
+        $tempArr=[];
+        for($i=0;$i<count($temp);$i++){
+            if(strtotime($temp[$i])>time()){
+                $tempArr[]=strtotime($temp[$i]);
+            }
+        }
+        sort($tempArr);
+        foreach($data as $item){
+            if(strtotime($item->startday)==$tempArr[0]){
+                $item->color=1;
+            }else{
+                $item->coloe=0;
+            }
+        }
         return $this->resultArray('','',$data);
     }
 
@@ -39,14 +56,18 @@ class Eventmarketingholiday extends Common
     public function save(Request $request)
     {
         $rule = [
-            ["name", "require|unique:EventMarketingHoliday", "请输入节日|节日重复"],
-            ['startday', 'require', '请输入起始日期'],
+            ["name", "require", "请输入节日|节日重复"],
+            ['time', 'require', '请输入日期'],
         ];
+
         $data = $this->request->post();
         $validate = new Validate($rule);
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
+        $data["startday"]=date("Y-m-d",strtotime($data["time"][0]));
+        $data["endday"]=date("Y-m-d",strtotime($data["time"][1]));
+        unset($data["time"]);
         if (!mark::create($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
