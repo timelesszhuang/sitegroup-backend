@@ -4,6 +4,8 @@ namespace app\sysadmin\controller;
 
 use app\common\controller\Common;
 use think\Request;
+use app\common\model\HtmlTemplate as Html;
+use think\Validate;
 
 class HtmlTemplate extends Common
 {
@@ -39,16 +41,12 @@ class HtmlTemplate extends Common
             ["img", "require", "请上传图片"],
             ['path', 'require', '请上传模板'],
         ];
-
         $data = $this->request->post();
         $validate = new Validate($rule);
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $data["startday"]=date("Y-m-d",strtotime($data["time"][0]));
-        $data["endday"]=date("Y-m-d",strtotime($data["time"][1]));
-        unset($data["time"]);
-        if (!mark::create($data)) {
+        if (!Html::create($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
