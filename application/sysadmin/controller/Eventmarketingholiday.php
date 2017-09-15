@@ -82,7 +82,9 @@ class Eventmarketingholiday extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('','',mark::get($id));
+        $data=mark::get($id);
+        $data->time=[$data->startday,$data->endday];
+        return $this->resultArray('','',$data);
     }
 
     /**
