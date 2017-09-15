@@ -109,7 +109,7 @@ class HtmlTemplate extends Common
         $info = $file->move(ROOT_PATH . 'public/upload/htmlTemplate');
         if ($info) {
             // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
-            return $this->resultArray('上传成功', '', $info->getSaveName());
+            return $this->resultArray('上传成功', '', "upload/htmlTemplate/".$info->getSaveName());
         } else {
             // 上传失败获取错误信息
             return $this->resultArray('上传失败', 'failed', $info->getError());
@@ -126,7 +126,7 @@ class HtmlTemplate extends Common
         $info = $file->move(ROOT_PATH . 'public/upload/htmlTemplateImg');
         if ($info) {
             // 输出 20160820/42a79759f284b767dfcb2a0197904287.jpg
-            return $this->resultArray('上传成功', '', $info->getSaveName());
+            return $this->resultArray('上传成功', '', "upload/htmlTemplateImg/".$info->getSaveName());
         } else {
             // 上传失败获取错误信息
             return $this->resultArray('上传失败', 'failed', $info->getError());
