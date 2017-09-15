@@ -103,7 +103,8 @@ Route::resource('sys/eventmarketholiday','sysadmin/Eventmarketingholiday');
 Route::post('sys/uploadHtmlTemplate','sysadmin/HtmlTemplate/uploadTemplate');
 //上传html5模板缩略图
 Route::post('sys/uploadHtmlTemplateImg','sysadmin/HtmlTemplate/uploadTemplateImg');
-
+//html5模板模块
+Route::resource('sys/HtmlTemplate','sysadmin/HtmlTemplate');
 
 
 
