@@ -105,7 +105,8 @@ Route::post('sys/uploadHtmlTemplate','sysadmin/HtmlTemplate/uploadTemplate');
 Route::post('sys/uploadHtmlTemplateImg','sysadmin/HtmlTemplate/uploadTemplateImg');
 //html5模板模块
 Route::resource('sys/HtmlTemplate','sysadmin/HtmlTemplate');
-
+//获取多条模板
+Route::get('sys/AllHtmlTemplate/:id','sysadmin/HtmlTemplate/readAll');
 
 
 

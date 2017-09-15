@@ -63,8 +63,7 @@ class HtmlTemplate extends Common
      */
     public function read($id)
     {
-        $data=(new Html)->where(["holiday_id"=>$id])->field(["id,img,path,holiday_id,holiday_name,template_name"])->select();
-        return $this->resultArray('','',$data);
+        return $this->resultArray('','',Html::get($id));
     }
 
     /**
@@ -87,7 +86,22 @@ class HtmlTemplate extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule = [
+            ["img", "require", "请上传图片"],
+            ['path', 'require', '请上传模板'],
+            ['holiday_id',"require","请上传id"],
+            ['holiday_name',"require","请上传名称"],
+            ['template_name','require',"请填写模板名称"]
+        ];
+        $data = $this->request->post();
+        $validate = new Validate($rule);
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'failed');
+        }
+        if (!Html::create($data)) {
+            return $this->resultArray('添加失败', 'failed');
+        }
+        return $this->resultArray('添加成功');
     }
 
     /**
@@ -133,5 +147,16 @@ class HtmlTemplate extends Common
             // 上传失败获取错误信息
             return $this->resultArray('上传失败', 'failed', $info->getError());
         }
+    }
+
+    /**
+     * 获取多条
+     * @param $id
+     * @return array
+     */
+    public function readAll($id)
+    {
+        $data=(new Html)->where(["holiday_id"=>$id])->field(["id,img,path,holiday_id,holiday_name,template_name"])->select();
+        return $this->resultArray('','',$data);
     }
 }
