@@ -63,7 +63,7 @@ class HtmlTemplate extends Common
      */
     public function read($id)
     {
-        $data=(new Html)->where(["holiday_id"=>$id])->field(["id,img,path,holiday_id,holiday_name"])->select();
+        $data=(new Html)->where(["holiday_id"=>$id])->field(["id,img,path,holiday_id,holiday_name,template_name"])->select();
         return $this->resultArray('','',$data);
     }
 
