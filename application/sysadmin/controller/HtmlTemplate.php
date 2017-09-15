@@ -41,7 +41,8 @@ class HtmlTemplate extends Common
             ["img", "require", "请上传图片"],
             ['path', 'require', '请上传模板'],
             ['holiday_id',"require","请上传id"],
-            ['holiday_name',"require","请上传名称"]
+            ['holiday_name',"require","请上传名称"],
+            ['template_name','require',"请填写模板名称"]
         ];
         $data = $this->request->post();
         $validate = new Validate($rule);
@@ -62,7 +63,7 @@ class HtmlTemplate extends Common
      */
     public function read($id)
     {
-        $data=(new Html)->where(["holiday_id"=>$id])->field(["id,img,path,holiday_id"])->select();
+        $data=(new Html)->where(["holiday_id"=>$id])->field(["id,img,path,holiday_id,holiday_name"])->select();
         return $this->resultArray('','',$data);
     }
 
