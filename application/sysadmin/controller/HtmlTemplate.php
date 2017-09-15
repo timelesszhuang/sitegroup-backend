@@ -88,14 +88,19 @@ class HtmlTemplate extends Common
     public function update(Request $request, $id)
     {
         $rule = [
-            ["img", "require", "请上传图片"],
-            ['path', 'require', '请上传模板'],
             ['template_name','require',"请填写模板名称"]
         ];
         $data = $this->request->post();
         $validate = new Validate($rule);
+
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
+        }
+        if(isset($data['path']) && empty($data['path'])){
+            unset($data['path']);
+        }
+        if(isset($data['img']) && empty($data['img'])){
+            unset($data['img']);
         }
         if (!Html::update($data)) {
             return $this->resultArray('添加失败', 'failed');
