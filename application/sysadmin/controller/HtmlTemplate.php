@@ -89,8 +89,6 @@ class HtmlTemplate extends Common
         $rule = [
             ["img", "require", "请上传图片"],
             ['path', 'require', '请上传模板'],
-            ['holiday_id',"require","请上传id"],
-            ['holiday_name',"require","请上传名称"],
             ['template_name','require',"请填写模板名称"]
         ];
         $data = $this->request->post();
