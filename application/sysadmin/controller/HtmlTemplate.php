@@ -2,10 +2,10 @@
 
 namespace app\sysadmin\controller;
 
-use think\Controller;
+use app\common\controller\Common;
 use think\Request;
 
-class HtmlTemplate extends Controller
+class HtmlTemplate extends Common
 {
     /**
      * 显示资源列表
