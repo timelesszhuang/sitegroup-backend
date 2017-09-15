@@ -5,6 +5,7 @@ namespace app\sysadmin\controller;
 use app\common\controller\Common;
 use think\Request;
 use app\common\model\HtmlTemplate as Html;
+use app\common\model\EventMarketingHoliday as mark;
 use think\Validate;
 
 class HtmlTemplate extends Common
@@ -96,7 +97,7 @@ class HtmlTemplate extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        if (!Html::create($data)) {
+        if (!Html::update($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
