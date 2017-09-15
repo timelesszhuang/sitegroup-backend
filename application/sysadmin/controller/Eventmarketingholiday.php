@@ -16,7 +16,10 @@ class Eventmarketingholiday extends Common
      */
     public function index()
     {
-        $year=date("Y");
+        $year = $this->request->get('year');
+        if(empty($year)){
+            $year=date("Y");
+        }
         $data=(new mark())->field(["id,name,startday"])->where(["startday"=>["like","%".$year."%"]])->order("id","desc")->select();
         $arrData=collection($data)->toArray();
         $temp=array_column($arrData,"startday");
