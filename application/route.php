@@ -338,6 +338,29 @@ Route::resource('admin/systemNotice','admin/SystemNotice');
 Route::resource('admin/CaseCenter','admin/CaseCenter');
 //修改关键词根据id和名称
 Route::get('admin/updateKeyword/:id/:name','admin/Keyword/updateKeyword');
+//事件营销活动
+Route::resource('admin/eventmarketholiday','admin/eventmarketholiday');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //站点相关--------------------------------------------------------
