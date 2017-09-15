@@ -83,7 +83,11 @@ class Eventmarketingholiday extends Common
     public function read($id)
     {
         $data=mark::get($id);
-        $data->time=[$data->startday,$data->endday];
+        $day=$data->endday;
+        if(empty($day)){
+            $day=$data->startday;
+        }
+        $data->time=[$data->startday,$day];
         return $this->resultArray('','',$data);
     }
 
