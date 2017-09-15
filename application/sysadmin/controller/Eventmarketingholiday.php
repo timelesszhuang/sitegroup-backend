@@ -82,7 +82,7 @@ class Eventmarketingholiday extends Common
      */
     public function read($id)
     {
-        $data=mark::get($id);
+        $data=(new mark())->where(["id"=>$id])->field("id,startday,endday,name,desc,lunar")->find();
         $day=$data->endday;
         if(empty($day)){
             $day=$data->startday;
