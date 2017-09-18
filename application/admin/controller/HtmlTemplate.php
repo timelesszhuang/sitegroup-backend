@@ -54,7 +54,7 @@ class HtmlTemplate extends Common
         if(is_file(ROOT_PATH."public/upload/".$data["generated_path"])){
             $fdata["data"]=file_get_contents(ROOT_PATH."public/upload/".$data["generated_path"]);
         }
-        return $callback . '(' . $fdata .')';
+         exit($callback . '(' . json_encode($fdata) .')');
     }
 
     /**
