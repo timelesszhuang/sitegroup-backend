@@ -85,7 +85,7 @@ class HtmlTemplate extends Common
         $fdata["data"]="error";
         if(is_file(ROOT_PATH."public/upload/".$data["generated_path"]."/index.html")){
             $file_name = strpos(md5(uniqid(rand(), true)),10,20);
-            $realy=file_get_contents(ROOT_PATH."public/upload/".$data["generated_path"]."/".$file_name.".html");
+            $realy=file_put_contents(ROOT_PATH."public/upload/".$data["generated_path"]."/".$file_name.".html",$content);
             if($realy){
                 $fdata["data"]="修改成功";
             }
