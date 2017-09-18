@@ -342,7 +342,8 @@ Route::get('admin/updateKeyword/:id/:name','admin/Keyword/updateKeyword');
 Route::resource('admin/eventmarketholiday','admin/Eventmarketingholiday');
 //获取多条模板
 Route::get('admin/AllHtmlTemplate/:id','admin/HtmlTemplate/readAll');
-
+//html5模板模块
+Route::resource('admin/HtmlTemplate','admin/HtmlTemplate');
 
 
 
