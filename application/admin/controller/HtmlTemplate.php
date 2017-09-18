@@ -50,11 +50,12 @@ class HtmlTemplate extends Common
         $request=Request::instance();
         $callback=$request->get('callback');
         $data=(new Html)->where(["id"=>$id])->field(["generated_path"])->find();
-        $fdata=json_encode("error");
+        $fdata["data"]="error";
         if(is_file(ROOT_PATH."public/upload/".$data["generated_path"])){
-            $fdata=json_encode(file_get_contents(ROOT_PATH."public/upload/".$data["generated_path"]));
+            $fdata["data"]=file_get_contents(ROOT_PATH."public/upload/".$data["generated_path"]);
         }
-        return $callback . '(' . $fdata .')';
+
+        return $callback . '(' . json_encode($fdata) .')';
     }
 
     /**
