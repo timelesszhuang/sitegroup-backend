@@ -340,8 +340,8 @@ Route::resource('admin/CaseCenter','admin/CaseCenter');
 Route::get('admin/updateKeyword/:id/:name','admin/Keyword/updateKeyword');
 //事件营销活动
 Route::resource('admin/eventmarketholiday','admin/Eventmarketingholiday');
-
-
+//获取多条模板
+Route::get('admin/AllHtmlTemplate/:id','admin/HtmlTemplate/readAll');
 
 
 
