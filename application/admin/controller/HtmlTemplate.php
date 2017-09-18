@@ -46,11 +46,12 @@ class HtmlTemplate extends Common
      * @return \think\Response
      */
     public function read($id)
-    {
+   {
         $request=Request::instance();
         $callback=$request->get('callback');
-        $data=(new Html)->where(["id"=>$id])->field(["id,img,path,holiday_id,holiday_name,template_name"])->find();
-        return $callback . '(' . $data .')';
+        $data=(new Html)->where(["id"=>$id])->field(["path"])->find();
+        $fdata=file_get_contents(ROOT_PATH."/public/upload/".$data["path"]);
+        return $callback . '(' . $fdata .')';
     }
 
     /**
