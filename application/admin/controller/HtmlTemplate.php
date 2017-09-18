@@ -49,8 +49,11 @@ class HtmlTemplate extends Common
    {
         $request=Request::instance();
         $callback=$request->get('callback');
-        $data=(new Html)->where(["id"=>$id])->field(["path"])->find();
-        $fdata=file_get_contents(ROOT_PATH."/public/upload/".$data["path"]);
+        $data=(new Html)->where(["id"=>$id])->field(["generated_path"])->find();
+        $fdata="文件不存在";
+        if(is_file(ROOT_PATH."public/upload/".$data["generated_path"])){
+            $fdata=file_get_contents(ROOT_PATH."public/upload/".$data["generated_path"]);
+        }
         return $callback . '(' . $fdata .')';
     }
 
