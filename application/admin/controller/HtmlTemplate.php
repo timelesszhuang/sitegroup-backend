@@ -51,8 +51,8 @@ class HtmlTemplate extends Common
         $callback=$request->get('callback');
         $data=(new Html)->where(["id"=>$id])->field(["generated_path"])->find();
         $fdata["data"]="error";
-        if(is_file(ROOT_PATH."public/upload/".$data["generated_path"])){
-            $fdata["data"]=file_get_contents(ROOT_PATH."public/upload/".$data["generated_path"]);
+        if(is_file(ROOT_PATH."public/upload/".$data["generated_path"]."/index.html")){
+            $fdata["data"]=file_get_contents(ROOT_PATH."public/upload/".$data["generated_path"]."/index.html");
         }
          exit($callback . '(' . json_encode($fdata) .')');
     }
@@ -77,7 +77,19 @@ class HtmlTemplate extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $request=Request::instance();
+        $callback=$request->get('callback');
+        $content=$request->put('content');
+        $data=(new Html)->where(["id"=>$id])->field(["generated_path"])->find();
+        $fdata["data"]="error";
+        if(is_file(ROOT_PATH."public/upload/".$data["generated_path"]."/index.html")){
+            $file_name = strpos(md5(uniqid(rand(), true)),10,20);
+            $realy=file_get_contents(ROOT_PATH."public/upload/".$data["generated_path"]."/".$file_name.".html");
+            if($realy){
+                $fdata["data"]="修改成功";
+            }
+        }
+        exit($callback . '(' . json_encode($fdata) .')');
     }
 
     /**

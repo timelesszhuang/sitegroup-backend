@@ -25,7 +25,7 @@ class HtmlTemplate extends Model
                         $fileinfo = pathinfo($filename);
                         if(isset($fileinfo["dirname"])){
                             if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
-                                $template->generated_path="eventMarketingHtml/".$fileinfo["dirname"]."/index.html";
+                                $template->generated_path="eventMarketingHtml/".$fileinfo["dirname"];
                             }
                         }
                     }
