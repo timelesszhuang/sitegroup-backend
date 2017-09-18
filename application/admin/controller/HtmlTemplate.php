@@ -50,6 +50,7 @@ class HtmlTemplate extends Common
         $request=Request::instance();
         $callback=$request->get('callback');
         $data=(new Html)->where(["id"=>$id])->field(["generated_path"])->find();
+        $fdata["title"]=$data["template_name"];
         $fdata["data"]="error";
         if(is_file(ROOT_PATH."public/upload/".$data["generated_path"]."/index.html")){
             $fdata["data"]=file_get_contents(ROOT_PATH."public/upload/".$data["generated_path"]."/index.html");
