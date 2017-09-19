@@ -49,7 +49,7 @@ class HtmlTemplate extends Common
         }
         $realy="生成失败";
         if(is_file(ROOT_PATH."public/upload/".$data["generated_path"]."/index.html")){
-            $file_name = mb_substr(md5(time()),10,10);
+            $file_name = mb_substr(md5(time()),0,10);
             $realy=file_put_contents(ROOT_PATH."public/upload/".$data["generated_path"]."/".$file_name.".html",$content);
             if($realy){
                 $user = $this->getSessionUser();
