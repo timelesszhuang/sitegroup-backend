@@ -55,7 +55,7 @@ class HtmlTemplate extends Common
                 $user = $this->getSessionUser();
                 $eventMark=EventMarketingHolidayRecord::where(["node_id"=>$user["user_node_id"],"holiday_id"=>$data["holiday_id"]])->find();
                 if(empty($eventMark)){
-                    EventMarketingHolidayRecord::update([
+                    EventMarketingHolidayRecord::create([
                         "node_id"=>$user["user_node_id"],
                         "template_name"=>$data["template_name"],
                         "holiday"=>$data["holiday_name"],
