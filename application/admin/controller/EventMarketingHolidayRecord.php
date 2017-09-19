@@ -18,6 +18,11 @@ class EventMarketingHolidayRecord extends Common
         $request = $this->getLimit();
         $where = [];
         $user = $this->getSessionUser();
+        $holiday_id = $this->request->get('holiday_id');
+        if(empty($holiday_id)){
+            return $this->resultArray('参数错误', 'failed');
+        }
+        $where["holiday_id"]=$holiday_id;
         $where["node_id"] = $user["user_node_id"];
         $data = (new EventMarket())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
