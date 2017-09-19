@@ -53,14 +53,23 @@ class HtmlTemplate extends Common
             $realy=file_put_contents(ROOT_PATH."public/upload/".$data["generated_path"]."/".$file_name.".html",$content);
             if($realy){
                 $user = $this->getSessionUser();
-                EventMarketingHolidayRecord::where(["node_id"=>$user["user_node_id"],"holiday_id"=>$data["holiday_id"]])->update([
-                    "node_id"=>$user["user_node_id"],
-                    "template_name"=>$data["template_name"],
-                    "holiday"=>$data["holiday_name"],
-                    "holiday_id"=>$data["holiday_id"],
-                    "img"=>$data["img"],
-                    "path"=>$data["generated_path"]."/".$file_name.".html"
-                ]);
+                $eventMark=EventMarketingHolidayRecord::where(["node_id"=>$user["user_node_id"],"holiday_id"=>$data["holiday_id"]])->find();
+                if(empty($eventMark)){
+                    EventMarketingHolidayRecord::update([
+                        "node_id"=>$user["user_node_id"],
+                        "template_name"=>$data["template_name"],
+                        "holiday"=>$data["holiday_name"],
+                        "holiday_id"=>$data["holiday_id"],
+                        "img"=>$data["img"],
+                        "path"=>$data["generated_path"]."/".$file_name.".html"
+                    ]);
+                }else{
+                    if(is_file(ROOT_PATH."public/upload/".$data["path"])){
+                        unlink(ROOT_PATH."public/upload/".$data["path"]);
+                    }
+                    $eventMark->path=$data["generated_path"]."/".$file_name.".html";
+                    $eventMark->save();
+                }
                 $realy="生成成功";
                 return $this->resultArray($realy,'',"api.salesman.cc/upload/".$data["generated_path"]."/".$file_name.".html");
             }
