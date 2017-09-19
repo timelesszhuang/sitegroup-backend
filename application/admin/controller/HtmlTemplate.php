@@ -54,7 +54,7 @@ class HtmlTemplate extends Common
             if($realy){
                 EventMarketingHolidayRecord::create([
                     "template_name"=>$data["template_name"],
-                    "holiday"=>$data["holidat_name"],
+                    "holiday"=>$data["holiday_name"],
                     "holiday_id"=>$data["holiday_id"],
                     "img"=>$data["img"],
                     "path"=>$data["generated_path"]."/".$file_name.".html"
