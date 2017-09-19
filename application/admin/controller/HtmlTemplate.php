@@ -50,6 +50,7 @@ class HtmlTemplate extends Common
         $realy="生成失败";
         if(is_file(ROOT_PATH."public/upload/".$data["generated_path"]."/index.html")){
             $file_name = mb_substr(md5(time()),0,10);
+            echo ROOT_PATH."public/upload/".$data["generated_path"]."/".$file_name.".html";die;
             $realy=file_put_contents(ROOT_PATH."public/upload/".$data["generated_path"]."/".$file_name.".html",$content);
             if($realy){
                 $user = $this->getSessionUser();
@@ -64,9 +65,9 @@ class HtmlTemplate extends Common
                         "path"=>$data["generated_path"]."/".$file_name.".html"
                     ]);
                 }else{
-//                    if(is_file(ROOT_PATH."public/upload/".$eventMark->path)){
-//                        unlink(ROOT_PATH."public/upload/".$eventMark->path);
-//                    }
+                    if(is_file(ROOT_PATH."public/upload/".$eventMark->path)){
+                        unlink(ROOT_PATH."public/upload/".$eventMark->path);
+                    }
                     $eventMark->path=$data["generated_path"]."/".$file_name.".html";
                     $eventMark->save();
                 }
