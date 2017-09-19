@@ -43,7 +43,7 @@ class HtmlTemplate extends Common
         if(empty($id) || empty($content)){
             return $this->resultArray("请传递参数",'failed');
         }
-        $data=(new Html)->where(["id"=>$id])->field(["generated_path"])->find();
+        $data=(new Html)->where(["id"=>$id])->find();
         if(empty($data)){
             return $this->resultArray("模板未获取到",'failed');
         }
