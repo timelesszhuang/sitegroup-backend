@@ -344,7 +344,8 @@ Route::resource('admin/eventmarketholiday','admin/Eventmarketingholiday');
 Route::get('admin/AllHtmlTemplate/:id','admin/HtmlTemplate/readAll');
 //html5模板模块
 Route::resource('admin/HtmlTemplate','admin/HtmlTemplate');
-
+//事件营销记录
+Route::resource('admin/eventRecord','admin/EventMarketingHolidayRecord');
 
 
 
