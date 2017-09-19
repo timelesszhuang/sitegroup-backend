@@ -26,6 +26,7 @@ class HtmlTemplate extends Model
                         if(isset($fileinfo["dirname"])){
                             if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
                                 $template->generated_path="eventMarketingHtml/".$fileinfo["dirname"];
+                                chmod($root.'/public/upload/eventMarketingHtml'.$fileinfo["dirname"]);
                             }
                         }
                     }
