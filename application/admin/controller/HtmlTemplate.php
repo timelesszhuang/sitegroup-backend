@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use app\common\controller\Common;
+use app\common\model\EventMarketingHolidayRecord;
 use think\Request;
 use app\common\model\HtmlTemplate as Html;
 
@@ -39,14 +40,27 @@ class HtmlTemplate extends Common
         $request=Request::instance();
         $id=$request->post('id');
         $content=$request->post('content');
+        if(empty($id) || empty($content)){
+            return $this->resultArray("请传递参数",'failed');
+        }
         $data=(new Html)->where(["id"=>$id])->field(["generated_path"])->find();
+        if(empty($data)){
+            return $this->resultArray("模板未获取到",'failed');
+        }
         $realy="生成失败";
         if(is_file(ROOT_PATH."public/upload/".$data["generated_path"]."/index.html")){
             $file_name = mb_substr(md5(uniqid(rand(), true)),10,10);
             $realy=file_put_contents(ROOT_PATH."public/upload/".$data["generated_path"]."/".$file_name.".html",$content);
             if($realy){
+                EventMarketingHolidayRecord::create([
+                    "template_name"=>$data["template_name"],
+                    "holiday"=>$data["holidat_name"],
+                    "holiday_id"=>$data["holiday_id"],
+                    "img"=>$data["img"],
+                    "path"=>$data["generated_path"]."/".$file_name.".html"
+                ]);
                 $realy="生成成功";
-                return $this->resultArray($realy);
+                return $this->resultArray($realy,'',$data["generated_path"]."/".$file_name.".html");
             }
         }
         return $this->resultArray($realy,'failed');
