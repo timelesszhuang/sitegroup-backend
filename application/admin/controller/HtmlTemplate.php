@@ -60,7 +60,7 @@ class HtmlTemplate extends Common
                     "path"=>$data["generated_path"]."/".$file_name.".html"
                 ]);
                 $realy="生成成功";
-                return $this->resultArray($realy,'',$data["generated_path"]."/".$file_name.".html");
+                return $this->resultArray($realy,'',"api.salesman.cc/upload/".$data["generated_path"]."/".$file_name.".html");
             }
         }
         return $this->resultArray($realy,'failed');
