@@ -64,9 +64,9 @@ class HtmlTemplate extends Common
                         "path"=>$data["generated_path"]."/".$file_name.".html"
                     ]);
                 }else{
-                    if(is_file(ROOT_PATH."public/upload/".$eventMark->path)){
-                        unlink(ROOT_PATH."public/upload/".$eventMark->path);
-                    }
+//                    if(is_file(ROOT_PATH."public/upload/".$eventMark->path)){
+//                        unlink(ROOT_PATH."public/upload/".$eventMark->path);
+//                    }
                     $eventMark->path=$data["generated_path"]."/".$file_name.".html";
                     $eventMark->save();
                 }
