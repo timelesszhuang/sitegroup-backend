@@ -52,7 +52,9 @@ class HtmlTemplate extends Common
             $file_name = mb_substr(md5(uniqid(rand(), true)),10,10);
             $realy=file_put_contents(ROOT_PATH."public/upload/".$data["generated_path"]."/".$file_name.".html",$content);
             if($realy){
-                EventMarketingHolidayRecord::create([
+                $user = $this->getSessionUser();
+                EventMarketingHolidayRecord::where(["node_id"=>$user["user_node_id"],"holiday_id"=>$data["holiday_id"]])->update([
+                    "node_id"=>$user["user_node_id"],
                     "template_name"=>$data["template_name"],
                     "holiday"=>$data["holiday_name"],
                     "holiday_id"=>$data["holiday_id"],
