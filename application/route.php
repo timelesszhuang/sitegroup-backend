@@ -221,6 +221,7 @@ Route::get('Site/getSites', 'admin/Site/getSites');
 Route::get('Site/siteGetCurl/:id/:name', 'admin/Site/siteGetCurl');
 //获取活动模板信息
 Route::get('Site/getActivily/:id', 'admin/Site/getActivily');
+Route::get('commontype', 'admin/Site/commontype');
 
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');

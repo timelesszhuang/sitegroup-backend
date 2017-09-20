@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use app\admin\model\Useragent;
 use app\common\controller\Common;
+use app\common\controller\User;
 use app\common\model\BrowseRecord;
 use think\Db;
 use think\Request;
@@ -38,7 +39,7 @@ class Site extends Common
             $where["site_name"] = ["like", "%$site_name%"];
         }
         if (!empty($site_type)) {
-            $where["site_type"] =$site_type;
+            $where["site_type"] = $site_type;
         }
         if (!empty($url)) {
             $where["url"] = ["like", "%$url%"];
@@ -209,10 +210,10 @@ class Site extends Common
      * 传输模板文件到站点服务器
      * @access public
      */
-    public function uploadTemplateFile($dest, $path,$type,$id)
+    public function uploadTemplateFile($dest, $path, $type, $id)
     {
         $dest = $dest . '/index.php/filemanage/uploadFile';
-        $this->sendFile(ROOT_PATH . "public/" . $path, $dest, $type,$id);
+        $this->sendFile(ROOT_PATH . "public/" . $path, $dest, $type, $id);
     }
 
     /**
@@ -226,10 +227,10 @@ class Site extends Common
         if (empty($main_site)) {
             return $this->resultArray('请选择是否是主站', 'failed');
         }
-        if($main_site!=10){
+        if ($main_site != 10) {
             Db::name('site')
-            ->where('main_site',20)
-            ->setField('main_site', '10');
+                ->where('main_site', 20)
+                ->setField('main_site', '10');
         }
         $data = ["main_site" => $main_site];
 
@@ -277,7 +278,7 @@ class Site extends Common
      * @param $type
      * @return array
      */
-    public function ignoreFrontend($template_id,$site_id,$type)
+    public function ignoreFrontend($template_id, $site_id, $type)
     {
         $this->open_start("正在发送模板,请等待..");
         $user = $this->getSessionUser();
@@ -286,26 +287,26 @@ class Site extends Common
             "id" => $site_id,
             "node_id" => $nid
         ];
-        $send = function () use ($template_id,$site_id,$type,$where) {
+        $send = function () use ($template_id, $site_id, $type, $where) {
             $site = \app\admin\model\Site::where($where)->find();
-            switch($type){
-                    case "activity":
-                        $template=\app\admin\model\Activity::where(["id"=>$template_id])->field("id,code_path as path")->find();
-                        if(!$template){
-                            exit("未找到模板");
-                        }
-                        $id=$template->id;
-                        break;
-                    case "template":
-                        $template = \app\admin\model\Template::get($site->template_id);
-                        if(!$template){
-                            exit("未找到模板");
-                        }
-                        $id=$template->id;
-                        break;
-                }
+            switch ($type) {
+                case "activity":
+                    $template = \app\admin\model\Activity::where(["id" => $template_id])->field("id,code_path as path")->find();
+                    if (!$template) {
+                        exit("未找到模板");
+                    }
+                    $id = $template->id;
+                    break;
+                case "template":
+                    $template = \app\admin\model\Template::get($site->template_id);
+                    if (!$template) {
+                        exit("未找到模板");
+                    }
+                    $id = $template->id;
+                    break;
+            }
 
-            return [$template,$site,$type,$id];
+            return [$template, $site, $type, $id];
         };
         $this->runClosuse($send);
     }
@@ -316,8 +317,8 @@ class Site extends Common
      */
     public function runClosuse(Closure $closure)
     {
-        list($template,$site,$type,$id)=$closure();
-        $upload = $this->uploadTemplateFile($site->url, $template->path,$type,$id);
+        list($template, $site, $type, $id) = $closure();
+        $upload = $this->uploadTemplateFile($site->url, $template->path, $type, $id);
     }
 
     /**
@@ -331,11 +332,11 @@ class Site extends Common
         $SiteData = $this->getList((new \app\admin\model\Site), $field);
         $Site = $SiteData['data'];
         $arr = [];
-        foreach ($Site as $k=>$v){
-         $v['text']= $v['site_name'].'['.$v['url'].']';
+        foreach ($Site as $k => $v) {
+            $v['text'] = $v['site_name'] . '[' . $v['url'] . ']';
             $arr[$k] = $v;
         }
-        return $this->resultArray('','',$Site);
+        return $this->resultArray('', '', $Site);
 
 
     }
@@ -421,9 +422,9 @@ class Site extends Common
      */
     public function getActivily($id)
     {
-        $arr=[];
+        $arr = [];
         foreach ($this->getSiteInfo($id) as $item) {
-            $arr[]=$item;
+            $arr[] = $item;
         }
         return $this->resultArray('', '', $arr);
 
@@ -454,15 +455,15 @@ class Site extends Common
      */
     public function foreachActivily($item, $sync_id = '')
     {
-        $arr='';
+        $arr = '';
         if (!empty($sync_id)) {
-            if (strpos($sync_id, "," . $item->id . ",")!==false) {
-                $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"已同步","sync"=>"重新发送"];
-            }else{
-                $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"未同步","sync"=>"同步"];
+            if (strpos($sync_id, "," . $item->id . ",") !== false) {
+                $arr = ["id" => $item->id, "name" => $item->name, "issync" => "已同步", "sync" => "重新发送"];
+            } else {
+                $arr = ["id" => $item->id, "name" => $item->name, "issync" => "未同步", "sync" => "同步"];
             }
-        }else{
-            $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"未同步","sync"=>"同步"];
+        } else {
+            $arr = ["id" => $item->id, "name" => $item->name, "issync" => "未同步", "sync" => "同步"];
         }
         return $arr;
     }
@@ -589,5 +590,45 @@ class Site extends Common
         ];
 
     }
+
+    public function commontype()
+    {
+        $menu = new Menu();
+        $menudata = $menu->getMenu();
+        $template = new Template();
+        $templatedata = $template->getTemplate();
+        $sitetype = new Sitetype();
+        $sitetypedata = $sitetype->getSiteType();
+        $contactway = new Contactway();
+        $contactwaydata = $contactway->getContactway();
+        $domain = new Domain();
+        $domaindata = $domain->getDomain();
+        $usertype = new Siteuser();
+        $usertypedata = $usertype->getUsers();
+        $keyword = new Keyword();
+        $keyworddata =  $keyword->index();
+        $link = new Links();
+        $linkdata = $link->getLinks();
+        $mobilesite = new Site();
+        $mobilesitedata = $mobilesite->mobileSite();
+        $code = new Code();
+        $codedata = $code->getCodes();
+        $data = [
+            'menutype'=>$menudata['data'],
+            'temptype'=>$templatedata['data'],
+            'sitetype'=>$sitetypedata['data'],
+            'hotline'=>$contactwaydata['data'],
+            'domainlist'=>$domaindata['data'],
+            'userlist'=>$usertypedata['data'],
+            'keyword'=>$keyworddata['data'],
+            'link'=>$linkdata['data'],
+            'mobileSite'=>$mobilesitedata['data'],
+            'code'=>$codedata['data'],
+
+        ];
+       return $this->resultArray('','',$data);
+    }
+
+
 
 }
