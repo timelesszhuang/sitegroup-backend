@@ -40,7 +40,7 @@ class WeixinKeyword extends Model
     public function getKeyword($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
-        $data = Db::connect($this->connection)->table("sc_weixin_keyword")->where($where)->order('status desc')->limit($limit, $rows)->select();
+        $data = Db::connect($this->connection)->table("sc_weixin_keyword")->where($where)->order('id desc,status')->limit($limit, $rows)->select();
         return [
             "total" => $count,
             "rows" => $data
