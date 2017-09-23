@@ -306,6 +306,7 @@ class Site extends Common
                 }
 
             return [$template,$site,$type,$id];
+
         };
         $this->runClosuse($send);
     }
