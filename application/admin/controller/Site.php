@@ -297,7 +297,7 @@ class Site extends Common
                         $id=$template->id;
                         break;
                     case "template":
-                        $template = \app\admin\model\Template::get($site->template_id);
+                        $template = \app\admin\model\Template::get($site["template_id"]);
                         if(!$template){
                             exit("未找到模板");
                         }
