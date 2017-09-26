@@ -347,6 +347,8 @@ Route::get('admin/AllHtmlTemplate/:id','admin/HtmlTemplate/readAll');
 Route::resource('admin/HtmlTemplate','admin/HtmlTemplate');
 //事件营销记录
 Route::resource('admin/eventRecord','admin/EventMarketingHolidayRecord');
+//追踪关键词
+Route::resource('admin/trackKeyword','admin/TrackKeyword');
 
 
 
