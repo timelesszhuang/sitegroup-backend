@@ -189,7 +189,7 @@ class Site extends Common
         }
         $data["menu"] = "," . implode(",", $data["menu"]) . ",";
         $data["keyword_ids"] = "," . implode(",", $data["keyword_ids"]) . ",";
-        $getSite=Site::get($id);
+        $getSite=\app\admin\model\Site::get($id);
         if($getSite->keyword_ids!==$data["keyword_ids"]){
             (new SitePageinfo)->where(["node_id"=>$user["user_node_id"],"site_id"=>$id])->delete();
         }
