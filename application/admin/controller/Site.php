@@ -5,6 +5,7 @@ namespace app\admin\controller;
 use app\admin\model\Useragent;
 use app\common\controller\Common;
 use app\common\model\BrowseRecord;
+use app\common\model\SitePageinfo;
 use think\Db;
 use think\Request;
 use think\Session;
@@ -188,6 +189,10 @@ class Site extends Common
         }
         $data["menu"] = "," . implode(",", $data["menu"]) . ",";
         $data["keyword_ids"] = "," . implode(",", $data["keyword_ids"]) . ",";
+        $getSite=Site::get($id);
+        if($getSite->keyword_ids!==$data["keyword_ids"]){
+            (new SitePageinfo)->where(["node_id"=>$user["user_node_id"],"site_id"=>$id])->delete();
+        }
         if (!(new \app\admin\model\Site)->save($data, $where)) {
             return $this->resultArray('修改失败', 'failed');
         }
