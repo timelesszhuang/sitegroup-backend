@@ -188,6 +188,7 @@ class Site extends Common
             $data["public_code"] = implode(",", $data["public_code"]);
         }
         $data["menu"] = "," . implode(",", $data["menu"]) . ",";
+        sort($data["keyword_ids"]);
         $data["keyword_ids"] = "," . implode(",", $data["keyword_ids"]) . ",";
         $getSite=\app\admin\model\Site::get($id);
         if($getSite->keyword_ids!==$data["keyword_ids"]){
