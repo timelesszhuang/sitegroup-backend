@@ -188,10 +188,13 @@ class Site extends Common
             $data["public_code"] = implode(",", $data["public_code"]);
         }
         $data["menu"] = "," . implode(",", $data["menu"]) . ",";
+        // 先排序 再对比 如果两次不一样的话 直接删除吧
         sort($data["keyword_ids"]);
         $data["keyword_ids"] = "," . implode(",", $data["keyword_ids"]) . ",";
         $getSite=\app\admin\model\Site::get($id);
-        if($getSite->keyword_ids!==$data["keyword_ids"]){
+        $ids=",".$getSite->keyword_ids.",";
+        // compare 对比删除
+        if($ids!=$data["keyword_ids"]){
             (new SitePageinfo)->where(["node_id"=>$user["user_node_id"],"site_id"=>$id])->delete();
         }
         if (!(new \app\admin\model\Site)->save($data, $where)) {
