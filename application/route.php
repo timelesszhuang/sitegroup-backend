@@ -351,6 +351,7 @@ Route::resource('admin/eventRecord','admin/EventMarketingHolidayRecord');
 Route::resource('admin/trackKeyword','admin/TrackKeyword');
 //首页统计
 Route::get('admin/countDatas','admin/Pv/countDatas');
+
 Route::get('admin/gettrack','admin/TrackKeyword/getTrack');
 
 
