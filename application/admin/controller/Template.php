@@ -156,7 +156,9 @@ class Template extends Common
 //        dump($site->url."/index.php/$url?site_id=".$site_id);die;
         if($site){
             $siteData=$this->curl_get($site->url."/index.php/$url?site_id=".$site_id);
-            $data=json_decode($siteData,true);
+            $result = trim($siteData, "\xEF\xBB\xBF");
+            $data=json_decode($result,true);
+//            dump($data);die;
             return $this->resultArray($data['msg'],'',$data["filelist"]);
         }
         return $this->resultArray('当前网站未获取到!','failed');
@@ -173,7 +175,10 @@ class Template extends Common
         $site=\app\admin\model\Site::get($site_id);
         if($site){
             $siteData=$this->curl_get($site->url."/index.php/$url?site_id=".$site_id."&filename=".$name);
-            $data=json_decode($siteData,true);
+//            dump($site->url."/index.php/$url?site_id=".$site_id."&filename=".$name);die;
+            $result = trim($siteData, "\xEF\xBB\xBF");
+            $data=json_decode($result,true);
+//            $data=json_decode($siteData,true);
             return $this->resultArray($data['msg'],'',["content"=>$data["content"],"filename"=>$data["filename"]]);
         }
         return $this->resultArray('当前网站未获取到!','failed');
