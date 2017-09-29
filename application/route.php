@@ -349,6 +349,8 @@ Route::resource('admin/HtmlTemplate','admin/HtmlTemplate');
 Route::resource('admin/eventRecord','admin/EventMarketingHolidayRecord');
 //追踪关键词
 Route::resource('admin/trackKeyword','admin/TrackKeyword');
+//首页统计
+Route::get('admin/countDatas','admin/Pv/countDatas');
 Route::get('admin/gettrack','admin/TrackKeyword/getTrack');
 
 
