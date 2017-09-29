@@ -15,7 +15,7 @@ class CountData extends Model
      */
     public function countPv($node_id,$ttime)
     {
-        return Pv::where(["node"=>$node_id,"create_time"=>["egt",$ttime]])->count();
+        return Pv::where(["node_id"=>$node_id,"create_time"=>["egt",$ttime]])->count();
     }
 
     /**
@@ -26,7 +26,7 @@ class CountData extends Model
      */
     public function countUseragent($node_id,$ttime)
     {
-        return Useragent::where(["node"=>$node_id,"create_time"=>["egt",$ttime]])->count();
+        return Useragent::where(["node_id"=>$node_id,"create_time"=>["egt",$ttime]])->count();
     }
 
     /**
@@ -37,7 +37,7 @@ class CountData extends Model
      */
     public function countArticle($node_id,$ttime)
     {
-        return Article::where(["node"=>$node_id,"create_time"=>["egt",$ttime]])->count();
+        return Article::where(["node_id"=>$node_id,"create_time"=>["egt",$ttime]])->count();
     }
 
     /**
@@ -48,6 +48,6 @@ class CountData extends Model
      */
     public function countShuaidan($node_id,$ttime)
     {
-        return Rejection::where(["node"=>$node_id,"create_time"=>["egt",$ttime]])->count();
+        return Rejection::where(["node_id"=>$node_id,"create_time"=>["egt",$ttime]])->count();
     }
 }
