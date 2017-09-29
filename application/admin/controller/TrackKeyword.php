@@ -19,7 +19,7 @@ class TrackKeyword extends Common
         $limits = $this->getLimit();
         $keyword = $this->request->get('keyword');
         $where = [];
-        if (!empty($name)) {
+        if (!empty($keyword)) {
             $where['keyword'] = ["like", "%$keyword%"];
         }
         $user = $this->getSessionUser();
@@ -123,9 +123,9 @@ class TrackKeyword extends Common
      * 获取所有code
      * @return array
      */
-    public function getCodes()
+    public function getTrack()
     {
-        $field="id,name as text";
-        return $this->getList((new \app\admin\model\Code),$field);
+        $field="id,keyword as text";
+        return $this->getList((new \app\admin\model\TrackKeyword()),$field);
     }
 }
