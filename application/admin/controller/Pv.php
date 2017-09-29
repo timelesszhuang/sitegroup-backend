@@ -100,12 +100,12 @@ class Pv extends Common
         $user = $this->getSessionUser();
         $ttime=strtotime(date("Y-m-d 00:00:00"));
         $cd=new CountData();
-        return [
+        return $this->resultArray('', '', [
             "pv"=>intval($cd->countPv($user["user_node_id"],$ttime)),
             "useragent"=>intval($cd->countUseragent($user["user_node_id"],$ttime)),
             "article"=>intval($cd->countArticle($user["user_node_id"],$ttime)),
             "shuaidan"=>intval($cd->countShuaidan($user["user_node_id"],$ttime))
-        ];
+        ]);
     }
 
 }
