@@ -465,7 +465,8 @@ Route::post('user/producttdkedit', 'user/PageInfo/producttdkedit');
 Route::post('user/editpageinfo', 'user/PageInfo/editpageinfo');
 //关键词替换指定的链接
 Route::resource('user/articleReplaceKeyword','user/ArticleReplaceKeyword');
-
+//统计所有
+Route::get('user/getFour','tool/Pv/countDatas');
 
 //return [
 //    '__pattern__' => [
