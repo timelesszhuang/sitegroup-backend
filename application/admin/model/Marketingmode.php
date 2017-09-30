@@ -22,4 +22,16 @@ class Marketingmode extends Model
             "rows" => $data
         ];
     }
+
+    /**
+     * 格式化时间
+     * @param $key
+     * @return false|string
+     */
+    public function getCreateTimeAttr($key)
+    {
+        if(!empty($key)){
+            return date("y-m-d H:i");
+        }
+    }
 }
