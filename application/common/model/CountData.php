@@ -50,4 +50,15 @@ class CountData extends Model
     {
         return Rejection::where(["node_id"=>$node_id,"create_time"=>["egt",$ttime]])->count();
     }
+
+    /**
+     * 收录数量
+     * @param $node_id
+     * @return float|int
+     */
+    public function countInclude($node_id)
+    {
+        $count=ArticleSearchengineInclude::where(["node_id"=>$node_id])->field("count")->sum();
+        return $count;
+    }
 }
