@@ -108,7 +108,7 @@ class Marketingmode extends Common
      */
     public function getFour()
     {
-        $data = (new Mark())->limit(4)->order("id","desc")->field("id,img,title.create_time")->select();
+        $data = (new Mark())->limit(4)->order("id","desc")->field("id,img,title,create_time")->select();
         return $this->resultArray('', '', $data);
     }
 }
