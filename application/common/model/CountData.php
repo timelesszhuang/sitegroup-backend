@@ -58,7 +58,7 @@ class CountData extends Model
      */
     public function countInclude($node_id)
     {
-        $count=ArticleSearchengineInclude::where(["node_id"=>$node_id])->field("count")->sum();
+        $count=ArticleSearchengineInclude::where(["node_id"=>$node_id])->sum("count");
         return $count;
     }
 }
