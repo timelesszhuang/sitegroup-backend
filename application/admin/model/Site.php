@@ -20,10 +20,8 @@ class Site extends Model
      */
     public function getAll($limit, $rows, $where)
     {
-        $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->order('id', 'desc')->select();
+        $data = $this->where($where)->order('id', 'desc')->select();
         return [
-            "total" => $count,
             "rows" => $data
         ];
     }
