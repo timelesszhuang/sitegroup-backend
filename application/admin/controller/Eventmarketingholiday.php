@@ -37,7 +37,7 @@ class Eventmarketingholiday extends Common
             if(strtotime($item->startday)==$tempArr[0]){
                 $item->color=1;
             }else{
-                $item->coloe=0;
+                $item->color=0;
             }
         }
         return $this->resultArray('','',$data);
