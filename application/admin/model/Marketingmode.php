@@ -31,7 +31,7 @@ class Marketingmode extends Model
     public function getCreateTimeAttr($key)
     {
         if(!empty($key)){
-            return date("y-m-d H:i",strtotime($key));
+            return date("y-m-d H:i",$key);
         }
     }
 }
