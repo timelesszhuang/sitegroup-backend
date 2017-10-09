@@ -21,6 +21,7 @@ class Eventmarketingholiday extends Common
         }
         $data=(new mark())->field(["id,name,startday"])->where(["startday"=>["like","%".$year."%"]])->order("id","desc")->select();
         $arrData=collection($data)->toArray();
+
         $temp=array_column($arrData,"startday");
         $tempArr=[];
         for($i=0;$i<count($temp);$i++){
@@ -29,6 +30,9 @@ class Eventmarketingholiday extends Common
             }
         }
         sort($tempArr);
+        if(empty($tempArr)){
+            return $this->resultArray('没有节日','',$data);
+        }
         foreach($data as $item){
             if(strtotime($item->startday)==$tempArr[0]){
                 $item->color=1;
