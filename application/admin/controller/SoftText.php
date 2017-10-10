@@ -128,7 +128,6 @@ class SoftText extends Common
     public function getOrigin()
     {
         $arr=[
-            ["id"=>0,"text"=>"选择地区"],
             ["id"=>1,"text"=>"北京"],
             ["id"=>2,"text"=>"上海"],
             ["id"=>3,"text"=>"广东"],
