@@ -46,7 +46,9 @@ class SoftText extends Common
     {
         $rule=[
             ["media_id","require","请输入媒体id"],
-            []
+            ["media_name","require","请输入媒体名称"],
+            ["title","require","请输入标题"],
+            ["content","require","请输入内容"]
         ];
         $validate=new Validate($rule);
         $post=$request->post();
@@ -91,7 +93,10 @@ class SoftText extends Common
     public function update(Request $request, $id)
     {
         $rule=[
-            ["media_id","require","请输入媒体id"]
+            ["media_id","require","请输入媒体id"],
+            ["media_name","require","请输入媒体名称"],
+            ["title","require","请输入标题"],
+            ["content","require","请输入内容"]
         ];
         $validate=new Validate($rule);
         $put=$request->put();
