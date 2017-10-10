@@ -109,7 +109,8 @@ Route::resource('sys/HtmlTemplate','sysadmin/HtmlTemplate');
 Route::get('sys/AllHtmlTemplate/:id','sysadmin/HtmlTemplate/readAll');
 //媒体分类
 Route::resource('sys/mediaType','sysadmin/MediaType');
-
+//媒体
+Route::resource('sys/meida','sysadmin/Media');
 
 
 
