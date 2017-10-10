@@ -171,7 +171,7 @@ class SoftText extends Common
      */
     public function returnsOrigin($id)
     {
-        $data=Media::where(["origin_id"=>$id])->field("id,concat_ws('-----',name,media_type_name)")->select();
+        $data=Media::where(["origin_id"=>$id])->field("id,concat_ws('-----',name,media_type_name) as text")->select();
         if(is_null($data)){
             return $this->resultArray('','',[]);
         }
