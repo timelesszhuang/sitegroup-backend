@@ -114,4 +114,45 @@ class MediaType extends Common
     {
         return $this->deleteRecord((new Mtype),$id);
     }
+
+    /**
+     * 获取地区
+     * @return array
+     */
+    public function getOrigin()
+    {
+        $arr=[
+            ["id"=>1,"text"=>"北京"],
+            ["id"=>2,"text"=>"上海"],
+            ["id"=>3,"text"=>"广东"],
+            ["id"=>4,"text"=>"浙江"],
+            ["id"=>5,"text"=>"天津"],
+            ["id"=>6,"text"=>"重庆"],
+            ["id"=>7,"text"=>"湖北"],
+            ["id"=>8,"text"=>"湖南"],
+            ["id"=>9,"text"=>"河北"],
+            ["id"=>10,"text"=>"河南"],
+            ["id"=>11,"text"=>"山东"],
+            ["id"=>12,"text"=>"山西"],
+            ["id"=>13,"text"=>"江苏"],
+            ["id"=>14,"text"=>"江西"],
+            ["id"=>15,"text"=>"四川"],
+            ["id"=>16,"text"=>"辽宁"],
+            ["id"=>17,"text"=>"吉林"],
+            ["id"=>18,"text"=>"福建"],
+            ["id"=>19,"text"=>"安徽"],
+            ["id"=>20,"text"=>"黑龙江"]
+        ];
+        return $this->resultArray('修改成功','',$arr);
+    }
+
+    /**
+     * 获取所有type
+     * @return array
+     */
+    public function getTypes()
+    {
+        $field="id,name as text";
+        return $this->getList((new Mtype),$field);
+    }
 }
