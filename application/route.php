@@ -361,8 +361,10 @@ Route::get('admin/gettrack','admin/TrackKeyword/getTrack');
 Route::get('admin/getFourMarket','admin/Marketingmode/getFour');
 //获取软文
 Route::resource('admin/softText','admin/SoftText');
-
-
+//获取地区
+Route::get('admin/getOrigin','admin/SoftText/getOrigin');
+//获取媒体分类列表
+Route::get('admin/getTypes','admin/SoftText/getTypes');
 
 
 
