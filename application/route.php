@@ -113,7 +113,8 @@ Route::resource('sys/mediaType','sysadmin/MediaType');
 Route::resource('sys/media','sysadmin/Media');
 //媒体地区
 Route::get('sys/mediaOrigin','sysadmin/MediaType/getOrigin');
-
+//媒体城市
+Route::get('sys/getMediaType','sysadmin/MediaType/getTypes');
 
 
 
