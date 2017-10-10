@@ -145,6 +145,5 @@ class Login extends Controller
         }
         return $data;
     }
-
 }
  

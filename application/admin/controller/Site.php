@@ -637,7 +637,4 @@ class Site extends Common
         ];
        return $this->resultArray('','',$data);
     }
-
-
-
 }
