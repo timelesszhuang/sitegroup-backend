@@ -5,6 +5,8 @@ namespace app\sysadmin\controller;
 use app\common\controller\Common;
 use think\Request;
 use app\common\model\MediaType as Mtype;
+use think\Validate;
+
 class MediaType extends Common
 {
     /**
@@ -43,7 +45,18 @@ class MediaType extends Common
      */
     public function save(Request $request)
     {
-        //
+        $rule=[
+            ["name","require","请输入媒体分类名称"]
+        ];
+        $validate=new Validate($rule);
+        $post=$request->post();
+        if(!$validate->check($post)){
+            return $this->resultArray($validate->getError(),'failed');
+        }
+        if(!Mtype::create($post)){
+            return $this->resultArray('添加媒体分类失败','failed');
+        }
+        return $this->resultArray('添加成功');
     }
 
     /**
@@ -54,7 +67,7 @@ class MediaType extends Common
      */
     public function read($id)
     {
-        //
+        return $this->getread(new Mtype(),$id);
     }
 
     /**
@@ -77,7 +90,18 @@ class MediaType extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule=[
+            ["name","require","请输入媒体分类名称"]
+        ];
+        $validate=new Validate($rule);
+        $put=$request->put();
+        if(!$validate->check($put)){
+            return $this->resultArray($validate->getError(),'failed');
+        }
+        if(!(new Mtype)->save($put,["id"=>$id])){
+            return $this->resultArray('修改失败','failed');
+        }
+        return $this->resultArray('修改成功');
     }
 
     /**
@@ -88,6 +112,6 @@ class MediaType extends Common
      */
     public function delete($id)
     {
-        //
+        return $this->deleteRecord((new Mtype),$id);
     }
 }
