@@ -153,6 +153,7 @@ class MediaType extends Common
     public function getTypes()
     {
         $field="id,name as text";
-        return $this->getList((new Mtype),$field);
+        $data = (new Mtype)->field($field)->select();
+        return $this->resultArray('', '', $data);
     }
 }
