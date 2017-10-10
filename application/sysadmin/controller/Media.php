@@ -122,7 +122,10 @@ class Media extends Common
      */
     public function delete($id)
     {
-        if (!(new Me())->delete()) {
+        $where = [
+            "id" => $id,
+        ];
+        if (!(new Me())->where($where)->delete()) {
             return $this->resultArray('删除失败', 'failed');
         }
         return $this->resultArray('删除成功');
