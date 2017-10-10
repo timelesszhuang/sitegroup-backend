@@ -73,7 +73,7 @@ class Media extends Common
      */
     public function read($id)
     {
-        return $this->getread(new Me(), $id));
+        return $this->getread((new Me()), $id);
     }
 
     /**
