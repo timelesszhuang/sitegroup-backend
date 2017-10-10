@@ -111,7 +111,8 @@ Route::get('sys/AllHtmlTemplate/:id','sysadmin/HtmlTemplate/readAll');
 Route::resource('sys/mediaType','sysadmin/MediaType');
 //媒体
 Route::resource('sys/media','sysadmin/Media');
-
+//媒体地区
+Route::get('sys/mediaOrigin','sysadmin/MediaType/getOrigin');
 
 
 
