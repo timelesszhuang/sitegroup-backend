@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use app\common\controller\Common;
+use app\common\model\Media;
 use app\common\model\MediaType;
 use think\Request;
 use app\common\model\SoftText as Soft;
@@ -161,5 +162,20 @@ class SoftText extends Common
         $field="id,name as text";
         $data = (new MediaType())->field($field)->select();
         return $this->resultArray('', '', $data);
+    }
+
+    /**
+     * 根据地区获取媒体分类
+     * @param $id
+     * @return array
+     */
+    public function returnsOrigin($id)
+    {
+        $data=Media::where(["origin_id"=>$id])->field("id,concat_ws('-----',name,media_type_name)")->select();
+        if(is_null($data)){
+            return $this->resultArray('','',[]);
+        }
+        $old_data=collection($data)->toArray();
+        return $this->resultArray('', '', $old_data);
     }
 }

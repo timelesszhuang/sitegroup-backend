@@ -365,7 +365,8 @@ Route::resource('admin/softText','admin/SoftText');
 Route::get('admin/getOrigin','admin/SoftText/getOrigin');
 //获取媒体分类列表
 Route::get('admin/getTypes','admin/SoftText/getTypes');
-
+//根据地区获取媒体信息
+Route::get('admin/returnsOrigin/:id',"admin/SoftText/returnsOrigin");
 
 
 
