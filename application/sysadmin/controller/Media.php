@@ -122,6 +122,9 @@ class Media extends Common
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new Me()),$id);
+        if (!(new Me())->delete()) {
+            return $this->resultArray('删除失败', 'failed');
+        }
+        return $this->resultArray('删除成功');
     }
 }
