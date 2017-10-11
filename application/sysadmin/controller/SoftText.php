@@ -162,10 +162,8 @@ class SoftText extends Common
      */
     public function setCheck($id,$num)
     {
-        $user = $this->getSessionUser();
         $where = [
             "id" => $id,
-            "node_id" => $user["user_node_id"]
         ];
         $soft=Soft::where($where)->update(['is_check' => $num]);
         if(!$soft){
