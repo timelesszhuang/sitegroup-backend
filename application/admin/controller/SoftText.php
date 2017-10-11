@@ -57,6 +57,9 @@ class SoftText extends Common
         if(!$validate->check($post)){
             return $this->resultArray($validate->getError(),"failed");
         }
+        $user = $this->getSessionUser();
+        $post["node_id"]=$user["user_node_id"];
+        $post["node_name"] = $user["user_commpany_name"];
         if(!Soft::create($post)){
             return $this->resultArray("添加失败!",'failed');
         }
@@ -105,6 +108,9 @@ class SoftText extends Common
         if(!$validate->check($post)){
             return $this->resultArray($validate->getError(),"failed");
         }
+        $user = $this->getSessionUser();
+        $post["node_id"]=$user["user_node_id"];
+        $post["node_name"] = $user["user_commpany_name"];
         if(!(new Soft)->save($put,["id"=>$id])){
              return $this->resultArray("修改失败",'failed');
         }
