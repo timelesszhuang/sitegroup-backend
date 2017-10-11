@@ -149,7 +149,7 @@ class SoftText extends Common
     {
         $data=Media::where(["origin_id"=>$id])->field("id,concat_ws('-----',name,media_type_name) as text")->select();
         if(is_null($data)){
-            return $this->resultArray('','',[]);
+            return $this->resultArray('当前地区没有媒体分类','failed');
         }
         $old_data=collection($data)->toArray();
         return $this->resultArray('', '', $old_data);
