@@ -115,7 +115,8 @@ Route::resource('sys/media','sysadmin/Media');
 Route::get('sys/mediaOrigin','sysadmin/MediaType/getOrigin');
 //媒体城市
 Route::get('sys/getMediaType','sysadmin/MediaType/getTypes');
-
+//软文
+Route::resource('sys/softText','sysadmin/SoftText');
 
 
 

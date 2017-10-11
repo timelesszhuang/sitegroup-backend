@@ -1,14 +1,10 @@
 <?php
 
-namespace app\admin\controller;
+namespace app\sysadmin\controller;
 
 use app\common\controller\Common;
-use app\common\model\Media;
-use app\common\model\MediaType;
 use think\Request;
 use app\common\model\SoftText as Soft;
-use think\Validate;
-
 class SoftText extends Common
 {
     /**
@@ -46,26 +42,7 @@ class SoftText extends Common
      */
     public function save(Request $request)
     {
-        $rule=[
-            ["media_id","require","请输入媒体id"],
-            ["media_name","require","请输入媒体名称"],
-            ["title","require","请输入标题"],
-            ["content","require","请输入内容"],
-            ["origin","require","请选择地区"],
-            ["origin_id","require","请选择地区"]
-        ];
-        $validate=new Validate($rule);
-        $post=$request->post();
-        if(!$validate->check($post)){
-            return $this->resultArray($validate->getError(),"failed");
-        }
-        $user = $this->getSessionUser();
-        $post["node_id"]=$user["user_node_id"];
-        $post["node_name"] = $user["user_commpany_name"];
-        if(!Soft::create($post)){
-            return $this->resultArray("添加失败!",'failed');
-        }
-        return $this->resultArray("添加成功!");
+        //
     }
 
     /**
@@ -112,11 +89,8 @@ class SoftText extends Common
         if(!$validate->check($put)){
             return $this->resultArray($validate->getError(),"failed");
         }
-        $user = $this->getSessionUser();
-        $put["node_id"]=$user["user_node_id"];
-        $put["node_name"] = $user["user_commpany_name"];
         if(!(new Soft)->save($put,["id"=>$id])){
-             return $this->resultArray("修改失败",'failed');
+            return $this->resultArray("修改失败",'failed');
         }
         return $this->resultArray("修改成功!");
     }
@@ -129,16 +103,7 @@ class SoftText extends Common
      */
     public function delete($id)
     {
-        $user = $this->getSessionUser();
-        $where = [
-            "id" => $id,
-            "node_id" => $user["user_node_id"],
-            "is_check"=>1
-        ];
-        if (!(new Soft)->where($where)->delete()) {
-            return $this->resultArray('删除失败', 'failed');
-        }
-        return $this->resultArray('删除成功');
+        //
     }
 
     /**
@@ -170,52 +135,5 @@ class SoftText extends Common
             ["id"=>20,"text"=>"黑龙江"]
         ];
         return $this->resultArray('修改成功','',$arr);
-    }
-
-    /**
-     * 获取所有type
-     * @return array
-     */
-    public function getTypes()
-    {
-        $field="id,name as text";
-        $data = (new MediaType())->field($field)->select();
-        return $this->resultArray('', '', $data);
-    }
-
-    /**
-     * 根据地区获取媒体分类
-     * @param $id
-     * @return array
-     */
-    public function returnsOrigin($id)
-    {
-        $data=Media::where(["origin_id"=>$id])->field("id,concat_ws('-----',name,media_type_name) as text")->select();
-        if(is_null($data)){
-            return $this->resultArray('','',[]);
-        }
-        $old_data=collection($data)->toArray();
-        return $this->resultArray('', '', $old_data);
-    }
-
-    /**
-     * 设置审核状态
-     * @param $id
-     * @param $num
-     * @return array
-     */
-    public function setCheck($id,$num)
-    {
-        $user = $this->getSessionUser();
-        $where = [
-            "id" => $id,
-            "node_id" => $user["user_node_id"]
-        ];
-        $soft=Soft::where($where)->get();
-        $soft->is_check=$num;
-        if(!$soft->save()){
-            return $this->resultArray('修改失败！', 'failed');
-        }
-        return $this->resultArray('修改成功!');
     }
 }
