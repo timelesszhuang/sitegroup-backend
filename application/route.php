@@ -121,7 +121,8 @@ Route::resource('sys/softText','sysadmin/SoftText');
 Route::get('sys/softGetOrigin','sysadmin/SoftText/getOrigin');
 //软文根据地区获取媒体分类
 Route::get('sys/softGetMediaType/:id','sysadmin/SoftText/returnsOrigin');
-
+//设置审核状态
+Route::get('sys/setCheck/:id/:num','sysadmin/SoftText/setCheck');
 
 
 
