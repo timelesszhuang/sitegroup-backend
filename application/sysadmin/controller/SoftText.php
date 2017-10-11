@@ -6,6 +6,7 @@ use app\common\controller\Common;
 use think\Request;
 use app\common\model\SoftText as Soft;
 use app\common\model\Media;
+use think\Validate;
 
 class SoftText extends Common
 {
