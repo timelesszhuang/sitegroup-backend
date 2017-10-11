@@ -172,16 +172,6 @@ class SoftText extends Common
         return $this->resultArray('修改成功','',$arr);
     }
 
-    /**
-     * 获取所有type
-     * @return array
-     */
-    public function getTypes()
-    {
-        $field="id,name as text";
-        $data = (new MediaType())->field($field)->select();
-        return $this->resultArray('', '', $data);
-    }
 
     /**
      * 根据地区获取媒体分类
@@ -198,24 +188,4 @@ class SoftText extends Common
         return $this->resultArray('', '', $old_data);
     }
 
-    /**
-     * 设置审核状态
-     * @param $id
-     * @param $num
-     * @return array
-     */
-    public function setCheck($id,$num)
-    {
-        $user = $this->getSessionUser();
-        $where = [
-            "id" => $id,
-            "node_id" => $user["user_node_id"]
-        ];
-        $soft=Soft::where($where)->get();
-        $soft->is_check=$num;
-        if(!$soft->save()){
-            return $this->resultArray('修改失败！', 'failed');
-        }
-        return $this->resultArray('修改成功!');
-    }
 }

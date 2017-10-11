@@ -117,6 +117,10 @@ Route::get('sys/mediaOrigin','sysadmin/MediaType/getOrigin');
 Route::get('sys/getMediaType','sysadmin/MediaType/getTypes');
 //软文
 Route::resource('sys/softText','sysadmin/SoftText');
+//软文获取地区
+Route::get('sys/softGetOrigin','sysadmin/SoftText/getOrigin');
+//软文根据地区获取媒体分类
+Route::get('sys/softGetMediaType/:id','sysadmin/SoftText/returnsOrigin');
 
 
 
