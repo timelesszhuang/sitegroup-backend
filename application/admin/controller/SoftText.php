@@ -105,12 +105,12 @@ class SoftText extends Common
         ];
         $validate=new Validate($rule);
         $put=$request->put();
-        if(!$validate->check($post)){
+        if(!$validate->check($put)){
             return $this->resultArray($validate->getError(),"failed");
         }
         $user = $this->getSessionUser();
-        $post["node_id"]=$user["user_node_id"];
-        $post["node_name"] = $user["user_commpany_name"];
+        $put["node_id"]=$user["user_node_id"];
+        $put["node_name"] = $user["user_commpany_name"];
         if(!(new Soft)->save($put,["id"=>$id])){
              return $this->resultArray("修改失败",'failed');
         }
