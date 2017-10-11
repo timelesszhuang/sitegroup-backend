@@ -19,10 +19,10 @@ class SoftText extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $name = $this->request->get('name');
+        $title = $this->request->get('title');
         $where = [];
-        if (!empty($name)) {
-            $where["name"] = ["like", "%$name%"];
+        if (!empty($title)) {
+            $where["title"] = ["like", "%$title%"];
         }
         $data = (new Soft())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
