@@ -5,6 +5,8 @@ namespace app\sysadmin\controller;
 use app\common\controller\Common;
 use think\Request;
 use app\common\model\SoftText as Soft;
+use app\common\model\Media;
+
 class SoftText extends Common
 {
     /**
@@ -165,9 +167,8 @@ class SoftText extends Common
             "id" => $id,
             "node_id" => $user["user_node_id"]
         ];
-        $soft=Soft::where($where)->get();
-        $soft->is_check=$num;
-        if(!$soft->save()){
+        $soft=Soft::where($where)->update(['is_check' => $num]);
+        if(!$soft){
             return $this->resultArray('修改失败！', 'failed');
         }
         return $this->resultArray('修改成功!');
