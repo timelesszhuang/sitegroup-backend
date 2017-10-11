@@ -50,7 +50,9 @@ class SoftText extends Common
             ["media_id","require","请输入媒体id"],
             ["media_name","require","请输入媒体名称"],
             ["title","require","请输入标题"],
-            ["content","require","请输入内容"]
+            ["content","require","请输入内容"],
+            ["origin","require","请选择地区"],
+            ["origin_id","require","请选择地区"]
         ];
         $validate=new Validate($rule);
         $post=$request->post();
@@ -101,7 +103,9 @@ class SoftText extends Common
             ["media_id","require","请输入媒体id"],
             ["media_name","require","请输入媒体名称"],
             ["title","require","请输入标题"],
-            ["content","require","请输入内容"]
+            ["content","require","请输入内容"],
+            ["origin","require","请选择地区"],
+            ["origin_id","require","请选择地区"]
         ];
         $validate=new Validate($rule);
         $put=$request->put();
