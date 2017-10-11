@@ -148,7 +148,7 @@ class SoftText extends Common
     public function returnsOrigin($id)
     {
         $data=Media::where(["origin_id"=>$id])->field("id,concat_ws('-----',name,media_type_name) as text")->select();
-        if(is_null($data)){
+        if(empty($data)){
             return $this->resultArray('当前地区没有媒体分类','failed');
         }
         $old_data=collection($data)->toArray();
