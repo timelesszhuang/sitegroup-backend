@@ -30,7 +30,7 @@ class SiteUser extends Model
         if (md5($pwd . $username) != $user_info_arr["pwd"]) {
             return ["用户名或密码错误", "failed",''];
         }
-        if($user_info['is_on']==20){
+        if($user_info_arr['is_on']==20){
             return ["当前用户被禁止登录!!", "failed",''];
         }
         unset($user_info_arr["pwd"]);
