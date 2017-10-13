@@ -84,7 +84,7 @@ class Login extends Controller
             return $this->resultArray('', "failed");
         }
         // root用户免除限制
-        if($userInfo["user_name"]!="root") {
+        if($userInfo["id"]!=1) {
             // 查询node_id是否被禁用 如果被禁同样禁止登录
             $node_info = Node::where(["id" => $userInfo["node_id"]])->find();
             if (empty($node_info)) {
