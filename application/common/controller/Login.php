@@ -83,6 +83,7 @@ class Login extends Controller
         if ($post["remember"] != md5($userInfo["id"] . $userInfo["salt"] . $private)) {
             return $this->resultArray('', "failed");
         }
+        return $userInfo;
         // root用户免除限制
         if($userInfo["id"]!=1) {
             // 查询node_id是否被禁用 如果被禁同样禁止登录
