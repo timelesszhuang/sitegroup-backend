@@ -90,7 +90,9 @@ class Pv extends Common
      */
     public function countDatas()
     {
-        $siteinfo = Site::getSiteInfo();
+        $siteinfo['node_id'] = $this->getSiteSession('login_site')["node_id"];
+        $siteinfo["id"] = $this->getSiteSession('website')["id"];
+
         $ttime=strtotime(date("Y-m-d 00:00:00"));
         $cd=new CountData();
         return $this->resultArray('', '', [
