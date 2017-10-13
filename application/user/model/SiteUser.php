@@ -41,7 +41,7 @@ class SiteUser extends Model
             return ["当前用户没有节点后台!!", "failed",''];
         }
         if($node_info["status"]=="off"){
-            return ["当前节点后台进行登录!!", "failed",''];
+            return ["当前节点后台禁止登录!!", "failed",''];
         }
         unset($user_info_arr["pwd"]);
         //获取私钥
