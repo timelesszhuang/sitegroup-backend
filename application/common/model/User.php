@@ -51,10 +51,10 @@ class User extends Model
         // 查询node_id是否被禁用 如果被禁同样禁止登录
         $node_info=Node::where(["id"=>$user_info_arr["node_id"]])->find();
         if(empty($node_info)){
-            return ["当前用户没有节点后台!!", "failed"];
+            return ["当前用户没有节点后台!!", "failed",''];
         }
         if($node_info["status"]=="off"){
-            return ["当前节点后台禁止登录!!", "failed"];
+            return ["当前节点后台禁止登录!!", "failed",''];
         }
         unset($user_info["pwd"]);
         //获取私钥
