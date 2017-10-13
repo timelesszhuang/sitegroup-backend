@@ -2,6 +2,7 @@
 
 namespace app\user\controller;
 
+use app\admin\model\Site;
 use app\common\controller\Common;
 use app\user\model\CountData;
 use think\Request;
