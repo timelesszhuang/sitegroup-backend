@@ -2,6 +2,7 @@
 
 namespace app\user\model;
 
+use app\admin\model\Pv;
 use think\Model;
 
 class CountData extends Model
