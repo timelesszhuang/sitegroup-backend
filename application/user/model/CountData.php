@@ -2,7 +2,11 @@
 
 namespace app\user\model;
 
+use app\admin\model\Article;
 use app\admin\model\Pv;
+use app\admin\model\Rejection;
+use app\admin\model\Useragent;
+use app\common\model\ArticleSearchengineInclude;
 use think\Model;
 
 class CountData extends Model
