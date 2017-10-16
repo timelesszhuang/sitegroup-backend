@@ -2,6 +2,7 @@
 
 namespace app\user\controller;
 
+use app\sysadmin\model\Node;
 use think\Controller;
 use app\admin\model\Site;
 use app\user\model\SiteUser;
