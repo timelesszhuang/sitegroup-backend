@@ -74,7 +74,6 @@ class Login extends Controller
      */
     public function autoLogin()
     {
-        return 111;
         $post = $this->request->post();
         if (empty($post["user_id"]) || empty($post["remember"])) {
             return $this->resultArray('', "failed");
