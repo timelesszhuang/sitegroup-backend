@@ -164,4 +164,20 @@ class Company extends Common
         return $this->resultArray('上传失败',"failed");
     }
 
+    /**
+     * 上传商标
+     * @return array
+     */
+    public function uploadTrademark()
+    {
+        $request=Request::instance();
+        $trademark=$request->file("trademark");
+        $path='/upload/company/trademark/';
+        $info=$trademark->move(ROOT_PATH.'public'.$path);
+        if($info){
+            return $this->resultArray('上传成功!','',$path.$info->getSaveName());
+        }
+        return $this->resultArray('上传失败!',"failed");
+    }
+
 }
