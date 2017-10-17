@@ -76,7 +76,7 @@ class Company extends Common
      */
     public function read($id)
     {
-        //
+        return $this->getread((new Com),$id);
     }
 
     /**
@@ -99,7 +99,28 @@ class Company extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule=[
+            ["name","require","请输入机构名称"],
+            ["industry_id","require","请输入行业名称"],
+            ["industry_name","require","请输入行业名称"],
+            ["tax_registration_number","require","请输入税务登记号"],
+            ["business_license","require","请上传营业执照"],
+            ["artificialperson","require","请输入法人名称"],
+            ["artificialperson_id","require","请输入法人身份证"],
+            ["sale_manage","require","请输入营销系统负责人"],
+            ["sale_manage_phone","require","请输入营销系统负责人电话"],
+            ["manbusiness","require","请输入公司主营业务"]
+        ];
+        $validate=new Validate($rule);
+        $put=$request->put();
+        if(!$validate->check($put)){
+            return $this->resultArray($validate->getError(),"failed");
+        }
+        $company=new Com();
+        if(!$company->allowField($put)->save($put,["id"=>$id])){
+            return $this->resultArray('修改失败',"failed");
+        }
+        return $this->resultArray('修改成功');
     }
 
     /**
@@ -110,7 +131,7 @@ class Company extends Common
      */
     public function delete($id)
     {
-        //
+
     }
 
     /**
