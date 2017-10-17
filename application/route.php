@@ -379,7 +379,8 @@ Route::resource('admin/Company','admin/Company');
 Route::post('admin/uploadBusinessLicense','admin/Company/uploadBusinessLicense');
 //上传法人身份证
 Route::post('admin/uploadArtificialPersonId','admin/Company/uploadArtificialPersonId');
-
+//上传商标
+Route::post('admin/uploadTrademark','admin/Company/uploadTrademark');
 
 
 
