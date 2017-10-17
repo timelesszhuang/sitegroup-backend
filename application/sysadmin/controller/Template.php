@@ -100,7 +100,7 @@ class Template extends Common
         $request=Request::instance();
         $phptemp=$request->file('phptemplate');
         $path="/upload/template/";
-        $info=$phptemp->move(ROOT_PATH."public/".$path);
+        $info=$phptemp->move(ROOT_PATH."public".$path);
         if($info){
             return $this->resultArray("上传成功",'',$path.$info->getSaveName());
         }
@@ -116,10 +116,26 @@ class Template extends Common
         $request=Request::instance();
         $template=$request->file("template");
         $path="/upload/srctemplate/";
-        $info=$template->move(ROOT_PATH."public/".$path);
+        $info=$template->move(ROOT_PATH."public".$path);
         if($info){
             return $this->resultArray("上传成功","",$path.$info->getSaveName());
         }
         return $this->resultArray("上传失败","failed");
+    }
+
+    /**
+     * 上传缩略图
+     * @return array
+     */
+    public function uploadThumbnails()
+    {
+        $request=Request::instance();
+        $thumb=$request->file("thumbnails");
+        $path="/upload/srctemplate/";
+        $info=$thumb->move(ROOT_PATH."public".$path);
+        if($info){
+            return $this->resultArray("上传成功",'',$info->getSaveName());
+        }
+        return $this->resultArray("上传失败!","failed");
     }
 }
