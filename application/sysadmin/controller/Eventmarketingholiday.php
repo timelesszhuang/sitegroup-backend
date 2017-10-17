@@ -30,6 +30,9 @@ class Eventmarketingholiday extends Common
             }
         }
         sort($tempArr);
+        if(empty($tempArr)){
+            return $this->resultArray('没有节日','',$data);
+        }
         foreach($data as $item){
             if(strtotime($item->startday)==$tempArr[0]){
                 $item->color=1;
