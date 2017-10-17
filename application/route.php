@@ -373,8 +373,10 @@ Route::get('admin/getOrigin','admin/SoftText/getOrigin');
 Route::get('admin/getTypes','admin/SoftText/getTypes');
 //根据地区获取媒体信息
 Route::get('admin/returnsOrigin/:id',"admin/SoftText/returnsOrigin");
-
-
+//完善企业信息
+Route::resource('admin/Company','admin/Company');
+//上传企业执照
+Route::post('admin/uploadBusinessLicense','admin/Company/uploadBusinessLicense');
 
 
 
