@@ -4,7 +4,8 @@ namespace app\sysadmin\controller;
 
 use app\common\controller\Common;
 use think\Request;
-
+use think\Validate;
+use app\admin\model\Template as tem;
 class Template extends Common
 {
     /**
@@ -43,7 +44,22 @@ class Template extends Common
      */
     public function save(Request $request)
     {
-        //
+        $rule=[
+            ["name","require","请先填写模板名"],
+            ["thumbnails","require","请先上传缩略图"],
+            ["path","require","请先上传替换后的模板"],
+            ["show_path","require","请先上传未替换的模板"]
+        ];
+        $validate=new Validate($rule);
+        $post=$request->post();
+        if(!$validate->check($post)){
+            return $this->resultArray($validate->getError(),"failed");
+        }
+        $tem=new tem();
+        if(!$tem->allowField(true)->save($post)){
+            return $this->resultArray("添加失败","failed");
+        }
+        return $this->resultArray("添加成功!!");
     }
 
     /**
