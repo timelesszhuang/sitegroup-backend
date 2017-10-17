@@ -123,6 +123,13 @@ Route::get('sys/softGetOrigin','sysadmin/SoftText/getOrigin');
 Route::get('sys/softGetMediaType/:id','sysadmin/SoftText/returnsOrigin');
 //设置审核状态
 Route::get('sys/setCheck/:id/:num','sysadmin/SoftText/setCheck');
+//后台上传模板
+Route::resource('sys/template','sysadmin/Template');
+//提交php嵌套后的模板
+Route::post('sys/uploadphptemplate',"sysadmin/Template/uploadPHPTemplate");
+//提交原始模板
+Route::post('sys/uploadtemplate',"sysadmin/Template/uploadTemplate");
+
 
 
 
