@@ -377,7 +377,8 @@ Route::get('admin/returnsOrigin/:id',"admin/SoftText/returnsOrigin");
 Route::resource('admin/Company','admin/Company');
 //上传企业执照
 Route::post('admin/uploadBusinessLicense','admin/Company/uploadBusinessLicense');
-
+//上传法人身份证
+Route::post('admin/uploadArtificialPersonId','admin/Company/uploadArtificialPersonId');
 
 
 
