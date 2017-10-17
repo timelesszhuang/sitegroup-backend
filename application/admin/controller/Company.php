@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use app\common\controller\Common;
+use app\sysadmin\model\Node;
 use think\Request;
 use app\sysadmin\model\Company as Com;
 use think\Validate;
@@ -76,7 +77,13 @@ class Company extends Common
      */
     public function read($id)
     {
-        return $this->getread((new Com),$id);
+        $user = $this->getSessionUser();
+        $node_id = $user["user_node_id"];
+        $node=Node::get($node_id);
+        if(empty($node->com_id)){
+            return $this->resultArray('查询错误',"failed");
+        }
+        return $this->getread((new Com),$node->com_id);
     }
 
     /**
