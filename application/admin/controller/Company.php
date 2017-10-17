@@ -120,10 +120,10 @@ class Company extends Common
     {
         $request=Request::instance();
         $business=$request->file("businesslicense");
-        $path="/upload/company/businesslicense";
+        $path="/upload/company/businesslicense/";
         $info=$business->move(ROOT_PATH.'public'.$path);
         if($info){
-            return $this->resultArray("上传成功",'',$path."/".$info->getSaveName());
+            return $this->resultArray("上传成功",'',$path.$info->getSaveName());
         }
         return $this->resultArray('上传失败',"failed");
     }
@@ -135,10 +135,10 @@ class Company extends Common
     {
         $request=Request::instance();
         $artificial=$request->file('artificialpersonid');
-        $path="/upload/company/artificialpersonid";
+        $path="/upload/company/artificialpersonid/";
         $info=$artificial->move(ROOT_PATH.'public'.$path);
         if($info){
-            return $this->resultArray('上传成功','',$path."/".$info->getSaveName());
+            return $this->resultArray('上传成功','',$path.$info->getSaveName());
         }
         return $this->resultArray('上传失败',"failed");
     }
