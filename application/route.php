@@ -129,7 +129,8 @@ Route::resource('sys/template','sysadmin/Template');
 Route::post('sys/uploadphptemplate',"sysadmin/Template/uploadPHPTemplate");
 //提交原始模板
 Route::post('sys/uploadtemplate',"sysadmin/Template/uploadTemplate");
-
+//模板缩略图
+Route::post('sys/uploadthumbnails',"sysadmin/Template/uploadThumbnails");
 
 
 
