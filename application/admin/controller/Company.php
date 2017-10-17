@@ -102,8 +102,7 @@ class Company extends Common
         if(!$validate->check($put)){
             return $this->resultArray($validate->getError(),"failed");
         }
-        $company=new Com();
-        if(!$company->allowField($put)->save($put,["id"=>$id])){
+        if(!Com::update($put,["id"=>$id])){
             return $this->resultArray('修改失败',"failed");
         }
         return $this->resultArray('修改成功');
