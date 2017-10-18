@@ -50,7 +50,9 @@ class Template extends Common
             ["name","require","请先填写模板名"],
             ["thumbnails","require","请先上传缩略图"],
             ["path","require","请先上传替换后的模板"],
-            ["show_path","require","请先上传未替换的模板"]
+            ["show_path","require","请先上传未替换的模板"],
+            ["industry_name","require","请上传行业名称"],
+            ["industry_id","require","请上传行业id"]
         ];
         $validate=new Validate($rule);
         $post=$request->post();
@@ -110,7 +112,9 @@ class Template extends Common
             ["name","require","请先填写模板名"],
             ["thumbnails","require","请先上传缩略图"],
             ["path","require","请先上传替换后的模板"],
-            ["show_path","require","请先上传未替换的模板"]
+            ["show_path","require","请先上传未替换的模板"],
+            ["industry_name","require","请上传行业名称"],
+            ["industry_id","require","请上传行业id"]
         ];
         $validate=new Validate($rule);
         $put=$request->put();
