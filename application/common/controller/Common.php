@@ -326,11 +326,22 @@ class Common extends Controller
     public function getList($model, $field)
     {
         $user = $this->getSessionUser();
-        $where = [
-            "node_id" => $user["user_node_id"]
-        ];
+        $where["node_id"] = [["=",$user["user_node_id"]],["=",0],"or"];
         $data = $model->field($field)->where($where)->select();
+        array_walk($data,[$this,"formatter_data"]);
         return $this->resultArray('', '', $data);
+    }
+
+    /**
+     * 格式化数据
+     * @param $v
+     * @param $k
+     */
+    public function formatter_data($v,$k)
+    {
+        if(isset($v["node_id"]) && ($v["node_id"]==0)){
+            $v["text"]=$v["text"]."--------公共模板";
+        }
     }
 
     /**
