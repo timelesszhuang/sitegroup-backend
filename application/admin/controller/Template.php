@@ -140,7 +140,7 @@ class Template extends Common
      */
     public function getTemplate()
     {
-        $field="id,name as text";
+        $field="id,name as text,node_id";
         return $this->getList((new \app\admin\model\Template),$field);
     }
 
