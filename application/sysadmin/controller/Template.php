@@ -55,6 +55,7 @@ class Template extends Common
         if(!$validate->check($post)){
             return $this->resultArray($validate->getError(),"failed");
         }
+        $path="/upload/template/";
         $tem=new tem();
         if(!$tem->allowField(true)->save($post)){
             return $this->resultArray("添加失败","failed");
@@ -70,7 +71,7 @@ class Template extends Common
      */
     public function read($id)
     {
-        //
+        return $this->getread(new tem(),$id);
     }
 
     /**
@@ -93,7 +94,21 @@ class Template extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule=[
+            ["name","require","请先填写模板名"],
+            ["thumbnails","require","请先上传缩略图"],
+            ["path","require","请先上传替换后的模板"],
+            ["show_path","require","请先上传未替换的模板"]
+        ];
+        $validate=new Validate($rule);
+        $put=$request->put();
+        if(!$validate->check($put)){
+            return $this->resultArray($validate->getError(),"failed");
+        }
+        if(!tem::update($put,["id"=>$id])){
+            return $this->resultArray("修改失败!","failed");
+        }
+        return $this->resultArray("修改成功!!");
     }
 
     /**
