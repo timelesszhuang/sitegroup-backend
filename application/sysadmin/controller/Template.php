@@ -70,7 +70,7 @@ class Template extends Common
                 if(isset($fileinfo["dirname"])){
                     if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
 //                        $template->generated_path="eventMarketingHtml/".$fileinfo["dirname"];
-                        chmod(ROOT_PATH.'public'.$path.$fileinfo["dirname"],755);
+                        chmod(ROOT_PATH.'public'.$path.$fileinfo["dirname"],0755);
                     }
                 }
             }
