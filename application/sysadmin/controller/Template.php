@@ -128,7 +128,7 @@ class Template extends Common
         $src=ROOT_PATH."public".$put["show_path"];
         $obj=ROOT_PATH.'public'.$path;
         $show_path=$this->ZipArchive($src,$obj,$path);
-        $post["show_path_href"]=$show_path;
+        $put["show_path_href"]=$show_path;
         if(!tem::update($put,["id"=>$id])){
             return $this->resultArray("修改失败!","failed");
         }
