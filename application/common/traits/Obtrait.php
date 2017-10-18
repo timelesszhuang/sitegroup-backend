@@ -163,21 +163,21 @@ trait Obtrait{
     public function checkZipDirectory($src,$name)
     {
         $zip=new \ZipArchive();
-        if($zip->open($src)==true){
-            $zip->extractTo($obj);
-            for($i = 0; $i < $zip->numFiles; $i++) {
-                $filename = $zip->getNameIndex($i);
-                $fileinfo = pathinfo($filename);
-                if(isset($fileinfo["dirname"])){
-                    if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
-                        $made_path= $directiry.$fileinfo["dirname"];
-                        chmod($obj.$fileinfo["dirname"],0755);
-                        break;
-                    }
-                }
-            }
-            $zip->close();
-        }
+//        if($zip->open($src)==true){
+//            $zip->extractTo($obj);
+//            for($i = 0; $i < $zip->numFiles; $i++) {
+//                $filename = $zip->getNameIndex($i);
+//                $fileinfo = pathinfo($filename);
+//                if(isset($fileinfo["dirname"])){
+//                    if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
+//                        $made_path= $directiry.$fileinfo["dirname"];
+//                        chmod($obj.$fileinfo["dirname"],0755);
+//                        break;
+//                    }
+//                }
+//            }
+//            $zip->close();
+//        }
 
     }
 }
