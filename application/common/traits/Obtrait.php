@@ -159,25 +159,30 @@ trait Obtrait{
         }
     }
 
-
-    public function checkZipDirectory($src,$name)
+    /**
+     * 检查未替换模板是否已经存在，不存在返回false 存在返回true
+     * @param $src
+     * @param $directory
+     */
+    public function checkZipDirectory($src,$directory)
     {
+        $made_path='';
         $zip=new \ZipArchive();
-//        if($zip->open($src)==true){
-//            $zip->extractTo($obj);
-//            for($i = 0; $i < $zip->numFiles; $i++) {
-//                $filename = $zip->getNameIndex($i);
-//                $fileinfo = pathinfo($filename);
-//                if(isset($fileinfo["dirname"])){
-//                    if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
-//                        $made_path= $directiry.$fileinfo["dirname"];
-//                        chmod($obj.$fileinfo["dirname"],0755);
-//                        break;
-//                    }
-//                }
-//            }
-//            $zip->close();
-//        }
-
+        if($zip->open($src)==true){
+            for($i = 0; $i < $zip->numFiles; $i++) {
+                $filename = $zip->getNameIndex($i);
+                $fileinfo = pathinfo($filename);
+                if(isset($fileinfo["dirname"])){
+                    if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
+                        $made_path= $fileinfo["dirname"];
+                        if(file_exists($directory.$made_path)){
+                            return true;
+                        }
+                    }
+                }
+            }
+            $zip->close();
+        }
+        return false;
     }
 }

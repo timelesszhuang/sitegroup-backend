@@ -63,6 +63,9 @@ class Template extends Common
         }
         $src=ROOT_PATH."public".$post["show_path"];
         $obj=ROOT_PATH.'public'.$path;
+        if($this->checkZipDirectory($src,$path)){
+            return $this->resultArray("同名称模板已经存在,请修改","failed");
+        }
         $show_path=$this->ZipArchive($src,$obj,$path);
         $post["show_path_href"]=$show_path;
         $tem=new tem();
