@@ -120,7 +120,7 @@ class Template extends Common
         }
         $tem=tem::get($id);
         if(file_exists(ROOT_PATH."public".$tem->show_path_href)){
-            unlink(ROOT_PATH."public".$tem->show_path_href);
+            $this->del_dir(ROOT_PATH."public".$tem->show_path_href);
         }
         $src=ROOT_PATH."public".$put["show_path"];
         $obj=ROOT_PATH.'public'.$path;
