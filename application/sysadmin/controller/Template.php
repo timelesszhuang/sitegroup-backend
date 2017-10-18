@@ -6,8 +6,10 @@ use app\common\controller\Common;
 use think\Request;
 use think\Validate;
 use app\admin\model\Template as tem;
+use app\common\traits\Obtrait;
 class Template extends Common
 {
+    use Obtrait;
     /**
      * 显示资源列表
      *
@@ -59,26 +61,10 @@ class Template extends Common
         if(!file_exists(ROOT_PATH."public".$post["show_path"])){
             return $this->resultArray("未替换模板不存在","failed");
         }
-
-        $zip=new \ZipArchive();
-        $status='';
-        if($zip->open(ROOT_PATH."public".$post["show_path"])==true){
-            $zip->extractTo(ROOT_PATH.'public'.$path);
-            for($i = 0; $i < $zip->numFiles; $i++) {
-                $filename = $zip->getNameIndex($i);
-                $fileinfo = pathinfo($filename);
-                if(isset($fileinfo["dirname"])){
-                    if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
-//                        $template->generated_path="eventMarketingHtml/".$fileinfo["dirname"];
-                        chmod(ROOT_PATH.'public'.$path.$fileinfo["dirname"],0755);
-                    }
-                }
-            }
-            $zip->close();
-        }
-
-
-
+        $src=ROOT_PATH."public".$post["show_path"];
+        $obj=ROOT_PATH.'public'.$path;
+        $show_path=$this->ZipArchive($src,$obj,$path);
+        $post["show_path_href"]=$show_path;
         $tem=new tem();
         if(!$tem->allowField(true)->save($post)){
             return $this->resultArray("添加失败","failed");
