@@ -56,7 +56,7 @@ class Template extends Common
             return $this->resultArray($validate->getError(),"failed");
         }
         $path="/upload/zipsrctemplate/";
-        if(!file_exists($post["show_path"])){
+        if(!file_exists(ROOT_PATH."public".$post["show_path"])){
             return $this->resultArray("未替换模板不存在","failed");
         }
 
