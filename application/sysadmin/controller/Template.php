@@ -55,7 +55,30 @@ class Template extends Common
         if(!$validate->check($post)){
             return $this->resultArray($validate->getError(),"failed");
         }
-        $path="/upload/template/";
+        $path="/upload/zipsrctemplate/";
+        if(!file_exists($post["show_path"])){
+            return $this->resultArray("未替换模板不存在","failed");
+        }
+
+        $zip=new \ZipArchive();
+        $status='';
+        if($zip->open(ROOT_PATH."public".$post["show_path"])==true){
+            $zip->extractTo(ROOT_PATH.'public'.$path);
+            for($i = 0; $i < $zip->numFiles; $i++) {
+                $filename = $zip->getNameIndex($i);
+                $fileinfo = pathinfo($filename);
+                if(isset($fileinfo["dirname"])){
+                    if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
+//                        $template->generated_path="eventMarketingHtml/".$fileinfo["dirname"];
+                        chmod(ROOT_PATH.'public'.$path.$fileinfo["dirname"],755);
+                    }
+                }
+            }
+            $zip->close();
+        }
+
+
+
         $tem=new tem();
         if(!$tem->allowField(true)->save($post)){
             return $this->resultArray("添加失败","failed");
