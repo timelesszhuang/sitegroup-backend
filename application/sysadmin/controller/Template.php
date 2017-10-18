@@ -115,14 +115,14 @@ class Template extends Common
             return $this->resultArray($validate->getError(),"failed");
         }
         $path="/upload/zipsrctemplate/";
-        if(!file_exists(ROOT_PATH."public".$post["show_path"])){
+        if(!file_exists(ROOT_PATH."public".$put["show_path"])){
             return $this->resultArray("未替换模板不存在","failed");
         }
         $tem=tem::get($id);
         if(file_exists(ROOT_PATH."public".$tem->show_path_href)){
             unlink(ROOT_PATH."public".$tem->show_path_href);
         }
-        $src=ROOT_PATH."public".$post["show_path"];
+        $src=ROOT_PATH."public".$put["show_path"];
         $obj=ROOT_PATH.'public'.$path;
         $show_path=$this->ZipArchive($src,$obj,$path);
         $post["show_path_href"]=$show_path;
