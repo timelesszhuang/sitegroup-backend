@@ -184,10 +184,11 @@ class Company extends Common
         }
         $com_arr=$comInfo->toArray();
         if($com_arr["is_checked"]<1){
-            return $this->resultArray('请先完善必填信息!',"failed");
+            return $this->resultArray('请先完善必填信息!',"failed",$com_arr);
         }
         if($com_arr["is_checked"]==2){
             return $this->resultArray('审核失败!!',"failed",$com_arr);
         }
+        return $this->resultArray('',"",$com_arr);
     }
 }
