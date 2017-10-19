@@ -131,6 +131,10 @@ Route::post('sys/uploadphptemplate',"sysadmin/Template/uploadPHPTemplate");
 Route::post('sys/uploadtemplate',"sysadmin/Template/uploadTemplate");
 //模板缩略图
 Route::post('sys/uploadthumbnails',"sysadmin/Template/uploadThumbnails");
+//企业审核认证
+Route::post('sys/checkPass/:id/:num',"sys/Company/checkPass");
+
+
 
 
 
@@ -391,8 +395,7 @@ Route::post('admin/uploadArtificialPersonId','admin/Company/uploadArtificialPers
 Route::post('admin/uploadTrademark','admin/Company/uploadTrademark');
 //验证企业信息
 Route::get('admin/verifyCompanyInfo','admin/Company/verifyCompanyInfo');
-//企业审核认证
-Route::post('admin/checkPass/:id/:num',"admin/Company/checkPass");
+
 
 
 
