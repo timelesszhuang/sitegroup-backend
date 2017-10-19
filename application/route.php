@@ -389,7 +389,8 @@ Route::post('admin/uploadBusinessLicense','admin/Company/uploadBusinessLicense')
 Route::post('admin/uploadArtificialPersonId','admin/Company/uploadArtificialPersonId');
 //上传商标
 Route::post('admin/uploadTrademark','admin/Company/uploadTrademark');
-
+//验证企业信息
+Route::get('admin/verifyCompanyInfo','admin/Company/verifyCompanyInfo');
 
 
 

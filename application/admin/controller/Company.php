@@ -165,4 +165,25 @@ class Company extends Common
         return $this->resultArray('上传失败!',"failed");
     }
 
+    /**
+     * 验证企业填写的信息
+     * @return array
+     */
+    public function verifyCompanyInfo()
+    {
+        $user = $this->getSessionUser();
+        $node_id = $user["user_node_id"];
+        $node=Node::get($node_id);
+        if(!$node){
+            return $this->resultArray('未获取到企业信息!',"failed");
+        }
+        $comInfo=(new Com)->field("name,industry_id,industry_name,tax_registration_number,business_license,artificialperson,artificialperson_id,sale_manage,sale_manage_phone,manbusiness")->where(["id"=>$node->com_id])->find();
+        if(!$comInfo){
+            return $this->resultArray('未获取到企业信息!',"failed");
+        }
+        $key_arr=array_values($comInfo);
+        if(in_array('',$key_arr)){
+            return $this->resultArray('请先完善必填信息!',"failed");
+        }
+    }
 }
