@@ -102,6 +102,7 @@ class Company extends Common
         if(!$validate->check($put)){
             return $this->resultArray($validate->getError(),"failed");
         }
+        $put["is_checked"]=2;
         if(!Com::update($put,["id"=>$id])){
             return $this->resultArray('修改失败',"failed");
         }
@@ -190,7 +191,7 @@ class Company extends Common
         if(in_array('',$key_arr)){
             return $this->resultArray('请先完善必填信息!',"failed");
         }
-        if($is_checked==2){
+        if($is_checked==1){
             return $this->resultArray('审核未通过!!',"failed",$check_info);
         }
     }
