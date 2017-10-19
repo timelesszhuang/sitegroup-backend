@@ -132,7 +132,7 @@ Route::post('sys/uploadtemplate',"sysadmin/Template/uploadTemplate");
 //模板缩略图
 Route::post('sys/uploadthumbnails',"sysadmin/Template/uploadThumbnails");
 //企业审核认证
-Route::post('sys/checkPass/:id/:num',"sys/Company/checkPass");
+Route::post('sys/checkPass/:id/:num',"sysadmin/Company/checkPass");
 
 
 
