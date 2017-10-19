@@ -177,14 +177,20 @@ class Company extends Common
         if(!$node){
             return $this->resultArray('未获取到企业信息!',"failed");
         }
-        $comInfo = Com::where(["id"=>$node->com_id])->field("name,industry_id,industry_name,tax_registration_number,business_license,artificialperson,artificialperson_id,sale_manage,sale_manage_phone,manbusiness")->find();
+        $comInfo=(new Com)->field("is_checked,check_info,name,industry_id,industry_name,tax_registration_number,business_license,artificialperson,artificialperson_id,sale_manage,sale_manage_phone,manbusiness")->where(["id"=>$node->com_id])->find();
         if(!$comInfo){
             return $this->resultArray('未获取到企业信息!',"failed");
         }
-        $com_arr=$comInfo->toArray();
-        $key_arr=array_values($com_arr);
+        $is_checked=$comInfo["is_checked"];
+        $check_info=$comInfo["check_info"];
+        unset($comInfo["is_checked"]);
+        unset($comInfo["check_info"]);
+        $key_arr=array_values($comInfo);
         if(in_array('',$key_arr)){
             return $this->resultArray('请先完善必填信息!',"failed");
+        }
+        if($is_checked==2){
+            return $this->resultArray('审核未通过!!',"failed",$check_info);
         }
     }
 }
