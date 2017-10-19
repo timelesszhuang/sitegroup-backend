@@ -148,19 +148,15 @@ class Company extends Common
     {
         $request=Request::instance();
         $check_info=$request->post("check_info");
-        if(empty($check_info)){
-            return $this->resultArray('请提交审核信息', 'failed');
-        }
         $comInfo=\app\sysadmin\model\Company::get($id);
         $comInfo->is_checked=$num;
-        $comInfo->check_info=$check_info;
+        if(empty($check_info)){
+            $comInfo->check_info=$check_info;
+        }
         if(!$comInfo->save()){
             return $this->resultArray('审核失败', 'failed');
         }
-        if($num==2){
-            $msg="已改为审核状态!!";
-        }
-        return $this->resultArray($msg);
+        return $this->resultArray("修改成功!!");
     }
 
 
