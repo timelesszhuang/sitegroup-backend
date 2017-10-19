@@ -181,7 +181,8 @@ class Company extends Common
         if(!$comInfo){
             return $this->resultArray('未获取到企业信息!',"failed");
         }
-        $key_arr=array_values($comInfo);
+        $com_arr=collection($comInfo)->toArray();
+        $key_arr=array_values($com_arr);
         if(in_array('',$key_arr)){
             return $this->resultArray('请先完善必填信息!',"failed");
         }
