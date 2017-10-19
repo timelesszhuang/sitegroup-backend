@@ -189,6 +189,7 @@ class Company extends Common
         if(in_array('',$key_arr)){
             return $this->resultArray('请先完善必填信息!',"failed");
         }
+
         if($is_checked==2){
             return $this->resultArray('审核未通过!!',"failed",$check_info);
         }
