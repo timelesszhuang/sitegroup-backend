@@ -177,7 +177,7 @@ class Company extends Common
         if(!$node){
             return $this->resultArray('未获取到企业信息!',"failed");
         }
-        $comInfo = Com::where(["id"=>$node->com_id])->field("name,industry_id,industry_name,tax_registration_number,business_license,artificialperson,artificialperson_id,sale_manage,sale_manage_phone,manbusiness")->find();
+        $comInfo = Com::where(["id"=>$node->com_id])->field("is_checked,check_info,name,industry_id,industry_name,tax_registration_number,business_license,artificialperson,artificialperson_id,sale_manage,sale_manage_phone,manbusiness")->find();
         if(!$comInfo){
             return $this->resultArray('未获取到企业信息!',"failed");
         }
