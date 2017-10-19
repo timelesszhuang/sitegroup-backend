@@ -153,11 +153,14 @@ class Company extends Common
         }
         $comInfo=\app\sysadmin\model\Company::get($id);
         $comInfo->is_checked=$num;
-        $comInfo->$check_info;
+        $comInfo->check_info=$check_info;
         if(!$comInfo->save()){
             return $this->resultArray('审核失败', 'failed');
         }
-        return $this->resultArray('已审核!!', 'failed');
+        if($num==2){
+            $msg="已改为审核状态!!";
+        }
+        return $this->resultArray($msg);
     }
 
 

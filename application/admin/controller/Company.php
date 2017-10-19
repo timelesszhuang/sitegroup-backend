@@ -102,7 +102,7 @@ class Company extends Common
         if(!$validate->check($put)){
             return $this->resultArray($validate->getError(),"failed");
         }
-        $put["is_checked"]=2;
+        $put["is_checked"]=1;
         if(!Com::update($put,["id"=>$id])){
             return $this->resultArray('修改失败',"failed");
         }
