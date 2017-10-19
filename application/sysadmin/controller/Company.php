@@ -150,7 +150,7 @@ class Company extends Common
         $check_info=$request->post("check_info");
         $comInfo=\app\sysadmin\model\Company::get($id);
         $comInfo->is_checked=$num;
-        if(empty($check_info)){
+        if(!empty($check_info)){
             $comInfo->check_info=$check_info;
         }
         if(!$comInfo->save()){
