@@ -5,6 +5,7 @@ namespace app\user\model;
 
 use app\admin\model\Site;
 use app\common\model\LoginLog;
+use app\sysadmin\model\Node;
 use think\Config;
 use think\Model;
 use think\Request;
@@ -22,14 +23,25 @@ class SiteUser extends Model
      */
     public function checkUser($username, $pwd)
     {
-        $user_info = $this::where(["account" => $username])->find();
+        $user_info = self::where(["account" => $username])->find();
         if (empty($user_info)) {
             return ["用户名错误", "failed",''];
         }
-
         $user_info_arr = $user_info->toArray();
         if (md5($pwd . $username) != $user_info_arr["pwd"]) {
             return ["用户名或密码错误", "failed",''];
+        }
+        // 查询当前用户是否被禁止登录
+        if($user_info_arr['is_on']==20){
+            return ["当前用户被禁止登录!!", "failed",''];
+        }
+        // 查询node_id是否被禁用 如果被禁同样禁止登录
+        $node_info=Node::where(["id"=>$user_info_arr["node_id"]])->find();
+        if(empty($node_info)){
+            return ["当前用户没有节点后台!!", "failed",''];
+        }
+        if($node_info["status"]=="off"){
+            return ["当前节点后台禁止登录!!", "failed",''];
         }
         unset($user_info_arr["pwd"]);
         //获取私钥

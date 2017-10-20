@@ -97,15 +97,42 @@ Route::resource('sys/systemNotice','sysadmin/SystemNotice');
 Route::resource('sys/CaseCenter',"sysadmin/CaseCenter");
 //营销模式上传缩略图
 Route::post('sys/uploadMarketingmode','sysadmin/Marketingmode/uploadImage');
-
-
-
-
-
-
-
-
-
+//营销事件活动
+Route::resource('sys/eventmarketholiday','sysadmin/Eventmarketingholiday');
+//上传html5模板
+Route::post('sys/uploadHtmlTemplate','sysadmin/HtmlTemplate/uploadTemplate');
+//上传html5模板缩略图
+Route::post('sys/uploadHtmlTemplateImg','sysadmin/HtmlTemplate/uploadTemplateImg');
+//html5模板模块
+Route::resource('sys/HtmlTemplate','sysadmin/HtmlTemplate');
+//获取多条模板
+Route::get('sys/AllHtmlTemplate/:id','sysadmin/HtmlTemplate/readAll');
+//媒体分类
+Route::resource('sys/mediaType','sysadmin/MediaType');
+//媒体
+Route::resource('sys/media','sysadmin/Media');
+//媒体地区
+Route::get('sys/mediaOrigin','sysadmin/MediaType/getOrigin');
+//媒体城市
+Route::get('sys/getMediaType','sysadmin/MediaType/getTypes');
+//软文
+Route::resource('sys/softText','sysadmin/SoftText');
+//软文获取地区
+Route::get('sys/softGetOrigin','sysadmin/SoftText/getOrigin');
+//软文根据地区获取媒体分类
+Route::get('sys/softGetMediaType/:id','sysadmin/SoftText/returnsOrigin');
+//设置审核状态
+Route::get('sys/setCheck/:id/:num','sysadmin/SoftText/setCheck');
+//后台上传模板
+Route::resource('sys/template','sysadmin/Template');
+//提交php嵌套后的模板
+Route::post('sys/uploadphptemplate',"sysadmin/Template/uploadPHPTemplate");
+//提交原始模板
+Route::post('sys/uploadtemplate',"sysadmin/Template/uploadTemplate");
+//模板缩略图
+Route::post('sys/uploadthumbnails',"sysadmin/Template/uploadThumbnails");
+//企业审核认证
+Route::post('sys/checkPass/:id/:num',"sysadmin/Company/checkPass");
 
 
 
@@ -217,6 +244,7 @@ Route::get('Site/getSites', 'admin/Site/getSites');
 Route::get('Site/siteGetCurl/:id/:name', 'admin/Site/siteGetCurl');
 //获取活动模板信息
 Route::get('Site/getActivily/:id', 'admin/Site/getActivily');
+Route::get('commontype', 'admin/Site/commontype');
 
 //测试文件接收  实际应该写在小节点中
 Route::rule('testsendFile/index', 'admin/testsendFile/index');
@@ -332,6 +360,55 @@ Route::get('admin/getIndustry','admin/Industry/getIndustry');
 Route::resource('admin/systemNotice','admin/SystemNotice');
 //案例中心
 Route::resource('admin/CaseCenter','admin/CaseCenter');
+//修改关键词根据id和名称
+Route::get('admin/updateKeyword/:id/:name','admin/Keyword/updateKeyword');
+//事件营销活动
+Route::resource('admin/eventmarketholiday','admin/Eventmarketingholiday');
+//获取多条模板
+Route::get('admin/AllHtmlTemplate/:id','admin/HtmlTemplate/readAll');
+//html5模板模块
+Route::resource('admin/HtmlTemplate','admin/HtmlTemplate');
+//事件营销记录
+Route::resource('admin/eventRecord','admin/EventMarketingHolidayRecord');
+//追踪关键词
+Route::resource('admin/trackKeyword','admin/TrackKeyword');
+//首页统计
+Route::get('admin/countDatas','admin/Pv/countDatas');
+
+Route::get('admin/gettrack','admin/TrackKeyword/getTrack');
+//获取前4条 营销图片和id
+Route::get('admin/getFourMarket','admin/Marketingmode/getFour');
+//获取软文
+Route::resource('admin/softText','admin/SoftText');
+//获取地区
+Route::get('admin/getOrigin','admin/SoftText/getOrigin');
+//获取媒体分类列表
+Route::get('admin/getTypes','admin/SoftText/getTypes');
+//根据地区获取媒体信息
+Route::get('admin/returnsOrigin/:id',"admin/SoftText/returnsOrigin");
+//完善企业信息
+Route::resource('admin/Company','admin/Company');
+//上传企业执照
+Route::post('admin/uploadBusinessLicense','admin/Company/uploadBusinessLicense');
+//上传法人身份证
+Route::post('admin/uploadArtificialPersonId','admin/Company/uploadArtificialPersonId');
+//上传商标
+Route::post('admin/uploadTrademark','admin/Company/uploadTrademark');
+//验证企业信息
+Route::get('admin/verifyCompanyInfo','admin/Company/verifyCompanyInfo');
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -427,7 +504,8 @@ Route::post('user/producttdkedit', 'user/PageInfo/producttdkedit');
 Route::post('user/editpageinfo', 'user/PageInfo/editpageinfo');
 //关键词替换指定的链接
 Route::resource('user/articleReplaceKeyword','user/ArticleReplaceKeyword');
-
+//统计所有
+Route::get('user/getFour','user/Pv/countDatas');
 
 //return [
 //    '__pattern__' => [

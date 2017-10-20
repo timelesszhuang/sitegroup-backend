@@ -109,4 +109,80 @@ trait Obtrait{
         $data = curl_exec($curl);
         return json_decode($data, true);
     }
+
+    /**
+     * 解压缩zip文件
+     * @param $src 原始zip目录
+     * @param $obj 解压缩后的目录
+     * @param $directiry 解压的目录
+     */
+    public function ZipArchive($src,$obj,$directiry)
+    {
+        $made_path='';
+        $zip=new \ZipArchive();
+        if($zip->open($src)==true){
+            $zip->extractTo($obj);
+            for($i = 0; $i < $zip->numFiles; $i++) {
+                $filename = $zip->getNameIndex($i);
+                $fileinfo = pathinfo($filename);
+                if(isset($fileinfo["dirname"])){
+                    if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
+                        $made_path= $directiry.$fileinfo["dirname"];
+                        chmod($obj.$fileinfo["dirname"],0755);
+                        break;
+                    }
+                }
+            }
+            $zip->close();
+        }
+        return $made_path;
+    }
+
+    /**
+     * 删除目录下所有文件
+     * @param $dir
+     * @return bool
+     */
+    public function del_dir($dir) {
+        if (!is_dir($dir)) {
+            return false;
+        }
+        $handle = opendir($dir);
+        while (($file = readdir($handle)) !== false) {
+            if ($file != "." && $file != "..") {
+                is_dir("$dir/$file") ? $this->del_dir("$dir/$file") : @unlink("$dir/$file");
+            }
+        }
+        if (readdir($handle) == false) {
+            closedir($handle);
+            @rmdir($dir);
+        }
+    }
+
+    /**
+     * 检查未替换模板是否已经存在，不存在返回false 存在返回true
+     * @param $src
+     * @param $directory
+     */
+    public function checkZipDirectory($src,$directory)
+    {
+        $made_path='';
+        $zip=new \ZipArchive();
+        if($zip->open($src)==true){
+            for($i = 0; $i < $zip->numFiles; $i++) {
+                $filename = $zip->getNameIndex($i);
+                $fileinfo = pathinfo($filename);
+                if(isset($fileinfo["dirname"])){
+                    if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
+                        $made_path= $fileinfo["dirname"];
+                        if(file_exists($directory.$made_path)){
+                            return true;
+                        }
+                    }
+                }
+            }
+            $zip->close();
+        }
+        return false;
+    }
 }

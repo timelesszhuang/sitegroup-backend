@@ -22,9 +22,7 @@ class Industry extends Common {
         return $this->resultArray('','',\app\sysadmin\model\Industry::get($id));
 
     }
-    public function create(){
 
-    }
     /**
      * 分页数据
      * @return array

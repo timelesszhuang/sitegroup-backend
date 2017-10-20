@@ -2,6 +2,7 @@
 
 namespace app\admin\controller;
 
+use app\common\model\CountData;
 use think\Controller;
 use think\Request;
 use think\Validate;
@@ -91,5 +92,21 @@ class Pv extends Common
     {
     }
 
+    /**
+     * 首页统计
+     */
+    public function countDatas()
+    {
+        $user = $this->getSessionUser();
+        $ttime=strtotime(date("Y-m-d 00:00:00"));
+        $cd=new CountData();
+        return $this->resultArray('', '', [
+            "pv"=>intval($cd->countPv($user["user_node_id"],$ttime)),
+            "useragent"=>intval($cd->countUseragent($user["user_node_id"],$ttime)),
+            "article"=>intval($cd->countArticle($user["user_node_id"],$ttime)),
+            "shuaidan"=>intval($cd->countShuaidan($user["user_node_id"],$ttime)),
+            "shoulu"=>intval($cd->countInclude($user["user_node_id"]))
+        ]);
+    }
 
 }

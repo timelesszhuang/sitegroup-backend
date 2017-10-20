@@ -8,6 +8,7 @@
 namespace app\common\controller;
 
 use app\common\model\User;
+use app\sysadmin\model\Node;
 use think\Config;
 use think\Controller;
 use think\Validate;
@@ -82,6 +83,17 @@ class Login extends Controller
         if ($post["remember"] != md5($userInfo["id"] . $userInfo["salt"] . $private)) {
             return $this->resultArray('', "failed");
         }
+        // root用户免除限制
+        if($userInfo["id"]!=1) {
+            // 查询node_id是否被禁用 如果被禁同样禁止登录
+            $node_info = Node::where(["id" => $userInfo["node_id"]])->find();
+            if (empty($node_info)) {
+                return $this->resultArray('当前用户没有节点后台', "failed");
+            }
+            if ($node_info["status"] == "off") {
+                return $this->resultArray('当前节点后台禁止登录', "failed");
+            }
+        }
         $user_arr = $userInfo->getData();
         unset($user_arr["pwd"]);
         //获取私钥
@@ -146,5 +158,9 @@ class Login extends Controller
         return $data;
     }
 
+    public function payInfo()
+    {
+
+    }
 }
  

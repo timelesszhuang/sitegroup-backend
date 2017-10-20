@@ -5,6 +5,7 @@ namespace app\admin\controller;
 use app\admin\model\Useragent;
 use app\common\controller\Common;
 use app\common\model\BrowseRecord;
+use app\common\model\SitePageinfo;
 use think\Db;
 use think\Request;
 use think\Session;
@@ -187,7 +188,15 @@ class Site extends Common
             $data["public_code"] = implode(",", $data["public_code"]);
         }
         $data["menu"] = "," . implode(",", $data["menu"]) . ",";
+        // 先排序 再对比 如果两次不一样的话 直接删除吧
+        sort($data["keyword_ids"]);
         $data["keyword_ids"] = "," . implode(",", $data["keyword_ids"]) . ",";
+        $getSite=\app\admin\model\Site::get($id);
+        $ids=",".$getSite->keyword_ids.",";
+        // compare 对比删除
+        if($ids!=$data["keyword_ids"]){
+            (new SitePageinfo)->where(["node_id"=>$user["user_node_id"],"site_id"=>$id])->delete();
+        }
         if (!(new \app\admin\model\Site)->save($data, $where)) {
             return $this->resultArray('修改失败', 'failed');
         }
@@ -297,7 +306,7 @@ class Site extends Common
                         $id=$template->id;
                         break;
                     case "template":
-                        $template = \app\admin\model\Template::get($site->template_id);
+                        $template = \app\admin\model\Template::get($site["template_id"]);
                         if(!$template){
                             exit("未找到模板");
                         }
@@ -306,6 +315,7 @@ class Site extends Common
                 }
 
             return [$template,$site,$type,$id];
+
         };
         $this->runClosuse($send);
     }
@@ -590,4 +600,41 @@ class Site extends Common
 
     }
 
+    public function commontype()
+    {
+        $menu = new Menu();
+        $menudata = $menu->getMenu();
+        $template = new Template();
+        $templatedata = $template->getTemplate();
+        $sitetype = new Sitetype();
+        $sitetypedata = $sitetype->getSiteType();
+        $contactway = new Contactway();
+        $contactwaydata = $contactway->getContactway();
+        $domain = new Domain();
+        $domaindata = $domain->getDomain();
+        $usertype = new Siteuser();
+        $usertypedata = $usertype->getUsers();
+        $keyword = new Keyword();
+        $keyworddata =  $keyword->index();
+        $link = new Links();
+        $linkdata = $link->getLinks();
+        $mobilesite = new Site();
+        $mobilesitedata = $mobilesite->mobileSite();
+        $code = new Code();
+        $codedata = $code->getCodes();
+        $data = [
+            'menutype'=>$menudata['data'],
+            'temptype'=>$templatedata['data'],
+            'sitetype'=>$sitetypedata['data'],
+            'hotline'=>$contactwaydata['data'],
+            'domainlist'=>$domaindata['data'],
+            'userlist'=>$usertypedata['data'],
+            'keyword'=>$keyworddata['data'],
+            'link'=>$linkdata['data'],
+            'mobileSite'=>$mobilesitedata['data'],
+            'code'=>$codedata['data'],
+
+        ];
+       return $this->resultArray('','',$data);
+    }
 }

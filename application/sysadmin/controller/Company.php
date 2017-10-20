@@ -138,6 +138,27 @@ class Company extends Common
         return $this->resultArray('', '', $data);
     }
 
+    /**
+     * 公司信息审核
+     * @param $id
+     * @param $num
+     * @return array
+     */
+    public function checkPass($id,$num)
+    {
+        $request=Request::instance();
+        $check_info=$request->post("check_info");
+        $comInfo=\app\sysadmin\model\Company::get($id);
+        $comInfo->is_checked=$num;
+        if(!empty($check_info)){
+            $comInfo->check_info=$check_info;
+        }
+        if(!$comInfo->save()){
+            return $this->resultArray('审核失败', 'failed');
+        }
+        return $this->resultArray("修改成功!!");
+    }
+
 
 
 }

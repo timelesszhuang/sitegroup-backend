@@ -101,4 +101,14 @@ class Marketingmode extends Common
     {
         //
     }
+
+    /**
+     * 获取前4条数据给前台
+     * @return array
+     */
+    public function getFour()
+    {
+        $data = (new Mark())->limit(4)->order("id","desc")->field("id,img,title,create_time")->select();
+        return $this->resultArray('', '', $data);
+    }
 }
