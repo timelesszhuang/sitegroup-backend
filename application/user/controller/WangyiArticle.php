@@ -69,6 +69,7 @@ class WangyiArticle extends Common
             return $this->resultArray($validate->getError(), "failed");
         }
         $data["is_collection"]=20;
+        $data["site_id"] = $this->getSiteSession('website')["id"];
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
