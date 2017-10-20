@@ -155,9 +155,10 @@ Route::get('questiontype/QuestionCount', 'admin/Questiontype/QuestionCount');
 //段落文章
 Route::resource('scatteredArticle', 'admin/Scatteredarticle');
 
-//段落标题
+//段落标题 零散段落类型文章相关操作
 Route::resource('scatteredTitle', 'admin/Scatteredtitle');
 Route::get('scatteredTitle/getArrticleJoinTitle', 'admin/Scatteredtitle/getArrticleJoinTitle');
+
 
 //公共代码
 Route::resource('code', 'admin/Code');
