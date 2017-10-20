@@ -239,13 +239,14 @@ class Article extends Common
      */
     public function imageupload()
     {
-        $bucket = 'article';
+        $dest_dir = 'article/';
         $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
         $request = Request::instance();
         $file = $request->file("file");
         $fileInfo = $file->move(ROOT_PATH . "public/");
-        $object = $fileInfo->getSaveName();
-        $put_info = $this->ossPutObject($object, ROOT_PATH . "public/" . $fileInfo->getSaveName(), $bucket);
+        $object = $dest_dir . $fileInfo->getSaveName();
+        $put_info = $this->ossPutObject($object, ROOT_PATH . "public/" . $fileInfo->getSaveName());
         $url = '';
         $status = false;
         if ($put_info['status']) {

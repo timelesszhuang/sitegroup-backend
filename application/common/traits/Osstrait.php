@@ -30,13 +30,13 @@ trait Osstrait
      * oss 对象上传
      * @param $object 服务器上文件名
      * @param $filepath 本地文件的绝对路径 比如/home/wwwroot/***.jpg
-     * @param $bucket 桶的名称 比如 product 比如 article 比如 template等
      */
-    public function ossPutObject($object, $filepath, $bucket)
+    public function ossPutObject($object, $filepath)
     {
         $accessKeyId = Config::get('oss.accessKeyId');
         $accessKeySecret = Config::get("oss.accessKeySecret");
         $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
         $status = true;
         try {
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
@@ -58,11 +58,12 @@ trait Osstrait
      * oss 获取对象
      * @access public
      */
-    public function ossGetObject($object, $filepath, $bucket)
+    public function ossGetObject($object, $filepath)
     {
         $accessKeyId = Config::get('oss.accessKeyId');
         $accessKeySecret = Config::get("oss.accessKeySecret");
         $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
         $status = true;
         $options = array(
             OssClient::OSS_FILE_DOWNLOAD => $filepath,
@@ -82,13 +83,13 @@ trait Osstrait
      * 删除 oss 中的对象
      * @access public
      * @param $object 要删除的对象
-     * @param $bucket 桶
      */
-    public function ossDeleteObject($object, $bucket)
+    public function ossDeleteObject($object)
     {
         $accessKeyId = Config::get('oss.accessKeyId');
         $accessKeySecret = Config::get("oss.accessKeySecret");
         $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
         //$object = "oss-php-sdk-test/upload-test-object-name.txt";
         $status = true;
         try {
@@ -106,11 +107,12 @@ trait Osstrait
      * 处理oss 相关操作
      * @access public
      */
-    public function ossCreateObject($bucket)
+    public function ossCreateObject()
     {
         $accessKeyId = Config::get('oss.accessKeyId');
         $accessKeySecret = Config::get("oss.accessKeySecret");
         $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
         $status = true;
         try {
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
@@ -131,7 +133,6 @@ trait Osstrait
         $accessKeyId = Config::get('oss.accessKeyId');
         $accessKeySecret = Config::get("oss.accessKeySecret");
         $endpoint = Config::get('oss.endpoint');
-
         $bucket = "salesman1";
         $object = "141414.jpg";
         $filePath = __FILE__;
