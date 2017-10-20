@@ -3,6 +3,9 @@
 namespace app\admin\controller;
 
 use app\common\controller\Common;
+use app\common\traits\Osstrait;
+use OSS\OssClient;
+use think\Config;
 use think\Session;
 use think\Validate;
 use think\Request;
@@ -12,6 +15,7 @@ use think\View;
 class Article extends Common
 {
     use Obtrait;
+    use Osstrait;
 
     /**
      * @return array
@@ -226,6 +230,32 @@ class Article extends Common
             return $this->resultArray('修改失败', 'failed');
         }
         return $this->resultArray('修改成功');
+    }
+
+
+    /**
+     * 图片上传到 oss相关操作
+     * @access public
+     */
+    public function imageupload()
+    {
+        $bucket = 'article';
+        $endpoint = Config::get('oss.endpoint');
+        $request = Request::instance();
+        $file = $request->file("file");
+        $fileInfo = $file->move(ROOT_PATH . "public/");
+        $object = $fileInfo->getSaveName();
+        $put_info = $this->ossPutObject($object, ROOT_PATH . "public/" . $fileInfo->getSaveName(), $bucket);
+        $url = '';
+        $status = false;
+        if ($put_info['status']) {
+            $status = true;
+            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        }
+        return [
+            "url" => $url,
+            'status' => $status
+        ];
     }
 
 }

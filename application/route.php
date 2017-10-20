@@ -135,15 +135,6 @@ Route::post('sys/uploadthumbnails',"sysadmin/Template/uploadThumbnails");
 Route::post('sys/checkPass/:id/:num',"sysadmin/Company/checkPass");
 
 
-
-
-
-
-
-
-
-
-
 //====================================================================节点后台
 
 //关键词
@@ -396,22 +387,11 @@ Route::post('admin/uploadArtificialPersonId','admin/Company/uploadArtificialPers
 Route::post('admin/uploadTrademark','admin/Company/uploadTrademark');
 //验证企业信息
 Route::get('admin/verifyCompanyInfo','admin/Company/verifyCompanyInfo');
-//
+//文章图片上传打到oss
+Route::post('admin/uploadarticleimage','admin/Article/imageupload');
+
+
 Route::post('admin/bbb','Common/Login/bbb');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //站点相关--------------------------------------------------------

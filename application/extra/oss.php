@@ -8,6 +8,6 @@
 
 return [
     'accessKeyId' => 'mHENtCjneaNtqGOC',
-    'accessKeySecret'=>'iIaCOZXiqrbk81mwn8t3fTtNFOXyeJ',
-    'endpoint'=>'oss-cn-qingdao.aliyuncs.com',
+    'accessKeySecret' => 'iIaCOZXiqrbk81mwn8t3fTtNFOXyeJ',
+    'endpoint' => 'oss-cn-qingdao.aliyuncs.com',
 ];

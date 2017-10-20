@@ -37,14 +37,18 @@ trait Osstrait
         $accessKeyId = Config::get('oss.accessKeyId');
         $accessKeySecret = Config::get("oss.accessKeySecret");
         $endpoint = Config::get('oss.endpoint');
-        $status = 'success';
+        $status = true;
         try {
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
             $ossClient->uploadFile($bucket, $object, $filepath);
             $msg = '上传成功';
+
         } catch (OssException $e) {
             $msg = $e->getMessage();
-            $status = 'failed';
+//            if($e->getCode()=='404'){
+//                //表示bucket 不存在创建
+//            }
+            $status = false;
         }
         return ['status' => $status, 'msg' => $msg];
     }
@@ -59,8 +63,7 @@ trait Osstrait
         $accessKeyId = Config::get('oss.accessKeyId');
         $accessKeySecret = Config::get("oss.accessKeySecret");
         $endpoint = Config::get('oss.endpoint');
-        $status = 'success';
-        $filepath = "141414.php";
+        $status = true;
         $options = array(
             OssClient::OSS_FILE_DOWNLOAD => $filepath,
         );
@@ -70,7 +73,7 @@ trait Osstrait
             $msg = '获取成功';
         } catch (OssException $e) {
             $msg = $e->getMessage();
-            $status = 'failed';
+            $status = false;
         }
         return ['status' => $status, 'msg' => $msg];
     }
@@ -87,15 +90,39 @@ trait Osstrait
         $accessKeySecret = Config::get("oss.accessKeySecret");
         $endpoint = Config::get('oss.endpoint');
         //$object = "oss-php-sdk-test/upload-test-object-name.txt";
-        $status = 'success';
+        $status = true;
         try {
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
             $ossClient->deleteObject($bucket, $object);
-            $msg = '获取成功';
+            $msg = '删除成功';
         } catch (OssException $e) {
-            printf($e->getMessage() . "\n");
+            $status = false;
+            $msg = $e->getMessage();
         }
-        print(__FUNCTION__ . ": OK" . "\n");
+        return ['status' => $status, 'msg' => $msg];
+    }
+
+    /**
+     * 处理oss 相关操作
+     * @access public
+     */
+    public function ossCreateObject($bucket)
+    {
+        $accessKeyId = Config::get('oss.accessKeyId');
+        $accessKeySecret = Config::get("oss.accessKeySecret");
+        $endpoint = Config::get('oss.endpoint');
+        $status = true;
+        try {
+            $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
+            //oss 权限为公共写权限
+            $ossClient->createBucket($bucket, OssClient::OSS_ACL_TYPE_PUBLIC_READ);
+            $msg = '创建bucket成功';
+        } catch (OssException $e) {
+            $status = false;
+            $msg = $e->getMessage();
+        }
+        return ['status' => $status, 'msg' => $msg];
+
     }
 
 
