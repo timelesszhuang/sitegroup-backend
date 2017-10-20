@@ -342,7 +342,7 @@ class Common extends Controller
         if(isset($v["node_id"]) && ($v["node_id"]==0)){
             $v["text"]=$v["text"]."——".$v["industry_name"]."——公共模板";
         }else{
-            if(isset($v["text"])){
+            if(isset($v["industry_name"]) && isset($v["text"])){
                 $v["text"]=$v["text"]."——专属";
             }
         }
