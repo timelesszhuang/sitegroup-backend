@@ -11,11 +11,14 @@ use app\common\model\User;
 use app\sysadmin\model\Node;
 use think\Config;
 use think\Controller;
+use think\Request;
 use think\Validate;
 use think\Model;
+use app\common\traits\Osstrait;
 
 class Login extends Controller
 {
+    use Osstrait;
     /**
      * 本地测试开启下 允许跨域ajax 获取数据
      */
@@ -158,9 +161,17 @@ class Login extends Controller
         return $data;
     }
 
-    public function payInfo()
-    {
 
+    public function bbb()
+    {
+        $request=Request::instance();
+        $file=$request->file("file");
+        $fileInfo=$file->move(ROOT_PATH."public/");
+        $obj=$this->ossPutObject($fileInfo->getFilename(),ROOT_PATH."public/".$fileInfo->getSaveName(),"salesman1");
+//        dump($fileInfo->getFilename());die;
+        return [
+            "url"=>"http://salesman1.oss-cn-qingdao.aliyuncs.com/".$fileInfo->getFilename()
+        ];
     }
 }
  

@@ -396,6 +396,8 @@ Route::post('admin/uploadArtificialPersonId','admin/Company/uploadArtificialPers
 Route::post('admin/uploadTrademark','admin/Company/uploadTrademark');
 //验证企业信息
 Route::get('admin/verifyCompanyInfo','admin/Company/verifyCompanyInfo');
+//
+Route::post('admin/bbb','Common/Login/bbb');
 
 
 
