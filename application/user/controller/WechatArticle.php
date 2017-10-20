@@ -71,6 +71,7 @@ class WechatArticle extends Common
         }
         $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
         $data["is_collection"]=20;
+        $data["site_id"] = $this->getSiteSession('website')["id"];
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
