@@ -15,6 +15,7 @@ class Product extends Common
 {
     use Obtrait;
     use Osstrait;
+
     /**
      * 显示资源列表
      *
@@ -202,9 +203,10 @@ class Product extends Common
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
         $file = request()->file('img');
-        $fileInfo = $file->move(ROOT_PATH . 'public/upload/');
+        $localfile_path = ROOT_PATH . 'public/upload/';
+        $fileInfo = $file->move($localfile_path);
         $object = $dest_dir . $fileInfo->getSaveName();
-        $put_info = $this->ossPutObject($object, ROOT_PATH . "public/" . $fileInfo->getSaveName());
+        $put_info = $this->ossPutObject($object, $localfile_path . $fileInfo->getSaveName());
         $url = '';
         $status = false;
         $msg = '上传失败';
@@ -231,9 +233,10 @@ class Product extends Common
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
         $file = request()->file('img');
-        $fileInfo = $file->move(ROOT_PATH . 'public/upload/');
+        $localfile_path = ROOT_PATH . 'public/upload/';
+        $fileInfo = $file->move($localfile_path);
         $object = $dest_dir . $fileInfo->getSaveName();
-        $put_info = $this->ossPutObject($object, ROOT_PATH . "public/" . $fileInfo->getSaveName());
+        $put_info = $this->ossPutObject($object, $localfile_path . $fileInfo->getSaveName());
         $url = '';
         $status = false;
         $msg = '上传失败';
