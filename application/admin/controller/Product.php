@@ -62,7 +62,7 @@ class Product extends Common
             ["name", "require", "请输入产品名称"],
             ["summary", "require", "请输入摘要"],
             ["detail", "require", "请输入详情"],
-            ["image", 'require', "请上传图片"],
+            ["image", 'require', "请上传产品缩略图"],
             ["type_id", 'require', "请上传分类"],
             ['type_name', 'require', "请上传分类名称"]
         ];
@@ -70,12 +70,26 @@ class Product extends Common
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $post["base64"] = $this->base64EncodeImage("static/" . $post['image']);
-        // 如果是base64的图片
-        if (preg_match('/(data:\s*image\/(\w+);base64,)/', $post["base64"], $result)) {
-            $type = $result[2];
-            $post['image_name'] = md5(uniqid(rand(), true)) . ".$type";
+        //本地图片位置
+        $type = $this->analyseUrlFileType($post['image']);
+        //生成随机的文件名
+        $post['image_name'] = $this->formUniqueString() . ".{$type}";
+        //图片的ser
+        $ser = [];
+        if ($post['imgser']) {
+            foreach ($post['imgser'] as $v) {
+                //分析文件后缀
+                $type = $this->analyseUrlFileType($v);
+                if ($type) {
+                    $img_name = $this->formUniqueString() . ".{$type}";
+                }
+                $ser[] = [
+                    'imgname' => $img_name,
+                    'osssrc' => $v,
+                ];
+            }
         }
+        $post['imgser'] = serialize($ser);
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new productM();
@@ -94,7 +108,9 @@ class Product extends Common
      */
     public function read($id)
     {
-        return $this->resultArray('', '', (new productM)->where(["id" => $id])->field("create_time,update_time", true)->find());
+        $data = (new productM)->where(["id" => $id])->field("create_time,update_time", true)->find();
+//        $data[imgser] = unserialize($data->);
+        return $this->resultArray('', '', $data);
     }
 
     /**
@@ -124,7 +140,6 @@ class Product extends Common
             ["detail", "require", "请输入详情"],
             ["type_id", 'require', "请上传分类"],
             ['type_name', 'require', "请上传分类名称"]
-
         ];
         $validate = new Validate($rule);
         if (!$validate->check($post)) {

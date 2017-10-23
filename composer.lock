@@ -4,8 +4,50 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "09c3d6cb820b0f7e546b8d5395b3e723",
+    "hash": "3104107bda8bf629768b49dbeeefcaaa",
+    "content-hash": "d09a530f64370e34795cc49bb7c3382a",
     "packages": [
+        {
+            "name": "aliyuncs/oss-sdk-php",
+            "version": "v2.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aliyun/aliyun-oss-php-sdk.git",
+                "reference": "0b9b85b6c5c38cfc4ef3b0205a5a62d1e36acf2e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://files.phpcomposer.com/files/aliyun/aliyun-oss-php-sdk/0b9b85b6c5c38cfc4ef3b0205a5a62d1e36acf2e.zip",
+                "reference": "0b9b85b6c5c38cfc4ef3b0205a5a62d1e36acf2e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "~1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OSS\\": "src/OSS"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Aliyuncs",
+                    "homepage": "http://www.aliyun.com"
+                }
+            ],
+            "description": "Aliyun OSS SDK for PHP",
+            "homepage": "http://www.aliyun.com/product/oss/",
+            "time": "2017-04-25 09:15:12"
+        },
         {
             "name": "doctrine/instantiator",
             "version": "1.0.5",
@@ -58,7 +100,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14T21:17:01+00:00"
+            "time": "2015-06-14 21:17:01"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -112,7 +154,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-12-27T11:43:31+00:00"
+            "time": "2015-12-27 11:43:31"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -157,7 +199,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2017-07-15T11:38:20+00:00"
+            "time": "2017-07-15 11:38:20"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -204,7 +246,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2017-07-14T14:27:02+00:00"
+            "time": "2017-07-14 14:27:02"
         },
         {
             "name": "phpspec/prophecy",
@@ -267,7 +309,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-03-02T20:05:34+00:00"
+            "time": "2017-03-02 20:05:34"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -329,7 +371,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-10-06T15:47:00+00:00"
+            "time": "2015-10-06 15:47:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -376,7 +418,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2016-10-03T07:40:28+00:00"
+            "time": "2016-10-03 07:40:28"
         },
         {
             "name": "phpunit/php-text-template",
@@ -417,7 +459,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2015-06-21T13:50:34+00:00"
+            "time": "2015-06-21 13:50:34"
         },
         {
             "name": "phpunit/php-timer",
@@ -466,7 +508,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2017-02-26T11:10:40+00:00"
+            "time": "2017-02-26 11:10:40"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -515,7 +557,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-02-27T10:12:30+00:00"
+            "time": "2017-02-27 10:12:30"
         },
         {
             "name": "phpunit/phpunit",
@@ -587,7 +629,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-06-21T08:07:12+00:00"
+            "time": "2017-06-21 08:07:12"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -643,7 +685,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-10-02T06:51:40+00:00"
+            "time": "2015-10-02 06:51:40"
         },
         {
             "name": "sebastian/comparator",
@@ -707,7 +749,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-01-29T09:50:25+00:00"
+            "time": "2017-01-29 09:50:25"
         },
         {
             "name": "sebastian/diff",
@@ -759,7 +801,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2017-05-22T07:24:03+00:00"
+            "time": "2017-05-22 07:24:03"
         },
         {
             "name": "sebastian/environment",
@@ -809,7 +851,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2016-08-18T05:49:44+00:00"
+            "time": "2016-08-18 05:49:44"
         },
         {
             "name": "sebastian/exporter",
@@ -876,7 +918,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2016-06-17T09:04:28+00:00"
+            "time": "2016-06-17 09:04:28"
         },
         {
             "name": "sebastian/global-state",
@@ -927,7 +969,7 @@
             "keywords": [
                 "global state"
             ],
-            "time": "2015-10-12T03:26:01+00:00"
+            "time": "2015-10-12 03:26:01"
         },
         {
             "name": "sebastian/recursion-context",
@@ -980,7 +1022,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2016-10-03T07:41:43+00:00"
+            "time": "2016-10-03 07:41:43"
         },
         {
             "name": "sebastian/version",
@@ -1015,7 +1057,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2015-06-21T13:59:46+00:00"
+            "time": "2015-06-21 13:59:46"
         },
         {
             "name": "symfony/dom-crawler",
@@ -1071,7 +1113,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2017-06-02T05:32:06+00:00"
+            "time": "2017-06-02 05:32:06"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1130,7 +1172,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-09T14:24:12+00:00"
+            "time": "2017-06-09 14:24:12"
         },
         {
             "name": "symfony/yaml",
@@ -1185,7 +1227,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-06-15T12:58:50+00:00"
+            "time": "2017-06-15 12:58:50"
         },
         {
             "name": "topthink/framework",
@@ -1193,12 +1235,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "e428c43ec5138c989cfdb38ac300a964ad77f9cb"
+                "reference": "90d71bbc76d0915e0cf51ecad57350c0c79d5a3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/top-think/framework/e428c43ec5138c989cfdb38ac300a964ad77f9cb.zip",
-                "reference": "e428c43ec5138c989cfdb38ac300a964ad77f9cb",
+                "url": "https://files.phpcomposer.com/files/top-think/framework/90d71bbc76d0915e0cf51ecad57350c0c79d5a3f.zip",
+                "reference": "90d71bbc76d0915e0cf51ecad57350c0c79d5a3f",
                 "shasum": ""
             },
             "require": {
@@ -1236,7 +1278,7 @@
                 "orm",
                 "thinkphp"
             ],
-            "time": "2017-07-05T03:35:06+00:00"
+            "time": "2017-07-04 03:46:13"
         },
         {
             "name": "topthink/think-angular",
@@ -1276,7 +1318,7 @@
             ],
             "description": "think angular view engine",
             "homepage": "http://kancloud.cn/shuai/php-angular",
-            "time": "2017-05-16T10:56:18+00:00"
+            "time": "2017-05-16 10:56:18"
         },
         {
             "name": "topthink/think-captcha",
@@ -1312,7 +1354,7 @@
                 }
             ],
             "description": "captcha package for thinkphp5",
-            "time": "2016-07-06T01:47:11+00:00"
+            "time": "2016-07-06 01:47:11"
         },
         {
             "name": "topthink/think-helper",
@@ -1348,7 +1390,7 @@
                 }
             ],
             "description": "The ThinkPHP5 Helper Package",
-            "time": "2017-04-05T07:15:37+00:00"
+            "time": "2017-04-05 07:15:37"
         },
         {
             "name": "topthink/think-image",
@@ -1388,7 +1430,7 @@
                 }
             ],
             "description": "The ThinkPHP5 Image Package",
-            "time": "2016-09-29T06:05:43+00:00"
+            "time": "2016-09-29 06:05:43"
         },
         {
             "name": "topthink/think-installer",
@@ -1429,7 +1471,7 @@
                     "email": "448901948@qq.com"
                 }
             ],
-            "time": "2017-05-27T06:58:09+00:00"
+            "time": "2017-05-27 06:58:09"
         },
         {
             "name": "topthink/think-migration",
@@ -1468,7 +1510,7 @@
                     "email": "448901948@qq.com"
                 }
             ],
-            "time": "2017-03-31T06:33:23+00:00"
+            "time": "2017-03-31 06:33:23"
         },
         {
             "name": "topthink/think-mongo",
@@ -1502,7 +1544,7 @@
                 }
             ],
             "description": "mongodb driver for thinkphp5",
-            "time": "2017-05-05T07:52:33+00:00"
+            "time": "2017-05-05 07:52:33"
         },
         {
             "name": "topthink/think-queue",
@@ -1547,7 +1589,7 @@
                 }
             ],
             "description": "The ThinkPHP5 Queue Package",
-            "time": "2017-06-25T00:49:56+00:00"
+            "time": "2017-06-25 00:49:56"
         },
         {
             "name": "topthink/think-sae",
@@ -1581,7 +1623,7 @@
                 }
             ],
             "description": "sae support for thinkphp5",
-            "time": "2016-10-08T10:53:21+00:00"
+            "time": "2016-10-08 10:53:21"
         },
         {
             "name": "topthink/think-testing",
@@ -1622,7 +1664,7 @@
                     "email": "448901948@qq.com"
                 }
             ],
-            "time": "2016-08-08T09:43:56+00:00"
+            "time": "2016-08-08 09:43:56"
         },
         {
             "name": "topthink/think-worker",
@@ -1659,7 +1701,7 @@
                 }
             ],
             "description": "workerman extend for thinkphp5",
-            "time": "2016-10-08T06:07:03+00:00"
+            "time": "2016-10-08 06:07:03"
         },
         {
             "name": "webmozart/assert",
@@ -1709,7 +1751,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2016-11-23T20:04:58+00:00"
+            "time": "2016-11-23 20:04:58"
         },
         {
             "name": "workerman/workerman",
@@ -1755,7 +1797,7 @@
                 "asynchronous",
                 "event-loop"
             ],
-            "time": "2017-07-14T02:24:43+00:00"
+            "time": "2017-07-14 02:24:43"
         }
     ],
     "packages-dev": [],

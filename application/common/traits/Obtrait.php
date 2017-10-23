@@ -5,9 +5,11 @@
  * Date: 17-6-12
  * Time: 上午9:44
  */
+
 namespace app\common\traits;
 
-trait Obtrait{
+trait Obtrait
+{
     /**
      * 停止前台request
      * @param $msg
@@ -30,7 +32,7 @@ trait Obtrait{
      * @param $data post数据 数组格式
      * @return mixed
      */
-    public function curl_post($url,$data)
+    public function curl_post($url, $data)
     {
         //初始化
         $curl = curl_init();
@@ -83,7 +85,8 @@ trait Obtrait{
      * @param $image_file
      * @return string
      */
-    public function base64EncodeImage ($image_file) {
+    public function base64EncodeImage($image_file)
+    {
         $base64_image = '';
         $image_info = getimagesize($image_file);
         $image_data = fread(fopen($image_file, 'r'), filesize($image_file));
@@ -116,19 +119,19 @@ trait Obtrait{
      * @param $obj 解压缩后的目录
      * @param $directiry 解压的目录
      */
-    public function ZipArchive($src,$obj,$directiry)
+    public function ZipArchive($src, $obj, $directiry)
     {
-        $made_path='';
-        $zip=new \ZipArchive();
-        if($zip->open($src)==true){
+        $made_path = '';
+        $zip = new \ZipArchive();
+        if ($zip->open($src) == true) {
             $zip->extractTo($obj);
-            for($i = 0; $i < $zip->numFiles; $i++) {
+            for ($i = 0; $i < $zip->numFiles; $i++) {
                 $filename = $zip->getNameIndex($i);
                 $fileinfo = pathinfo($filename);
-                if(isset($fileinfo["dirname"])){
-                    if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
-                        $made_path= $directiry.$fileinfo["dirname"];
-                        chmod($obj.$fileinfo["dirname"],0755);
+                if (isset($fileinfo["dirname"])) {
+                    if ($fileinfo["dirname"] != "." && strstr($fileinfo["dirname"], "/") === false) {
+                        $made_path = $directiry . $fileinfo["dirname"];
+                        chmod($obj . $fileinfo["dirname"], 0755);
                         break;
                     }
                 }
@@ -143,7 +146,8 @@ trait Obtrait{
      * @param $dir
      * @return bool
      */
-    public function del_dir($dir) {
+    public function del_dir($dir)
+    {
         if (!is_dir($dir)) {
             return false;
         }
@@ -164,18 +168,18 @@ trait Obtrait{
      * @param $src
      * @param $directory
      */
-    public function checkZipDirectory($src,$directory)
+    public function checkZipDirectory($src, $directory)
     {
-        $made_path='';
-        $zip=new \ZipArchive();
-        if($zip->open($src)==true){
-            for($i = 0; $i < $zip->numFiles; $i++) {
+        $made_path = '';
+        $zip = new \ZipArchive();
+        if ($zip->open($src) == true) {
+            for ($i = 0; $i < $zip->numFiles; $i++) {
                 $filename = $zip->getNameIndex($i);
                 $fileinfo = pathinfo($filename);
-                if(isset($fileinfo["dirname"])){
-                    if($fileinfo["dirname"]!="." && strstr($fileinfo["dirname"],"/")===false){
-                        $made_path= $fileinfo["dirname"];
-                        if(file_exists($directory.$made_path)){
+                if (isset($fileinfo["dirname"])) {
+                    if ($fileinfo["dirname"] != "." && strstr($fileinfo["dirname"], "/") === false) {
+                        $made_path = $fileinfo["dirname"];
+                        if (file_exists($directory . $made_path)) {
                             return true;
                         }
                     }
@@ -185,4 +189,25 @@ trait Obtrait{
         }
         return false;
     }
+
+    /**
+     * 生成唯一的string
+     * @access public
+     */
+    public function formUniqueString()
+    {
+        return md5(uniqid(rand(), true));
+    }
+
+
+    /**
+     * 解析文件路径 获取文件的后缀
+     * @param string $fileurl 要获取后缀的文件url 路径
+     * @access public
+     */
+    public function analyseUrlFileType($fileurl)
+    {
+        return pathinfo(parse_url($fileurl)['path'])['extension'];
+    }
+
 }
