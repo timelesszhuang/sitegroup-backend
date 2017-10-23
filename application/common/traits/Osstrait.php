@@ -135,6 +135,7 @@ trait Osstrait
         $bucket = "salesman1";
         $object = "141414.jpg";
         $filePath = __FILE__;
+
         //图片加水印
         $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
         $download_file = 'demo.jpg';

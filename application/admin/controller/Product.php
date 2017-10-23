@@ -109,7 +109,7 @@ class Product extends Common
     public function read($id)
     {
         $data = (new productM)->where(["id" => $id])->field("create_time,update_time", true)->find();
-//        $data[imgser] = unserialize($data->);
+        $data['imgser'] = unserialize($data->imgser);
         return $this->resultArray('', '', $data);
     }
 
