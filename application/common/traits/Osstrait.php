@@ -42,7 +42,6 @@ trait Osstrait
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
             $ossClient->uploadFile($bucket, $object, $filepath);
             $msg = '上传成功';
-
         } catch (OssException $e) {
             $msg = $e->getMessage();
 //            if($e->getCode()=='404'){

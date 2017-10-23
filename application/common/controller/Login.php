@@ -161,17 +161,5 @@ class Login extends Controller
         return $data;
     }
 
-
-    public function bbb()
-    {
-        $request=Request::instance();
-        $file=$request->file("file");
-        $fileInfo=$file->move(ROOT_PATH."public/");
-        $obj=$this->ossPutObject($fileInfo->getFilename(),ROOT_PATH."public/".$fileInfo->getSaveName(),"salesman1");
-//        dump($fileInfo->getFilename());die;
-        return [
-            "url"=>"http://salesman1.oss-cn-qingdao.aliyuncs.com/".$fileInfo->getFilename()
-        ];
-    }
 }
  

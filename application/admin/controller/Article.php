@@ -242,6 +242,7 @@ class Article extends Common
         $dest_dir = 'article/';
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
+
         $request = Request::instance();
         $file = $request->file("file");
         $fileInfo = $file->move(ROOT_PATH . "public/");

@@ -9,6 +9,6 @@
 return [
     'accessKeyId' => 'mHENtCjneaNtqGOC',
     'accessKeySecret' => 'iIaCOZXiqrbk81mwn8t3fTtNFOXyeJ',
-    'endpoint' => 'oss-cn-qingdao.aliyuncs.com',
-    'budget' => 'lexiaoyi'
+    'endpoint' => 'oss-cn-beijing.aliyuncs.com',
+    'bucket' => 'lexiaoyi'
 ];
