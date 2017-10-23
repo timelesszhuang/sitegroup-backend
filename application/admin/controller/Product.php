@@ -74,22 +74,7 @@ class Product extends Common
         $type = $this->analyseUrlFileType($post['image']);
         //生成随机的文件名
         $post['image_name'] = $this->formUniqueString() . ".{$type}";
-        //图片的ser
-        $ser = [];
-        if ($post['imgser']) {
-            foreach ($post['imgser'] as $v) {
-                //分析文件后缀
-                $type = $this->analyseUrlFileType($v);
-                if ($type) {
-                    $img_name = $this->formUniqueString() . ".{$type}";
-                }
-                $ser[] = [
-                    'imgname' => $img_name,
-                    'osssrc' => $v,
-                ];
-            }
-        }
-        $post['imgser'] = serialize($ser);
+        $post['imgser'] = '';
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new productM();
@@ -222,15 +207,20 @@ class Product extends Common
         return $this->resultArray('', '', $data);
     }
 
-
     /**
-     * 上传产品主图
-     * @return array
+     * 修改 添加图片的Imgser 区分根据 $file='';
+     * @access public
+     * @todo 1、上传图片到oss
+     *       2、需要删除原来的object数据
+     *       3、更新数据库中的 字段
      */
-    public function uploadImage()
+    public function uploadImgSer()
     {
-        //产品的主图
-        $dest_dir = 'product/mainimg/';
+        $post = (new Request())->post();
+        $id = $post['id'];
+        $index = $post['index'];
+        //产品的其他图片
+        $dest_dir = 'product/imgser/';
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
         $file = request()->file('img');
@@ -242,9 +232,47 @@ class Product extends Common
         $status = false;
         $msg = '上传失败';
         if ($put_info['status']) {
+            //上传成功之后需要删除掉之前的存储的对象
             $msg = '上传成功';
             $status = true;
             $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+            //分析文件后缀
+            $type = $this->analyseUrlFileType($url);
+            if ($type) {
+                $img_name = $this->formUniqueString() . ".{$type}";
+            } else {
+                //不带后缀的情况
+                $img_name = $this - $this->formUniqueString();
+            }
+            $data = (new productM)->where(["id" => $id])->field("id,imgser")->find();
+            $imgser = [];
+            $deleteobject = '';
+            if ($data->imgser) {
+                $imgser = unserialize($data->imgser);
+                foreach ($imgser as $k => $v) {
+                    if ($k == $index) {
+                        $imgser[$k] = [
+                            'imgname' => $img_name,
+                            'osssrc' => $url,
+                        ];
+                        $deleteobject = $v['osssrc'];
+                        break;
+                    }
+                }
+            } else {
+                //表示第一次是空的
+                $imgser[] = [
+                    'imgname' => $img_name,
+                    'osssrc' => $url,
+                ];
+            }
+            $data->imgser = serialize($imgser);
+            $data->save();
+            //需要去服务器上删除已经被替换的对象
+            if ($deleteobject) {
+                //需要截取掉之前的路径
+                $this->ossDeleteObject($deleteobject);
+            }
         }
         return [
             "url" => $url,
@@ -254,13 +282,40 @@ class Product extends Common
     }
 
     /**
-     * 上传产品图片
+     * 删除图片中个别的imgser
      * @access public
      */
-    public function uploadImgSer()
+    public function deleteImgser($id, $index)
+    {
+        $data = (new productM)->where(["id" => $id])->field("id,imgser")->find();
+        $deleteobject = '';
+        $imgser = [];
+        if ($data->imgser) {
+            $imgser = unserialize($data->imgser);
+            $deleteobject = $imgser[$index]['osssrc'];
+            unset($imgser[$index]);
+            array_values($imgser);
+        }
+        $data->imgser = serialize($imgser);
+        $data->save();
+        //需要去服务器上删除已经被替换的对象
+        if ($deleteobject) {
+            //需要截取掉之前的路径
+            $result = $this->ossDeleteObject($deleteobject);
+        }
+        return ['url' => '', 'status' => true, 'msg' => '删除产品图片完成'];
+    }
+
+
+    /**
+     * 上传产品主图
+     * @return array
+     */
+    public function uploadImage()
     {
         //产品的主图
-        $dest_dir = 'product/imgser/';
+        $dest_dir = 'product/mainimg/';
+
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
         $file = request()->file('img');
