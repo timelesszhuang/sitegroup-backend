@@ -346,6 +346,9 @@ Route::resource('admin/product', 'admin/Product');
 Route::post('admin/uploadProductBigImg', 'admin/Product/uploadImage');
 //产品其他小图
 Route::post('admin/uploadProductSerImg', 'admin/Product/uploadImgSer');
+//修改产品多图的时候获取bug
+Route::get('admin/getProductImgList/:id', 'admin/Product/getImgSer');
+
 
 //营销策略
 Route::resource('admin/Marketingmode', 'admin/Marketingmode');

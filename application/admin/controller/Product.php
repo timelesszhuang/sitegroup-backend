@@ -108,8 +108,7 @@ class Product extends Common
      */
     public function read($id)
     {
-        $data = (new productM)->where(["id" => $id])->field("create_time,update_time", true)->find();
-        $data['imgser'] = unserialize($data->imgser);
+        $data = (new productM)->where(["id" => $id])->field("create_time,update_time,imgser", true)->find()->toArray();
         return $this->resultArray('', '', $data);
     }
 
@@ -145,8 +144,10 @@ class Product extends Common
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
+
         if (!empty($post["image"])) {
             $model = (new productM)->where(["id" => $id])->find();
+            //删除原来的图片
             $file = ROOT_PATH . "public/static/" . $model->image;
             if (file_exists($file)) {
                 unlink($file);
@@ -185,8 +186,6 @@ class Product extends Common
                             "searchType" => 'product',
                             "type" => $post['type_id']
                         ];
-//                        dump($send);
-//                        dump($value['url']."/index.php/generateHtml");die;
                         $this->curl_post($value['url'] . "/index.php/generateHtml", $send);
                     }
                 }
@@ -204,6 +203,22 @@ class Product extends Common
     public function delete($id)
     {
         //
+    }
+
+
+    /**
+     * 获取图片的src
+     */
+    public function getImgSer($id)
+    {
+        $data = (new productM)->where(["id" => $id])->field("id,imgser")->find()->toArray();
+        $imgser = unserialize($data['imgser']);
+        $list = [];
+        foreach ($imgser as $v) {
+            $list[] = $v['osssrc'];
+        }
+        $data['imglist'] = $list;
+        return $this->resultArray('', '', $data);
     }
 
 
