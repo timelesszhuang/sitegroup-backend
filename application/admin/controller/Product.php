@@ -4,6 +4,8 @@ namespace app\admin\controller;
 
 use app\common\controller\Common;
 
+use app\common\traits\Osstrait;
+use think\Config;
 use think\Request;
 use app\common\traits\Obtrait;
 use think\Validate;
@@ -12,7 +14,7 @@ use app\admin\model\Product as productM;
 class Product extends Common
 {
     use Obtrait;
-
+    use Osstrait;
     /**
      * 显示资源列表
      *
@@ -62,7 +64,6 @@ class Product extends Common
             ["image", 'require', "请上传图片"],
             ["type_id", 'require', "请上传分类"],
             ['type_name', 'require', "请上传分类名称"]
-
         ];
         $validate = new Validate($rule);
         if (!$validate->check($post)) {
