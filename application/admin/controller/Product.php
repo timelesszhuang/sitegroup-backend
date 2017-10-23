@@ -108,7 +108,7 @@ class Product extends Common
      */
     public function read($id)
     {
-        $data = (new productM)->where(["id" => $id])->field("create_time,update_time,imgser", true)->find()->toArray();
+        $data = (new productM)->where(["id" => $id])->field("create_time,update_time,imgser", true)->find();
         return $this->resultArray('', '', $data);
     }
 
@@ -217,6 +217,7 @@ class Product extends Common
         foreach ($imgser as $v) {
             $list[] = $v['osssrc'];
         }
+        unset($data['imgser']);
         $data['imglist'] = $list;
         return $this->resultArray('', '', $data);
     }
