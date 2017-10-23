@@ -245,7 +245,8 @@ class Article extends Common
 
         $request = Request::instance();
         $file = $request->file("file");
-        $fileInfo = $file->move(ROOT_PATH . "public/");
+        $fileInfo = $file->move(ROOT_PATH . "public/upload/");
+
         $object = $dest_dir . $fileInfo->getSaveName();
         $put_info = $this->ossPutObject($object, ROOT_PATH . "public/" . $fileInfo->getSaveName());
         $url = '';
