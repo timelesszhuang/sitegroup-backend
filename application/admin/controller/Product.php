@@ -200,10 +200,7 @@ class Product extends Common
         $dest_dir = 'product/mainimg/';
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
-        $request = Request::instance();
-        $file = $request->file("file");
-        $fileInfo = $file->move(ROOT_PATH . "public/upload/");
-        $file = request()->file('file_name');
+        $file = request()->file('img');
         $fileInfo = $file->move(ROOT_PATH . 'public/upload/');
         $object = $dest_dir . $fileInfo->getSaveName();
         $put_info = $this->ossPutObject($object, ROOT_PATH . "public/" . $fileInfo->getSaveName());
@@ -228,7 +225,27 @@ class Product extends Common
      */
     public function uploadImgSer()
     {
-
+        //产品的主图
+        $dest_dir = 'product/imgser/';
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        $file = request()->file('img');
+        $fileInfo = $file->move(ROOT_PATH . 'public/upload/');
+        $object = $dest_dir . $fileInfo->getSaveName();
+        $put_info = $this->ossPutObject($object, ROOT_PATH . "public/" . $fileInfo->getSaveName());
+        $url = '';
+        $status = false;
+        $msg = '上传失败';
+        if ($put_info['status']) {
+            $msg = '上传成功';
+            $status = true;
+            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        }
+        return [
+            "url" => $url,
+            'status' => $status,
+            'msg' => $msg,
+        ];
     }
 
 

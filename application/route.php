@@ -88,51 +88,51 @@ Route::post('sys/editnews', 'sysadmin/Hotnews/editnews');
 //一条数据
 Route::get('sys/getonenews/:id', 'sysadmin/Hotnews/getOne');
 //营销创意
-Route::resource('sys/Marketingmode','sysadmin/Marketingmode');
+Route::resource('sys/Marketingmode', 'sysadmin/Marketingmode');
 //节点列表
-Route::get('sys/getNodelist','sysadmin/Node/nodeList');
+Route::get('sys/getNodelist', 'sysadmin/Node/nodeList');
 //系统推送
-Route::resource('sys/systemNotice','sysadmin/SystemNotice');
+Route::resource('sys/systemNotice', 'sysadmin/SystemNotice');
 //营销中心
-Route::resource('sys/CaseCenter',"sysadmin/CaseCenter");
+Route::resource('sys/CaseCenter', "sysadmin/CaseCenter");
 //营销模式上传缩略图
-Route::post('sys/uploadMarketingmode','sysadmin/Marketingmode/uploadImage');
+Route::post('sys/uploadMarketingmode', 'sysadmin/Marketingmode/uploadImage');
 //营销事件活动
-Route::resource('sys/eventmarketholiday','sysadmin/Eventmarketingholiday');
+Route::resource('sys/eventmarketholiday', 'sysadmin/Eventmarketingholiday');
 //上传html5模板
-Route::post('sys/uploadHtmlTemplate','sysadmin/HtmlTemplate/uploadTemplate');
+Route::post('sys/uploadHtmlTemplate', 'sysadmin/HtmlTemplate/uploadTemplate');
 //上传html5模板缩略图
-Route::post('sys/uploadHtmlTemplateImg','sysadmin/HtmlTemplate/uploadTemplateImg');
+Route::post('sys/uploadHtmlTemplateImg', 'sysadmin/HtmlTemplate/uploadTemplateImg');
 //html5模板模块
-Route::resource('sys/HtmlTemplate','sysadmin/HtmlTemplate');
+Route::resource('sys/HtmlTemplate', 'sysadmin/HtmlTemplate');
 //获取多条模板
-Route::get('sys/AllHtmlTemplate/:id','sysadmin/HtmlTemplate/readAll');
+Route::get('sys/AllHtmlTemplate/:id', 'sysadmin/HtmlTemplate/readAll');
 //媒体分类
-Route::resource('sys/mediaType','sysadmin/MediaType');
+Route::resource('sys/mediaType', 'sysadmin/MediaType');
 //媒体
-Route::resource('sys/media','sysadmin/Media');
+Route::resource('sys/media', 'sysadmin/Media');
 //媒体地区
-Route::get('sys/mediaOrigin','sysadmin/MediaType/getOrigin');
+Route::get('sys/mediaOrigin', 'sysadmin/MediaType/getOrigin');
 //媒体城市
-Route::get('sys/getMediaType','sysadmin/MediaType/getTypes');
+Route::get('sys/getMediaType', 'sysadmin/MediaType/getTypes');
 //软文
-Route::resource('sys/softText','sysadmin/SoftText');
+Route::resource('sys/softText', 'sysadmin/SoftText');
 //软文获取地区
-Route::get('sys/softGetOrigin','sysadmin/SoftText/getOrigin');
+Route::get('sys/softGetOrigin', 'sysadmin/SoftText/getOrigin');
 //软文根据地区获取媒体分类
-Route::get('sys/softGetMediaType/:id','sysadmin/SoftText/returnsOrigin');
+Route::get('sys/softGetMediaType/:id', 'sysadmin/SoftText/returnsOrigin');
 //设置审核状态
-Route::get('sys/setCheck/:id/:num','sysadmin/SoftText/setCheck');
+Route::get('sys/setCheck/:id/:num', 'sysadmin/SoftText/setCheck');
 //后台上传模板
-Route::resource('sys/template','sysadmin/Template');
+Route::resource('sys/template', 'sysadmin/Template');
 //提交php嵌套后的模板
-Route::post('sys/uploadphptemplate',"sysadmin/Template/uploadPHPTemplate");
+Route::post('sys/uploadphptemplate', "sysadmin/Template/uploadPHPTemplate");
 //提交原始模板
-Route::post('sys/uploadtemplate',"sysadmin/Template/uploadTemplate");
+Route::post('sys/uploadtemplate', "sysadmin/Template/uploadTemplate");
 //模板缩略图
-Route::post('sys/uploadthumbnails',"sysadmin/Template/uploadThumbnails");
+Route::post('sys/uploadthumbnails', "sysadmin/Template/uploadThumbnails");
 //企业审核认证
-Route::post('sys/checkPass/:id/:num',"sysadmin/Company/checkPass");
+Route::post('sys/checkPass/:id/:num', "sysadmin/Company/checkPass");
 
 
 //====================================================================节点后台
@@ -336,62 +336,63 @@ Route::get('admin/userdefinedformcode/:id', 'admin/UserDefinedForm/getFormCode')
 //获取所有类型
 Route::get('admin/userdefine', 'admin/Rejection/getUserDefind');
 //产品分类
-Route::resource('admin/productType','admin/ProductType');
+Route::resource('admin/productType', 'admin/ProductType');
 //获取产品分类列表
-Route::get('admin/getProductType','admin/ProductType/getTypes');
+Route::get('admin/getProductType', 'admin/ProductType/getTypes');
 //产品
-Route::resource('admin/product','admin/Product');
-//产品图片
-Route::post('admin/uploadProductImg','admin/Product/uploadImage');
+Route::resource('admin/product', 'admin/Product');
+
+//产品大的图片
+Route::post('admin/uploadProductBigImg', 'admin/Product/uploadImage');
+//产品其他小图
+Route::post('admin/uploadProductSerImg', 'admin/Product/uploadImgSer');
+
 //营销策略
-Route::resource('admin/Marketingmode','admin/Marketingmode');
+Route::resource('admin/Marketingmode', 'admin/Marketingmode');
 //获取行业分类
-Route::get('admin/getIndustry','admin/Industry/getIndustry');
+Route::get('admin/getIndustry', 'admin/Industry/getIndustry');
 //系统推送
-Route::resource('admin/systemNotice','admin/SystemNotice');
+Route::resource('admin/systemNotice', 'admin/SystemNotice');
 //案例中心
-Route::resource('admin/CaseCenter','admin/CaseCenter');
+Route::resource('admin/CaseCenter', 'admin/CaseCenter');
 //修改关键词根据id和名称
-Route::get('admin/updateKeyword/:id/:name','admin/Keyword/updateKeyword');
+Route::get('admin/updateKeyword/:id/:name', 'admin/Keyword/updateKeyword');
 //事件营销活动
-Route::resource('admin/eventmarketholiday','admin/Eventmarketingholiday');
+Route::resource('admin/eventmarketholiday', 'admin/Eventmarketingholiday');
 //获取多条模板
-Route::get('admin/AllHtmlTemplate/:id','admin/HtmlTemplate/readAll');
+Route::get('admin/AllHtmlTemplate/:id', 'admin/HtmlTemplate/readAll');
 //html5模板模块
-Route::resource('admin/HtmlTemplate','admin/HtmlTemplate');
+Route::resource('admin/HtmlTemplate', 'admin/HtmlTemplate');
 //事件营销记录
-Route::resource('admin/eventRecord','admin/EventMarketingHolidayRecord');
+Route::resource('admin/eventRecord', 'admin/EventMarketingHolidayRecord');
 //追踪关键词
-Route::resource('admin/trackKeyword','admin/TrackKeyword');
+Route::resource('admin/trackKeyword', 'admin/TrackKeyword');
 //首页统计
-Route::get('admin/countDatas','admin/Pv/countDatas');
+Route::get('admin/countDatas', 'admin/Pv/countDatas');
 
-Route::get('admin/gettrack','admin/TrackKeyword/getTrack');
+Route::get('admin/gettrack', 'admin/TrackKeyword/getTrack');
 //获取前4条 营销图片和id
-Route::get('admin/getFourMarket','admin/Marketingmode/getFour');
+Route::get('admin/getFourMarket', 'admin/Marketingmode/getFour');
 //获取软文
-Route::resource('admin/softText','admin/SoftText');
+Route::resource('admin/softText', 'admin/SoftText');
 //获取地区
-Route::get('admin/getOrigin','admin/SoftText/getOrigin');
+Route::get('admin/getOrigin', 'admin/SoftText/getOrigin');
 //获取媒体分类列表
-Route::get('admin/getTypes','admin/SoftText/getTypes');
+Route::get('admin/getTypes', 'admin/SoftText/getTypes');
 //根据地区获取媒体信息
-Route::get('admin/returnsOrigin/:id',"admin/SoftText/returnsOrigin");
+Route::get('admin/returnsOrigin/:id', "admin/SoftText/returnsOrigin");
 //完善企业信息
-Route::resource('admin/Company','admin/Company');
+Route::resource('admin/Company', 'admin/Company');
 //上传企业执照
-Route::post('admin/uploadBusinessLicense','admin/Company/uploadBusinessLicense');
+Route::post('admin/uploadBusinessLicense', 'admin/Company/uploadBusinessLicense');
 //上传法人身份证
-Route::post('admin/uploadArtificialPersonId','admin/Company/uploadArtificialPersonId');
+Route::post('admin/uploadArtificialPersonId', 'admin/Company/uploadArtificialPersonId');
 //上传商标
-Route::post('admin/uploadTrademark','admin/Company/uploadTrademark');
+Route::post('admin/uploadTrademark', 'admin/Company/uploadTrademark');
 //验证企业信息
-Route::get('admin/verifyCompanyInfo','admin/Company/verifyCompanyInfo');
+Route::get('admin/verifyCompanyInfo', 'admin/Company/verifyCompanyInfo');
 //文章图片上传打到oss
-Route::post('admin/uploadarticleimage','admin/Article/imageupload');
-
-
-Route::post('admin/bbb','Common/Login/bbb');
+Route::post('admin/uploadarticleimage', 'admin/Article/imageupload');
 
 
 //站点相关--------------------------------------------------------
@@ -485,9 +486,9 @@ Route::post('user/producttdkedit', 'user/PageInfo/producttdkedit');
 //修改a类关键词pageinfo
 Route::post('user/editpageinfo', 'user/PageInfo/editpageinfo');
 //关键词替换指定的链接
-Route::resource('user/articleReplaceKeyword','user/ArticleReplaceKeyword');
+Route::resource('user/articleReplaceKeyword', 'user/ArticleReplaceKeyword');
 //统计所有
-Route::get('user/getFour','user/Pv/countDatas');
+Route::get('user/getFour', 'user/Pv/countDatas');
 
 //return [
 //    '__pattern__' => [
