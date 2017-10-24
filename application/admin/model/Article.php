@@ -38,7 +38,7 @@ class Article extends Model
                         $imgs = explode('<img', $matches[0]);
                         //给图片添加alt属性
                         $lastImg = "<img alt=" . "'$article->title'" . $imgs[1];
-                        $article->thumbnails = $lastImg;
+                        $article->thumbnails = $imgs[1];
                         // 如果是base64的图片
                         if (preg_match('/(data:\s*image\/(\w+);base64,)/', $lastImg, $result)) {
                             $type = $result[2];
@@ -54,29 +54,6 @@ class Article extends Model
         });
         //修改操作
         Article::event("before_update", function ($article) {
-            $rule = '/<img[\s\S]*?src\s*=\s*[\"|\'](.*?)[\"|\'][\s\S]*?>/';
-            if (isset($article->content)) {
-                //如果已经上传了缩略图的话
-                if (!empty($article->thumbnails)) {
-                    //获取图片信息
-                    $img_info=pathinfo($article->thumbnails);
-                    //拼接缩略图名称
-                    $article->thumbnails_name = md5(uniqid(rand(), true)) .".".$img_info["extension"];
-                }else{
-                    preg_match($rule, $article->content, $matches);
-                    if (!empty($matches)) {
-                        $imgs = explode('<img', $matches[0]);
-                        //给图片添加alt属性
-                        $lastImg = "<img alt=" . "'$article->title'" . $imgs[1];
-                        $article->thumbnails = $lastImg;
-                        // 如果是base64的图片
-                        if (preg_match('/(data:\s*image\/(\w+);base64,)/', $lastImg, $result)) {
-                            $type = $result[2];
-                            $article->thumbnails_name = md5(uniqid(rand(), true)) . ".$type";
-                        }
-                    }
-                }
-            }
             //如果阅读数量是空的话
             if (empty($article->readcount)) {
                 $article->readcount = rand(100, 10000);
