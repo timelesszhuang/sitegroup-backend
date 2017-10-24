@@ -397,6 +397,8 @@ Route::post('admin/uploadTrademark', 'admin/Company/uploadTrademark');
 Route::get('admin/verifyCompanyInfo', 'admin/Company/verifyCompanyInfo');
 //文章图片上传打到oss
 Route::post('admin/uploadarticleimage', 'admin/Article/imageupload');
+//问答图片上传到oss
+Route::post('admin/uploadquestionimage', 'admin/Question/imageupload');
 
 
 //站点相关--------------------------------------------------------
