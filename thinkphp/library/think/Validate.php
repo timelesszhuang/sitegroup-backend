@@ -38,6 +38,7 @@ class Validate
     protected static $typeMsg = [
         'require'     => ':attribute不能为空',
         'number'      => ':attribute必须是数字',
+        'integer'     => ':attribute必须是整数',
         'float'       => ':attribute必须是浮点数',
         'boolean'     => ':attribute必须是布尔值',
         'email'       => ':attribute格式不符',
@@ -632,8 +633,12 @@ class Validate
         if (function_exists('exif_imagetype')) {
             return exif_imagetype($image);
         } else {
-            $info = getimagesize($image);
-            return $info[2];
+            try {
+                $info = getimagesize($image);
+                return $info ? $info[2] : false;
+            } catch (\Exception $e) {
+                return false;
+            }
         }
     }
 
@@ -899,7 +904,7 @@ class Validate
     {
         list($field, $val) = explode(',', $rule);
         if ($this->getDataValue($data, $field) == $val) {
-            return !empty($value);
+            return !empty($value) || '0' == $value;
         } else {
             return true;
         }
@@ -917,7 +922,7 @@ class Validate
     {
         $result = call_user_func_array($rule, [$value, $data]);
         if ($result) {
-            return !empty($value);
+            return !empty($value) || '0' == $value;
         } else {
             return true;
         }
@@ -935,7 +940,7 @@ class Validate
     {
         $val = $this->getDataValue($data, $rule);
         if (!empty($val)) {
-            return !empty($value);
+            return !empty($value) || '0' == $value;
         } else {
             return true;
         }
@@ -1225,6 +1230,8 @@ class Validate
             $msg = $this->message[$attribute];
         } elseif (isset(self::$typeMsg[$type])) {
             $msg = self::$typeMsg[$type];
+        } elseif (0 === strpos($type, 'require')) {
+            $msg = self::$typeMsg['require'];
         } else {
             $msg = $title . '规则错误';
         }
