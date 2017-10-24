@@ -81,7 +81,8 @@ trait Osstrait
     /**
      * 删除 oss 中的对象
      * @access public
-     * @param $object 要删除的对象
+     * @param $object 要删除的对象  支持带着绝对路径
+     * @return array
      */
     public function ossDeleteObject($object)
     {
@@ -89,7 +90,8 @@ trait Osstrait
         $accessKeySecret = Config::get("oss.accessKeySecret");
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
-        //$object = "oss-php-sdk-test/upload-test-object-name.txt";
+        //如果路径里边包含绝对https 之类路径则替换掉 https://***/
+        $object = str_replace($url = sprintf("https://%s.%s/", $bucket, $endpoint), '', $object);
         $status = true;
         try {
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
