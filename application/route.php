@@ -341,10 +341,9 @@ Route::resource('admin/productType', 'admin/ProductType');
 Route::get('admin/getProductType', 'admin/ProductType/getTypes');
 //产品
 Route::resource('admin/product', 'admin/Product');
-
-//产品大的图片
+//产品缩略图
 Route::post('admin/uploadProductBigImg', 'admin/Product/uploadImage');
-//产品其他小图
+//产品 修改/添加 图片
 Route::post('admin/uploadProductSerImg', 'admin/Product/uploadImgSer');
 //修改添加产品多图的时候获取bug
 Route::get('admin/getProductImgList/:id', 'admin/Product/getImgSer');

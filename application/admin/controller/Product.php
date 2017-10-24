@@ -129,35 +129,32 @@ class Product extends Common
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-
         if (!empty($post["image"])) {
             $model = (new productM)->where(["id" => $id])->find();
-            //删除原来的图片
-            $file = ROOT_PATH . "public/static/" . $model->image;
-            if (file_exists($file)) {
-                unlink($file);
+            if ($model->image != $post['image']) {
+                //现在的图片跟之前的不一致 需要删除之前的oss图片
+                $pre_src = $model->image;
+                if ($pre_src) {
+                    //原图存在则去oss删除文件
+                    $this->ossDeleteObject($pre_src);
+                }
             }
-            $post["base64"] = $this->base64EncodeImage(ROOT_PATH . "public/static/" . $post['image']);
-            // 如果是base64的图片
-            if (preg_match('/(data:\s*image\/(\w+);base64,)/', $post["base64"], $result)) {
-                $type = $result[2];
-                $post['image_name'] = md5(uniqid(rand(), true)) . ".$type";
-            }
+            //要静态化的文件名
+            $type = $this->analyseUrlFileType($post['image']);
+            $post['image_name'] = $this->formUniqueString() . ".$type";
         }
         if (!(new productM)->save($post, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
+        //正在修改中 首先提示前台已经生成完成然后去服务器上面 重新生成新的页面
         $this->open_start('正在修改中');
         $where['type_id'] = $post['type_id'];
         $where['flag'] = 5;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
-//        dump($menu);die;
         $user = $this->getSessionUser();
         $wh['node_id'] = $user['user_node_id'];
         $sitedata = \app\admin\model\Site::where($wh)->select();
-//        dump($sitedata);
         $arr = [];
-        $ar = [];
         foreach ($menu as $k => $v) {
             $arr[] = $v['id'];
             foreach ($sitedata as $kk => $vv) {
@@ -175,7 +172,6 @@ class Product extends Common
                     }
                 }
             }
-
         }
     }
 
@@ -192,17 +188,20 @@ class Product extends Common
 
 
     /**
-     * 获取图片的src
+     * 获取产品多图状态下的图片src
+     * @access public
      */
     public function getImgSer($id)
     {
         $data = (new productM)->where(["id" => $id])->field("id,imgser")->find()->toArray();
-        $imgser = unserialize($data['imgser']);
         $list = [];
-        foreach ($imgser as $v) {
-            $list[] = $v['osssrc'];
+        if ($data['imgser']) {
+            $imgser = unserialize($data['imgser']);
+            foreach ($imgser as $v) {
+                $list[] = $v['osssrc'];
+            }
+            unset($data['imgser']);
         }
-        unset($data['imgser']);
         $data['imglist'] = $list;
         return $this->resultArray('', '', $data);
     }
@@ -287,14 +286,14 @@ class Product extends Common
      */
     public function deleteImgser($id, $index)
     {
-        $data = (new productM)->where(["id" => $id])->field("id,imgser")->find();
+        $data = (new productM)->where(["id" => $id])->field("id,imgser")->find()->toArray();
         $deleteobject = '';
         $imgser = [];
-        if ($data->imgser) {
-            $imgser = unserialize($data->imgser);
+        if ($data['imgser']) {
+            $imgser = unserialize($data['imgser']);
             $deleteobject = $imgser[$index]['osssrc'];
             unset($imgser[$index]);
-            array_values($imgser);
+            $imgser = array_values($imgser);
         }
         $data->imgser = serialize($imgser);
         $data->save();
@@ -315,7 +314,6 @@ class Product extends Common
     {
         //产品的主图
         $dest_dir = 'product/mainimg/';
-
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
         $file = request()->file('img');
