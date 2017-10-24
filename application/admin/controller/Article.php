@@ -256,13 +256,16 @@ class Article extends Common
         $fileInfo = $file->move($localpath);
         $object = $dest_dir . $fileInfo->getSaveName();
         $put_info = $this->ossPutObject($object, $localpath . $fileInfo->getSaveName());
+        $msg = '上传缩略图失败';
         $url = '';
         $status = false;
         if ($put_info['status']) {
+            $msg = '上传缩略图成功';
             $status = true;
             $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
         }
         return [
+            'msg' => $msg,
             "url" => $url,
             'status' => $status
         ];
