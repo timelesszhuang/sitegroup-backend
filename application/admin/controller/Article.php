@@ -77,7 +77,10 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
+        //如果前台有传递summary就使用 否则自动提取
+        if(empty($data['summary'])){
+            $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
+        }
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -114,7 +117,10 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
+        //如果summary是空的话 自动生成
+        if(empty($data["summary"])){
+            $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
+        }
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
@@ -229,6 +235,7 @@ class Article extends Common
         if (!$site->save()) {
             return $this->resultArray('修改失败', 'failed');
         }
+
         return $this->resultArray('修改成功');
     }
 
