@@ -235,6 +235,7 @@ class Article extends Common
         if (!$site->save()) {
             return $this->resultArray('修改失败', 'failed');
         }
+
         return $this->resultArray('修改成功');
     }
 
