@@ -207,7 +207,7 @@ class Product extends Common
     }
 
     /**
-     * 修改 添加图片的Imgser 区分根据 $file='';
+     * 修改 添加图片的Imgser 区分根据 $index 如果没有index是添加;
      * @access public
      * @todo 1、上传图片到oss
      *       2、需要删除原来的object数据
@@ -215,14 +215,19 @@ class Product extends Common
      */
     public function uploadImgSer()
     {
-        $post = (new Request())->post();
-        $id = $post['id'];
-        $index = $post['index'];
+        $id = \request()->post('id');
+        $index = \request()->post('index');
         //产品的其他图片
         $dest_dir = 'product/imgser/';
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
-        $file = request()->file('img');
+        if ($index == NULL) {
+            $file = request()->file('addimg');
+            $imgtype = 'add';
+        } else {
+            $file = request()->file('updateimg');
+            $imgtype = 'edit';
+        }
         $localfile_path = ROOT_PATH . 'public/upload/';
         $fileInfo = $file->move($localfile_path);
         $object = $dest_dir . $fileInfo->getSaveName();
@@ -230,6 +235,7 @@ class Product extends Common
         $url = '';
         $status = false;
         $msg = '上传失败';
+        $imgser = [];
         if ($put_info['status']) {
             //上传成功之后需要删除掉之前的存储的对象
             $msg = '上传成功';
@@ -244,26 +250,30 @@ class Product extends Common
                 $img_name = $this - $this->formUniqueString();
             }
             $data = (new productM)->where(["id" => $id])->field("id,imgser")->find();
-            $imgser = [];
             $deleteobject = '';
+            $dest = [
+                'imgname' => $img_name,
+                'osssrc' => $url,
+            ];
             if ($data->imgser) {
                 $imgser = unserialize($data->imgser);
-                foreach ($imgser as $k => $v) {
-                    if ($k == $index) {
-                        $imgser[$k] = [
-                            'imgname' => $img_name,
-                            'osssrc' => $url,
-                        ];
-                        $deleteobject = $v['osssrc'];
-                        break;
+                if ($imgtype == 'edit') {
+                    foreach ($imgser as $k => $v) {
+                        if ($k == $index) {
+                            $imgser[$k] = $dest;
+                            $deleteobject = $v['osssrc'];
+                            break;
+                        }
+                    }
+                } else {
+                    //是添加的情况
+                    if ($index !== 0 && !$index) {
+                        array_push($imgser, $dest);
                     }
                 }
             } else {
                 //表示第一次是空的
-                $imgser[] = [
-                    'imgname' => $img_name,
-                    'osssrc' => $url,
-                ];
+                $imgser[] = $dest;
             }
             $data->imgser = serialize($imgser);
             $data->save();
@@ -273,8 +283,12 @@ class Product extends Common
                 $this->ossDeleteObject($deleteobject);
             }
         }
+        $imglist = [];
+        foreach ($imgser as $v) {
+            $imglist[] = $v['osssrc'];
+        }
         return [
-            "url" => $url,
+            "imglist" => $imglist,
             'status' => $status,
             'msg' => $msg,
         ];
@@ -286,23 +300,27 @@ class Product extends Common
      */
     public function deleteImgser($id, $index)
     {
-        $data = (new productM)->where(["id" => $id])->field("id,imgser")->find()->toArray();
+        $data = (new productM)->where(["id" => $id])->field("id,imgser")->find();
         $deleteobject = '';
         $imgser = [];
-        if ($data['imgser']) {
-            $imgser = unserialize($data['imgser']);
+        if ($data->imgser) {
+            $imgser = unserialize($data->imgser);
             $deleteobject = $imgser[$index]['osssrc'];
             unset($imgser[$index]);
             $imgser = array_values($imgser);
         }
         $data->imgser = serialize($imgser);
+        $imglist = [];
+        foreach ($imgser as $v) {
+            $imglist[] = $v['osssrc'];
+        }
         $data->save();
         //需要去服务器上删除已经被替换的对象
         if ($deleteobject) {
             //需要截取掉之前的路径
             $result = $this->ossDeleteObject($deleteobject);
         }
-        return ['url' => '', 'status' => true, 'msg' => '删除产品图片完成'];
+        return $this->resultArray('删除产品图片完成', '', $imglist);
     }
 
 
