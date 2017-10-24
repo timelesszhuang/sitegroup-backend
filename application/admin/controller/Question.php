@@ -2,14 +2,17 @@
 
 namespace app\admin\controller;
 
+use think\Config;
 use think\Request;
 use app\common\controller\Common;
 use think\Validate;
 use app\common\traits\Obtrait;
+use app\common\traits\Osstrait;
 
 class Question extends Common
 {
     use Obtrait;
+    use Osstrait;
     /**
      * 显示资源列表
      *
@@ -162,4 +165,34 @@ class Question extends Common
         return $this->deleteRecord((new \app\admin\model\Question),$id);
     }
 
+    /**
+     * 图片上传到 oss相关操作
+     * @access public
+     */
+    public function imageupload()
+    {
+        $dest_dir = 'question/';
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+
+        $request = Request::instance();
+        $file = $request->file("file");
+        $localpath = ROOT_PATH . "public/upload/";
+        $fileInfo = $file->move($localpath);
+        $object = $dest_dir . $fileInfo->getSaveName();
+        $put_info = $this->ossPutObject($object, $localpath . $fileInfo->getSaveName());
+        $msg = '上传缩略图失败';
+        $url = '';
+        $status = false;
+        if ($put_info['status']) {
+            $msg = '上传缩略图成功';
+            $status = true;
+            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        }
+        return [
+            'msg' => $msg,
+            "url" => $url,
+            'status' => $status
+        ];
+    }
 }
