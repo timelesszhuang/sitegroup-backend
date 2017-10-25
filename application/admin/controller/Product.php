@@ -230,8 +230,10 @@ class Product extends Common
         }
         $localfile_path = ROOT_PATH . 'public/upload/';
         $fileInfo = $file->move($localfile_path);
+        $localfile = $localfile_path . $fileInfo->getSaveName();
         $object = $dest_dir . $fileInfo->getSaveName();
-        $put_info = $this->ossPutObject($object, $localfile_path . $fileInfo->getSaveName());
+        $put_info = $this->ossPutObject($object, $localfile);
+        unlink($localfile);
         $url = '';
         $status = false;
         $msg = '上传失败';
@@ -322,37 +324,5 @@ class Product extends Common
         }
         return $this->resultArray('删除产品图片完成', '', $imglist);
     }
-
-
-    /**
-     * 上传产品主图
-     * @return array
-     */
-    public function uploadImage()
-    {
-        //产品的主图
-        $dest_dir = 'product/mainimg/';
-        $endpoint = Config::get('oss.endpoint');
-        $bucket = Config::get('oss.bucket');
-        $file = request()->file('img');
-        $localfile_path = ROOT_PATH . 'public/upload/';
-        $fileInfo = $file->move($localfile_path);
-        $object = $dest_dir . $fileInfo->getSaveName();
-        $put_info = $this->ossPutObject($object, $localfile_path . $fileInfo->getSaveName());
-        $url = '';
-        $status = false;
-        $msg = '上传失败';
-        if ($put_info['status']) {
-            $msg = '上传成功';
-            $status = true;
-            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
-        }
-        return [
-            "url" => $url,
-            'status' => $status,
-            'msg' => $msg,
-        ];
-    }
-
 
 }
