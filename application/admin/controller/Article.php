@@ -257,35 +257,4 @@ class Article extends Common
     }
 
 
-    /**
-     * 图片上传到 oss相关操作
-     * @access public
-     */
-    public function imageupload()
-    {
-        $dest_dir = 'article/';
-        $endpoint = Config::get('oss.endpoint');
-        $bucket = Config::get('oss.bucket');
-
-        $request = Request::instance();
-        $file = $request->file("file");
-        $localpath = ROOT_PATH . "public/upload/";
-        $fileInfo = $file->move($localpath);
-        $object = $dest_dir . $fileInfo->getSaveName();
-        $put_info = $this->ossPutObject($object, $localpath . $fileInfo->getSaveName());
-        $msg = '上传缩略图失败';
-        $url = '';
-        $status = false;
-        if ($put_info['status']) {
-            $msg = '上传缩略图成功';
-            $status = true;
-            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
-        }
-        return [
-            'msg' => $msg,
-            "url" => $url,
-            'status' => $status
-        ];
-    }
-
 }
