@@ -9,10 +9,12 @@ use think\Session;
 use think\Validate;
 use app\common\traits\Obtrait;
 use Closure;
-
+use OSS\OssClient;
+use app\common\traits\Osstrait;
 class Article extends Common
 {
     use Obtrait;
+    use Osstrait;
 
     /**
      * 显示资源列表
@@ -62,7 +64,9 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $data['summary'] = $this->utf8chstringsubstr($data['content'], 75 * 3);
+        if(!empty($data["summary"])){
+            $data['summary'] = $this->utf8chstringsubstr($data['content'], 75 * 3);
+        }
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -113,7 +117,26 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $data['summary'] = $this->utf8chstringsubstr($data['content'], 75 * 3);
+        //如果summary是空的话 自动生成
+        if (empty($data["summary"])) {
+            $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
+        }
+        // 如果传递了缩略图的话 比对删除
+        if ($data["thumbnails"]) {
+            $id_data = \app\admin\model\Article::get($id);
+            if (empty($id_data)) {
+                return $this->resultArray("获取数据失败", 'failed');
+            }
+            //比对两个缩略图的地址 删除原始 添加thumbnails_name
+            if ($data["thumbnails"] == $id_data->thumbnails) {
+                //删除
+                $this->ossDeleteObject($id_data->thumbnails);
+                //获取后缀
+                $file_suffix=$this->analyseUrlFileType($data["thumbnails"]);
+                //缩略图名称
+                $data["thumbnails_name"] = $this->formUniqueString().".".$file_suffix;
+            }
+        }
         return $this->publicUpdate((new \app\admin\model\Article), $data, $id);
     }
 
