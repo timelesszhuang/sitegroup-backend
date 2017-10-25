@@ -19,6 +19,7 @@ use app\common\traits\Osstrait;
 class Login extends Controller
 {
     use Osstrait;
+
     /**
      * 本地测试开启下 允许跨域ajax 获取数据
      */
@@ -43,6 +44,40 @@ class Login extends Controller
             exit(0);
         }
     }
+
+
+    /**
+     * 图片上传到 oss相关操作
+     * @access public
+     */
+    public function imageupload()
+    {
+        $dest_dir = 'pic/';
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        $request = Request::instance();
+        $file = $request->file("img");
+        $localpath = ROOT_PATH . "public/upload/";
+        $fileInfo = $file->move($localpath);
+        $object = $dest_dir . $fileInfo->getSaveName();
+        $localfilepath = $localpath . $fileInfo->getSaveName();
+        $put_info = $this->ossPutObject($object, $localfilepath);
+        unlink($localfilepath);
+        $msg = '上传图片失败';
+        $url = '';
+        $status = false;
+        if ($put_info['status']) {
+            $msg = '上传图片成功';
+            $status = true;
+            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        }
+        return [
+            'msg' => $msg,
+            "url" => $url,
+            'status' => $status
+        ];
+    }
+
 
     /**
      * 执行第一次的登陆操作
@@ -87,7 +122,7 @@ class Login extends Controller
             return $this->resultArray('', "failed");
         }
         // root用户免除限制
-        if($userInfo["id"]!=1) {
+        if ($userInfo["id"] != 1) {
             // 查询node_id是否被禁用 如果被禁同样禁止登录
             $node_info = Node::where(["id" => $userInfo["node_id"]])->find();
             if (empty($node_info)) {
