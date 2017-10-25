@@ -12,6 +12,10 @@
 use think\Route;
 
 //======================================== 系统管理后台
+//公共的上传图片接口
+Route::post('uploadimg', 'common/Login/imageupload');
+
+
 //用户
 Route::resource('user', 'common/User');
 Route::rule('user/getAll', 'common/User/getAll');
