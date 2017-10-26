@@ -128,16 +128,15 @@ class Article extends Common
                 return $this->resultArray("获取数据失败", 'failed');
             }
             //比对两个缩略图的地址 删除原始 添加thumbnails_name
-            if ($data["thumbnails"] == $id_data->thumbnails) {
+            if ($data["thumbnails"] != $id_data->thumbnails) {
                 //删除
                 $this->ossDeleteObject($id_data->thumbnails);
                 //获取后缀
                 $file_suffix = $this->analyseUrlFileType($data["thumbnails"]);
-                //缩略图名称
+                //缩略图名称 用于静态化到其他地方时候使用
                 $data["thumbnails_name"] = $this->formUniqueString() . "." . $file_suffix;
             }
         }
-
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
