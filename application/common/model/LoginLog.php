@@ -23,4 +23,5 @@ class LoginLog extends Model
             "rows" => $data
         ];
     }
+
 }

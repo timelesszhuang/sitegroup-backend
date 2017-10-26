@@ -132,15 +132,16 @@ class Article extends Common
                 //删除
                 $this->ossDeleteObject($id_data->thumbnails);
                 //获取后缀
-                $file_suffix=$this->analyseUrlFileType($data["thumbnails"]);
+                $file_suffix = $this->analyseUrlFileType($data["thumbnails"]);
                 //缩略图名称
-                $data["thumbnails_name"] = $this->formUniqueString().".".$file_suffix;
+                $data["thumbnails_name"] = $this->formUniqueString() . "." . $file_suffix;
             }
         }
 
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
+        //先返回给前台 然后去后端 重新生成页面
         $this->open_start('正在修改中');
         $where['type_id'] = $data['articletype_id'];
         $where['flag'] = 3;
@@ -149,7 +150,6 @@ class Article extends Common
         $wh['node_id'] = $user['user_node_id'];
         $sitedata = \app\admin\model\Site::where($wh)->select();
         $arr = [];
-        $ar = [];
         foreach ($menu as $k => $v) {
             $arr[] = $v['id'];
             foreach ($sitedata as $kk => $vv) {
@@ -163,9 +163,7 @@ class Article extends Common
                             "searchType" => 'article',
                             "type" => $data['articletype_id']
                         ];
-//                        file_put_contents('11.txt','111');
                         $this->curl_post($value['url'] . "/index.php/generateHtml", $send);
-
                     }
                 }
             }
@@ -252,9 +250,40 @@ class Article extends Common
         if (!$site->save()) {
             return $this->resultArray('修改失败', 'failed');
         }
-
         return $this->resultArray('修改成功');
     }
 
+
+    /**
+     * 图片上传到 oss相关操作
+     * @access public
+     */
+    public function imageupload()
+    {
+        $dest_dir = 'article/';
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        $request = Request::instance();
+        $file = $request->file("file");
+        $localpath = ROOT_PATH . "public/upload/";
+        $fileInfo = $file->move($localpath);
+        $object = $dest_dir . $fileInfo->getSaveName();
+        $localfilepath = $localpath . $fileInfo->getSaveName();
+        $put_info = $this->ossPutObject($object, $localfilepath);
+        unlink($localfilepath);
+        $msg = '上传缩略图失败';
+        $url = '';
+        $status = false;
+        if ($put_info['status']) {
+            $msg = '上传缩略图成功';
+            $status = true;
+            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        }
+        return [
+            'msg' => $msg,
+            "url" => $url,
+            'status' => $status
+        ];
+    }
 
 }
