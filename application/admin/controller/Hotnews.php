@@ -46,33 +46,6 @@ class Hotnews extends Common
 
     }
 
-    /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
-     */
-    public function save(Request $request)
-    {
-        $rule = [
-            ["title", "require", "请输入标题"],
-            ["content", "require", "请输入内容"],
-            ["summary", "require", "请提交简介"],
-        ];
-        $validate = new Validate($rule);
-        $data = $request->post();
-        $user = $this->getSessionUser();
-        $data['node_id'] = $user['user_node_id'];
-        if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), "failed");
-        }
-        $data["is_collection"]=20;
-        $data["posttime"]=time();
-        if (!\app\admin\model\Article::create($data)) {
-            return $this->resultArray("添加失败", "failed");
-        }
-        return $this->resultArray("添加成功");
-    }
 
     /**
      * 获取某个文章
