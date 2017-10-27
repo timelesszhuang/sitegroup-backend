@@ -11,6 +11,7 @@ use app\common\traits\Obtrait;
 use Closure;
 use OSS\OssClient;
 use app\common\traits\Osstrait;
+
 class Article extends Common
 {
     use Obtrait;
@@ -64,9 +65,6 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        if(!empty($data["summary"])){
-            $data['summary'] = $this->utf8chstringsubstr($data['content'], 75 * 3);
-        }
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -117,10 +115,6 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        //如果summary是空的话 自动生成
-        if (empty($data["summary"])) {
-            $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
-        }
         // 如果传递了缩略图的话 比对删除
         if ($data["thumbnails"]) {
             $id_data = \app\admin\model\Article::get($id);
@@ -129,14 +123,23 @@ class Article extends Common
             }
             //比对两个缩略图的地址 删除原始 添加thumbnails_name
             if ($data["thumbnails"] == $id_data->thumbnails) {
+                //缩略图有可能是从文章中提取的 所以可能为非 aliyun oss 的链接
+                $endpoint = Config::get('oss.endpoint');
+                $bucket = Config::get('oss.bucket');
+                $url = sprintf("https://%s.%s/", $bucket, $endpoint);
+                if (strpos($id_data->thumbnails, $url) !== false) {
+                    //表示之前缩略图是oss的 现在新添加的一定是oss的
+                    $this->ossDeleteObject($id_data->thumbnails);
+                }
                 //删除
-                $this->ossDeleteObject($id_data->thumbnails);
                 //获取后缀
-                $file_suffix=$this->analyseUrlFileType($data["thumbnails"]);
-                //缩略图名称
-                $data["thumbnails_name"] = $this->formUniqueString().".".$file_suffix;
+                $filetype = $this->analyseUrlFileType($data["thumbnails"]);
+                $filename = $this->formUniqueString();
+                //缩略图名称 用于静态化到其他地方时候使用
+                $data["thumbnails_name"] = $filename . "." . $filetype;
             }
         }
+        //需要及时 请求到相关节点重新生成文章
         return $this->publicUpdate((new \app\admin\model\Article), $data, $id);
     }
 
@@ -154,28 +157,27 @@ class Article extends Common
     /**
      * 获取文章类型
      * @return array
-     *//**
- * 获取站点文章分类
- * @return array
- */
+     */
+    /**
+     * 获取站点文章分类
+     * @return array
+     */
     public function getArticleType()
     {
-
-
         $where = [];
         $wh['id'] = $this->request->session()['website']['id'];
         $Site = new \app\admin\model\Site();
         $menuid = $Site->where($wh)->field('menu')->find()->menu;
-        $Menuid = explode(',',$menuid);
+        $Menuid = explode(',', $menuid);
         $where['id'] = $Menuid;
         $menu = new \app\admin\model\Menu();
         $whe['flag'] = 3;
-        $data = $menu->where('id','in',$Menuid)->where($whe)->field('type_id,type_name,tag_name')->select();
-        foreach ($data as$k=>$v){
-            $v['text'] = $v['type_name'].'['.$v['tag_name'].']';
+        $data = $menu->where('id', 'in', $Menuid)->where($whe)->field('type_id,type_name,tag_name')->select();
+        foreach ($data as $k => $v) {
+            $v['text'] = $v['type_name'] . '[' . $v['tag_name'] . ']';
             $v['id'] = $v['type_id'];
         }
-        return $this->resultArray('','',$data);
+        return $this->resultArray('', '', $data);
     }
 
     /**
@@ -340,7 +342,6 @@ class Article extends Common
         return ["count" => $count, "name" => $articleType->name];
 
     }
-
 
 
 }

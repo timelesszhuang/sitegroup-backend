@@ -5,6 +5,7 @@ namespace app\admin\controller;
 use app\common\controller\Common;
 use app\common\traits\Osstrait;
 use OSS\OssClient;
+use think\Cache;
 use think\Config;
 use think\Session;
 use think\Validate;
@@ -77,10 +78,6 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        //如果前台有传递summary就使用 否则自动提取
-        if (empty($data['summary'])) {
-            $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
-        }
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -117,10 +114,7 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        //如果summary是空的话 自动生成
-        if (empty($data["summary"])) {
-            $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
-        }
+
         // 如果传递了缩略图的话 比对删除
         if ($data["thumbnails"]) {
             $id_data = \app\admin\model\Article::get($id);
@@ -129,17 +123,27 @@ class Article extends Common
             }
             //比对两个缩略图的地址 删除原始 添加thumbnails_name
             if ($data["thumbnails"] != $id_data->thumbnails) {
+                //缩略图有可能是从文章中提取的 所以可能为非 aliyun oss 的链接
+                $endpoint = Config::get('oss.endpoint');
+                $bucket = Config::get('oss.bucket');
+                $url = sprintf("https://%s.%s/", $bucket, $endpoint);
+                if (strpos($id_data->thumbnails, $url) !== false) {
+                    //表示之前缩略图是oss的 现在新添加的一定是oss的
+                    $this->ossDeleteObject($id_data->thumbnails);
+                }
                 //删除
-                $this->ossDeleteObject($id_data->thumbnails);
                 //获取后缀
-                $file_suffix = $this->analyseUrlFileType($data["thumbnails"]);
+                $filetype = $this->analyseUrlFileType($data["thumbnails"]);
+                $filename = $this->formUniqueString();
                 //缩略图名称 用于静态化到其他地方时候使用
-                $data["thumbnails_name"] = $this->formUniqueString() . "." . $file_suffix;
+                $data["thumbnails_name"] = $filename . "." . $filetype;
             }
         }
+
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
+
         //先返回给前台 然后去后端 重新生成页面
         $this->open_start('正在修改中');
         $where['type_id'] = $data['articletype_id'];
@@ -166,7 +170,6 @@ class Article extends Common
                     }
                 }
             }
-
         }
     }
 
