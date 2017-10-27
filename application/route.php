@@ -411,6 +411,9 @@ Route::post('user/siteInfo', 'user/index/siteInfo');
 
 //站点文章
 Route::resource('user/article', 'user/Article');
+//文章缩略图上传到oss
+Route::post('user/uploadarticleimage', 'user/Article/imageupload');
+
 Route::get('user/articleType', 'user/Article/getArticleType');
 Route::get('user/getErrorInfo', 'user/Article/getErrorInfo');
 Route::post('user/changeErrorStatus/:id', 'user/Article/changeErrorStatus');
@@ -500,12 +503,3 @@ Route::resource('user/articleReplaceKeyword', 'user/ArticleReplaceKeyword');
 //统计所有
 Route::get('user/getFour', 'user/Pv/countDatas');
 
-//return [
-//    '__pattern__' => [
-//        'name' => '\w+',
-//    ],
-//    '[hello]' => [
-//        ':id' => ['index/hello', ['method' => 'get'], ['id' => '\d+']],
-//        ':name' => ['index/hello', ['method' => 'post']],
-//    ],
-//];
