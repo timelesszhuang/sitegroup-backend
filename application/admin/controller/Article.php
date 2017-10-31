@@ -139,13 +139,12 @@ class Article extends Common
                 $data["thumbnails_name"] = $filename . "." . $filetype;
             }
         }
-
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
-
-        //先返回给前台 然后去后端 重新生成页面
+        //先返回给前台 然后去后端 重新生成页面 这块暂时有问题
         $this->open_start('正在修改中');
+        //找出有这篇  文章的菜单
         $where['type_id'] = $data['articletype_id'];
         $where['flag'] = 3;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
@@ -164,7 +163,7 @@ class Article extends Common
                         $send = [
                             "id" => $data['id'],
                             "searchType" => 'article',
-                            "type" => $data['articletype_id']
+                            "type" => $data['articletype_id'],
                         ];
                         $this->curl_post($value['url'] . "/index.php/generateHtml", $send);
                     }

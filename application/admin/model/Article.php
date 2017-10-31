@@ -44,7 +44,7 @@ class Article extends Model
                     //有上传缩略图 一定是oss的
                     //拼接缩略图名称
                     //没有图片的
-                    if (!property_exists($article, 'id')) {
+                    if (!$article->id) {
                         //添加的时候才需要操作
                         $imgname = md5(uniqid(rand(), true));
                         $type = pathinfo(parse_url($article->thumbnails)['path'])['extension'];
@@ -85,7 +85,6 @@ class Article extends Model
                 $article->readcount = rand(100, 10000);
             }
         };
-
         // 文章阅读数量随机生成 添加图片缩略图
         Article::event("before_insert", $common_func);
         //修改操作
