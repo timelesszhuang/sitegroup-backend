@@ -172,23 +172,7 @@ class Article extends Common
         return $this->deleteRecord((new \app\admin\model\Article), $id);
     }
 
-    /**
-     * 同步文章
-     * @param $id
-     * @return array
-     */
-    public function syncArticle()
-    {
-        $is_sync = $this->request->post('is_sync');
-        $id = $this->request->post("id");
-        $user = $this->getSessionUser();
-        $where["node_id"] = $user["user_node_id"];
-        $where["id"] = $id;
-        if ((new \app\admin\model\Article)->save(["is_sync" => $is_sync], $where)) {
-            return $this->resultArray("修改成功");
-        }
-        return $this->resultArray("添加失败", 'failed');
-    }
+
 
     /**
      * 获取错误信息
