@@ -154,6 +154,7 @@ Route::rule('articletype/gettype', 'admin/Articletype/getType');
 
 //文章
 Route::resource('article', 'admin/Article');
+Route::post('showhtml', 'admin/Article/showhtml');
 Route::post('article/sync', 'admin/Article/syncArticle');
 Route::get('article/getErrorInfo', 'admin/Article/getErrorInfo');
 Route::get('article/getErrorStatus', 'admin/Article/getErrorStatus');
