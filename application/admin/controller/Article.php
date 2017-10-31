@@ -148,26 +148,16 @@ class Article extends Common
         $where['type_id'] = $data['articletype_id'];
         $where['flag'] = 3;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
-        $user = $this->getSessionUser();
-        $wh['node_id'] = $user['user_node_id'];
-        $sitedata = \app\admin\model\Site::where($wh)->select();
-        $arr = [];
         foreach ($menu as $k => $v) {
-            $arr[] = $v['id'];
+            $wh['menu'] = ["like", "%,{$v['id']},%"];
+            $sitedata = \app\admin\model\Site::where($wh)->select();
             foreach ($sitedata as $kk => $vv) {
-                $a = strstr($vv["menu"], "," . $v["id"] . ",");
-                if ($a) {
-                    $Site = new \app\admin\model\Site();
-                    $dat = $Site->where('id', 'in', $vv['id'])->field('url')->select();
-                    foreach ($dat as $key => $value) {
-                        $send = [
+                $send = [
                             "id" => $data['id'],
                             "searchType" => 'article',
                             "type" => $data['articletype_id'],
                         ];
-                        $this->curl_post($value['url'] . "/index.php/generateHtml", $send);
-                    }
-                }
+                        $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
             }
         }
     }
@@ -291,39 +281,29 @@ class Article extends Common
      * @return array
      * 预览页面
      */
-    public function showhtml()
+    public function articleshowhtml()
     {
         $data = $this->request->post();
         $where['type_id'] = $data['articletype_id'];
         $where['flag'] = 3;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
-        if(!$menu){
+        if (!$menu) {
             return $this->resultArray('当前无法预览', 'failed');
         }
-        $user = $this->getSessionUser();
-        $wh['node_id'] = $user['user_node_id'];
-        $sitedata = \app\admin\model\Site::where($wh)->select();
-        $arr = [];
         foreach ($menu as $k => $v) {
-            $arr[] = $v['id'];
+            $wh['menu'] = ["like", "%,{$v['id']},%"];
+            $sitedata = \app\admin\model\Site::where($wh)->select();
             foreach ($sitedata as $kk => $vv) {
-                $str = strpos("," . $vv["menu"] . ",", "," . $v["id"] . ",");
-                if ($str) {
-                    $Site = new \app\admin\model\Site();
-                    $url = $Site->where('id', 'in', $vv['id'])->select();
-                    foreach ($url as $key => $value) {
-                        $showhtml[] = [
-                            'url' =>  $value['url'] . '/preview/article/'.$data['id'] . '.html',
-                            'site_name' =>  $value['site_name'],
+                $showhtml[] = [
+                            'url' =>  $vv['url'] . '/preview/article/'.$data['id'] . '.html',
+                            'site_name' =>  $vv['site_name'],
                         ];
-                    }
-                    if ($showhtml) {
+            }
+            if ($showhtml) {
                         return $this->resultArray('', '', $showhtml);
                     } else {
                         return $this->resultArray('当前无法预览', 'failed');
                     }
-                }
-            }
         }
 
     }
