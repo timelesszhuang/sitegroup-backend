@@ -85,7 +85,6 @@ class Article extends Model
                 $article->readcount = rand(100, 10000);
             }
         };
-
         // 文章阅读数量随机生成 添加图片缩略图
         Article::event("before_insert", $common_func);
         //修改操作
