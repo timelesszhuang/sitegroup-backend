@@ -125,27 +125,16 @@ class Question extends Common
         $where['type_id'] = $data['type_id'];
         $where['flag'] = 2;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
-        $user = $this->getSessionUser();
-        $wh['node_id'] = $user['user_node_id'];
-        $sitedata = \app\admin\model\Site::where($wh)->select();
-        $arr = [];
-        $ar = [];
         foreach ($menu as $k => $v) {
-            $arr[] = $v['id'];
+            $wh['menu'] = ["like", "%,{$v['id']},%"];
+            $sitedata = \app\admin\model\Site::where($wh)->select();
             foreach ($sitedata as $kk => $vv) {
-                $a = strstr($vv["menu"], "," . $v["id"] . ",");
-                if ($a) {
-                    $Site = new \app\admin\model\Site();
-                    $dat = $Site->where('id', 'in', $vv['id'])->field('url')->select();
-                    foreach ($dat as $key => $value) {
-                        $send = [
+                $send = [
                             "id" => $data['id'],
                             "searchType" => 'question',
                             "type" => $data['type_id']
                         ];
-                        $this->curl_post($value['url'] . "/index.php/generateHtml", $send);
-                    }
-                }
+                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
             }
         }
     }
@@ -191,5 +180,32 @@ class Question extends Common
             "url" => $url,
             'status' => $status
         ];
+    }
+
+    public function questionshowhtml()
+    {
+        $data = $this->request->post();
+        $where['type_id'] = $data['type_id'];
+        $where['flag'] = 2;
+        $menu = (new \app\admin\model\Menu())->where($where)->select();
+        if (!$menu) {
+            return $this->resultArray('当前无法预览', 'failed');
+        }
+        foreach ($menu as $k => $v) {
+            $wh['menu'] = ["like", "%,{$v['id']},%"];
+            $sitedata = \app\admin\model\Site::where($wh)->select();
+            foreach ($sitedata as $kk => $vv) {
+                $showhtml[] = [
+                    'url' =>  $vv['url'] . '/preview/question/'.$data['id'] . '.html',
+                    'site_name' =>  $vv['site_name'],
+                ];
+            }
+            if ($showhtml) {
+                return $this->resultArray('', '', $showhtml);
+            } else {
+                return $this->resultArray('当前无法预览', 'failed');
+            }
+        }
+
     }
 }

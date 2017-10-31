@@ -154,6 +154,7 @@ Route::rule('articletype/gettype', 'admin/Articletype/getType');
 
 //文章
 Route::resource('article', 'admin/Article');
+Route::post('articleshowhtml', 'admin/Article/articleshowhtml');
 Route::post('article/sync', 'admin/Article/syncArticle');
 Route::get('article/getErrorInfo', 'admin/Article/getErrorInfo');
 Route::get('article/getErrorStatus', 'admin/Article/getErrorStatus');
@@ -167,8 +168,8 @@ Route::get('menu/getMenu', 'admin/Menu/getMenu');
 
 //问答
 Route::resource('question', 'admin/Question');
-
-
+//预览页面
+Route::post('questionshowhtml', 'admin/Question/questionshowhtml');
 //问答分类
 Route::resource('questionType', 'admin/Questiontype');
 Route::get('questionType/list', 'admin/Questiontype/getQuestionType');
@@ -345,8 +346,11 @@ Route::resource('admin/productType', 'admin/ProductType');
 Route::get('admin/getProductType', 'admin/ProductType/getTypes');
 //产品
 Route::resource('admin/product', 'admin/Product');
+//预览产品
+Route::post('productshowhtml', 'admin/Product/productshowhtml');
 //产品缩略图
 Route::post('admin/uploadProductBigImg', 'admin/Product/uploadImage');
+
 //产品 修改/添加 图片
 Route::post('admin/uploadProductSerImg', 'admin/Product/uploadImgSer');
 //修改添加产品多图的时候获取bug
