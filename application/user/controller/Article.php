@@ -30,7 +30,9 @@ class Article extends Common
         $node_id = $this->getSiteSession('login_site');
         $where = [];
         $where["node_id"] = $node_id["node_id"];
+
         $where["site_id"] = $this->getSiteSession('website')["id"];
+
         $data = (new \app\admin\model\Article())->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
@@ -125,7 +127,7 @@ class Article extends Common
                 return $this->resultArray("获取数据失败", 'failed');
             }
             //比对两个缩略图的地址 删除原始 添加thumbnails_name
-            if ($data["thumbnails"] == $id_data->thumbnails) {
+            if ($data["thumbnails"] != $id_data->thumbnails) {
                 //缩略图有可能是从文章中提取的 所以可能为非 aliyun oss 的链接
                 $endpoint = Config::get('oss.endpoint');
                 $bucket = Config::get('oss.bucket');

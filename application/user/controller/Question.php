@@ -22,7 +22,6 @@ class Question extends Common
      */
     public function index(Request $request)
     {
-
         $limits = $this->getLimit();
         $content = $request->get('content');
         $type_id = $request->get("type_id");
