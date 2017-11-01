@@ -2,6 +2,7 @@
 
 namespace app\user\controller;
 
+use app\admin\model\Menu;
 use app\admin\model\Site;
 use app\common\controller\Common;
 use think\Controller;
@@ -20,25 +21,51 @@ class Question extends Common
      *
      * @return \think\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $limits = $this->getLimit();
-        $content = $request->get('content');
-        $type_id = $request->get("type_id");
-        $where = [];
+        $content = $this->request->get('content');
+        $type_id =$this->request->get("type_id");
+
+//        $limits = $this->getLimit();
+
+//        $where = [];
+//        $node_id = $this->getSiteSession('login_site');
+//        $where["node_id"] = $node_id["node_id"];
+//        $where["site_id"] = $this->getSiteSession('website')["id"];
+
+//        $user = $this->getSessionUser();
+//        $site["node_id"] = $user["user_node_id"];
+//        $data = (new \app\admin\model\Question)->getAll($limits['limit'], $limits['rows'], $site);
+//        return $this->resultArray('','',$data);
+
+        $request = $this->getLimit();
         $node_id = $this->getSiteSession('login_site');
+        $where = [];
         $where["node_id"] = $node_id["node_id"];
-        $where["site_id"] = $this->getSiteSession('website')["id"];
+        $site_id['id'] = $this->getSiteSession('website')["id"];
+        $menu = (new Site())->where($site_id)->field('menu')->find();
+        $menuid = array_filter(explode(",", $menu->menu));
+        $where['id'] = ['in', $menuid];
+        $where['flag'] = 2;
+        $menudata = (new Menu())->where($where)->field('type_id')->select();
+        foreach ($menudata as $k => $v) {
+            $arr[] = $v['type_id'];
+        };
+        $aricle['type_id'] = ['in', $arr];
         if (!empty($content)) {
-            $where['question'] = ["like", "%$content%"];
+            $aricle['question'] = ["like", "%$content%"];
         }
         if (!empty($type_id)) {
-            $where['type_id'] = $type_id;
+            $aricle['type_id'] = $type_id;
         }
-        $user = $this->getSessionUser();
-        $site["node_id"] = $user["user_node_id"];
-        $data = (new \app\admin\model\Question)->getAll($limits['limit'], $limits['rows'], $site);
-        return $this->resultArray('','',$data);
+        //dump($aricle['type_id']);
+        $articledata = (new \app\admin\model\Question())->where($aricle)->limit($request["limit"], $request["rows"])->select();
+        $count = (new \app\admin\model\Question())->where($aricle)->count();
+        $data = [
+            "total" => $count,
+            "rows" => $articledata
+        ];
+        return $this->resultArray('', '', $data);
 
     }
 
@@ -146,6 +173,26 @@ class Question extends Common
     public function delete($id)
     {
         //
+    }
+
+
+
+    public function getQuestionType()
+    {
+        $where = [];
+        $wh['id'] = $this->request->session()['website']['id'];
+        $Site = new \app\admin\model\Site();
+        $menuid = $Site->where($wh)->field('menu')->find()->menu;
+        $Menuid = explode(',', $menuid);
+        $where['id'] = $Menuid;
+        $menu = new \app\admin\model\Menu();
+        $whe['flag'] = 2;
+        $data = $menu->where('id', 'in', $Menuid)->where($whe)->select();
+        foreach ($data as $k => $v) {
+            $v['name'] = $v['type_name'];
+            $v['id'] = $v['type_id'];
+        }
+        return $this->resultArray('', '', $data);
     }
 
     /**

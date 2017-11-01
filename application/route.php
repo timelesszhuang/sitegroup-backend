@@ -427,6 +427,9 @@ Route::get('user/getErrorStatus/', 'user/Article/getErrorStatus');
 
 //问答
 Route::resource('user/question', 'user/Question');
+//问答分类
+Route::get('user/QuestionType', 'user/Question/getQuestionType');
+
 //问答预览
 Route::post('user/questionshowhtml', 'user/Question/questionshowhtml');
 //页面tdk修改
