@@ -415,6 +415,8 @@ Route::post('user/siteInfo', 'user/index/siteInfo');
 
 //站点文章
 Route::resource('user/article', 'user/Article');
+
+Route::post('user/articleshowhtml', 'user/Article/articleshowhtml');
 //文章缩略图上传到oss
 Route::post('user/uploadarticleimage', 'user/Article/imageupload');
 
@@ -424,8 +426,9 @@ Route::post('user/changeErrorStatus/:id', 'user/Article/changeErrorStatus');
 Route::get('user/getErrorStatus/', 'user/Article/getErrorStatus');
 
 //问答
-Route::resource('user/question', 'user/question');
-
+Route::resource('user/question', 'user/Question');
+//问答预览
+Route::post('user/questionshowhtml', 'user/Question/questionshowhtml');
 //页面tdk修改
 Route::resource('user/pageInfo', 'user/PageInfo');
 

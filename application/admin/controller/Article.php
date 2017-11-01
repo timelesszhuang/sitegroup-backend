@@ -153,11 +153,11 @@ class Article extends Common
             $sitedata = \app\admin\model\Site::where($wh)->select();
             foreach ($sitedata as $kk => $vv) {
                 $send = [
-                            "id" => $data['id'],
-                            "searchType" => 'article',
-                            "type" => $data['articletype_id'],
-                        ];
-                        $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
+                    "id" => $data['id'],
+                    "searchType" => 'article',
+                    "type" => $data['articletype_id'],
+                ];
+                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
             }
         }
     }
@@ -171,7 +171,6 @@ class Article extends Common
     {
         return $this->deleteRecord((new \app\admin\model\Article), $id);
     }
-
 
 
     /**
@@ -279,15 +278,15 @@ class Article extends Common
             $sitedata = \app\admin\model\Site::where($wh)->select();
             foreach ($sitedata as $kk => $vv) {
                 $showhtml[] = [
-                            'url' =>  $vv['url'] . '/preview/article/'.$data['id'] . '.html',
-                            'site_name' =>  $vv['site_name'],
-                        ];
+                    'url' => $vv['url'] . '/preview/article/' . $data['id'] . '.html',
+                    'site_name' => $vv['site_name'],
+                ];
             }
             if ($showhtml) {
-                        return $this->resultArray('', '', $showhtml);
-                    } else {
-                        return $this->resultArray('当前无法预览', 'failed');
-                    }
+                return $this->resultArray('', '', $showhtml);
+            } else {
+                return $this->resultArray('当前无法预览', 'failed');
+            }
         }
 
     }

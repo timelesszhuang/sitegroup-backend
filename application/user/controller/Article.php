@@ -3,6 +3,7 @@
 namespace app\user\controller;
 
 use app\admin\controller\Articletype;
+use app\admin\model\Site;
 use app\common\controller\Common;
 use think\Config;
 use think\Request;
@@ -141,8 +142,21 @@ class Article extends Common
                 $data["thumbnails_name"] = $filename . "." . $filetype;
             }
         }
-        //需要及时 请求到相关节点重新生成文章
-        return $this->publicUpdate((new \app\admin\model\Article), $data, $id);
+        if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        $this->open_start('正在修改中');
+        $where["id"] = $this->getSiteSession('website')["id"];
+        // dump($where);die;
+        $Site = (new Site())->where($where)->field('url')->find();
+        //dump($Site['url']);die;
+        $send = [
+            "id" => $data['id'],
+            "searchType" => 'article',
+            "type" => $data['articletype_id'],
+        ];
+        $this->curl_post($Site['url'] . "/index.php/generateHtml", $send);
+
     }
 
     /**
@@ -346,7 +360,6 @@ class Article extends Common
     }
 
 
-
     /**
      * 图片上传到 oss相关操作
      * @access public
@@ -379,7 +392,21 @@ class Article extends Common
         ];
     }
 
-
+    /**
+     * @return array
+     * 文章预览
+     */
+    public function articleshowhtml()
+    {
+        $id = $this->request->post('id');
+        //$where['node_id'] = $this->getSiteSession('login_site')["node_id"];
+        $where["id"] = $this->getSiteSession('website')["id"];
+        // dump($where);die;
+        $Site = (new Site())->where($where)->field('url')->find();
+        $showurl = $Site['url'] . '/preview/article/' . $id . '.html';
+        //dump($Site['url']);die;
+        return $this->resultArray('', '', $showurl);
+    }
 
 
 }

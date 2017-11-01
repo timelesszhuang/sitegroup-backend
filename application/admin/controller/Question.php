@@ -130,10 +130,10 @@ class Question extends Common
             $sitedata = \app\admin\model\Site::where($wh)->select();
             foreach ($sitedata as $kk => $vv) {
                 $send = [
-                            "id" => $data['id'],
-                            "searchType" => 'question',
-                            "type" => $data['type_id']
-                        ];
+                    "id" => $data['id'],
+                    "searchType" => 'question',
+                    "type" => $data['type_id']
+                ];
                 $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
             }
         }
@@ -196,8 +196,8 @@ class Question extends Common
             $sitedata = \app\admin\model\Site::where($wh)->select();
             foreach ($sitedata as $kk => $vv) {
                 $showhtml[] = [
-                    'url' =>  $vv['url'] . '/preview/question/'.$data['id'] . '.html',
-                    'site_name' =>  $vv['site_name'],
+                    'url' => $vv['url'] . '/preview/question/' . $data['id'] . '.html',
+                    'site_name' => $vv['site_name'],
                 ];
             }
             if ($showhtml) {
