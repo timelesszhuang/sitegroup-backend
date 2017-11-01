@@ -330,38 +330,4 @@ class Statistics extends Common
         ];
     }
 
-    /**
-     * 统计文章
-     * @return array
-     */
-    public function ArticleCount()
-    {
-        $count = [];
-        $name = [];
-        foreach ($this->countArticle() as $item) {
-            $count[] = $item["count"];
-            $name[] = $item["name"];
-        }
-        $arr = ["count" => $count, "name" => $name];
-        return $this->resultArray('', '', $arr);
-    }
-
-    public function countArticle()
-    {
-        $user = $this->getSessionUser();
-        $where = [
-            'node_id' => $user["user_node_id"],
-        ];
-        $articleTypes = \app\admin\model\Articletype::all($where);
-        foreach ($articleTypes as $item) {
-            yield $this->foreachArticle($item);
-        }
-    }
-
-    public function foreachArticle($articleType)
-    {
-        $count = \app\admin\model\ScatteredTitle::where(["articletype_id" => $articleType->id])->count();
-        return ["count" => $count, "name" => $articleType->name];
-
-    }
 }
