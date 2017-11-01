@@ -381,6 +381,7 @@ Route::resource('admin/eventRecord', 'admin/EventMarketingHolidayRecord');
 Route::resource('admin/trackKeyword', 'admin/TrackKeyword');
 //首页统计
 Route::get('admin/countDatas', 'admin/Pv/countDatas');
+
 Route::get('admin/gettrack', 'admin/TrackKeyword/getTrack');
 //获取前4条 营销图片和id
 Route::get('admin/getFourMarket', 'admin/Marketingmode/getFour');
