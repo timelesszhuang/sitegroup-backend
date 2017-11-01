@@ -3,6 +3,7 @@
 namespace app\user\controller;
 
 use app\admin\controller\Articletype;
+use app\admin\model\Menu;
 use app\admin\model\Site;
 use app\common\controller\Common;
 use think\Config;
@@ -30,9 +31,32 @@ class Article extends Common
         $node_id = $this->getSiteSession('login_site');
         $where = [];
         $where["node_id"] = $node_id["node_id"];
-        $where["site_id"] = $this->getSiteSession('website')["id"];
-        $data = (new \app\admin\model\Article())->getArticle($request["limit"], $request["rows"], $where);
-        return $this->resultArray('', '', $data);
+        $site_id['id'] = $this->getSiteSession('website')["id"];
+        $menu = (new Site())->where($site_id)->field('menu')->find();
+        $menuid = array_filter(explode(",", $menu->menu));
+        $where['id'] = ['in', $menuid];
+        $where['flag']=3;
+        $menudata = (new Menu())->where($where)->field('type_id')->select();
+        foreach ($menudata as $k=>$v){
+          $arr[] = $v['type_id'];
+        };
+        $aricle = [];
+        $aricle['articletype_id'] = ['in',  $arr];
+        $articleid = $this->request->get('article_type');
+        $title = $this->request->get('title');
+        if (!empty($articleid)) {
+            $aricle['articletype_id'] =  $articleid;
+        }
+        if (!empty($title)) {
+            $aricle['title'] = ["like", "%$title%"];
+        }
+        $articledata = (new \app\admin\model\Article())->where($aricle)->limit($request["limit"], $request["rows"])->select();
+        $count = (new \app\admin\model\Article())->where($aricle)->count();
+        $data = [
+            "total" => $count,
+            "rows" => $articledata
+        ];
+        return $this->resultArray('','',$data);
     }
 
     /**
