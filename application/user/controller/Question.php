@@ -59,7 +59,7 @@ class Question extends Common
             $aricle['type_id'] = $type_id;
         }
         //dump($aricle['type_id']);
-        $articledata = (new \app\admin\model\Question())->where($aricle)->limit($request["limit"], $request["rows"])->select();
+        $articledata = (new \app\admin\model\Question())->where($aricle)->limit($request["limit"], $request["rows"])->order('id desc')->select();
         $count = (new \app\admin\model\Question())->where($aricle)->count();
         $data = [
             "total" => $count,
