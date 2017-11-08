@@ -5,6 +5,7 @@ namespace app\admin\controller;
 use app\common\controller\Common;
 use app\common\traits\Osstrait;
 use OSS\OssClient;
+use think\Cache;
 use think\Config;
 use think\Session;
 use think\Validate;
@@ -77,10 +78,6 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        //如果前台有传递summary就使用 否则自动提取
-        if (empty($data['summary'])) {
-            $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
-        }
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -117,10 +114,7 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        //如果summary是空的话 自动生成
-        if (empty($data["summary"])) {
-            $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
-        }
+
         // 如果传递了缩略图的话 比对删除
         if ($data["thumbnails"]) {
             $id_data = \app\admin\model\Article::get($id);
@@ -128,48 +122,43 @@ class Article extends Common
                 return $this->resultArray("获取数据失败", 'failed');
             }
             //比对两个缩略图的地址 删除原始 添加thumbnails_name
-            if ($data["thumbnails"] == $id_data->thumbnails) {
+            if ($data["thumbnails"] != $id_data->thumbnails) {
+                //缩略图有可能是从文章中提取的 所以可能为非 aliyun oss 的链接
+                $endpoint = Config::get('oss.endpoint');
+                $bucket = Config::get('oss.bucket');
+                $url = sprintf("https://%s.%s/", $bucket, $endpoint);
+                if (strpos($id_data->thumbnails, $url) !== false) {
+                    //表示之前缩略图是oss的 现在新添加的一定是oss的
+                    $this->ossDeleteObject($id_data->thumbnails);
+                }
                 //删除
-                $this->ossDeleteObject($id_data->thumbnails);
                 //获取后缀
-                $file_suffix=$this->analyseUrlFileType($data["thumbnails"]);
-                //缩略图名称
-                $data["thumbnails_name"] = $this->formUniqueString().".".$file_suffix;
+                $filetype = $this->analyseUrlFileType($data["thumbnails"]);
+                $filename = $this->formUniqueString();
+                //缩略图名称 用于静态化到其他地方时候使用
+                $data["thumbnails_name"] = $filename . "." . $filetype;
             }
         }
-
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
+        //先返回给前台 然后去后端 重新生成页面 这块暂时有问题
         $this->open_start('正在修改中');
+        //找出有这篇  文章的菜单
         $where['type_id'] = $data['articletype_id'];
         $where['flag'] = 3;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
-        $user = $this->getSessionUser();
-        $wh['node_id'] = $user['user_node_id'];
-        $sitedata = \app\admin\model\Site::where($wh)->select();
-        $arr = [];
-        $ar = [];
         foreach ($menu as $k => $v) {
-            $arr[] = $v['id'];
+            $wh['menu'] = ["like", "%,{$v['id']},%"];
+            $sitedata = \app\admin\model\Site::where($wh)->select();
             foreach ($sitedata as $kk => $vv) {
-                $a = strstr($vv["menu"], "," . $v["id"] . ",");
-                if ($a) {
-                    $Site = new \app\admin\model\Site();
-                    $dat = $Site->where('id', 'in', $vv['id'])->field('url')->select();
-                    foreach ($dat as $key => $value) {
-                        $send = [
-                            "id" => $data['id'],
-                            "searchType" => 'article',
-                            "type" => $data['articletype_id']
-                        ];
-//                        file_put_contents('11.txt','111');
-                        $this->curl_post($value['url'] . "/index.php/generateHtml", $send);
-
-                    }
-                }
+                $send = [
+                    "id" => $data['id'],
+                    "searchType" => 'article',
+                    "type" => $data['articletype_id'],
+                ];
+                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
             }
-
         }
     }
 
@@ -183,23 +172,6 @@ class Article extends Common
         return $this->deleteRecord((new \app\admin\model\Article), $id);
     }
 
-    /**
-     * 同步文章
-     * @param $id
-     * @return array
-     */
-    public function syncArticle()
-    {
-        $is_sync = $this->request->post('is_sync');
-        $id = $this->request->post("id");
-        $user = $this->getSessionUser();
-        $where["node_id"] = $user["user_node_id"];
-        $where["id"] = $id;
-        if ((new \app\admin\model\Article)->save(["is_sync" => $is_sync], $where)) {
-            return $this->resultArray("修改成功");
-        }
-        return $this->resultArray("添加失败", 'failed');
-    }
 
     /**
      * 获取错误信息
@@ -252,9 +224,71 @@ class Article extends Common
         if (!$site->save()) {
             return $this->resultArray('修改失败', 'failed');
         }
-
         return $this->resultArray('修改成功');
     }
 
+
+    /**
+     * 图片上传到 oss相关操作
+     * @access public
+     */
+    public function imageupload()
+    {
+        $dest_dir = 'article/';
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        $request = Request::instance();
+        $file = $request->file("file");
+        $localpath = ROOT_PATH . "public/upload/";
+        $fileInfo = $file->move($localpath);
+        $object = $dest_dir . $fileInfo->getSaveName();
+        $localfilepath = $localpath . $fileInfo->getSaveName();
+        $put_info = $this->ossPutObject($object, $localfilepath);
+        unlink($localfilepath);
+        $msg = '上传缩略图失败';
+        $url = '';
+        $status = false;
+        if ($put_info['status']) {
+            $msg = '上传缩略图成功';
+            $status = true;
+            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        }
+        return [
+            'msg' => $msg,
+            "url" => $url,
+            'status' => $status
+        ];
+    }
+
+    /**
+     * @return array
+     * 预览页面
+     */
+    public function articleshowhtml()
+    {
+        $data = $this->request->post();
+        $where['type_id'] = $data['articletype_id'];
+        $where['flag'] = 3;
+        $menu = (new \app\admin\model\Menu())->where($where)->select();
+        if (!$menu) {
+            return $this->resultArray('当前无法预览', 'failed');
+        }
+        foreach ($menu as $k => $v) {
+            $wh['menu'] = ["like", "%,{$v['id']},%"];
+            $sitedata = \app\admin\model\Site::where($wh)->select();
+            foreach ($sitedata as $kk => $vv) {
+                $showhtml[] = [
+                    'url' => $vv['url'] . '/preview/article/' . $data['id'] . '.html',
+                    'site_name' => $vv['site_name'],
+                ];
+            }
+            if ($showhtml) {
+                return $this->resultArray('', '', $showhtml);
+            } else {
+                return $this->resultArray('当前无法预览', 'failed');
+            }
+        }
+
+    }
 
 }

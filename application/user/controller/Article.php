@@ -3,7 +3,10 @@
 namespace app\user\controller;
 
 use app\admin\controller\Articletype;
+use app\admin\model\Menu;
+use app\admin\model\Site;
 use app\common\controller\Common;
+use think\Config;
 use think\Request;
 use think\Session;
 use think\Validate;
@@ -11,6 +14,7 @@ use app\common\traits\Obtrait;
 use Closure;
 use OSS\OssClient;
 use app\common\traits\Osstrait;
+
 class Article extends Common
 {
     use Obtrait;
@@ -27,9 +31,32 @@ class Article extends Common
         $node_id = $this->getSiteSession('login_site');
         $where = [];
         $where["node_id"] = $node_id["node_id"];
-        $where["site_id"] = $this->getSiteSession('website')["id"];
-        $data = (new \app\admin\model\Article())->getArticle($request["limit"], $request["rows"], $where);
-        return $this->resultArray('', '', $data);
+        $site_id['id'] = $this->getSiteSession('website')["id"];
+        $menu = (new Site())->where($site_id)->field('menu')->find();
+        $menuid = array_filter(explode(",", $menu->menu));
+        $where['id'] = ['in', $menuid];
+        $where['flag']=3;
+        $menudata = (new Menu())->where($where)->field('type_id')->select();
+        foreach ($menudata as $k=>$v){
+          $arr[] = $v['type_id'];
+        };
+        $aricle = [];
+        $aricle['articletype_id'] = ['in',  $arr];
+        $articleid = $this->request->get('article_type');
+        $title = $this->request->get('title');
+        if (!empty($articleid)) {
+            $aricle['articletype_id'] =  $articleid;
+        }
+        if (!empty($title)) {
+            $aricle['title'] = ["like", "%$title%"];
+        }
+        $articledata = (new \app\admin\model\Article())->where($aricle)->limit($request["limit"], $request["rows"])->order('id desc')->select();
+        $count = (new \app\admin\model\Article())->where($aricle)->count();
+        $data = [
+            "total" => $count,
+            "rows" => $articledata
+        ];
+        return $this->resultArray('','',$data);
     }
 
     /**
@@ -57,15 +84,13 @@ class Article extends Common
         ];
         $validate = new Validate($rule);
         $data = $request->post();
+        //dump($data);die;
         $data['node_id'] = $this->getSiteSession('login_site')["node_id"];
         $data["site_id"] = $this->getSiteSession('website')["id"];
         $data["site_name"] = $this->getSiteSession('website')["site_name"];
         $data['is_sync'] = '10';
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
-        }
-        if(!empty($data["summary"])){
-            $data['summary'] = $this->utf8chstringsubstr($data['content'], 75 * 3);
         }
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
@@ -117,10 +142,6 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        //如果summary是空的话 自动生成
-        if (empty($data["summary"])) {
-            $data['summary'] = $this->utf8chstringsubstr($data['content'], 40 * 3);
-        }
         // 如果传递了缩略图的话 比对删除
         if ($data["thumbnails"]) {
             $id_data = \app\admin\model\Article::get($id);
@@ -128,16 +149,38 @@ class Article extends Common
                 return $this->resultArray("获取数据失败", 'failed');
             }
             //比对两个缩略图的地址 删除原始 添加thumbnails_name
-            if ($data["thumbnails"] == $id_data->thumbnails) {
+            if ($data["thumbnails"] != $id_data->thumbnails) {
+                //缩略图有可能是从文章中提取的 所以可能为非 aliyun oss 的链接
+                $endpoint = Config::get('oss.endpoint');
+                $bucket = Config::get('oss.bucket');
+                $url = sprintf("https://%s.%s/", $bucket, $endpoint);
+                if (strpos($id_data->thumbnails, $url) !== false) {
+                    //表示之前缩略图是oss的 现在新添加的一定是oss的
+                    $this->ossDeleteObject($id_data->thumbnails);
+                }
                 //删除
-                $this->ossDeleteObject($id_data->thumbnails);
                 //获取后缀
-                $file_suffix=$this->analyseUrlFileType($data["thumbnails"]);
-                //缩略图名称
-                $data["thumbnails_name"] = $this->formUniqueString().".".$file_suffix;
+                $filetype = $this->analyseUrlFileType($data["thumbnails"]);
+                $filename = $this->formUniqueString();
+                //缩略图名称 用于静态化到其他地方时候使用
+                $data["thumbnails_name"] = $filename . "." . $filetype;
             }
         }
-        return $this->publicUpdate((new \app\admin\model\Article), $data, $id);
+        if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        $this->open_start('正在修改中');
+        $where["id"] = $this->getSiteSession('website')["id"];
+        // dump($where);die;
+        $Site = (new Site())->where($where)->field('url')->find();
+        //dump($Site['url']);die;
+        $send = [
+            "id" => $data['id'],
+            "searchType" => 'article',
+            "type" => $data['articletype_id'],
+        ];
+        $this->curl_post($Site['url'] . "/index.php/generateHtml", $send);
+
     }
 
     /**
@@ -154,28 +197,27 @@ class Article extends Common
     /**
      * 获取文章类型
      * @return array
-     *//**
- * 获取站点文章分类
- * @return array
- */
+     */
+    /**
+     * 获取站点文章分类
+     * @return array
+     */
     public function getArticleType()
     {
-
-
         $where = [];
         $wh['id'] = $this->request->session()['website']['id'];
         $Site = new \app\admin\model\Site();
         $menuid = $Site->where($wh)->field('menu')->find()->menu;
-        $Menuid = explode(',',$menuid);
+        $Menuid = explode(',', $menuid);
         $where['id'] = $Menuid;
         $menu = new \app\admin\model\Menu();
         $whe['flag'] = 3;
-        $data = $menu->where('id','in',$Menuid)->where($whe)->field('type_id,type_name,tag_name')->select();
-        foreach ($data as$k=>$v){
-            $v['text'] = $v['type_name'].'['.$v['tag_name'].']';
+        $data = $menu->where('id', 'in', $Menuid)->where($whe)->field('type_id,type_name,tag_name')->select();
+        foreach ($data as $k => $v) {
+            $v['text'] = $v['type_name'] . '[' . $v['tag_name'] . ']';
             $v['id'] = $v['type_id'];
         }
-        return $this->resultArray('','',$data);
+        return $this->resultArray('', '', $data);
     }
 
     /**
@@ -306,41 +348,54 @@ class Article extends Common
         return [$NewUrl, $msg];
     }
 
+
     /**
-     * 统计文章
-     * @return array
+     * 图片上传到 oss相关操作
+     * @access public
      */
-    public function ArticleCount()
+    public function imageupload()
     {
-        $count = [];
-        $name = [];
-        foreach ($this->countArticle() as $item) {
-            $count[] = $item["count"];
-            $name[] = $item["name"];
+        $dest_dir = 'article/';
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        $request = Request::instance();
+        $file = $request->file("file");
+        $localpath = ROOT_PATH . "public/upload/";
+        $fileInfo = $file->move($localpath);
+        $object = $dest_dir . $fileInfo->getSaveName();
+        $localfilepath = $localpath . $fileInfo->getSaveName();
+        $put_info = $this->ossPutObject($object, $localfilepath);
+        unlink($localfilepath);
+        $msg = '上传缩略图失败';
+        $url = '';
+        $status = false;
+        if ($put_info['status']) {
+            $msg = '上传缩略图成功';
+            $status = true;
+            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
         }
-        $arr = ["count" => $count, "name" => $name];
-        return $this->resultArray('', '', $arr);
-    }
-
-    public function countArticle()
-    {
-        $user = $this->getSessionUser();
-        $where = [
-            'node_id' => $user["user_node_id"],
+        return [
+            'msg' => $msg,
+            "url" => $url,
+            'status' => $status
         ];
-        $articleTypes = \app\admin\model\Articletype::get($where);
-        foreach ($articleTypes as $item) {
-            yield $this->foreachArticle($item);
-        }
     }
 
-    public function foreachArticle($articleType)
+    /**
+     * @return array
+     * 文章预览
+     */
+    public function articleshowhtml()
     {
-        $count = \app\admin\model\Article::where(["articletype_id" => $articleType->id])->count();
-        return ["count" => $count, "name" => $articleType->name];
-
+        $id = $this->request->post('id');
+        //$where['node_id'] = $this->getSiteSession('login_site')["node_id"];
+        $where["id"] = $this->getSiteSession('website')["id"];
+        // dump($where);die;
+        $Site = (new Site())->where($where)->field('url')->find();
+        $showurl = $Site['url'] . '/preview/article/' . $id . '.html';
+        //dump($Site['url']);die;
+        return $this->resultArray('', '', $showurl);
     }
-
 
 
 }

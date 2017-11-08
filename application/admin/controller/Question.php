@@ -13,6 +13,7 @@ class Question extends Common
 {
     use Obtrait;
     use Osstrait;
+
     /**
      * 显示资源列表
      *
@@ -23,13 +24,13 @@ class Question extends Common
     {
         $limits = $this->getLimit();
         $content = $request->get('content');
-        $type_id=$request->get("type_id");
+        $type_id = $request->get("type_id");
         $where = [];
         if (!empty($content)) {
             $where['question'] = ["like", "%$content%"];
         }
-        if(!empty($type_id)){
-            $where['type_id']=$type_id;
+        if (!empty($type_id)) {
+            $where['type_id'] = $type_id;
         }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
@@ -59,8 +60,8 @@ class Question extends Common
         $rule = [
             ['question', "require", "请填写问题"],
             ['content_paragraph', 'require', "请填写答案"],
-            ["type_id","require","请选择分类id"],
-            ["type_name","require","请选择分类名称"]
+            ["type_id", "require", "请选择分类id"],
+            ["type_name", "require", "请选择分类名称"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -83,7 +84,7 @@ class Question extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Question),$id);
+        return $this->getread((new \app\admin\model\Question), $id);
     }
 
     /**
@@ -110,46 +111,31 @@ class Question extends Common
         $rule = [
             ['question', "require", "请填写问题"],
             ['content_paragraph', 'require', "请填写答案"],
-            ["type_id","require","请选择分类id"],
-            ["type_name","require","请选择分类名称"]
+            ["type_id", "require", "请选择分类id"],
+            ["type_name", "require", "请选择分类名称"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $this->publicUpdate((new \app\admin\model\Question),$data,$id);
+        $this->publicUpdate((new \app\admin\model\Question), $data, $id);
 //        dump($data);die;
         $this->open_start('正在修改中');
         $where['type_id'] = $data['type_id'];
         $where['flag'] = 2;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
-        $user = $this->getSessionUser();
-        $wh['node_id'] = $user['user_node_id'];
-        $sitedata = \app\admin\model\Site::where($wh)->select();
-//        dump($sitedata);
-        $arr = [];
-        $ar = [];
         foreach ($menu as $k => $v) {
-            $arr[] = $v['id'];
+            $wh['menu'] = ["like", "%,{$v['id']},%"];
+            $sitedata = \app\admin\model\Site::where($wh)->select();
             foreach ($sitedata as $kk => $vv) {
-                $a=strstr($vv["menu"],",".$v["id"].",");
-                if($a){
-                    $Site = new \app\admin\model\Site();
-                    $dat = $Site->where('id','in',$vv['id'])->field('url')->select();
-                    foreach ($dat as $key=>$value){
-                        $send = [
-                            "id" => $data['id'],
-                            "searchType" => 'question',
-                            "type" => $data['type_id']
-                        ];
-//                        dump($send);
-//                        dump($value['url']."/index.php/generateHtml");die;
-                        $this->curl_post($value['url']."/index.php/generateHtml",$send);
-                    }
-                }
+                $send = [
+                    "id" => $data['id'],
+                    "searchType" => 'question',
+                    "type" => $data['type_id']
+                ];
+                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
             }
-
         }
     }
 
@@ -162,7 +148,7 @@ class Question extends Common
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new \app\admin\model\Question),$id);
+        return $this->deleteRecord((new \app\admin\model\Question), $id);
     }
 
     /**
@@ -194,5 +180,32 @@ class Question extends Common
             "url" => $url,
             'status' => $status
         ];
+    }
+
+    public function questionshowhtml()
+    {
+        $data = $this->request->post();
+        $where['type_id'] = $data['type_id'];
+        $where['flag'] = 2;
+        $menu = (new \app\admin\model\Menu())->where($where)->select();
+        if (!$menu) {
+            return $this->resultArray('当前无法预览', 'failed');
+        }
+        foreach ($menu as $k => $v) {
+            $wh['menu'] = ["like", "%,{$v['id']},%"];
+            $sitedata = \app\admin\model\Site::where($wh)->select();
+            foreach ($sitedata as $kk => $vv) {
+                $showhtml[] = [
+                    'url' => $vv['url'] . '/preview/question/' . $data['id'] . '.html',
+                    'site_name' => $vv['site_name'],
+                ];
+            }
+            if ($showhtml) {
+                return $this->resultArray('', '', $showhtml);
+            } else {
+                return $this->resultArray('当前无法预览', 'failed');
+            }
+        }
+
     }
 }

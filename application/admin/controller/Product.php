@@ -151,26 +151,16 @@ class Product extends Common
         $where['type_id'] = $post['type_id'];
         $where['flag'] = 5;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
-        $user = $this->getSessionUser();
-        $wh['node_id'] = $user['user_node_id'];
-        $sitedata = \app\admin\model\Site::where($wh)->select();
-        $arr = [];
         foreach ($menu as $k => $v) {
-            $arr[] = $v['id'];
+            $wh['menu'] = ["like", "%,{$v['id']},%"];
+            $sitedata = \app\admin\model\Site::where($wh)->select();
             foreach ($sitedata as $kk => $vv) {
-                $a = strstr($vv["menu"], "," . $v["id"] . ",");
-                if ($a) {
-                    $Site = new \app\admin\model\Site();
-                    $dat = $Site->where('id', 'in', $vv['id'])->field('url')->select();
-                    foreach ($dat as $key => $value) {
-                        $send = [
-                            "id" => $post['id'],
-                            "searchType" => 'product',
-                            "type" => $post['type_id']
-                        ];
-                        $this->curl_post($value['url'] . "/index.php/generateHtml", $send);
-                    }
-                }
+                $send = [
+                    "id" => $post['id'],
+                    "searchType" => 'product',
+                    "type" => $post['type_id'],
+                ];
+                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
             }
         }
     }
@@ -324,5 +314,70 @@ class Product extends Common
         }
         return $this->resultArray('删除产品图片完成', '', $imglist);
     }
+
+
+    /**
+     * 上传产品主图
+     * @return array
+     */
+    public function uploadImage()
+    {
+        //产品的主图
+        $dest_dir = 'product/mainimg/';
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        $file = request()->file('img');
+        $localfile_path = ROOT_PATH . 'public/upload/';
+        $fileInfo = $file->move($localfile_path);
+        $object = $dest_dir . $fileInfo->getSaveName();
+        $localfile = $localfile_path . $fileInfo->getSaveName();
+        $put_info = $this->ossPutObject($object, $localfile);
+        unlink($localfile);
+        $url = '';
+        $status = false;
+        $msg = '上传失败';
+        if ($put_info['status']) {
+            $msg = '上传成功';
+            $status = true;
+            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        }
+        return [
+            "url" => $url,
+            'status' => $status,
+            'msg' => $msg,
+        ];
+    }
+
+    /**
+     * @return array
+     * 页面预览
+     */
+    public function productshowhtml()
+    {
+        $data = $this->request->post();
+        $where['type_id'] = $data['type_id'];
+        $where['flag'] = 5;
+        $menu = (new \app\admin\model\Menu())->where($where)->select();
+        if (!$menu) {
+            return $this->resultArray('当前无法预览', 'failed');
+        }
+        foreach ($menu as $k => $v) {
+            $wh['menu'] = ["like", "%,{$v['id']},%"];
+            $sitedata = \app\admin\model\Site::where($wh)->select();
+            foreach ($sitedata as $kk => $vv) {
+                $showhtml[] = [
+                    'url' =>  $vv['url'] . '/preview/product/'.$data['id'] . '.html',
+                    'site_name' =>  $vv['site_name'],
+                ];
+            }
+            if ($showhtml) {
+                return $this->resultArray('', '', $showhtml);
+            } else {
+                return $this->resultArray('当前无法预览', 'failed');
+            }
+        }
+
+    }
+
 
 }
