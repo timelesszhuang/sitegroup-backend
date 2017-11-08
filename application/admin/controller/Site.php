@@ -221,7 +221,6 @@ class Site extends Common
     public function uploadTemplateFile($dest, $path,$type,$id)
     {
         $dest = $dest . '/index.php/filemanage/uploadFile';
-        file_put_contents("1.txt",$dest);
         $this->sendFile(ROOT_PATH . "public/" . $path, $dest, $type,$id);
     }
 
