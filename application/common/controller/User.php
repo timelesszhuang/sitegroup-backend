@@ -113,10 +113,15 @@ class User extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        if(!empty($data["pwd"])){
-            $data["salt"]=chr(rand(97, 122)) . chr(rand(65, 90)) . chr(rand(97, 122)) . chr(rand(65, 90));
-            $data["pwd"]=md5($data["pwd"].$data["user_name"]);
+        if(isset($data["pwd"])){
+            if(!empty($data["pwd"])){
+                $data["salt"]=chr(rand(97, 122)) . chr(rand(65, 90)) . chr(rand(97, 122)) . chr(rand(65, 90));
+                $data["pwd"]=md5($data["pwd"].$data["user_name"]);
+            }else{
+                unset($data["pwd"]);
+            }
         }
+
         if (!\app\common\model\User::update($data)) {
             return $this->resultArray('修改失败', 'failed');
         }
