@@ -415,7 +415,8 @@ Route::post('admin/storyOut','admin/CreativeActivity/storyOut');
 Route::post('admin/saveOut/:id','admin/CreativeActivity/saveOut');
 //活动相关
 Route::resource('admin/activityabout','admin/CreativeActivity');
-
+//产品 修改/添加 图片
+Route::post('admin/uploadactivitySerImg', 'admin/CreativeActivity/uploadImgSer');
 
 
 

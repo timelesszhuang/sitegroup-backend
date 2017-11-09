@@ -206,4 +206,94 @@ class CreativeActivity extends Common
         return $this->resultArray("修改失败","failed");
     }
 
+    /**
+     * 修改 添加图片的Imgser 区分根据 $index 如果没有index是添加;
+     * @access public
+     * @todo 1、上传图片到oss
+     *       2、需要删除原来的object数据
+     *       3、更新数据库中的 字段
+     */
+    public function uploadImgSer()
+    {
+        $id = \request()->post('id');
+        $index = \request()->post('index');
+        //产品的其他图片
+        $dest_dir = 'activity/imgser/';
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        if ($index == NULL) {
+            $file = request()->file('addimg');
+            $imgtype = 'add';
+        } else {
+            $file = request()->file('updateimg');
+            $imgtype = 'edit';
+        }
+        $localfile_path = ROOT_PATH . 'public/upload/';
+        $fileInfo = $file->move($localfile_path);
+        $localfile = $localfile_path . $fileInfo->getSaveName();
+        $object = $dest_dir . $fileInfo->getSaveName();
+        $put_info = $this->ossPutObject($object, $localfile);
+        unlink($localfile);
+        $url = '';
+        $status = false;
+        $msg = '上传失败';
+        $imgser = [];
+        if ($put_info['status']) {
+            //上传成功之后需要删除掉之前的存储的对象
+            $msg = '上传成功';
+            $status = true;
+            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+            //分析文件后缀
+            $type = $this->analyseUrlFileType($url);
+            if ($type) {
+                $img_name = $this->formUniqueString() . ".{$type}";
+            } else {
+                //不带后缀的情况
+                $img_name = $this - $this->formUniqueString();
+            }
+            $data = (new creative)->where(["id" => $id])->field("id,imgser")->find();
+            $deleteobject = '';
+            $dest = [
+                'imgname' => $img_name,
+                'osssrc' => $url,
+            ];
+            if ($data->imgser) {
+                $imgser = unserialize($data->imgser);
+                if ($imgtype == 'edit') {
+                    foreach ($imgser as $k => $v) {
+                        if ($k == $index) {
+                            $imgser[$k] = $dest;
+                            $deleteobject = $v['osssrc'];
+                            break;
+                        }
+                    }
+                } else {
+                    //是添加的情况
+                    if ($index !== 0 && !$index) {
+                        array_push($imgser, $dest);
+                    }
+                }
+            } else {
+                //表示第一次是空的
+                $imgser[] = $dest;
+            }
+            $data->imgser = serialize($imgser);
+            $data->save();
+            //需要去服务器上删除已经被替换的对象
+            if ($deleteobject) {
+                //需要截取掉之前的路径
+                $this->ossDeleteObject($deleteobject);
+            }
+        }
+        $imglist = [];
+        foreach ($imgser as $v) {
+            $imglist[] = $v['osssrc'];
+        }
+        return [
+            "imglist" => $imglist,
+            'status' => $status,
+            'msg' => $msg,
+        ];
+    }
+
 }
