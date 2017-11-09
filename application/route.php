@@ -409,7 +409,8 @@ Route::post('admin/uploadarticleimage', 'admin/Article/imageupload');
 Route::post('admin/uploadquestionimage', 'admin/Question/imageupload');
 //活动缩略图
 Route::post('admin/uploadactivity','admin/CreativeActivity/imageUpload');
-
+//外站活动添加
+Route::post('admin/storyOut','admin/CreativeActivity/storyOut');
 
 
 
