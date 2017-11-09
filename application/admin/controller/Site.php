@@ -288,46 +288,19 @@ class Site extends Common
      */
     public function ignoreFrontend($template_id,$site_id,$type)
     {
-        $this->open_start("正在发送模板,请等待..");
-        $user = $this->getSessionUser();
-        $nid = $user["user_node_id"];
-        $where = [
-            "id" => $site_id,
-            "node_id" => $nid
-        ];
-        $send = function () use ($template_id,$site_id,$type,$where) {
-            $site = \app\admin\model\Site::where($where)->find();
-            switch($type){
-                    case "activity":
-                        $template=\app\admin\model\Activity::where(["id"=>$template_id])->field("id,code_path as path")->find();
-                        if(!$template){
-                            exit("未找到模板");
-                        }
-                        $id=$template->id;
-                        break;
-                    case "template":
-                        $template = \app\admin\model\Template::get($site["template_id"]);
-                        if(!$template){
-                            exit("未找到模板");
-                        }
-                        $id=$template->id;
-                        break;
-                }
-
-            return [$template,$site,$type,$id];
-
-        };
-        $this->runClosuse($send);
-    }
-
-    /**
-     * 执行发送模板
-     * @param Closure $closure
-     */
-    public function runClosuse(Closure $closure)
-    {
-        list($template,$site,$type,$id)=$closure();
-        $upload = $this->uploadTemplateFile($site->url, $template->path,$type,$id);
+        $sdata=(new \app\admin\model\Site)->get($site_id);
+        if(empty($sdata)){
+            return $this->resultArray("数据不存在","failed");
+        }
+        if(empty($sdata->sync_id)){
+            $sdata->sync_id=",".$template_id.",";
+        }else{
+            $sdata->sync_id=$sdata->sync_id.$template_id.",";
+        }
+        if($sdata->save()){
+            return $this->resultArray("同步成功");
+        }
+        return $this->resultArray("同步失败","failed");
     }
 
     /**
