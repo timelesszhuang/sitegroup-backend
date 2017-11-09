@@ -71,7 +71,7 @@ class CreativeActivity extends Common
      */
     public function read($id)
     {
-        //
+        return $this->getread((new creative), $id);
     }
 
     /**
