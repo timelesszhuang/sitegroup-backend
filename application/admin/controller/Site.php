@@ -450,7 +450,8 @@ class Site extends Common
         $where = [
             'node_id' => $user["user_node_id"],
         ];
-        $activily = \app\admin\model\Activity::where($where)->field("id,name")->select();
+
+        $activily = \app\common\model\CreativeActivity::where($where)->field("id,title")->select();
         $site = \app\admin\model\Site::get($id);
         foreach ($activily as $item) {
             yield $this->foreachActivily($item, $site->sync_id);
@@ -467,12 +468,12 @@ class Site extends Common
         $arr='';
         if (!empty($sync_id)) {
             if (strpos($sync_id, "," . $item->id . ",")!==false) {
-                $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"已同步","sync"=>"重新发送"];
+                $arr=["id"=>$item->id,"name"=>$item->title,"issync"=>"已同步","sync"=>"重新发送"];
             }else{
-                $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"未同步","sync"=>"同步"];
+                $arr=["id"=>$item->id,"name"=>$item->title,"issync"=>"未同步","sync"=>"同步"];
             }
         }else{
-            $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"未同步","sync"=>"同步"];
+            $arr=["id"=>$item->id,"name"=>$item->title,"issync"=>"未同步","sync"=>"同步"];
         }
         return $arr;
     }

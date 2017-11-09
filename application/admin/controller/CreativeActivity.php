@@ -37,7 +37,6 @@ class CreativeActivity extends Common
     }
 
 
-
     /**
      * 显示创建资源表单页.
      *
