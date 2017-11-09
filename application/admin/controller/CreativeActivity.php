@@ -63,7 +63,7 @@ class CreativeActivity extends Common
         ];
         $validate=new Validate($rule);
         $data=$request->post();
-        if(!$validate->check($rule)){
+        if(!$validate->check($data)){
             return $this->resultArray($validate->getError(),"failed");
         }
         if(creative::create($data)){
