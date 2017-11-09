@@ -36,6 +36,8 @@ class CreativeActivity extends Common
         return $this->resultArray('', '', $data);
     }
 
+
+
     /**
      * 显示创建资源表单页.
      *
@@ -355,7 +357,7 @@ class CreativeActivity extends Common
      */
     public function changeStatus($id,$status)
     {
-        if(creative::where(["id"=>$id])->save(["status"=>$status])){
+        if(creative::where(["id"=>$id])->update(["status"=>$status])){
             return $this->resultArray("修改成功");
         }
         return $this->resultArray("修改失败","failed");
