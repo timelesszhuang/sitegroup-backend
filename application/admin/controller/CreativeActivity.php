@@ -253,7 +253,7 @@ class CreativeActivity extends Common
             //需要截取掉之前的路径
             $result = $this->ossDeleteObject($deleteobject);
         }
-        return $this->resultArray('删除产品图片完成', '', $imglist);
+        return $this->resultArray('删除图片完成', '', $imglist);
     }
 
 
