@@ -418,7 +418,7 @@ Route::resource('admin/activityabout','admin/CreativeActivity');
 //活动 修改/添加 图片
 Route::post('admin/uploadactivitySerImg', 'admin/CreativeActivity/uploadImgSer');
 // 活动轮播获取
-Route::post('admin/getImgSer', 'admin/CreativeActivity/getImgSer');
+Route::post('admin/getImgSer/:id', 'admin/CreativeActivity/getImgSer');
 
 
 
