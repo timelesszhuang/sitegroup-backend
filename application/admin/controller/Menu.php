@@ -16,16 +16,16 @@ class Menu extends Common
         $request = $this->getLimit();
         $name = $this->request->get('name');
         $flag = $this->request->get('flag');
-        $tag_id=$this->request->get('tag_id');
+        $tag_id = $this->request->get('tag_id');
         $where = [];
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
         }
-        if(!empty($flag)){
+        if (!empty($flag)) {
             $where['flag'] = $flag;
         }
-        if(!empty($tag_id)){
-            $where["tag_id"]=$tag_id;
+        if (!empty($tag_id)) {
+            $where["tag_id"] = $tag_id;
         }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
@@ -55,9 +55,9 @@ class Menu extends Common
             ['name', 'require', "请填写菜单"],
             ["flag", "require", "请选择栏目类型"],
             ["flag_name", "require", "请选择栏目类型"],
-            ["generate_name",'require','请填写栏目生成名'],
-            ["tag_id","require","请填写分类"],
-            ["tag_name",'require',"请填写分类"]
+            ["generate_name", 'require', '请填写栏目生成名'],
+            ["tag_id", "require", "请填写分类"],
+            ["tag_name", 'require', "请填写分类"]
         ];
         if (intval($flag) > 1) {
             array_push($rule, ["type_id", "require", "请选择分类id"]);
@@ -65,6 +65,14 @@ class Menu extends Common
         }
         $validate = new Validate($rule);
         $data = $this->request->post();
+        $where = [];
+        $user = $this->getSessionUser();
+        $where["node_id"] = $user["user_node_id"];
+        $where['generate_name'] = $data['generate_name'];
+        $menugen = (new \app\admin\model\Menu())->where($where)->field('generate_name')->select();
+        if (!empty($menugen)) {
+            return $this->resultArray('英文名不能重复', 'failed');
+        }
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
@@ -91,9 +99,9 @@ class Menu extends Common
             ['name', 'require', "请填写菜单"],
             ["flag", "require", "请选择栏目类型"],
             ["flag_name", "require", "请选择栏目类型"],
-            ["generate_name",'require','请填写栏目生成名'],
-            ["tag_id","require","请填写分类"],
-            ["tag_name",'require',"请填写分类"]
+            ["generate_name", 'require', '请填写栏目生成名'],
+            ["tag_id", "require", "请填写分类"],
+            ["tag_name", 'require', "请填写分类"]
         ];
         if (intval($flag) > 1) {
             array_push($rule, ["type_id", "require", "请选择分类id"]);
@@ -101,7 +109,14 @@ class Menu extends Common
         }
         $validate = new Validate($rule);
         $data = $this->request->post();
-
+        $where = [];
+        $user = $this->getSessionUser();
+        $where["node_id"] = $user["user_node_id"];
+        $where['generate_name'] = $data['generate_name'];
+        $menugen = (new \app\admin\model\Menu())->where($where)->field('generate_name')->select();
+        if (!empty($menugen)) {
+            return $this->resultArray('英文名不能重复', 'failed');
+        }
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
@@ -125,10 +140,10 @@ class Menu extends Common
      */
     public function getMenu()
     {
-        $field="id,name as text,flag_name,title,type_name,tag_name";
+        $field = "id,name as text,flag_name,title,type_name,tag_name";
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        $data = (new \app\admin\model\Menu())->getlist($where,$field);
-        return $this->resultArray('','',$data);
+        $data = (new \app\admin\model\Menu())->getlist($where, $field);
+        return $this->resultArray('', '', $data);
     }
 }
