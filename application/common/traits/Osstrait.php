@@ -133,7 +133,6 @@ trait Osstrait
      */
     public function uploadImg($dest_dir,$uname="file")
     {
-        $dest_dir = 'article/';
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
         $request = Request::instance();
