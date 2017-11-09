@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use app\common\controller\Common;
+use think\Config;
 use think\Request;
 use app\common\model\CreativeActivity as creative;
 use app\common\traits\Osstrait;
@@ -224,6 +225,35 @@ class CreativeActivity extends Common
         }
         $data['imglist'] = $list;
         return $this->resultArray('', '', $data);
+    }
+
+    /**
+     * 删除图片中个别的imgser
+     * @access public
+     */
+    public function deleteImgser($id, $index)
+    {
+        $data = (new creative)->where(["id" => $id])->field("id,imgser")->find();
+        $deleteobject = '';
+        $imgser = [];
+        if ($data->imgser) {
+            $imgser = unserialize($data->imgser);
+            $deleteobject = $imgser[$index]['osssrc'];
+            unset($imgser[$index]);
+            $imgser = array_values($imgser);
+        }
+        $data->imgser = serialize($imgser);
+        $imglist = [];
+        foreach ($imgser as $v) {
+            $imglist[] = $v['osssrc'];
+        }
+        $data->save();
+        //需要去服务器上删除已经被替换的对象
+        if ($deleteobject) {
+            //需要截取掉之前的路径
+            $result = $this->ossDeleteObject($deleteobject);
+        }
+        return $this->resultArray('删除产品图片完成', '', $imglist);
     }
 
 
