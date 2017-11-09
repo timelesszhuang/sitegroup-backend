@@ -407,6 +407,14 @@ Route::get('admin/verifyCompanyInfo', 'admin/Company/verifyCompanyInfo');
 Route::post('admin/uploadarticleimage', 'admin/Article/imageupload');
 //问答图片上传到oss
 Route::post('admin/uploadquestionimage', 'admin/Question/imageupload');
+//活动缩略图
+Route::post('admin/uploadactivity','admin/CreativeActivity/imageUpload');
+
+
+
+
+
+
 
 
 //站点相关--------------------------------------------------------

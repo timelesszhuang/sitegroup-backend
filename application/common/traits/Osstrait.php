@@ -125,5 +125,39 @@ trait Osstrait
 
     }
 
+    /**
+     * oss图片上传
+     * @param $dest_dir
+     * @param string $uname
+     * @return array
+     */
+    public function uploadImg($dest_dir,$uname="file")
+    {
+        $dest_dir = 'article/';
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        $request = Request::instance();
+        $file = $request->file($uname);
+        $localpath = ROOT_PATH . "public/upload/";
+        $fileInfo = $file->move($localpath);
+        $object = $dest_dir . $fileInfo->getSaveName();
+        $localfilepath = $localpath . $fileInfo->getSaveName();
+        $put_info = $this->ossPutObject($object, $localfilepath);
+        unlink($localfilepath);
+        $msg = '上传缩略图失败';
+        $url = '';
+        $status = false;
+        if ($put_info['status']) {
+            $msg = '上传缩略图成功';
+            $status = true;
+            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        }
+        return [
+            'msg' => $msg,
+            "url" => $url,
+            'status' => $status
+        ];
+    }
+
 
 }
