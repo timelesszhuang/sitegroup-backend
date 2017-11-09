@@ -421,7 +421,8 @@ Route::post('admin/uploadactivitySerImg', 'admin/CreativeActivity/uploadImgSer')
 Route::get('admin/getImgSer/:id', 'admin/CreativeActivity/getImgSer');
 //活动删除轮播
 Route::get('admin/delImgSer/:id/:index', 'admin/CreativeActivity/deleteImgser');
-
+//修改活动状态
+Route::get('admin/changeactivityStatus/:id/:status','admin/CreativeActivity/changeStatus');
 
 
 

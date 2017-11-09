@@ -347,4 +347,18 @@ class CreativeActivity extends Common
         ];
     }
 
+    /**
+     * 修改状态
+     * @param $id
+     * @param $status
+     * @return array
+     */
+    public function changeStatus($id,$status)
+    {
+        if(creative::where(["id"=>$id])->save(["status"=>$status])){
+            return $this->resultArray("修改成功");
+        }
+        return $this->resultArray("修改失败","failed");
+    }
+
 }
