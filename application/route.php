@@ -411,8 +411,11 @@ Route::post('admin/uploadquestionimage', 'admin/Question/imageupload');
 Route::post('admin/uploadactivity','admin/CreativeActivity/imageUpload');
 //外站活动添加
 Route::post('admin/storyOut','admin/CreativeActivity/storyOut');
+//外部活动修改
+Route::post('admin/saveOut/:id','admin/CreativeActivity/saveOut');
 //活动相关
 Route::resource('admin/activityabout','admin/CreativeActivity');
+
 
 
 
