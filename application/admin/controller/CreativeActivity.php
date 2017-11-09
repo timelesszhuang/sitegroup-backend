@@ -7,9 +7,10 @@ use think\Request;
 use app\common\model\CreativeActivity as creative;
 use app\common\traits\Osstrait;
 use think\Validate;
-
+use app\common\traits\Obtrait;
 class CreativeActivity extends Common
 {
+    use Obtrait;
     use Osstrait;
     /**
      * 显示资源列表
@@ -56,11 +57,19 @@ class CreativeActivity extends Common
             ["title","require","请输入标题"],
             ["oss_img_src","require","请传递封面"],
             ["img_name","require","请上传图片名"],
-            ["imgser","require",""],
-            ["url","require",""],
-            ["keywords","require",""]
+            ["keywords","require","请输入页面关键词"],
+            ["summary","require","请输入页面描述"],
+            ["content","require",'请输入活动详情'],
         ];
-
+        $validate=new Validate($rule);
+        $data=$request->post();
+        if(!$validate->check($rule)){
+            return $this->resultArray($validate->getError(),"failed");
+        }
+        if(creative::create($data)){
+            return $this->resultArray("添加成功");
+        }
+        return $this->resultArray("添加失败","failed");
     }
 
     /**
@@ -114,8 +123,7 @@ class CreativeActivity extends Common
      */
     public function imageUpload()
     {
-        $dest_dir="activity/";
-        return $this->uploadImg($dest_dir);
+        return $this->uploadImg("activity/");
     }
 
     /**
@@ -137,6 +145,10 @@ class CreativeActivity extends Common
        }
         $user = $this->getSessionUser();
         $data["node_id"] = $user["user_node_id"];
+        //本地图片位置
+        $type = $this->analyseUrlFileType($data['oss_img_src']);
+        //生成随机的文件名
+        $data['image_name'] = $this->formUniqueString() . ".{$type}";
        if(creative::create($data)){
            return $this->resultArray("添加成功");
        }
