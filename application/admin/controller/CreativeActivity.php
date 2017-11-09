@@ -103,7 +103,23 @@ class CreativeActivity extends Common
      */
     public function update(Request $request, $id)
     {
-
+        $rule=[
+            ["title","require","请输入标题"],
+            ["oss_img_src","require","请传递封面"],
+            ["img_name","require","请上传图片名"],
+            ["keywords","require","请输入页面关键词"],
+            ["summary","require","请输入页面描述"],
+            ["content","require",'请输入活动详情'],
+        ];
+        $validate=new Validate($rule);
+        $data=$request->post();
+        if(!$validate->check($data)){
+            return $this->resultArray($validate->getError(),"failed");
+        }
+        if(creative::update($data,["id"=>$id])){
+            return $this->resultArray("修改成功");
+        }
+        return $this->resultArray("修改失败","failed");
     }
 
     /**
