@@ -11,7 +11,7 @@ namespace app\common\traits;
 
 use OSS\OssClient;
 use think\Config;
-
+use think\Request;
 trait Osstrait
 {
 
