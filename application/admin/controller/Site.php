@@ -295,6 +295,9 @@ class Site extends Common
         if(empty($sdata->sync_id)){
             $sdata->sync_id=",".$template_id.",";
         }else{
+            if(strpos($sdata->sync_id,','.$template_id.',')!==false){
+                return $this->resultArray("同步成功");
+            }
             $sdata->sync_id=$sdata->sync_id.$template_id.",";
         }
         if($sdata->save()){
