@@ -152,7 +152,14 @@ class CreativeActivity extends Common
      */
     public function imageUpload()
     {
-        return $this->uploadImg("activity/");
+        $data = $this->uploadImg("activity/");
+        if($data['status']){
+            $data["msg"]="上传成功";
+            return $data;
+        }else{
+            return $this->resultArray('上传失败', 'failed');
+        }
+
     }
 
     /**

@@ -234,8 +234,13 @@ class Article extends Common
      */
     public function imageupload()
     {
-        $dest_dir = 'article/';
-        return $this->uploadImg($dest_dir);
+        $data = $this->uploadImg("article/");
+        if($data['status']){
+            $data["msg"]="上传成功";
+            return $data;
+        }else{
+            return $this->resultArray('上传失败', 'failed');
+        }
     }
 
     /**

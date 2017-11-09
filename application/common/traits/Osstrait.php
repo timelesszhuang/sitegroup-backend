@@ -143,20 +143,19 @@ trait Osstrait
         $localfilepath = $localpath . $fileInfo->getSaveName();
         $put_info = $this->ossPutObject($object, $localfilepath);
         unlink($localfilepath);
-        $msg = '上传缩略图失败';
         $url = '';
         $status = false;
         if ($put_info['status']) {
-            $msg = '上传缩略图成功';
             $status = true;
             $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
         }
         return [
-            'msg' => $msg,
             "url" => $url,
             'status' => $status
         ];
     }
+
+
 
 
 }
