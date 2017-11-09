@@ -50,7 +50,7 @@ class Article extends Common
         if (!empty($title)) {
             $aricle['title'] = ["like", "%$title%"];
         }
-        $articledata = (new \app\admin\model\Article())->where($aricle)->limit($request["limit"], $request["rows"])->select();
+        $articledata = (new \app\admin\model\Article())->where($aricle)->limit($request["limit"], $request["rows"])->order('id desc')->select();
         $count = (new \app\admin\model\Article())->where($aricle)->count();
         $data = [
             "total" => $count,
