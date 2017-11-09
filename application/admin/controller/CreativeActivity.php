@@ -56,7 +56,6 @@ class CreativeActivity extends Common
         $rule=[
             ["title","require","请输入标题"],
             ["oss_img_src","require","请传递封面"],
-            ["img_name","require","请上传图片名"],
             ["keywords","require","请输入页面关键词"],
             ["summary","require","请输入页面描述"],
             ["content","require",'请输入活动详情'],
