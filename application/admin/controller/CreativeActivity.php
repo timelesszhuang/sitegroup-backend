@@ -115,6 +115,12 @@ class CreativeActivity extends Common
         if(!$validate->check($data)){
             return $this->resultArray($validate->getError(),"failed");
         }
+        $user = $this->getSessionUser();
+        $data["node_id"] = $user["user_node_id"];
+        //本地图片位置
+        $type = $this->analyseUrlFileType($data['oss_img_src']);
+        //生成随机的文件名
+        $data['image_name'] = $this->formUniqueString() . ".{$type}";
         if(creative::update($data,["id"=>$id])){
             return $this->resultArray("修改成功");
         }
