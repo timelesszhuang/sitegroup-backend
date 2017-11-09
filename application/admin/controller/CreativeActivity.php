@@ -94,7 +94,7 @@ class CreativeActivity extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
@@ -142,4 +142,5 @@ class CreativeActivity extends Common
        }
        return $this->resultArray("添加失败");
     }
+
 }
