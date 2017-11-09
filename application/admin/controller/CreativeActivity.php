@@ -206,6 +206,27 @@ class CreativeActivity extends Common
         return $this->resultArray("修改失败","failed");
     }
 
+
+    /**
+     * 获取产品多图状态下的图片src
+     * @access public
+     */
+    public function getImgSer($id)
+    {
+        $data = (new creative)->where(["id" => $id])->field("id,imgser")->find()->toArray();
+        $list = [];
+        if ($data['imgser']) {
+            $imgser = unserialize($data['imgser']);
+            foreach ($imgser as $v) {
+                $list[] = $v['osssrc'];
+            }
+            unset($data['imgser']);
+        }
+        $data['imglist'] = $list;
+        return $this->resultArray('', '', $data);
+    }
+
+
     /**
      * 修改 添加图片的Imgser 区分根据 $index 如果没有index是添加;
      * @access public
