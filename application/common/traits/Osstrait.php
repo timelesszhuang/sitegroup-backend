@@ -141,6 +141,7 @@ trait Osstrait
         $fileInfo = $file->move($localpath);
         $object = $dest_dir . $fileInfo->getSaveName();
         $localfilepath = $localpath . $fileInfo->getSaveName();
+
         $put_info = $this->ossPutObject($object, $localfilepath);
         unlink($localfilepath);
         $url = '';
@@ -154,6 +155,35 @@ trait Osstrait
             'status' => $status
         ];
     }
+
+    /**
+     * oss模板上传
+     * @param $dest_dir
+     * @param string $uname
+     * @return array
+     */
+
+    public function uploadTemp($dest_dir,$filepath)
+    {
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        $object = $dest_dir;
+        $put_info = $this->ossPutObject($object, $filepath);
+        unlink($filepath);
+        $url = '';
+        $status = false;
+        if ($put_info['status']) {
+            $status = true;
+            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        }
+        return [
+            "url" => $url,
+            'status' => $status
+        ];
+    }
+
+
+
 
 
 
