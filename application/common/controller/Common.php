@@ -287,36 +287,6 @@ class Common extends Controller
         }
     }
 
-
-    /**
-     * curl 传输文件操作
-     * @access public
-     * @param $file 要传输的文件 需要文件的绝对路径
-     * @param $dest 传输到的地方 会是一个域名 追加 一个固定的位置
-     * @param $type 类型 传输的文件的类型 比如 是 模板 template 还是创意 activity
-     */
-    public function sendFile($file, $dest, $type, $id)
-    {
-        //测试发送文件操作
-//        $dest = 'http://local.sitegroup.com/index.php/testsendFile/index';
-        $post = array(
-            "file" => new \CURLFile($file),//这里是要上传的文件，key与后台处理文件对应
-            "type" => $type,
-            "id" => $id
-        );
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $dest);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_VERBOSE, 0);
-
-        $a = curl_exec($ch);
-        curl_close($ch);
-        return $a;
-    }
-
     /**
      * 统一获取列表
      * @param $model
