@@ -102,14 +102,6 @@ class Menu extends Common
         }
         $validate = new Validate($rule);
         $data = $this->request->post();
-        $where = [];
-        $user = $this->getSessionUser();
-        $where["node_id"] = $user["user_node_id"];
-        $where['generate_name'] = $data['generate_name'];
-        $menugen = (new \app\admin\model\Menu())->where($where)->field('generate_name')->select();
-        if (!empty($menugen)) {
-            return $this->resultArray('英文名不能重复', 'failed');
-        }
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
