@@ -220,8 +220,8 @@ class Site extends Common
      */
     public function uploadTemplateFile($dest, $path,$type,$id)
     {
-        $dest = $dest . '/index.php/filemanage/uploadFile';
-        $this->sendFile(ROOT_PATH . "public/" . $path, $dest, $type,$id);
+        $dest = $dest . '/index.php/filemanage/uploadFile/'.$id;
+        $this->curl_get($dest);
     }
 
     /**
@@ -299,11 +299,22 @@ class Site extends Common
             $site = \app\admin\model\Site::where($where)->find();
             switch($type){
                     case "activity":
-                        $template=\app\admin\model\Activity::where(["id"=>$template_id])->field("id,code_path as path")->find();
-                        if(!$template){
-                            exit("未找到模板");
+                        $sdata=(new \app\admin\model\Site)->get($site_id);
+                        if(empty($sdata)){
+                            return $this->resultArray("数据不存在","failed");
                         }
-                        $id=$template->id;
+                        if(empty($sdata->sync_id)){
+                            $sdata->sync_id=",".$template_id.",";
+                        }else{
+                            if(strpos($sdata->sync_id,','.$template_id.',')!==false){
+                                return $this->resultArray("同步成功");
+                            }
+                            $sdata->sync_id=$sdata->sync_id.$template_id.",";
+                        }
+                        if($sdata->save()){
+                            return $this->resultArray("同步成功");
+                        }
+                        return $this->resultArray("同步失败","failed");
                         break;
                     case "template":
                         $template = \app\admin\model\Template::get($site["template_id"]);
@@ -327,7 +338,7 @@ class Site extends Common
     public function runClosuse(Closure $closure)
     {
         list($template,$site,$type,$id)=$closure();
-        $upload = $this->uploadTemplateFile($site->url, $template->path,$type,$id);
+        $upload = $this->uploadTemplateFile($site->url, $template->path_oss,$type,$id);
     }
 
     /**
@@ -450,7 +461,8 @@ class Site extends Common
         $where = [
             'node_id' => $user["user_node_id"],
         ];
-        $activily = \app\admin\model\Activity::where($where)->field("id,name")->select();
+
+        $activily = \app\common\model\CreativeActivity::where($where)->field("id,title")->select();
         $site = \app\admin\model\Site::get($id);
         foreach ($activily as $item) {
             yield $this->foreachActivily($item, $site->sync_id);
@@ -467,12 +479,12 @@ class Site extends Common
         $arr='';
         if (!empty($sync_id)) {
             if (strpos($sync_id, "," . $item->id . ",")!==false) {
-                $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"已同步","sync"=>"重新发送"];
+                $arr=["id"=>$item->id,"name"=>$item->title,"issync"=>"已同步","sync"=>"重新发送"];
             }else{
-                $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"未同步","sync"=>"同步"];
+                $arr=["id"=>$item->id,"name"=>$item->title,"issync"=>"未同步","sync"=>"同步"];
             }
         }else{
-            $arr=["id"=>$item->id,"name"=>$item->name,"issync"=>"未同步","sync"=>"同步"];
+            $arr=["id"=>$item->id,"name"=>$item->title,"issync"=>"未同步","sync"=>"同步"];
         }
         return $arr;
     }

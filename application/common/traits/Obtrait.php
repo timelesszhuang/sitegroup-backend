@@ -179,7 +179,7 @@ trait Obtrait
                 if (isset($fileinfo["dirname"])) {
                     if ($fileinfo["dirname"] != "." && strstr($fileinfo["dirname"], "/") === false) {
                         $made_path = $fileinfo["dirname"];
-                        if (file_exists($directory . $made_path)) {
+                        if (file_exists(ROOT_PATH . "public".$directory . $made_path)) {
                             return true;
                         }
                     }

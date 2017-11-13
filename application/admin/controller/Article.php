@@ -234,30 +234,13 @@ class Article extends Common
      */
     public function imageupload()
     {
-        $dest_dir = 'article/';
-        $endpoint = Config::get('oss.endpoint');
-        $bucket = Config::get('oss.bucket');
-        $request = Request::instance();
-        $file = $request->file("file");
-        $localpath = ROOT_PATH . "public/upload/";
-        $fileInfo = $file->move($localpath);
-        $object = $dest_dir . $fileInfo->getSaveName();
-        $localfilepath = $localpath . $fileInfo->getSaveName();
-        $put_info = $this->ossPutObject($object, $localfilepath);
-        unlink($localfilepath);
-        $msg = '上传缩略图失败';
-        $url = '';
-        $status = false;
-        if ($put_info['status']) {
-            $msg = '上传缩略图成功';
-            $status = true;
-            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        $data = $this->uploadImg("article/");
+        if($data['status']){
+            $data["msg"]="上传成功";
+            return $data;
+        }else{
+            return $this->resultArray('上传失败', 'failed');
         }
-        return [
-            'msg' => $msg,
-            "url" => $url,
-            'status' => $status
-        ];
     }
 
     /**

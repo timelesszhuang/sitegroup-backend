@@ -6,8 +6,12 @@ use app\common\controller\Common;
 use think\Request;
 use think\Validate;
 use app\common\traits\Obtrait;
+use app\common\traits\Osstrait;
+
 class Template extends Common
 {
+
+    use Osstrait;
     use Obtrait;
     static $templatepath = 'upload/template/';
 
@@ -25,11 +29,10 @@ class Template extends Common
             $where["name"] = ["like", "%$name%"];
         }
         $user = $this->getSessionUser();
-        $where["node_id"] = [["=",$user["user_node_id"]],["=",0],"or"];
+        $where["node_id"] = [["=", $user["user_node_id"]], ["=", 0], "or"];
         $data = (new \app\admin\model\Template())->getTemplate($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
-
 
 
     /**
@@ -58,13 +61,6 @@ class Template extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
-        $template = \app\admin\model\Template::get($id);
-        if($data['path']!=$template['path']){
-            if(file_exists($template)){
-                unlink($template['path']);
-            }
-            $data['path'] = self::$templatepath . $data['path'];
-        }
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
@@ -95,14 +91,15 @@ class Template extends Common
      */
     public function uploadTemplate()
     {
-        $file = request()->file('file_name');
-        $info = $file->move(ROOT_PATH . 'public/' . self::$templatepath);
-        if ($info) {
-            return $this->resultArray('上传成功', '', $info->getSaveName());
-        } else {
-            // 上传失败获取错误信息
-            return $this->resultArray('上传失败', 'failed', $info->getError());
+        $data = $this->uploadImg("template/");
+        if($data['status']){
+            return $this->resultArray('上传成功',$data['status'],$data['url']);
+        }else{
+            return $this->resultArray('上传失败', 'failed');
         }
+
+
+
     }
 
     /**
@@ -117,13 +114,11 @@ class Template extends Common
         $rule = [
             ["name", "require", "请传入模板名"],
             ["detail", "require", "请传入模板详情"],
-            ["path", "require", "请传入path"]
         ];
         $validate = new Validate($rule);
         if (!$validate->check($post)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        $post['path'] = self::$templatepath . $post['path'];
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new \app\admin\model\Template();
@@ -140,8 +135,8 @@ class Template extends Common
      */
     public function getTemplate()
     {
-        $field="id,name as text,node_id,industry_name";
-        return $this->getList((new \app\admin\model\Template),$field);
+        $field = "id,name as text,node_id,industry_name";
+        return $this->getList((new \app\admin\model\Template), $field);
     }
 
     /**
@@ -151,17 +146,17 @@ class Template extends Common
      */
     public function filelist($site_id)
     {
-        $url="templatelist";
-        $site=\app\admin\model\Site::get($site_id);
+        $url = "templatelist";
+        $site = \app\admin\model\Site::get($site_id);
 //        dump($site->url."/index.php/$url?site_id=".$site_id);die;
-        if($site){
-            $siteData=$this->curl_get($site->url."/index.php/$url?site_id=".$site_id);
+        if ($site) {
+            $siteData = $this->curl_get($site->url . "/index.php/$url?site_id=" . $site_id);
             $result = trim($siteData, "\xEF\xBB\xBF");
-            $data=json_decode($result,true);
+            $data = json_decode($result, true);
 //            dump($data);die;
-            return $this->resultArray($data['msg'],'',$data["filelist"]);
+            return $this->resultArray($data['msg'], '', $data["filelist"]);
         }
-        return $this->resultArray('当前网站未获取到!','failed');
+        return $this->resultArray('当前网站未获取到!', 'failed');
     }
 
     /**
@@ -169,68 +164,68 @@ class Template extends Common
      *
      * @return \think\Response
      */
-    public function templateRead($site_id,$name)
+    public function templateRead($site_id, $name)
     {
-        $url="templateread";
-        $site=\app\admin\model\Site::get($site_id);
-        if($site){
-            $siteData=$this->curl_get($site->url."/index.php/$url?site_id=".$site_id."&filename=".$name);
+        $url = "templateread";
+        $site = \app\admin\model\Site::get($site_id);
+        if ($site) {
+            $siteData = $this->curl_get($site->url . "/index.php/$url?site_id=" . $site_id . "&filename=" . $name);
 //            dump($site->url."/index.php/$url?site_id=".$site_id."&filename=".$name);die;
             $result = trim($siteData, "\xEF\xBB\xBF");
-            $data=json_decode($result,true);
+            $data = json_decode($result, true);
 //            $data=json_decode($siteData,true);
-            return $this->resultArray($data['msg'],'',["content"=>$data["content"],"filename"=>$data["filename"]]);
+            return $this->resultArray($data['msg'], '', ["content" => $data["content"], "filename" => $data["filename"]]);
         }
-        return $this->resultArray('当前网站未获取到!','failed');
+        return $this->resultArray('当前网站未获取到!', 'failed');
     }
 
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
-    public function save($site_id,$name)
+    public function save($site_id, $name)
     {
-        $request=Request::instance();
-        $content=$request->post("content");
-        $url="templateupdate";
-        $site=\app\admin\model\Site::get($site_id);
-        if($site) {
+        $request = Request::instance();
+        $content = $request->post("content");
+        $url = "templateupdate";
+        $site = \app\admin\model\Site::get($site_id);
+        if ($site) {
             $send = [
                 "site_id" => $site_id,
                 "filename" => $name,
                 "content" => $content
             ];
-            $siteData=$this->curl_post($site->url."/index.php/".$url,$send);
-            $data=json_decode($siteData,true);
-            return $this->resultArray($data['msg'],$data["status"]);
+            $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
+            $data = json_decode($siteData, true);
+            return $this->resultArray($data['msg'], $data["status"]);
         }
-        return $this->resultArray('当前网站未获取到!','failed');
+        return $this->resultArray('当前网站未获取到!', 'failed');
     }
 
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
-    public function readFile($site_id,$name)
+    public function readFile($site_id, $name)
     {
-        $request=Request::instance();
-        $content=$request->post("content");
-        $url="templateadd";
-        $site=\app\admin\model\Site::get($site_id);
-        if($site) {
+        $request = Request::instance();
+        $content = $request->post("content");
+        $url = "templateadd";
+        $site = \app\admin\model\Site::get($site_id);
+        if ($site) {
             $send = [
                 "site_id" => $site_id,
                 "filename" => $name,
                 "content" => $content
             ];
-            $siteData=$this->curl_post($site->url."/index.php/".$url,$send);
-            $data=json_decode($siteData,true);
-            return $this->resultArray($data['msg'],$data["status"]);
+            $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
+            $data = json_decode($siteData, true);
+            return $this->resultArray($data['msg'], $data["status"]);
         }
-        return $this->resultArray('当前网站未获取到!','failed');
+        return $this->resultArray('当前网站未获取到!', 'failed');
     }
 }
