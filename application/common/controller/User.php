@@ -4,7 +4,7 @@ namespace app\common\controller;
 
 use think\Request;
 use think\Validate;
-
+use app\sysadmin\model\Node;
 class User extends Common
 {
     /**
@@ -142,7 +142,9 @@ class User extends Common
             return $this->resultArray('该用户为系统管理员，不允许删除', 'failed');
         }
         if(!empty($user->node_id)){
-            return $this->resultArray('该账号已经分配管理后台，不允许删除', 'failed');
+            if(Node::get($user->node_id)){
+                return $this->resultArray('该账号已经分配管理后台，不允许删除', 'failed');
+            }
         }
         if (!$user->delete()) {
             return $this->resultArray('删除失败，请稍后重试。', 'failed');

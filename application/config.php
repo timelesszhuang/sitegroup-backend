@@ -259,5 +259,12 @@ return [
     ],
     'crypt'=>[
         'cookiePrivate'=>'qiangbi123$%^'
+    ],
+    'db1'=>[
+    'type'           => 'mysql',
+    'hostname'       => 'rdsfjnifbfjnifbo.mysql.rds.aliyuncs.com',
+    'database'       => 'yiqixiu',
+    'username'       => 'yiqixiu',
+    'password'       => 'LiuRui123$%^',
     ]
 ];

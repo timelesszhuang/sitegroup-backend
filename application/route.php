@@ -423,6 +423,27 @@ Route::get('admin/getImgSer/:id', 'admin/CreativeActivity/getImgSer');
 Route::get('admin/delImgSer/:id/:index', 'admin/CreativeActivity/deleteImgser');
 //修改活动状态
 Route::get('admin/changeactivityStatus/:id/:status','admin/CreativeActivity/changeStatus');
+//易企秀帐号登录
+Route::get('yiqixiu','admin/YiQiShow/index');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
