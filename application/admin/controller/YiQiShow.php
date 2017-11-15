@@ -15,7 +15,7 @@ class YiQiShow extends Common
      */
     public function index()
     {
-        $url="http://www.yqx.com/index.php?c=user&a=login";
+        $url="http://xiu.hi-link.com.cn/index.php?c=user&a=login";
         $user = $this->getSessionUser();
         if(!isset($user["user_id"]) || empty($user["user_id"])){
             exit("当前用户获取失败");
