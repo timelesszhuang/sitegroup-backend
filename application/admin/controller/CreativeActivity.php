@@ -9,10 +9,12 @@ use app\common\model\CreativeActivity as creative;
 use app\common\traits\Osstrait;
 use think\Validate;
 use app\common\traits\Obtrait;
+
 class CreativeActivity extends Common
 {
     use Obtrait;
     use Osstrait;
+
     /**
      * 显示资源列表
      *
@@ -50,22 +52,22 @@ class CreativeActivity extends Common
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
     {
-        $rule=[
-            ["title","require","请输入标题"],
-            ["oss_img_src","require","请传递封面"],
-            ["keywords","require","请输入页面关键词"],
-            ["summary","require","请输入页面描述"],
-            ["content","require",'请输入活动详情'],
+        $rule = [
+            ["title", "require", "请输入标题"],
+            ["oss_img_src", "require", "请传递封面"],
+            ["keywords", "require", "请输入页面关键词"],
+            ["summary", "require", "请输入页面描述"],
+            ["content", "require", '请输入活动详情'],
         ];
-        $validate=new Validate($rule);
-        $data=$request->post();
-        if(!$validate->check($data)){
-            return $this->resultArray($validate->getError(),"failed");
+        $validate = new Validate($rule);
+        $data = $request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
         }
         $user = $this->getSessionUser();
         $data["node_id"] = $user["user_node_id"];
@@ -73,16 +75,16 @@ class CreativeActivity extends Common
         $type = $this->analyseUrlFileType($data['oss_img_src']);
         //生成随机的文件名
         $data['img_name'] = $this->formUniqueString() . ".{$type}";
-        if(creative::create($data)){
+        if (creative::create($data)) {
             return $this->resultArray("添加成功");
         }
-        return $this->resultArray("添加失败","failed");
+        return $this->resultArray("添加失败", "failed");
     }
 
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function read($id)
@@ -93,7 +95,7 @@ class CreativeActivity extends Common
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -104,24 +106,24 @@ class CreativeActivity extends Common
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param  \think\Request $request
+     * @param  int $id
      * @return \think\Response
      */
     public function update(Request $request, $id)
     {
-        $rule=[
-            ["title","require","请输入标题"],
-            ["oss_img_src","require","请传递封面"],
-            ["img_name","require","请上传图片名"],
-            ["keywords","require","请输入页面关键词"],
-            ["summary","require","请输入页面描述"],
-            ["content","require",'请输入活动详情'],
+        $rule = [
+            ["title", "require", "请输入标题"],
+            ["oss_img_src", "require", "请传递封面"],
+            ["img_name", "require", "请上传图片名"],
+            ["keywords", "require", "请输入页面关键词"],
+            ["summary", "require", "请输入页面描述"],
+            ["content", "require", '请输入活动详情'],
         ];
-        $validate=new Validate($rule);
-        $data=$request->post();
-        if(!$validate->check($data)){
-            return $this->resultArray($validate->getError(),"failed");
+        $validate = new Validate($rule);
+        $data = $request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
         }
         $user = $this->getSessionUser();
         $data["node_id"] = $user["user_node_id"];
@@ -129,16 +131,25 @@ class CreativeActivity extends Common
         $type = $this->analyseUrlFileType($data['oss_img_src']);
         //生成随机的文件名
         $data['img_name'] = $this->formUniqueString() . ".{$type}";
-        if(creative::update($data,["id"=>$id])){
-            return $this->resultArray("修改成功");
+        if (!creative::update($data, ["id" => $id])) {
+            return $this->resultArray("修改失败", "failed");
         }
-        return $this->resultArray("修改失败","failed");
+        $this->open_start('正在修改中');
+        $where = [];
+        $where['node_id'] = $user["user_node_id"];
+        $site = (new \app\admin\model\Site())->where($where)->select();
+        foreach ($site as $k => $v) {
+            if ($v['sync_id']) {
+                //print_r($v['url'] . '/regenerateactivity/'.$data['id']);
+                $this->curl_get($v['url'] . '/regenerateactivity/' . $data['id']);
+            }
+        }
     }
 
     /**
      * 删除指定资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function delete($id)
@@ -153,10 +164,10 @@ class CreativeActivity extends Common
     public function imageUpload()
     {
         $data = $this->uploadImg("activity/");
-        if($data['status']){
-            $data["msg"]="上传成功";
+        if ($data['status']) {
+            $data["msg"] = "上传成功";
             return $data;
-        }else{
+        } else {
             return $this->resultArray('上传失败', 'failed');
         }
 
@@ -169,26 +180,26 @@ class CreativeActivity extends Common
      */
     public function storyOut(Request $request)
     {
-       $rule=[
-           ["title","require","请输入标题"],
-           ["oss_img_src","require","请先上传图片"],
-           ["url","require","请输入外部链接"]
-       ];
-       $validate=new Validate($rule);
-       $data=$request->post();
-       if(!$validate->check($data)){
-           return $this->resultArray($validate->getError());
-       }
+        $rule = [
+            ["title", "require", "请输入标题"],
+            ["oss_img_src", "require", "请先上传图片"],
+            ["url", "require", "请输入外部链接"]
+        ];
+        $validate = new Validate($rule);
+        $data = $request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError());
+        }
         $user = $this->getSessionUser();
         $data["node_id"] = $user["user_node_id"];
         //本地图片位置
         $type = $this->analyseUrlFileType($data['oss_img_src']);
         //生成随机的文件名
         $data['img_name'] = $this->formUniqueString() . ".{$type}";
-       if(creative::create($data)){
-           return $this->resultArray("添加成功");
-       }
-       return $this->resultArray("添加失败","failed");
+        if (creative::create($data)) {
+            return $this->resultArray("添加成功");
+        }
+        return $this->resultArray("添加失败", "failed");
     }
 
     /**
@@ -198,21 +209,21 @@ class CreativeActivity extends Common
      */
     public function saveOut($id)
     {
-        $rule=[
-            ["title","require","请输入标题"],
-            ["oss_img_src","require","请先上传图片"],
-            ["url","require","请输入外部链接"]
+        $rule = [
+            ["title", "require", "请输入标题"],
+            ["oss_img_src", "require", "请先上传图片"],
+            ["url", "require", "请输入外部链接"]
         ];
-        $request=Request::instance();
-        $validate=new Validate($rule);
-        $data=$request->post();
-        if(!$validate->check($data)){
-            return $this->resultArray($validate->getError(),"failed");
+        $request = Request::instance();
+        $validate = new Validate($rule);
+        $data = $request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
         }
-        if(creative::update($data,["id"=>$id])){
+        if (creative::update($data, ["id" => $id])) {
             return $this->resultArray("修改成功");
         }
-        return $this->resultArray("修改失败","failed");
+        return $this->resultArray("修改失败", "failed");
     }
 
 
@@ -361,12 +372,12 @@ class CreativeActivity extends Common
      * @param $status
      * @return array
      */
-    public function changeStatus($id,$status)
+    public function changeStatus($id, $status)
     {
-        if(creative::where(["id"=>$id])->update(["status"=>$status])){
+        if (creative::where(["id" => $id])->update(["status" => $status])) {
             return $this->resultArray("修改成功");
         }
-        return $this->resultArray("修改失败","failed");
+        return $this->resultArray("修改失败", "failed");
     }
 
 }

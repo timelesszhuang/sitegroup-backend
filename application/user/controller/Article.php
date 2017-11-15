@@ -180,7 +180,6 @@ class Article extends Common
             "type" => $data['articletype_id'],
         ];
         $this->curl_post($Site['url'] . "/index.php/generateHtml", $send);
-
     }
 
     /**
