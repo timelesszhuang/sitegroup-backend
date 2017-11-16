@@ -334,7 +334,6 @@ class Site extends Common
     public function getSites()
     {
         $field = "id,site_name,url";
-
         $SiteData = $this->getList((new \app\admin\model\Site), $field);
         $Site = $SiteData['data'];
         $arr = [];
@@ -343,8 +342,6 @@ class Site extends Common
             $arr[$k] = $v;
         }
         return $this->resultArray('', '', $Site);
-
-
     }
 
     /**
@@ -508,12 +505,9 @@ class Site extends Common
         $user = $this->getSessionUser();
         $starttime = time() - 86400 * 9;
         $stoptime = time();
-//        $time=strtotime(date("Y-m-d 0:0:0"))-86400*9;
         $where = [];
         $where['node_id'] = $user["user_node_id"];
-
         $where['create_time'] = ['between', [$starttime, $stoptime]];
-
         $userAgent = Db::name("useragent")->where($where)->field("engine,create_time")->select();
         $Agent = [];
         $Engine = [];
@@ -555,6 +549,13 @@ class Site extends Common
                 "type" => "line",
                 "stack" => '总量',
             ];
+        }
+        $engine_alias = Config::get('engine.spider_aliasname');
+        foreach ($this->all_count as $k => $v) {
+            if (array_key_exists($v['name'], $engine_alias)) {
+                $v['name'] = $engine_alias[$v['name']];
+                $this->all_count[$k] = $v;
+            }
         }
         $temp = ["time" => $date_diff, "type" => $this->all_count];
         return $this->resultArray('', '', $temp);

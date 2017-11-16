@@ -3,6 +3,7 @@
 namespace app\admin\controller;
 
 use app\common\model\BrowseRecord;
+use think\Config;
 use think\Db;
 use think\Request;
 use app\common\controller\Common;
@@ -200,6 +201,13 @@ class Count extends Common
         }
         //格式化数据 array_walk() 数组的键名和键值是参数。
         array_walk($Agent, [$this, "formatter"]);
+        $engine_alias = Config::get('engine.spider_aliasname');
+        foreach ($this->all_count as $k => $v) {
+            if (array_key_exists($v['name'], $engine_alias)) {
+                $v['name'] = $engine_alias[$v['name']];
+                $this->all_count[$k] = $v;
+            }
+        }
         //重组数组返给前台
         $temp = ["time" => $date_diff, "type" => $this->all_count];
         if (empty($userAgent)) {
@@ -208,9 +216,6 @@ class Count extends Common
             return $this->resultArray('查询成功', '', $temp);
         }
     }
-
-
-
 
 
     /**
@@ -279,11 +284,16 @@ class Count extends Common
         //格式化数据 array_walk() 数组的键名和键值是参数。
         array_walk($Agent, [$this, "formatter"]);
         //重组数组返给前台
+        $engine_alias = Config::get('engine.spider_aliasname');
+        foreach ($this->all_count as $k => $v) {
+            if (array_key_exists($v['name'], $engine_alias)) {
+                $v['name'] = $engine_alias[$v['name']];
+                $this->all_count[$k] = $v;
+            }
+        }
         $temp = ["time" => $date_diff, "type" => $this->all_count];
         return $this->resultArray('查询成功', '', $temp);
-
     }
-
 
 
     /**
