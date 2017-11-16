@@ -6,8 +6,11 @@ use app\common\controller\Common;
 
 use think\Request;
 use app\common\model\SiteLogo as site;
+use app\common\traits\Obtrait;
+use think\Validate;
 class SiteLogo extends Common
 {
+    use Obtrait;
     /**
      * 显示资源列表
      *
@@ -38,7 +41,19 @@ class SiteLogo extends Common
      */
     public function save(Request $request)
     {
-
+        $rule=[
+            ["oss_logo_path","required","请先上传logo"]
+        ];
+        $post=$request->post();
+        $validate=new Validate($rule);
+        if(!$validate->check($post)){
+            return $this->resultArray($validate->getError(),"failed");
+        }
+        $post["local_file_name"]=$this->formUniqueString();
+        if(!site::create($post)){
+            return $this->resultArray("添加失败","failed");
+        }
+        return $this->resultArray("添加成功");
     }
 
     /**
@@ -49,7 +64,7 @@ class SiteLogo extends Common
      */
     public function read($id)
     {
-        //
+        return $this->resultArray("",'',$this->getread((new site),$id));
     }
 
     /**
@@ -72,7 +87,18 @@ class SiteLogo extends Common
      */
     public function update(Request $request, $id)
     {
-        //
+        $rule=[
+            ["oss_logo_path","require","请先上传图片"]
+        ];
+        $put=$request->put();
+        $validate=new Validate($rule);
+        if(!$validate->check($put)){
+            return $this->resultArray($validate->getError(),"failed");
+        }
+        if((new rule)->update($put,["id"=>$id])){
+            return $this->resultArray("修改成功");
+        }
+        return $this->resultArray("修改失败");
     }
 
     /**
