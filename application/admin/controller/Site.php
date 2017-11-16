@@ -446,9 +446,9 @@ class Site extends Common
         $user = $this->getSessionUser();
         $where = [
             'node_id' => $user["user_node_id"],
+            'status' => '10'
         ];
-
-        $activily = \app\common\model\CreativeActivity::where($where)->field("id,title")->select();
+        $activily = \app\common\model\CreativeActivity::where($where)->field("id,oss_img_src,title,create_time")->order('id desc')->select();
         $site = \app\admin\model\Site::get($id);
         foreach ($activily as $item) {
             yield $this->foreachActivily($item, $site->sync_id);
@@ -462,16 +462,16 @@ class Site extends Common
      */
     public function foreachActivily($item, $sync_id = '')
     {
-        $arr = '';
+        $arr = ["id" => $item->id, "name" => $item->title, 'oss_img_src' => "<img src='{$item->oss_img_src}' style='width:100%'>", 'date' => $item->create_time];
         if (!empty($sync_id)) {
             if (strpos($sync_id, "," . $item->id . ",") !== false) {
-                $arr = ["id" => $item->id, "name" => $item->title, "issync" => "已同步", "sync" => "重新发送"];
-            } else {
-                $arr = ["id" => $item->id, "name" => $item->title, "issync" => "未同步", "sync" => "同步"];
+                $arr['issync'] = '10';
+                $arr['sync'] = '重新同步';
+                return $arr;
             }
-        } else {
-            $arr = ["id" => $item->id, "name" => $item->title, "issync" => "未同步", "sync" => "同步"];
         }
+        $arr['issync'] = '20';
+        $arr['sync'] = '同步';
         return $arr;
     }
 
@@ -499,6 +499,10 @@ class Site extends Common
         return $this->resultArray('', '', $temp);
     }
 
+
+    /**
+     * 统计搜索引擎相关
+     */
     public function enginecount()
     {
         $user = $this->getSessionUser();
@@ -595,9 +599,11 @@ class Site extends Common
             "type" => "line",
             "stack" => '总量',
         ];
-
     }
 
+    /**
+     * 获取站点相关公共元素 比如下拉之类
+     */
     public function commontype()
     {
         $menu = new Menu();
@@ -631,8 +637,22 @@ class Site extends Common
             'link' => $linkdata['data'],
             'mobileSite' => $mobilesitedata['data'],
             'code' => $codedata['data'],
-
         ];
         return $this->resultArray('', '', $data);
     }
+
+
+    /**
+     * 重置站点 该操作需要慎重
+     * @param $id 站点id
+     */
+    public function resetSite($id)
+    {
+        //只需要把 article_sync_count 表重置就可以
+        if (Db::name('ArticleSyncCount')->where(['site_id' => $id])->delete()) {
+            return $this->resultArray('站点重置成功', '', []);
+        }
+        return $this->resultArray('站点重置失败', 'failed', []);
+    }
+
 }

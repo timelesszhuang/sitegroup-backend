@@ -22,4 +22,6 @@ class CreativeActivity extends Model
             "rows" => $data
         ];
     }
+
+
 }
