@@ -141,7 +141,7 @@ class SiteLogo extends Common
     {
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        $sites=(new site)->where($where)->field(["id,local_file_name,oss_logo_path"])->select();
+        $sites=(new site)->where($where)->field(["id,name,oss_logo_path"])->select();
         return $this->resultArray("","",$sites);
     }
 }
