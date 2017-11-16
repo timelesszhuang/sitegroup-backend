@@ -429,6 +429,31 @@ Route::get('admin/changeactivityStatus/:id/:status', 'admin/CreativeActivity/cha
 //易企秀帐号登录
 Route::get('yiqixiu', 'admin/YiQiShow/index');
 
+//站点logo
+Route::resource('admin/siteLogo','admin/SiteLogo');
+//站点logo 图片上传
+Route::post('admin/sitelogoup','admin/SiteLogo/uploadImg');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //站点相关--------------------------------------------------------
 //站点登录后的首页操作
