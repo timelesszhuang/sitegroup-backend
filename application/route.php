@@ -432,7 +432,7 @@ Route::get('yiqixiu', 'admin/YiQiShow/index');
 //站点logo
 Route::resource('admin/siteLogo','admin/SiteLogo');
 //站点logo 图片上传
-Route::post('admin/sitelogoup','admin/SiteLogo/uploadImg');
+Route::post('admin/sitelogoup','admin/SiteLogo/uploadLoginImg');
 
 
 

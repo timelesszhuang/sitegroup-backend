@@ -118,7 +118,7 @@ class SiteLogo extends Common
      * 网站logo上传
      * @return array
      */
-    public function uploadImg()
+    public function uploadLoginImg()
     {
         $data=$this->uploadImg('sitelogo');
         if($data["status"]){
