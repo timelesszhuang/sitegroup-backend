@@ -425,7 +425,10 @@ Route::get('admin/delImgSer/:id/:index', 'admin/CreativeActivity/deleteImgser');
 Route::get('admin/changeactivityStatus/:id/:status','admin/CreativeActivity/changeStatus');
 //易企秀帐号登录
 Route::get('yiqixiu','admin/YiQiShow/index');
-
+//站点logo
+Route::resource('admin/siteLogo','admin/SiteLogo');
+//站点logo 图片上传
+Route::post('admin/sitelogoup','admin/SiteLogo/uploadImg');
 
 
 
