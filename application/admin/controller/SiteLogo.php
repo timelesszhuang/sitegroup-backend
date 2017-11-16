@@ -42,7 +42,7 @@ class SiteLogo extends Common
     public function save(Request $request)
     {
         $rule=[
-            ["oss_logo_path","required","请先上传logo"],
+            ["oss_logo_path","require","请先上传logo"],
             ["name","require","请输入名称"]
         ];
         $post=$request->post();
@@ -126,5 +126,10 @@ class SiteLogo extends Common
             return $data;
         }
         return $this->resultArray('上传失败，请重新上传!',"failed");
+    }
+
+    public function logoList()
+    {
+//        rule::get(["id,name as text"])
     }
 }
