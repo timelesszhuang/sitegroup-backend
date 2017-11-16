@@ -32,8 +32,8 @@ class YiQiShow extends Common
         if(!Db::connect("db1")->name("cj_users")->where(["userid_int"=>$yqx["userid_int"]])->update(["lxy_token"=>$lxy_token])){
             exit("当前用户获取失败");
         }
-        $this->redirect($url."&token=$lxy_token");
-        return;
+//        $this->redirect($url."&token=$lxy_token");
+        return $this->resultArray('',"",$url."&token=$lxy_token");
     }
 
     /**
