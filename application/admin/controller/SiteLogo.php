@@ -125,7 +125,7 @@ class SiteLogo extends Common
      */
     public function uploadLoginImg()
     {
-        $data=$this->uploadImg('sitelogo');
+        $data=$this->uploadImg('sitelogo/');
         if($data["status"]){
             $data["msg"]="上传成功";
             return $data;
