@@ -53,6 +53,8 @@ class SiteLogo extends Common
             return $this->resultArray($validate->getError(),"failed");
         }
         $post["local_file_name"]=$this->formUniqueString();
+        $user = $this->getSessionUser();
+        $post["node_id"] = $user["user_node_id"];
         if(!site::create($post)){
             return $this->resultArray("添加失败","failed");
         }
@@ -67,7 +69,7 @@ class SiteLogo extends Common
      */
     public function read($id)
     {
-        return $this->resultArray("",'',$this->getread((new site),$id));
+        return $this->getread((new site),$id);
     }
 
     /**
@@ -99,7 +101,7 @@ class SiteLogo extends Common
         if(!$validate->check($put)){
             return $this->resultArray($validate->getError(),"failed");
         }
-        if((new rule)->update($put,["id"=>$id])){
+        if((new site)->update($put,["id"=>$id])){
             return $this->resultArray("修改成功");
         }
         return $this->resultArray("修改失败");
@@ -130,8 +132,13 @@ class SiteLogo extends Common
         return $this->resultArray('上传失败，请重新上传!',"failed");
     }
 
+    /**
+     * 获取列表
+     * @return array
+     */
     public function logoList()
     {
-//        rule::get(["id,name as text"])
+        $sites=site::get(["id,name as text"]);
+        return $this->resultArray("","",$sites);
     }
 }
