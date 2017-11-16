@@ -6,11 +6,11 @@ use app\common\controller\Common;
 
 use think\Request;
 use app\common\model\SiteLogo as site;
-use app\common\traits\Obtrait;
+use app\common\traits\Osstrait;
 use think\Validate;
 class SiteLogo extends Common
 {
-    use Obtrait;
+    use Osstrait;
     /**
      * 显示资源列表
      *
