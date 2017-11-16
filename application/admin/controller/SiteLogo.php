@@ -42,7 +42,8 @@ class SiteLogo extends Common
     public function save(Request $request)
     {
         $rule=[
-            ["oss_logo_path","required","请先上传logo"]
+            ["oss_logo_path","required","请先上传logo"],
+            ["name","require","请输入名称"]
         ];
         $post=$request->post();
         $validate=new Validate($rule);
@@ -88,7 +89,8 @@ class SiteLogo extends Common
     public function update(Request $request, $id)
     {
         $rule=[
-            ["oss_logo_path","require","请先上传图片"]
+            ["oss_logo_path","require","请先上传图片"],
+            ["name","require","请输入名称"]
         ];
         $put=$request->put();
         $validate=new Validate($rule);
