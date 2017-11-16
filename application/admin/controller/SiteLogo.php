@@ -21,7 +21,9 @@ class SiteLogo extends Common
     public function index()
     {
         $limit = $this->getLimit();
-        $data=(new site())->getAll($limit["limit"], $limit["rows"], '');
+        $user = $this->getSessionUser();
+        $where["node_id"] = $user["user_node_id"];
+        $data=(new site())->getAll($limit["limit"], $limit["rows"], $where);
         return $this->resultArray("",'',$data);
     }
 
