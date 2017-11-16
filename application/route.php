@@ -234,12 +234,15 @@ Route::get('enginecount', 'admin/Site/enginecount');
 
 //发送模板
 Route::get('Site/ignoreFrontend/:template_id/:site_id/:type', 'admin/Site/ignoreFrontend');
-
+//获取站点列表
 Route::get('Site/getSites', 'admin/Site/getSites');
 //一键生成 生成文章 清除缓存 生成栏目 生成首页
 Route::get('Site/siteGetCurl/:id/:name', 'admin/Site/siteGetCurl');
 //获取活动模板信息
 Route::get('Site/getActivily/:id', 'admin/Site/getActivily');
+//重置站点
+Route::get('Site/resetSite/:id', 'admin/Site/resetSite');
+
 Route::get('commontype', 'admin/Site/commontype');
 
 //测试文件接收  实际应该写在小节点中
@@ -408,13 +411,13 @@ Route::post('admin/uploadarticleimage', 'admin/Article/imageupload');
 //问答图片上传到oss
 Route::post('admin/uploadquestionimage', 'admin/Question/imageupload');
 //活动缩略图
-Route::post('admin/uploadactivity','admin/CreativeActivity/imageUpload');
+Route::post('admin/uploadactivity', 'admin/CreativeActivity/imageUpload');
 //外站活动添加
-Route::post('admin/storyOut','admin/CreativeActivity/storyOut');
+Route::post('admin/storyOut', 'admin/CreativeActivity/storyOut');
 //外部活动修改
-Route::post('admin/saveOut/:id','admin/CreativeActivity/saveOut');
+Route::post('admin/saveOut/:id', 'admin/CreativeActivity/saveOut');
 //活动相关
-Route::resource('admin/activityabout','admin/CreativeActivity');
+Route::resource('admin/activityabout', 'admin/CreativeActivity');
 //活动 修改/添加 图片
 Route::post('admin/uploadactivitySerImg', 'admin/CreativeActivity/uploadImgSer');
 // 活动轮播获取
@@ -422,8 +425,10 @@ Route::get('admin/getImgSer/:id', 'admin/CreativeActivity/getImgSer');
 //活动删除轮播
 Route::get('admin/delImgSer/:id/:index', 'admin/CreativeActivity/deleteImgser');
 //修改活动状态
-Route::get('admin/changeactivityStatus/:id/:status','admin/CreativeActivity/changeStatus');
+Route::get('admin/changeactivityStatus/:id/:status', 'admin/CreativeActivity/changeStatus');
 //易企秀帐号登录
+Route::get('yiqixiu', 'admin/YiQiShow/index');
+
 Route::get('yiqixiu','admin/YiQiShow/index');
 //站点logo
 Route::resource('admin/siteLogo','admin/SiteLogo');
