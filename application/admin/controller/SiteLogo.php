@@ -54,7 +54,6 @@ class SiteLogo extends Common
         if(!$validate->check($post)){
             return $this->resultArray($validate->getError(),"failed");
         }
-        $post["local_file_name"]=$this->formUniqueString();
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         if(!site::create($post)){
