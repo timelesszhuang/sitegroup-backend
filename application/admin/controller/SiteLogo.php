@@ -138,7 +138,7 @@ class SiteLogo extends Common
      */
     public function logoList()
     {
-        $sites=site::get(["id,name as text"]);
+        $sites=site::get(["id,local_file_name,oss_logo_path"]);
         return $this->resultArray("","",$sites);
     }
 }
