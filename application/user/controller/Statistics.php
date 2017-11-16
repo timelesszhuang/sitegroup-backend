@@ -198,6 +198,14 @@ class Statistics extends Common
             ];
         }
         //重组数组返给前台
+        $engine_alias = Config::get('engine.spider_aliasname');
+        foreach ($this->all_count as $k => $v) {
+            if (array_key_exists($v['name'], $engine_alias)) {
+                $v['name'] = $engine_alias[$v['name']];
+                $this->all_count[$k] = $v;
+            }
+        }
+        //重组数组返给前台
         $temp = ["time" => $date_diff, "type" => $this->all_count];
         return $this->resultArray('', '', $temp);
     }
