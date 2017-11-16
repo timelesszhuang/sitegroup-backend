@@ -7,10 +7,12 @@ use app\common\controller\Common;
 use think\Request;
 use app\common\model\SiteLogo as site;
 use app\common\traits\Osstrait;
+use app\common\traits\Obtrait;
 use think\Validate;
 class SiteLogo extends Common
 {
     use Osstrait;
+    use Obtrait;
     /**
      * 显示资源列表
      *
