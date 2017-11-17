@@ -119,6 +119,6 @@ class Souhu extends Common
             ["id"=>4,"text"=>"美食类"],
             ["id"=>5,"text"=>"社会类"]
         ];
-        return $arr;
+        return $this->resultArray("","",$arr);
     }
 }
