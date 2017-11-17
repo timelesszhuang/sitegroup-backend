@@ -68,7 +68,7 @@ class Souhu extends Common
      */
     public function read($id)
     {
-        //
+        return $this->resultArray('','',$this->conn->getOne($id));
     }
 
     /**
@@ -103,5 +103,22 @@ class Souhu extends Common
     public function delete($id)
     {
         //
+    }
+
+    /**
+     * 通过id获取分类
+     * @param $id
+     * @return mixed|string
+     */
+    public function typeList()
+    {
+        $arr=[
+            ["id"=>1,"text"=>"科技类"],
+            ["id"=>2,"text"=>"教育类"],
+            ["id"=>3,"text"=>"财经类"],
+            ["id"=>4,"text"=>"美食类"],
+            ["id"=>5,"text"=>"社会类"]
+        ];
+        return $arr;
     }
 }

@@ -59,24 +59,15 @@ class Sohunews extends Model
         }
     }
 
-    /**
-     * 通过id获取分类
-     * @param $id
-     * @return mixed|string
-     */
-    public function findTypeName($id)
-    {
-        $arr=[
-            1=>"科技类",
-            2=>"教育类",
-            3=>"财经类",
-            4=>"美食类",
-            5=>"社会类"
-        ];
-        if(in_array($id,$arr)){
-            return $arr[$id];
-        }
-        return "未获取到";
-    }
 
+    /**
+     * 获取单篇文章
+     * @param $id
+     * @return null|static
+     */
+    public function getOne($id)
+    {
+        $key=self::get($id);
+        return $key;
+    }
 }
