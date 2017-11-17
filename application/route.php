@@ -435,7 +435,8 @@ Route::resource('admin/siteLogo','admin/SiteLogo');
 Route::post('admin/sitelogoup','admin/SiteLogo/uploadLoginImg');
 //站点logo列表
 Route::get('admin/getsitelogolist',"admin/SiteLogo/logoList");
-
+//搜狐新闻
+Route::resource('admin/souhu',"admin/Souhu");
 
 
 
