@@ -563,4 +563,7 @@ Route::post('user/editpageinfo', 'user/PageInfo/editpageinfo');
 Route::resource('user/articleReplaceKeyword', 'user/ArticleReplaceKeyword');
 //统计所有
 Route::get('user/getFour', 'user/Pv/countDatas');
-
+//搜狐新闻
+Route::resource('user/souhu',"user/Souhu");
+//搜狐分类列表
+Route::get('user/souhuList',"user/Souhu/typeList");
