@@ -132,6 +132,11 @@ trait Obtrait
                     if ($fileinfo["dirname"] != "." && strstr($fileinfo["dirname"], "/") === false) {
                         $made_path = $directiry . $fileinfo["dirname"];
                         chmod($obj . $fileinfo["dirname"], 0755);
+                        $md5_name=mb_substr(md5(time()),0,12,'UTF-8');
+                        $rename_file=$obj.$md5_name;
+                        if(rename($obj . $fileinfo["dirname"],$rename_file)){
+                            $made_path=$directiry.$md5_name;
+                        }
                         break;
                     }
                 }

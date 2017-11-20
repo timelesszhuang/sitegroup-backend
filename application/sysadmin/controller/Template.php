@@ -160,9 +160,6 @@ class Template extends Common
             $uploadpath = "/upload/zipsrctemplate/";
             $src = ROOT_PATH . "public" . $path . $info->getSaveName();
             $obj = ROOT_PATH . 'public' . $uploadpath;
-            if($this->checkZipDirectory($src,$uploadpath)){
-                return $this->resultArray("同名称模板已经存在,请修改","failed");
-            }
             $url = $this->ZipArchive($src, $obj, $uploadpath);
             $data = $this->uploadTemp("template/" . $info->getSaveName(), $src);
             if ($data['status']) {
