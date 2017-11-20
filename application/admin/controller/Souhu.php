@@ -117,7 +117,8 @@ class Souhu extends Common
             ["id"=>2,"text"=>"教育类"],
             ["id"=>3,"text"=>"财经类"],
             ["id"=>4,"text"=>"美食类"],
-            ["id"=>5,"text"=>"社会类"]
+            ["id"=>5,"text"=>"社会类"],
+            ["id"=>6,"text"=>"文化类"]
         ];
         return $this->resultArray("","",$arr);
     }
