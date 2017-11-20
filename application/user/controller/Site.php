@@ -1,12 +1,11 @@
 <?php
 
-namespace app\admin\controller;
+namespace app\user\controller;
 
 use app\common\controller\Common;
 use think\Request;
-use think\Db;
-use app\common\model\User;
-class YiQiShow extends Common
+
+class Site extends Common
 {
     /**
      * 显示资源列表
@@ -15,24 +14,15 @@ class YiQiShow extends Common
      */
     public function index()
     {
-        $url="http://xiu.hi-link.com.cn/index.php?c=user&a=login";
-        $user = $this->getSessionUser();
-        if(!isset($user["user_id"]) || empty($user["user_id"])){
-            return $this->resultArray('当前用户获取失败',"failed");
+        $site_id=$this->getSiteSession('website')["id"];
+        if(empty($site_id)){
+            return $this->resultArray("获取站点错误","failed");
         }
-        $getUser=User::get(["id"=>$user["user_id"]]);
-        if(empty($getUser)){
-            return $this->resultArray('当前用户获取失败',"failed");
+        $site=\app\admin\model\Site::get($site_id);
+        if(empty($site)){
+            return $this->resultArray("获取站点错误","failed");
         }
-        $yqx=Db::connect("db1")->name("cj_users")->where(["email_varchar"=>$getUser->yqx_account])->find();
-        if(empty($yqx)){
-            return $this->resultArray('当前用户获取失败',"failed");
-        }
-        $lxy_token=md5($getUser->user_name.time());
-        if(!Db::connect("db1")->name("cj_users")->where(["userid_int"=>$yqx["userid_int"]])->update(["lxy_token"=>$lxy_token])){
-            return $this->resultArray('当前用户获取失败',"failed");
-        }
-        return $this->resultArray('',"",$url."&token=$lxy_token");
+        return $this->resultArray("","",$site->site_contact);
     }
 
     /**
@@ -53,7 +43,18 @@ class YiQiShow extends Common
      */
     public function save(Request $request)
     {
-        //
+        $site_id=$this->getSiteSession('website')["id"];
+        if(empty($site_id)){
+            return $this->resultArray("获取站点错误","failed");
+        }
+        $site_contact=$request->post("site_contact");
+        if(empty($site_contact)){
+            return $this->resultArray("请填写联系方式","failed");
+        }
+        if(!\app\admin\model\Site::update(["site_contact"=>$site_contact],["id"=>$site_id])){
+            return $this->resultArray("修改站点失败!!","failed");
+        }
+        return $this->resultArray("修改成功!!");
     }
 
     /**
@@ -75,7 +76,7 @@ class YiQiShow extends Common
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
