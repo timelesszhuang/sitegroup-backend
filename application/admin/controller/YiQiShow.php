@@ -18,21 +18,20 @@ class YiQiShow extends Common
         $url="http://xiu.hi-link.com.cn/index.php?c=user&a=login";
         $user = $this->getSessionUser();
         if(!isset($user["user_id"]) || empty($user["user_id"])){
-            exit("当前用户获取失败");
+            return $this->resultArray('当前用户获取失败',"failed");
         }
         $getUser=User::get(["id"=>$user["user_id"]]);
         if(empty($getUser)){
-            exit("当前用户获取失败");
+            return $this->resultArray('当前用户获取失败',"failed");
         }
         $yqx=Db::connect("db1")->name("cj_users")->where(["email_varchar"=>$getUser->yqx_account])->find();
         if(empty($yqx)){
-            exit("当前用户获取失败");
+            return $this->resultArray('当前用户获取失败',"failed");
         }
         $lxy_token=md5($getUser->user_name.time());
         if(!Db::connect("db1")->name("cj_users")->where(["userid_int"=>$yqx["userid_int"]])->update(["lxy_token"=>$lxy_token])){
-            exit("当前用户获取失败");
+            return $this->resultArray('当前用户获取失败',"failed");
         }
-//        $this->redirect($url."&token=$lxy_token");
         return $this->resultArray('',"",$url."&token=$lxy_token");
     }
 
