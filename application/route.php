@@ -567,3 +567,5 @@ Route::get('user/getFour', 'user/Pv/countDatas');
 Route::resource('user/souhu',"user/Souhu");
 //搜狐分类列表
 Route::get('user/souhuList',"user/Souhu/typeList");
+//获取站点联系方式
+Route::resource('user/siteResource','user/Site');
