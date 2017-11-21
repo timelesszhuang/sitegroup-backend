@@ -71,10 +71,10 @@ class Article extends Model
                                     $imgpathinfo = pathinfo(parse_url($v)['path']);
                                     $type = '';
                                     if (array_key_exists('extension', $imgpathinfo)) {
-                                        $type = $imgpathinfo['extension'];
+                                        $type = '.'.$imgpathinfo['extension'];
                                     }
                                     //aliyun oss 的链接
-                                    $article->thumbnails_name = $imgname . $type ? ('.' . $type) : $type;
+                                    $article->thumbnails_name = $imgname . $type;
                                     $article->thumbnails = $v;
                                 }
                                 //只需要提取一张图片
