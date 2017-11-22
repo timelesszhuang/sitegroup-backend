@@ -114,7 +114,6 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-
         // 如果传递了缩略图的话 比对删除
         if ($data["thumbnails"]) {
             $id_data = \app\admin\model\Article::get($id);

@@ -68,9 +68,13 @@ class Article extends Model
                                     $article->thumbnails_name = '';
                                 } else {
                                     $imgname = md5(uniqid(rand(), true));
-                                    $type = pathinfo(parse_url($v)['path'])['extension'];
+                                    $imgpathinfo = pathinfo(parse_url($v)['path']);
+                                    $type = '';
+                                    if (array_key_exists('extension', $imgpathinfo)) {
+                                        $type = '.'.$imgpathinfo['extension'];
+                                    }
                                     //aliyun oss 的链接
-                                    $article->thumbnails_name = $imgname . '.' . $type;
+                                    $article->thumbnails_name = $imgname . $type;
                                     $article->thumbnails = $v;
                                 }
                                 //只需要提取一张图片

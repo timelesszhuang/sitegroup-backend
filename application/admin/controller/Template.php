@@ -206,7 +206,6 @@ class Template extends Common
 
     /**
      * 显示指定的资源
-     *
      * @param  int $id
      * @return \think\Response
      */
