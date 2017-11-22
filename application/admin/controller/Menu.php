@@ -39,7 +39,14 @@ class Menu extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Menu()), $id);
+        $field = \app\admin\model\Menu::where(["id" => $id])->field("create_time,update_time", true)->find();
+        if ($field) {
+            $field = $field->toArray();
+            //近期要测试一个栏目选择多个栏目的功能
+            $field['type_id'] = intval($field['type_id']);
+            return $this->resultArray('', '', $field);
+        }
+        $this->resultArray('获取失败', 'failed', []);
     }
 
     /**
@@ -71,7 +78,6 @@ class Menu extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
-
         if (!\app\admin\model\Menu::create($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
