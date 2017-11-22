@@ -7,9 +7,10 @@ use app\sysadmin\model\Node;
 use think\Request;
 use app\sysadmin\model\Company as Com;
 use think\Validate;
-
+use app\common\traits\Osstrait;
 class Company extends Common
 {
+    use Osstrait;
     /**
      * 显示资源列表
      *
@@ -125,14 +126,13 @@ class Company extends Common
      */
     public function uploadBusinessLicense()
     {
-        $request=Request::instance();
-        $business=$request->file("businesslicense");
-        $path="/upload/company/businesslicense/";
-        $info=$business->move(ROOT_PATH.'public'.$path);
-        if($info){
-            return $this->resultArray("上传成功",'',$path.$info->getSaveName());
+        $data = $this->uploadImg("company/","businesslicense");
+        if($data['status']){
+            $data["msg"]="上传成功";
+            return $data;
+        }else{
+            return $this->resultArray('上传失败', 'failed');
         }
-        return $this->resultArray('上传失败',"failed");
     }
 
     /**
@@ -140,14 +140,12 @@ class Company extends Common
      */
     public function uploadArtificialPersonId()
     {
-        $request=Request::instance();
-        $artificial=$request->file('artificialpersonid');
-        $path="/upload/company/artificialpersonid/";
-        $info=$artificial->move(ROOT_PATH.'public'.$path);
-        if($info){
-            return $this->resultArray('上传成功','',$path.$info->getSaveName());
+        $data = $this->uploadImg("company/","artificialpersonid");
+        if($data['status']){
+            $data["msg"]="上传成功";
+            return $data;
         }
-        return $this->resultArray('上传失败',"failed");
+        return $this->resultArray('上传失败', 'failed');
     }
 
     /**
@@ -156,14 +154,12 @@ class Company extends Common
      */
     public function uploadTrademark()
     {
-        $request=Request::instance();
-        $trademark=$request->file("trademark");
-        $path='/upload/company/trademark/';
-        $info=$trademark->move(ROOT_PATH.'public'.$path);
-        if($info){
-            return $this->resultArray('上传成功!','',$path.$info->getSaveName());
+        $data = $this->uploadImg("company/","trademark");
+        if($data['status']){
+            $data["msg"]="上传成功";
+            return $data;
         }
-        return $this->resultArray('上传失败!',"failed");
+        return $this->resultArray('上传失败', 'failed');
     }
 
     /**

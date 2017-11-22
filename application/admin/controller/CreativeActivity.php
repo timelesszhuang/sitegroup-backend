@@ -183,7 +183,7 @@ class CreativeActivity extends Common
         $rule = [
             ["title", "require", "请输入标题"],
             ["oss_img_src", "require", "请先上传图片"],
-            ["url", "require", "请输入外部链接"]
+//            ["url", "require", "请输入外部链接"]
         ];
         $validate = new Validate($rule);
         $data = $request->post();
@@ -212,7 +212,7 @@ class CreativeActivity extends Common
         $rule = [
             ["title", "require", "请输入标题"],
             ["oss_img_src", "require", "请先上传图片"],
-            ["url", "require", "请输入外部链接"]
+//            ["url", "require", "请输入外部链接"]
         ];
         $request = Request::instance();
         $validate = new Validate($rule);
