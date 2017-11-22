@@ -215,16 +215,6 @@ class Site extends Common
 
 
     /**
-     * 传输模板文件到站点服务器
-     * @access public
-     */
-    public function uploadTemplateFile($dest, $path, $type, $id)
-    {
-        $dest = $dest . '/index.php/filemanage/uploadFile/' . $id;
-        $this->curl_get($dest);
-    }
-
-    /**
      * 修改为主站
      * @param $id
      * @return array
@@ -305,14 +295,14 @@ class Site extends Common
                     $sdata->sync_id = "," . $template_id . ",";
                 } else {
                     if (strpos($sdata->sync_id, ',' . $template_id . ',') !== false) {
-                        return $this->resultArray("同步成功");
+                        return $this->resultArray("活动创意同步成功");
                     }
                     $sdata->sync_id = $sdata->sync_id . $template_id . ",";
                 }
                 if ($sdata->save()) {
-                    return $this->resultArray("同步成功");
+                    return $this->resultArray("活动创意同步成功");
                 }
-                return $this->resultArray("同步失败", "failed");
+                return $this->resultArray("活动创意同步失败", "failed");
                 break;
             case "template":
                 $this->open_start("正在发送模板,请等待..");
@@ -320,10 +310,12 @@ class Site extends Common
                 if (!$template) {
                     exit("未找到模板");
                 }
+                //用curl 相关的
                 $id = $template->id;
+                $dest = $site->url . '/index.php/filemanage/uploadFile/' . $id;
+                $this->curl_get($dest);
                 break;
         }
-        $upload = $this->uploadTemplateFile($site->url, $template->path_oss, $type, $id);
     }
 
 
