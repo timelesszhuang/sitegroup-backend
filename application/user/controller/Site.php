@@ -22,7 +22,7 @@ class Site extends Common
         if(empty($site)){
             return $this->resultArray("获取站点错误","failed");
         }
-        return $this->resultArray("","",$site->site_contact);
+        return $this->resultArray("","",$site);
     }
 
     /**
