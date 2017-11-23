@@ -103,6 +103,8 @@ class Articletype extends Common
             ["tag","require","请输入此分类的标签"]
         ];
         $data = $this->request->put();
+        $data['create_time'] = strtotime($data['create_time']);
+        $data['update_time'] = time();
         $validate = new Validate($rule);
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
