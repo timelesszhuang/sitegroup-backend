@@ -264,7 +264,7 @@ class Article extends Common
                     'site_name' => $vv['site_name'],
                 ];
             }
-            if ($showhtml) {
+            if (!empty($showhtml)) {
                 return $this->resultArray('', '', $showhtml);
             } else {
                 return $this->resultArray('当前无法预览', 'failed');
