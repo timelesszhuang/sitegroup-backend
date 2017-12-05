@@ -6,6 +6,7 @@ use app\admin\model\Useragent;
 use app\common\controller\Common;
 use app\common\model\BrowseRecord;
 use app\common\model\SitePageinfo;
+use think\Config;
 use think\Db;
 use think\Request;
 use think\Session;

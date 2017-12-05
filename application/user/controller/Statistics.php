@@ -3,6 +3,7 @@
 namespace app\user\controller;
 
 use app\common\model\BrowseRecord;
+use think\Config;
 use think\Db;
 use think\Request;
 use app\common\controller\Common;
