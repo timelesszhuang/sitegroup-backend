@@ -320,7 +320,6 @@ class Site extends Common
                 //用curl 相关的
                 $id = $template->id;
                 $dest = $site->url . '/index.php/filemanage/uploadFile/' . $id;
-                print_r($dest);die;
                 $this->curl_get($dest);
                 break;
         }
