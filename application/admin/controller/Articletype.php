@@ -58,15 +58,21 @@ class Articletype extends Common
     public function save(Request $request)
     {
         $rule = [
-//            ["name", "require", "请输入文章分类名"],
+            ["name", "require", "请输入文章分类名"],
             ["detail", "require", "请输入详情"],
-            ["tag","require","请输入此分类的标签"]
+            ["tag", "require", "请输入此分类的标签"],
+            ["alias", "require", "请输入此分类的英文名"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
-//        dump($data);die;
         $user = $this->getSessionUser();
         $data['node_id'] = $user['user_node_id'];
+        $where['node_id'] = $user['user_node_id'];
+        $where['alias'] = $data['alias'];
+        $typedata = (new \app\admin\model\Articletype())->where($where)->select();
+        if ($typedata) {
+            return $this->resultArray("此分类的英文名重复,请重试", "failed");
+        }
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
@@ -100,11 +106,19 @@ class Articletype extends Common
         $rule = [
             ["name", "require", "请输入文章分类名"],
             ["detail", "require", "请输入详情"],
-            ["tag","require","请输入此分类的标签"]
+            ["tag", "require", "请输入此分类的标签"]
         ];
         $data = $this->request->put();
         $data['create_time'] = strtotime($data['create_time']);
         $data['update_time'] = time();
+        $user = $this->getSessionUser();
+        $where['node_id'] = $user['user_node_id'];
+        $where['alias'] = $data['alias'];
+        $where['id'] = ['neq',$data['id']];
+        $typedata = (new \app\admin\model\Articletype())->where($where)->select();
+        if ($typedata) {
+            return $this->resultArray("此分类的英文名重复,请重试", "failed");
+        }
         $validate = new Validate($rule);
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
@@ -123,15 +137,12 @@ class Articletype extends Common
         $user = $this->getSessionUser();
         $where['node_id'] = $user['user_node_id'];
         $data = (new \app\admin\model\Articletype())->getArttype($where);
-        foreach ($data as$k=>$v){
-            $v['text'] = $v['name'].'['.$v['tag'].']';
+        foreach ($data as $k => $v) {
+            $v['text'] = '| —'.'  '.'[' . $v['tag'] . ']';
+
         }
         return $this->resultArray('', '', $data);
     }
-
-
-
-
 
 
     /**
@@ -147,7 +158,7 @@ class Articletype extends Common
             $name[] = $item["name"];
         }
         $arr = ["count" => $count, "name" => $name];
-        return $this->resultArray('','',$arr);
+        return $this->resultArray('', '', $arr);
     }
 
     public function countArticle()

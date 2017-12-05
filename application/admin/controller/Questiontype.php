@@ -50,6 +50,13 @@ class Questiontype extends Common
         ];
         $validate = new Validate($rule);
         $data = $request->post();
+        $user = $this->getSessionUser();
+        $where['node_id'] = $user['user_node_id'];
+        $where['alias'] = $data['alias'];
+        $typedata = (new \app\admin\model\Articletype())->where($where)->select();
+        if ($typedata) {
+            return $this->resultArray("此分类的英文名重复,请重试", "failed");
+        }
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'faile');
         }
@@ -96,6 +103,14 @@ class Questiontype extends Common
         ];
         $validate = new Validate($rule);
         $data = $request->put();
+        $user = $this->getSessionUser();
+        $where['node_id'] = $user['user_node_id'];
+        $where['alias'] = $data['alias'];
+        $where['id'] = ['neq',$data['id']];
+        $typedata = (new \app\admin\model\Articletype())->where($where)->select();
+        if ($typedata) {
+            return $this->resultArray("此分类的英文名重复,请重试", "failed");
+        }
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'faile');
         }
@@ -136,7 +151,7 @@ class Questiontype extends Common
             $name[] = $item["name"];
         }
         $arr = ["count" => $count, "name" => $name];
-        return $this->resultArray('','',$arr);
+        return $this->resultArray('', '', $arr);
     }
 
     public function countQuestion()
