@@ -90,7 +90,7 @@ class Menu extends Common
             ["flag_name", "require", "请选择栏目类型"],
             ["tag_id", "require", "请填写分类"],
             ["tag_name", 'require', "请填写分类"],
-            ['generate_name','require',"请填写英文名称"]
+            ['generate_name','require|alphaNum',"请填写英文名称|英文名只能是英文或者数字"]
         ];
         if (intval($flag) > 1) {
             array_push($rule, ["type_id", "require", "请选择分类id"]);
