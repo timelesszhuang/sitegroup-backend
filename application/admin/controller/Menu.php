@@ -78,11 +78,14 @@ class Menu extends Common
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         $data["type_id"] = ",".implode(',',$data["type_id"]).",";
-        if($data["pid"]!=0){
-            $field = \app\admin\model\Menu::where(["id" => $data["pid"]])->find();
-            var_dump($field);
-            exit;
-            $data["path"] = $data["pid"];
+        $pid=[];
+        if($data["p_id"]!=0){
+            $field = \app\admin\model\Menu::where(["id" => $data["p_id"]])->find();
+            if($field && $field['p_id']!=0){
+                $pid[]=$field['p_id'];
+            }
+            $pid[]=$data["p_id"];
+            $data["path"] = ",".implode(',',$pid).",";
         }
         if (!\app\admin\model\Menu::create($data)) {
             return $this->resultArray('添加失败', 'failed');
