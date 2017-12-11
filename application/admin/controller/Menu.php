@@ -60,12 +60,15 @@ class Menu extends Common
      * @throws \think\exception\DbException
      * @author sunjingyang
      */
-    public function check_unique($generate_name,$flag,$node_id){
+    protected function check_unique($generate_name){
         $where=[];
         $where['generate_name']=$generate_name;
-        $where['flag']=$flag;
-        $where['node_id']=$node_id;
+        $data = $this->request->post();
+        $where['flag']=$data['flag'];
+        $user = $this->getSessionUser();
+        $where["node_id"] = $user["user_node_id"];
         $field = \app\admin\model\Menu::where($where)->find();
+        return true;
         return $field?false:true;
     }
 
@@ -88,7 +91,7 @@ class Menu extends Common
             ["flag_name", "require", "请选择栏目类型"],
             ["tag_id", "require", "请填写分类"],
             ["tag_name", 'require', "请填写分类"],
-            //['generate_name','require|unique:menu,flag^node_id']
+            ['generate_name','require|check_unique']
         ];
         if (intval($flag) > 1) {
             array_push($rule, ["type_id", "require", "请选择分类id"]);
