@@ -111,6 +111,7 @@ class Menu extends Common
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         $data["type_id"] = ",".implode(',',$data["type_id"]).",";
+        $data["content"] = "";
         $pid=[];
         if($data["p_id"]!=0){
             $field = \app\admin\model\Menu::where(["id" => $data["p_id"]])->find();
