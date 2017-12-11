@@ -67,7 +67,6 @@ class Menu extends Common
         ];
         if (intval($flag) > 1) {
             array_push($rule, ["type_id", "require", "请选择分类id"]);
-            array_push($rule, ["type_name", "require", "请选择分类名称"]);
         }
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -78,6 +77,13 @@ class Menu extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
+        $data["type_id"] = ",".implode(',',$data["type_id"]).",";
+        if($data["pid"]!=0){
+            $field = \app\admin\model\Menu::where(["id" => $data["pid"]])->find();
+            var_dump($field);
+            exit;
+            $data["path"] = $data["pid"];
+        }
         if (!\app\admin\model\Menu::create($data)) {
             return $this->resultArray('添加失败', 'failed');
         }
@@ -158,9 +164,10 @@ class Menu extends Common
         }
         foreach ($data as $menu){
             if($menu['p_id']==0){
+                $menu['text']=$menu['text'].'['.$menu['tag_name'].']';
                 $list[]=$menu;
                 foreach($data_key[$menu['id']] as $item){
-                    $item['text']="|-".$item['text'];
+                    $item['text']="|-".$item['text'].'['.$item['tag_name'].']';
                     $list[]=$item;
                 }
             }
