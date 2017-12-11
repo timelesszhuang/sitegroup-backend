@@ -68,7 +68,6 @@ class Menu extends Common
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $field = \app\admin\model\Menu::where($where)->find();
-        return true;
         return $field?false:true;
     }
 
@@ -91,7 +90,7 @@ class Menu extends Common
             ["flag_name", "require", "请选择栏目类型"],
             ["tag_id", "require", "请填写分类"],
             ["tag_name", 'require', "请填写分类"],
-            ['generate_name','require|check_unique']
+            ['generate_name','require']
         ];
         if (intval($flag) > 1) {
             array_push($rule, ["type_id", "require", "请选择分类id"]);
@@ -101,6 +100,9 @@ class Menu extends Common
         $where = [];
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
+        if(!$this->check_unique($data['generate_name'])){
+            return $this->resultArray("英文名称已存在", 'failed');
+        };
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
@@ -190,8 +192,7 @@ class Menu extends Common
      * @return mixed
      * @author sunjingyang
      */
-    public function getUpMenu(Request $request){
-        $flag = $request->get('flag');
+    public function getUpMenu(Request $request,$flag){
         $field = "id,name as text,flag_name,title,type_name,tag_name,path,p_id";
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
