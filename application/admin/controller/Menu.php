@@ -167,7 +167,7 @@ class Menu extends Common
         $field = "id,name as text,flag_name,title,type_name,tag_name,path,p_id";
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        //$where["flag"] = $flag;
+        $where["flag"] = $flag;
         $data = (new \app\admin\model\Menu())->getlist($where, $field);
         $list = [];
         $data_key=[];
