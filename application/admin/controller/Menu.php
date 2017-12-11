@@ -43,16 +43,41 @@ class Menu extends Common
         if ($field) {
             $field = $field->toArray();
             //近期要测试一个栏目选择多个栏目的功能
+            $field['type_id'] = array_filter(explode(",",$field['type_id']));
             return $this->resultArray('', '', $field);
         }
         $this->resultArray('获取失败', 'failed', []);
     }
 
     /**
+     * 验证英文名唯一性
+     * @param $generate_name
+     * @param $flag
+     * @param $node_id
+     * @return bool
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author sunjingyang
+     */
+    public function check_unique($generate_name,$flag,$node_id){
+        $where=[];
+        $where['generate_name']=$generate_name;
+        $where['flag']=$flag;
+        $where['node_id']=$node_id;
+        $field = \app\admin\model\Menu::where($where)->find();
+        return $field?false:true;
+    }
+
+
+    /**
      * 保存新建的资源
      *
      * @param  \think\Request $request
-     * @return \think\Response
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function save(Request $request)
     {
@@ -63,7 +88,7 @@ class Menu extends Common
             ["flag_name", "require", "请选择栏目类型"],
             ["tag_id", "require", "请填写分类"],
             ["tag_name", 'require', "请填写分类"],
-            //["generate_name", 'require|unique:menu,node_id^flag', "英文名称重复"]
+            //['generate_name','require|unique:menu,flag^node_id']
         ];
         if (intval($flag) > 1) {
             array_push($rule, ["type_id", "require", "请选择分类id"]);
