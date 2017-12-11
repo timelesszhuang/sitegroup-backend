@@ -60,13 +60,16 @@ class Menu extends Common
      * @throws \think\exception\DbException
      * @author sunjingyang
      */
-    protected function check_unique($generate_name){
+    protected function check_unique($generate_name,$id=0){
         $where=[];
         $where['generate_name']=$generate_name;
         $data = $this->request->post();
         $where['flag']=$data['flag'];
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
+        if($id!=0){
+            $where["id"] = ['neq',$id];
+        }
         $field = \app\admin\model\Menu::where($where)->find();
         return $field?false:true;
     }
@@ -139,13 +142,17 @@ class Menu extends Common
             ["flag", "require", "请选择栏目类型"],
             ["flag_name", "require", "请选择栏目类型"],
             ["tag_id", "require", "请填写分类"],
-            ["tag_name", 'require', "请填写分类"]
+            ["tag_name", 'require', "请填写分类"],
+            ['generate_name','require|alphaNum',"请填写英文名称|英文名只能是英文或者数字"]
         ];
         if (intval($flag) > 1) {
             array_push($rule, ["type_id", "require", "请选择分类id"]);
         }
         $validate = new Validate($rule);
         $data = $this->request->post();
+        if(!$this->check_unique($data['generate_name'],$data['id'])){
+            return $this->resultArray("英文名称已存在", 'failed');
+        };
         $data["type_id"] = ",".implode(',',$data["type_id"]).",";
         $pid=[];
         if($data["p_id"]!=0){
