@@ -158,7 +158,7 @@ class Menu extends Common
         if($data["p_id"]!=0){
             $field = \app\admin\model\Menu::where(["id" => $data["p_id"]])->find();
             if($field && $field['p_id']!=0){
-                $pid[]=$field['p_id'];
+                $pid=array_filter(explode(",",$field['path']));
             }
             $pid[]=$data["p_id"];
             $data["path"] = ",".implode(',',$pid).",";
