@@ -166,6 +166,9 @@ Route::get('articletype/articleCount', 'admin/Articletype/ArticleCount');
 Route::resource('menu', 'admin/Menu');
 Route::get('menu/getMenu', 'admin/Menu/getMenu');
 
+//获取上级菜单
+Route::get('menu/upmenu','admin/Menu/getUpMenu');
+
 //问答
 Route::resource('question', 'admin/Question');
 //预览页面

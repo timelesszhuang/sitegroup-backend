@@ -137,4 +137,34 @@ class Menu extends Common
         $data = (new \app\admin\model\Menu())->getlist($where, $field);
         return $this->resultArray('', '', $data);
     }
+
+    /**
+     * 根据flag获取菜单列表
+     * @param Request $request
+     * @return mixed
+     * @author sunjingyang
+     */
+    public function getUpMenu(Request $request){
+        $flag = $request->get('flag');
+        $field = "id,name as text,flag_name,title,type_name,tag_name,path,p_id";
+        $user = $this->getSessionUser();
+        $where["node_id"] = $user["user_node_id"];
+        //$where["flag"] = $flag;
+        $data = (new \app\admin\model\Menu())->getlist($where, $field);
+        $list = [];
+        $data_key=[];
+        foreach ($data as $menu){
+            $data_key[$menu['p_id']][]=$menu;
+        }
+        foreach ($data as $menu){
+            if($menu['p_id']==0){
+                $list[]=$menu;
+                foreach($data_key[$menu['id']] as $item){
+                    $item['text']="|-".$item['text'];
+                    $list[]=$item;
+                }
+            }
+        }
+        return $this->resultArray('', '', $list);
+    }
 }
