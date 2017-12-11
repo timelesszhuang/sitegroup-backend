@@ -205,11 +205,11 @@ class Keyword extends Common
         $rule = [
             ["name", "require", "请填写A类关键词"],
         ];
-//        $validate = new Validate($rule);
-//        $data = $this->request->post();
-//        if (!$validate->check($data)) {
-//            return $this->resultArray($validate->getError(), 'faile');
-//        }
+        $validate = new Validate($rule);
+        $data = $this->request->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), 'faile');
+        }
 //        $user = $this->getSessionUser();
 //        $data["node_id"] = $user["user_node_id"];
 //        $data['name'] = trim($data['name']);
@@ -218,7 +218,6 @@ class Keyword extends Common
 //        }
 //        return $this->resultArray('添加成功');
 
-        $data = $this->request->post();
         //关键词数组
         $keyArr = explode("\n", $data['name']);
         $user = $this->getSessionUser();
@@ -276,17 +275,14 @@ class Keyword extends Common
         $data = $this->request->post();
         $validate = new Validate($rule);
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'faile');
+            return $this->resultArray($validate->getError(), 'failed');
         }
         $currentKey = \app\admin\model\Keyword::where(["id" => $data["id"]])->find();
         if (!isset($currentKey['tag'])) {
-            return $this->resultArray("当前关键词不存在", 'faile');
+            return $this->resultArray("当前关键词不存在", 'failed');
         }
         //如果是A 那么当前上传的就是B类
-        $count = \app\admin\model\Keyword::where(["path" => ["like", "%," . $data['id'] . ",%"]])->count();
-        if ($count > 20) {
-            return $this->resultArray("当前分类下面关键词超过20个");
-        }
+
         switch ($currentKey['tag']) {
             case 'A':
                 $parent_id = $data["id"];
@@ -299,15 +295,19 @@ class Keyword extends Common
                 $tag = 'C';
                 break;
             default:
-                return $this->resultArray("当前关键词非法", 'faile');
+                return $this->resultArray("当前关键词非法", 'failed');
         }
 
         //关键词数组
         $keyArr = explode("\n", $data['content']);
+        $count =count($keyArr);
+        if ($count > 10) {
+            return $this->resultArray("当前分类下面关键词超过10个",'failed');
+        }
         $user = $this->getSessionUser();
         $node_id = $user["user_node_id"];
         if (empty($keyArr) || !is_array($keyArr)) {
-            return $this->resultArray("请提交关键词", 'faile');
+            return $this->resultArray("请提交关键词", 'failed');
         }
 
         foreach ($keyArr as $item) {
@@ -337,7 +337,7 @@ class Keyword extends Common
         $validate = new Validate($rule);
         $data = $this->request->post();
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'faile');
+            return $this->resultArray($validate->getError(), 'failed');
         }
         $message = '删除成功!';
         foreach ($this->forEachId($data["id"]) as $item) {
@@ -379,7 +379,7 @@ class Keyword extends Common
         if ($keyword->save()) {
             return $this->resultArray('修改成功!!');
         }
-        return $this->resultArray('修改失败', "faile");
+        return $this->resultArray('修改失败', "failed");
     }
 
 }
