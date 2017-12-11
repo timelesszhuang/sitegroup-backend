@@ -43,7 +43,7 @@ class Menu extends Common
         if ($field) {
             $field = $field->toArray();
             //近期要测试一个栏目选择多个栏目的功能
-            $field['type_id'] = import(",",array_filter(explode(",",$field['type_id'])));
+            $field['type_id'] = implode(",",array_filter(explode(",",$field['type_id'])));
             return $this->resultArray('', '', $field);
         }
         $this->resultArray('获取失败', 'failed', []);
