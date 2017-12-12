@@ -100,7 +100,6 @@ class Menu extends Common
             ['generate_name','require|alphaNum',"请填写英文名称|英文名只能是英文或者数字"]
         ];
         if (intval($flag) > 1) {
-            array_push($rule, ["type_id", "require", "请选择分类id"]);
         }
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -117,7 +116,11 @@ class Menu extends Common
             unset($data['listsize']);
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
-        $data["type_id"] = ",".implode(',',$data["type_id"]).",";
+        if(count($data["type_id"])>0){
+            $data["type_id"] = ",".implode(',',$data["type_id"]).",";
+        }else{
+            $data["type_id"] = "";
+        }
         $data["content"] = "";
         $pid=[];
         if(isset($data["p_id"])&&$data["p_id"]!=0){
@@ -158,14 +161,17 @@ class Menu extends Common
             ['generate_name','require|alphaNum',"请填写英文名称|英文名只能是英文或者数字"]
         ];
         if (intval($flag) > 1) {
-            array_push($rule, ["type_id", "require", "请选择分类id"]);
         }
         $validate = new Validate($rule);
         $data = $this->request->post();
         if(!$this->check_unique($data['generate_name'],$data['id'])){
             return $this->resultArray("英文名称已存在", 'failed');
         };
-        $data["type_id"] = ",".implode(',',$data["type_id"]).",";
+        if(count($data["type_id"])>0){
+            $data["type_id"] = ",".implode(',',$data["type_id"]).",";
+        }else{
+            $data["type_id"] = "";
+        }
         $pid=[];
         if($data["p_id"]!=0){
             $field = \app\admin\model\Menu::where(["id" => $data["p_id"]])->find();
