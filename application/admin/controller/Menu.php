@@ -93,6 +93,9 @@ class Menu extends Common
             ["flag_name", "require", "请选择栏目类型"],
             ["tag_id", "require", "请填写分类"],
             ["tag_name", 'require', "请填写分类"],
+            ["covertemplate", '', "封面模板格式错误"],
+            ["listtemplate", '', "列表模板格式错误"],
+            ["detailtemplate", '', "格式错误"],
             ['generate_name','require|alphaNum',"请填写英文名称|英文名只能是英文或者数字"]
         ];
         if (intval($flag) > 1) {
@@ -113,7 +116,7 @@ class Menu extends Common
         $data["type_id"] = ",".implode(',',$data["type_id"]).",";
         $data["content"] = "";
         $pid=[];
-        if($data["p_id"]!=0){
+        if(isset($data["p_id"])&&$data["p_id"]!=0){
             $field = \app\admin\model\Menu::where(["id" => $data["p_id"]])->find();
             if($field && $field['p_id']!=0){
                 $pid=array_filter(explode(",",$field['path']));
@@ -215,7 +218,7 @@ class Menu extends Common
             if($menu['p_id']==0){
                 $menu['text']=$menu['text'].'['.$menu['tag_name'].']';
                 $list[]=$menu;
-                foreach($data_key[$menu['id']] as $item){
+                if(isset($data_key[$menu['id']]))foreach($data_key[$menu['id']] as $item){
                     $item['text']="|-".$item['text'].'['.$item['tag_name'].']';
                     $list[]=$item;
                 }
