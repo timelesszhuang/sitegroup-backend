@@ -151,9 +151,9 @@ class Menu extends Common
             ["flag_name", "require", "请选择栏目类型"],
             ["tag_id", "require", "请填写分类"],
             ["tag_name", 'require', "请填写分类"],
-            ["covertemplate", '.html$', "封面模板格式错误"],
-            ["listtemplate", '.html$', "列表模板格式错误"],
-            ["detailtemplate", '.html$', "详情模板格式错误"],
+            ["covertemplate", '^.*\.html$', "封面模板格式错误"],
+            ["listtemplate", '^.*\.html$', "列表模板格式错误"],
+            ["detailtemplate", '^.*\.html$', "详情模板格式错误"],
             ["listsize", 'number', "列表数只能是数字"],
             ['generate_name','require|alphaNum',"请填写英文名称|英文名只能是英文或者数字"]
         ];
