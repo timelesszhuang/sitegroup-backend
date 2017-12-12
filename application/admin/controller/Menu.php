@@ -63,8 +63,6 @@ class Menu extends Common
     protected function check_unique($generate_name,$id=0){
         $where=[];
         $where['generate_name']=$generate_name;
-        $data = $this->request->post();
-        $where['flag']=$data['flag'];
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         if($id!=0){
