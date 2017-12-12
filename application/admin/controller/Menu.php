@@ -93,9 +93,9 @@ class Menu extends Common
             ["flag_name", "require", "请选择栏目类型"],
             ["tag_id", "require", "请填写分类"],
             ["tag_name", 'require', "请填写分类"],
-            ["covertemplate", '', "封面模板格式错误"],
-            ["listtemplate", '', "列表模板格式错误"],
-            ["detailtemplate", '', "格式错误"],
+            ["covertemplate", '.html$', "封面模板格式错误"],
+            ["listtemplate", '.html$', "列表模板格式错误"],
+            ["detailtemplate", '.html$', "详情模板格式错误"],
             ['generate_name','require|alphaNum',"请填写英文名称|英文名只能是英文或者数字"]
         ];
         if (intval($flag) > 1) {
@@ -147,6 +147,9 @@ class Menu extends Common
             ["flag_name", "require", "请选择栏目类型"],
             ["tag_id", "require", "请填写分类"],
             ["tag_name", 'require', "请填写分类"],
+            ["covertemplate", '.html$', "封面模板格式错误"],
+            ["listtemplate", '.html$', "列表模板格式错误"],
+            ["detailtemplate", '.html$', "详情模板格式错误"],
             ['generate_name','require|alphaNum',"请填写英文名称|英文名只能是英文或者数字"]
         ];
         if (intval($flag) > 1) {
@@ -203,11 +206,12 @@ class Menu extends Common
      * @return mixed
      * @author sunjingyang
      */
-    public function getUpMenu(Request $request,$flag){
+    public function getUpMenu(Request $request,$flag,$id=0){
         $field = "id,name as text,flag_name,title,type_name,tag_name,path,p_id";
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $where["flag"] = $flag;
+        $id!=0&&$where["id"] = ['neq',$id];
         $data = (new \app\admin\model\Menu())->getlist($where, $field);
         $list = [];
         $data_key=[];

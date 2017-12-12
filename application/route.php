@@ -167,7 +167,7 @@ Route::resource('menu', 'admin/Menu');
 Route::get('menu/getMenu', 'admin/Menu/getMenu');
 
 //获取上级菜单
-Route::get('menu/upmenu/:flag','admin/Menu/getUpMenu');
+Route::get('menu/upmenu/:flag/:id','admin/Menu/getUpMenu');
 
 //问答
 Route::resource('question', 'admin/Question');
