@@ -47,8 +47,12 @@ class Article extends Model
                     if (!array_key_exists('id', $article)) {
                         //添加的时候才需要操作
                         $imgname = md5(uniqid(rand(), true));
-                        $type = pathinfo(parse_url($article->thumbnails)['path'])['extension'];
-                        $article->thumbnails_name = $imgname . "." . $type;
+                        $imgpathinfo = pathinfo(parse_url($article->thumbnails)['path']);
+                        $type = '';
+                        if (array_key_exists('extension', $imgpathinfo)) {
+                            $type = '.' . $imgpathinfo['extension'];
+                        }
+                        $article->thumbnails_name = $imgname . $type;
                     }
                 } else {
                     //没有上传缩略图
@@ -71,7 +75,7 @@ class Article extends Model
                                     $imgpathinfo = pathinfo(parse_url($v)['path']);
                                     $type = '';
                                     if (array_key_exists('extension', $imgpathinfo)) {
-                                        $type = '.'.$imgpathinfo['extension'];
+                                        $type = '.' . $imgpathinfo['extension'];
                                     }
                                     //aliyun oss 的链接
                                     $article->thumbnails_name = $imgname . $type;
