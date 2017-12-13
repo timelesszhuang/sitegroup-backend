@@ -334,7 +334,7 @@ class Article extends Common
             }
         }
         if (!Db::name('Article')->insertAll($values)) {
-            return $this->resultArray("添加失败");
+            return $this->resultArray("添加失败",'failed');
         }
         return $this->resultArray("添加成功",'',$result);
     }
