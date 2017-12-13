@@ -312,14 +312,14 @@ class Article extends Common
             if($key==0) continue;
             $arr=explode(",",$item);
             if(count($arr)>1){
+                $value['title']=$arr[0];
+                $value['content']=$arr[1];
                 if($value['title']==""){
                     $result['error'][]=['key'=>$key+2,"message"=>'第'.($key+2).'条没有标题'];
                 }
                 if($value['content']==""){
                     $result['error'][]=['key'=>$key+2,"message"=>'第'.($key+2).'条没有内容'];
                 }
-                $value['title']=$arr[0];
-                $value['content']=$arr[1];
                 $value['auther']=$arr[2];
                 $value['come_from']=$arr[3];
                 $value['readcount']=$arr[4];
