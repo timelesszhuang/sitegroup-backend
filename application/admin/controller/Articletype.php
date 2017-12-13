@@ -42,7 +42,7 @@ class Articletype extends Common
     /**
      * 显示创建资源表单页.
      *
-     * @return \think\Response
+     * @return void
      */
     public function create()
     {
@@ -53,7 +53,10 @@ class Articletype extends Common
      * 保存新建的资源
      *
      * @param  \think\Request $request
-     * @return \think\Response
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function save(Request $request)
     {
@@ -86,7 +89,7 @@ class Articletype extends Common
      * 显示编辑资源表单页.
      *
      * @param  int $id
-     * @return \think\Response
+     * @return void
      */
     public function edit($id)
     {
@@ -98,7 +101,10 @@ class Articletype extends Common
      *
      * @param  \think\Request $request
      * @param  int $id
-     * @return \think\Response
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function update(Request $request, $id)
     {

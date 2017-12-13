@@ -161,7 +161,7 @@ class Template extends Common
             $src = ROOT_PATH . "public" . $path . $info->getSaveName();
             $obj = ROOT_PATH . 'public' . $uploadpath;
             $url = $this->ZipArchive($src, $obj, $uploadpath);
-            $data = $this->uploadTemp("template/" . $info->getSaveName(), $src);
+            $data = $this->uploadObj("template/" . $info->getSaveName(), $src);
             if ($data['status']) {
                  $dataurl = [
                    'url' =>$data['url'],

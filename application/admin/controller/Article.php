@@ -243,6 +243,26 @@ class Article extends Common
     }
 
     /**
+     * csv上传到 oss相关操作
+     * @access public
+     */
+    public function csvupload()
+    {
+        $request = Request::instance();
+        $file = $request->file('file');
+        $localpath = ROOT_PATH . "public/upload/";
+        $fileInfo = $file->move($localpath);
+        $localfilepath = $localpath . $fileInfo->getSaveName();
+        $data = $this->uploadObj("article/csv/". $fileInfo->getSaveName(),$localfilepath);
+        if($data['status']){
+            $data["msg"]="上传成功";
+            return $data;
+        }else{
+            return $this->resultArray('上传失败', 'failed');
+        }
+    }
+
+    /**
      * @return array
      * 预览页面
      */

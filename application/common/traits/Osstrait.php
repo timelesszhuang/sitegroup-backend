@@ -163,7 +163,7 @@ trait Osstrait
      * @return array
      */
 
-    public function uploadTemp($dest_dir,$filepath)
+    public function uploadObj($dest_dir, $filepath)
     {
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
