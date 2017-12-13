@@ -157,6 +157,7 @@ Route::resource('article', 'admin/Article');
 Route::post('articleshowhtml', 'admin/Article/articleshowhtml');
 Route::post('article/sync', 'admin/Article/syncArticle');
 Route::post('article/csvupload', 'admin/Article/csvupload');
+Route::post('article/csvimport', 'admin/Article/csvimport');
 Route::get('article/getErrorInfo', 'admin/Article/getErrorInfo');
 Route::get('article/getErrorStatus', 'admin/Article/getErrorStatus');
 Route::post('article/changeErrorStatus/:id', 'admin/Article/changeErrorStatus');

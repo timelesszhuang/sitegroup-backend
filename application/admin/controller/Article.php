@@ -293,4 +293,18 @@ class Article extends Common
 
     }
 
+    public function csvimport(){
+        $data = $this->request->post();
+        $url = $data['csvupload'];
+        $article_type_id = $data['article_type_id'];
+        $article_type_name = $data['article_type_name'];
+        $url="https://lexiaoyi.oss-cn-beijing.aliyuncs.com/article/csv/20171213/a3188943c94ff42e2da54a6fbecbce6f.csv";
+        $csv = $this->getCsvFromOSS($url);
+        echo $csv;
+    }
+
+    public function getCsvFromOSS($url){
+        return file_get_contents($url);
+    }
+
 }
