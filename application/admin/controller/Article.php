@@ -7,6 +7,7 @@ use app\common\traits\Osstrait;
 use OSS\OssClient;
 use think\Cache;
 use think\Config;
+use think\Db;
 use think\Session;
 use think\Validate;
 use think\Request;
@@ -293,18 +294,58 @@ class Article extends Common
 
     }
 
+    /**
+     * csv导入
+     */
     public function csvimport(){
         $data = $this->request->post();
         $url = $data['csvupload'];
-        $article_type_id = $data['article_type_id'];
-        $article_type_name = $data['article_type_name'];
-        $url="https://lexiaoyi.oss-cn-beijing.aliyuncs.com/article/csv/20171213/a3188943c94ff42e2da54a6fbecbce6f.csv";
+        $article_type_id = $data['articletype_id'];
+        $article_type_name = $data['articletype_name'];
         $csv = $this->getCsvFromOSS($url);
-        echo $csv;
+        $row = explode("\n",$csv);
+        $values=[];
+        $user = $this->getSessionUser();
+        $result=[];
+        foreach ($row as $key=>$item){
+            $value=[];
+            if($key==0) continue;
+            $arr=explode(",",$item);
+            if(count($arr)>1){
+                if($value['title']==""){
+                    $result['error'][]=['key'=>$key+2,"message"=>'第'.($key+2).'条没有标题'];
+                }
+                if($value['content']==""){
+                    $result['error'][]=['key'=>$key+2,"message"=>'第'.($key+2).'条没有内容'];
+                }
+                $value['title']=$arr[0];
+                $value['content']=$arr[1];
+                $value['auther']=$arr[2];
+                $value['come_from']=$arr[3];
+                $value['readcount']=$arr[4];
+                $value['summary']=$arr[5];
+                $value['keywords']=$arr[6];
+                $value['articletype_name']=$article_type_name;
+                $value['articletype_id']=$article_type_id;
+                $value['node_id']=$user["user_node_id"];
+                $value['create_time']=time();
+                $value['update_time']=time();
+                $values[]=$value;
+            }
+        }
+        if (!Db::name('Article')->insertAll($values)) {
+            return $this->resultArray("添加失败", "failed",$result);
+        }
+        return $this->resultArray("添加成功",$result);
     }
 
+    /**
+     * 从OSS获取CSV文本信息
+     * @param $url
+     * @return bool|string
+     */
     public function getCsvFromOSS($url){
-        return file_get_contents($url);
+        return iconv("gb2312", "utf-8", file_get_contents($url));
     }
 
 }
