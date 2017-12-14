@@ -318,10 +318,12 @@ class Article extends Common
                         $value['title'] = $item[0];
                         $value['content'] = $item[1];
                         if ($value['title'] == "") {
-                            $result['error'][] = ['key' => $key + 2, "message" => '第' . ($key + 2) . '条没有标题'];
+                            $result['error'][] = ['key' => $key, "message" => '第' . ($key) . '条没有标题'];
+                            continue;
                         }
                         if ($value['content'] == "") {
-                            $result['error'][] = ['key' => $key + 2, "message" => '第' . ($key + 2) . '条没有内容'];
+                            $result['error'][] = ['key' => $key, "message" => '第' . ($key) . '条没有内容'];
+                            continue;
                         }
                         $value['auther'] = $item[2];
                         $value['come_from'] = $item[3];
