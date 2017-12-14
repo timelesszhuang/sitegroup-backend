@@ -235,10 +235,10 @@ class Article extends Common
     public function imageupload()
     {
         $data = $this->uploadImg("article/");
-        if($data['status']){
-            $data["msg"]="上传成功";
+        if ($data['status']) {
+            $data["msg"] = "上传成功";
             return $data;
-        }else{
+        } else {
             return $this->resultArray('上传失败', 'failed');
         }
     }
@@ -254,11 +254,11 @@ class Article extends Common
         $localpath = ROOT_PATH . "public/upload/";
         $fileInfo = $file->move($localpath);
         $localfilepath = $localpath . $fileInfo->getSaveName();
-        $data = $this->uploadObj("article/csv/". $fileInfo->getSaveName(),$localfilepath);
-        if($data['status']){
-            $data["msg"]="上传成功";
+        $data = $this->uploadObj("article/csv/" . $fileInfo->getSaveName(), $localfilepath);
+        if ($data['status']) {
+            $data["msg"] = "上传成功";
             return $data;
-        }else{
+        } else {
             return $this->resultArray('上传失败', 'failed');
         }
     }
@@ -297,46 +297,60 @@ class Article extends Common
     /**
      * csv导入
      */
-    public function csvimport(){
+    public function csvimport()
+    {
+        $sql = new \app\admin\model\Article();
         $data = $this->request->post();
         $url = $data['csvupload'];
         $article_type_id = $data['articletype_id'];
         $article_type_name = $data['articletype_name'];
         $csv = $this->getCsvFromOSS($url);
-        $row = explode("\n",$csv);
-        $values=[];
+        $values = [];
         $user = $this->getSessionUser();
-        $result=[];
-        foreach ($row as $key=>$item){
-            $value=[];
-            if($key==0) continue;
-            $arr=explode(",",$item);
-            if(count($arr)>1){
-                $value['title']=$arr[0];
-                $value['content']=$arr[1];
-                if($value['title']==""){
-                    $result['error'][]=['key'=>$key+2,"message"=>'第'.($key+2).'条没有标题'];
+        $result = [];
+        Db::startTrans();
+        try {
+            if (is_array($csv))
+                foreach ($csv as $key => $item) {
+                    $value = [];
+                    if ($key == 0) continue;
+                    if (count($item) > 1) {
+                        $value['title'] = $item[0];
+                        $value['content'] = $item[1];
+                        if ($value['title'] == "") {
+                            $result['error'][] = ['key' => $key + 2, "message" => '第' . ($key + 2) . '条没有标题'];
+                        }
+                        if ($value['content'] == "") {
+                            $result['error'][] = ['key' => $key + 2, "message" => '第' . ($key + 2) . '条没有内容'];
+                        }
+                        $value['auther'] = $item[2];
+                        $value['come_from'] = $item[3];
+                        $value['readcount'] = $item[4] == '' ? rand(100, 10000) : $item[4];
+                        $value['summary'] = $item[5] == '' ? mb_substr(trim(strip_tags(str_replace('&nbsp;', '', $value['content']))), 0, 40 * 3, 'utf-8') : $item[5];
+                        $value['keywords'] = $item[6];
+                        $value['articletype_name'] = $article_type_name;
+                        $value['articletype_id'] = $article_type_id;
+                        $value['node_id'] = $user["user_node_id"];
+                        $value['create_time'] = time();
+                        $value['update_time'] = time();
+                        $values[] = $value;
+                    }
+                    if(count($values)>=30){
+                        $sql->insertAll($values);
+                        $values=[];
+                    }
                 }
-                if($value['content']==""){
-                    $result['error'][]=['key'=>$key+2,"message"=>'第'.($key+2).'条没有内容'];
-                }
-                $value['auther']=$arr[2];
-                $value['come_from']=$arr[3];
-                $value['readcount']=$arr[4];
-                $value['summary']=$arr[5];
-                $value['keywords']=$arr[6];
-                $value['articletype_name']=$article_type_name;
-                $value['articletype_id']=$article_type_id;
-                $value['node_id']=$user["user_node_id"];
-                $value['create_time']=time();
-                $value['update_time']=time();
-                $values[]=$value;
+            if(count($values)>0){
+                $sql->insertAll($values);
             }
+            // 提交事务
+            Db::commit();
+            return $this->resultArray("添加成功", '', $result);
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
+            return $this->resultArray("添加失败", 'failed');
         }
-        if (!Db::name('Article')->insertAll($values)) {
-            return $this->resultArray("添加失败",'failed');
-        }
-        return $this->resultArray("添加成功",'',$result);
     }
 
     /**
@@ -344,8 +358,23 @@ class Article extends Common
      * @param $url
      * @return bool|string
      */
-    public function getCsvFromOSS($url){
-        return iconv("gb2312", "utf-8", file_get_contents($url));
+    public function getCsvFromOSS($url)
+    {
+        $file = fopen($url, 'r');
+        $datas = [];
+        //编码格式
+        $encoding = "";
+        while ($data = fgetcsv($file)) {
+            if ($encoding === "") {
+                $encoding = mb_detect_encoding($data[0], array("ASCII", 'UTF-8', "GB2312", "GBK", 'BIG5'));
+            }
+            if ($encoding !== "" && $encoding)
+                foreach ($data as $key => $value) {
+                    $data[$key] = iconv($encoding, 'UTF-8', $value);
+                }
+            $datas = array_merge($datas, [$data]);
+        }
+        return $datas;
     }
 
 }
