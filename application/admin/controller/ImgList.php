@@ -154,6 +154,12 @@ class ImgList extends Common
         $url = '';
         $status = false;
         $msg = '上传失败';
+        if(!$title){
+            return [
+                'status' => $status,
+                'msg' => '标题不能为空',
+            ];
+        }
         $imgser = [];
         if ($put_info['status']) {
             //上传成功之后需要删除掉之前的存储的对象
