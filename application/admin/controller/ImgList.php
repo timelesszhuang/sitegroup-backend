@@ -99,9 +99,9 @@ class ImgList extends Common
      * @param  int $id
      * @return array
      */
-    public function delete($id)
+    public function changeStatus($id,$status)
     {
-        $data['status']=20;
+        $data['status']=$status;
         if (!(new Img_list)->save($data, ["id" => $id])) {
             return $this->resultArray('禁用失败', 'failed');
         }
