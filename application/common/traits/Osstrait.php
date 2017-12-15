@@ -92,6 +92,7 @@ trait Osstrait
         $status = true;
         try {
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
+            $this->checkObjectExist($ossClient,$bucket,$object)&&
             $ossClient->deleteObject($bucket, $object);
             $msg = '删除成功';
         } catch (OssException $e) {
@@ -99,6 +100,24 @@ trait Osstrait
             $msg = $e->getMessage();
         }
         return ['status' => $status, 'msg' => $msg];
+    }
+
+    /**
+     * 判断object是否存在
+     *
+     * @param OssClient $ossClient OSSClient实例
+     * @param string $bucket bucket名字
+     * @return null
+     */
+    function checkObjectExist($ossClient, $bucket, $object)
+    {
+        $exist = false;
+        try {
+            $exist = $ossClient->doesObjectExist($bucket, $object);
+        } catch (OssException $e) {
+        //不存在的情况
+        }
+        return $exist;
     }
 
     /**

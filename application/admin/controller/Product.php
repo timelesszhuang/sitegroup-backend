@@ -239,7 +239,7 @@ class Product extends Common
                 $img_name = $this->formUniqueString() . ".{$type}";
             } else {
                 //不带后缀的情况
-                $img_name = $this - $this->formUniqueString();
+                $img_name = $this->formUniqueString();
             }
             $data = (new productM)->where(["id" => $id])->field("id,imgser")->find();
             $deleteobject = '';

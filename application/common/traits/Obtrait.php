@@ -212,7 +212,13 @@ trait Obtrait
      */
     public function analyseUrlFileType($fileurl)
     {
-        return pathinfo(parse_url($fileurl)['path'])['extension'];
+        $path_info = pathinfo(parse_url($fileurl)['path']);
+        if(isset($path_info['extension'])){
+            return pathinfo(parse_url($fileurl)['path'])['extension'];
+        }
+        else{
+            return "";
+        }
     }
 
 }

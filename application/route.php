@@ -154,6 +154,14 @@ Route::rule('articletype/gettype', 'admin/Articletype/getType');
 
 //文章
 Route::resource('article', 'admin/Article');
+//图集
+Route::resource('imglist', 'admin/ImgList');
+//添加与修改图片
+Route::post('uploadimglistimgser', 'admin/ImgList/uploadImgSer');
+//获取图片列表
+Route::get('getimgser/:id', 'admin/ImgList/getImgSer');
+//删除图片
+Route::get('deleteImgser/:id/:index', 'admin/ImgList/deleteImgser');
 Route::post('articleshowhtml', 'admin/Article/articleshowhtml');
 Route::post('article/sync', 'admin/Article/syncArticle');
 Route::post('article/csvupload', 'admin/Article/csvupload');
