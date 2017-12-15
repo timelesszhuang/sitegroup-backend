@@ -109,7 +109,7 @@ class Article extends Model
     public function getArticle($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->field('content,summary,update_time,readcount', true)->order('id desc')->select();
+        $data = $this->limit($limit, $rows)->where($where)->field('content,summary,update_time,readcount,title_color', true)->order('id desc')->select();
         return [
             "total" => $count,
             "rows" => $data
