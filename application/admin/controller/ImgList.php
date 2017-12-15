@@ -28,10 +28,9 @@ class ImgList extends Common
     public function index(Request $request)
     {
         $request = $this->getLimit();
-        $where = [];
-        $name=$request->get('name');
+        $name = $this->request->get('name');
         if($name){
-            $where['name']=['like','%'.$name.'%'];
+            $where["name"] = ["like", "%$name%"];
         }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
