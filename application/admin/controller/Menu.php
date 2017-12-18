@@ -162,7 +162,6 @@ class Menu extends Common
                 $pid = array_filter(explode(",", $field['path']));
             }
             $pid[] = $data["p_id"];
-            echo json_encode($pid);exit;
             $data["path"] = "," . implode(',', $pid) . ",";
         }
         if (!\app\admin\model\Menu::create($data)) {
@@ -213,7 +212,6 @@ class Menu extends Common
                 $pid = array_filter(explode(",", $field['path']));
             }
             $pid[] = $data["p_id"];
-            echo json_encode($pid);exit;
             $data["path"] = "," . implode(',', $pid) . ",";
         }
         if (!$validate->check($data)) {
