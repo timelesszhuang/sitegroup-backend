@@ -175,7 +175,7 @@ Route::get('articletype/articleCount', 'admin/Articletype/ArticleCount');
 //菜单
 Route::resource('menu', 'admin/Menu');
 Route::get('menu/getMenu', 'admin/Menu/getMenu');
-
+Route::put('menusort/:id','admin/Menu/sort');
 //获取上级菜单
 Route::get('menu/upmenu/:flag/:id','admin/Menu/getUpMenu');
 

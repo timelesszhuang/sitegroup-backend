@@ -278,4 +278,21 @@ class Menu extends Common
         }
         return $this->resultArray('', '', $list);
     }
+
+    /**
+     * 排序
+     */
+    public function sort(Request $request,$id){
+        $data = $this->request->post();
+        $menu = new \app\admin\model\Menu();
+       $menudata =  $menu->where('id', $id)
+            ->update([
+                'sort' => $data['sort']
+            ]);
+        if($menudata){
+            return $this->resultArray('修改成功');
+        }else{
+            return $this->resultArray('修改失败', 'failed');
+        }
+    }
 }
