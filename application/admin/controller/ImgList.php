@@ -25,10 +25,13 @@ class ImgList extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function index()
+    public function index(Request $request)
     {
         $request = $this->getLimit();
-        $where = [];
+        $name = $this->request->get('name');
+        if($name){
+            $where["name"] = ["like", "%$name%"];
+        }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $data = (new Img_list)->getImgList($request["limit"], $request["rows"], $where);
