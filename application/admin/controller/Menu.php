@@ -39,7 +39,6 @@ class Menu extends Common
         //创建基于主键的数组引用
         $refer = array();
         foreach ($menu as $key => $data) {
-            unset($data['generate_name']);
             unset($data['flag']);
             unset($data['type_id']);
             unset($data['detailtemplate']);
