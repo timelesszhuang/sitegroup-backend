@@ -57,7 +57,7 @@ class ImgList extends Common
     {
         $rule = [
             ["name", "require", "请输入图集名称"],
-            ["en_name", "require|alphaNum", "请输入图集英文名称|英文名格式只支持字母与数字"],
+            ["en_name", "require|alphaNum|unique:imglist,en_name^node_id", "请输入图集英文名称|英文名格式只支持字母与数字|英文名重复"],
         ];
         $validate = new Validate($rule);
         $data = $request->post();
@@ -84,7 +84,7 @@ class ImgList extends Common
     {
         $rule = [
             ["name", "require", "请输入图集名称"],
-            ["en_name", "require|alphaNum", "请输入图集英文名称|英文名格式只支持字母与数字"],
+            ["en_name", "require|alphaNum|unique:imglist,en_name^node_id", "请输入图集英文名称|英文名格式只支持字母与数字|英文名重复"],
         ];
         $data = $request->put();
         $validate = new Validate($rule);
