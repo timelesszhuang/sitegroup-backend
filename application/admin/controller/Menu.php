@@ -149,7 +149,7 @@ class Menu extends Common
             unset($data['listsize']);
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
-        if (count($data["type_id"]) > 0) {
+        if (isset($data["type_id"])&&count($data["type_id"]) > 0) {
             $data["type_id"] = "," . implode(',', $data["type_id"]) . ",";
         } else {
             $data["type_id"] = "";
@@ -200,7 +200,7 @@ class Menu extends Common
         if (!$this->check_unique($data['generate_name'], $data['id'])) {
             return $this->resultArray("英文名称已存在", 'failed');
         };
-        if (count($data["type_id"]) > 0) {
+        if (isset($data["type_id"])&&count($data["type_id"]) > 0) {
             $data["type_id"] = "," . implode(',', $data["type_id"]) . ",";
         } else {
             $data["type_id"] = "";
