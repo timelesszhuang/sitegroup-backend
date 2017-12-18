@@ -149,7 +149,7 @@ class Menu extends Common
             unset($data['listsize']);
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
-        if (isset($data["type_id"])&&count($data["type_id"]) > 0) {
+        if (isset($data["type_id"])&&$data["type_id"]&&count($data["type_id"]) > 0) {
             $data["type_id"] = "," . implode(',', $data["type_id"]) . ",";
         } else {
             $data["type_id"] = "";
@@ -162,6 +162,7 @@ class Menu extends Common
                 $pid = array_filter(explode(",", $field['path']));
             }
             $pid[] = $data["p_id"];
+            echo json_encode($pid);exit;
             $data["path"] = "," . implode(',', $pid) . ",";
         }
         if (!\app\admin\model\Menu::create($data)) {
@@ -212,6 +213,7 @@ class Menu extends Common
                 $pid = array_filter(explode(",", $field['path']));
             }
             $pid[] = $data["p_id"];
+            echo json_encode($pid);exit;
             $data["path"] = "," . implode(',', $pid) . ",";
         }
         if (!$validate->check($data)) {
