@@ -14,7 +14,7 @@ use think\Request;
 use app\common\traits\Obtrait;
 use app\admin\model\Contentget as Content_get;
 
-class Coontentget extends Common
+class Contentget extends Common
 {
     use Obtrait;
     use Osstrait;
