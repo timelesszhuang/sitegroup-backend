@@ -12,7 +12,7 @@ use think\Session;
 use think\Validate;
 use think\Request;
 use app\common\traits\Obtrait;
-use app\admin\model\Contentget as Content_get;
+use app\admin\model\ContentGet as Content_get;
 
 class Contentget extends Common
 {

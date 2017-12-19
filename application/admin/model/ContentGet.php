@@ -12,7 +12,7 @@ use app\common\traits\Osstrait;
 use think\Config;
 use think\Model;
 
-class Contentget extends Model
+class ContentGet extends Model
 {
     use Osstrait;
     //只读字段
