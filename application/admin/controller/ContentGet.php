@@ -64,7 +64,6 @@ class ContentGet extends Common
         $data = $request->post();
         $user = $this->getSessionUser();
         $data['node_id'] = $user['user_node_id'];
-        $data['imgser'] = '';
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
