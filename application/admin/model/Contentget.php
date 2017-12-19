@@ -12,7 +12,7 @@ use app\common\traits\Osstrait;
 use think\Config;
 use think\Model;
 
-class ContentGet extends Model
+class Contentget extends Model
 {
     use Osstrait;
     //只读字段
@@ -31,7 +31,7 @@ class ContentGet extends Model
     public function getContentList($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->field('name,en_name,content,href', true)->order('id desc')->select();
+        $data = $this->limit($limit, $rows)->where($where)->field('name,en_name,content,href')->order('id desc')->select();
         return [
             "total" => $count,
             "rows" => $data
