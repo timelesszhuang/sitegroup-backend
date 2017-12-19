@@ -105,9 +105,7 @@ class ContentGet extends Common
      */
     public function delete($id)
     {
-        if((new Content_get)->deleteOne($id)){
-            return $this->resultArray('删除成功');
-        }
-        return $this->resultArray('删除失败', 'failed');
+        return $this->deleteRecord((new \app\admin\model\ContentGet()),$id);
     }
+
 }
