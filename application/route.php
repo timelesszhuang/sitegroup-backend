@@ -155,6 +155,8 @@ Route::rule('articletype/gettype', 'admin/Articletype/getType');
 Route::resource('article', 'admin/Article');
 //图集
 Route::resource('imglist', 'admin/ImgList');
+//content_get
+Route::resource('content_get', 'admin/ContentGet');
 //添加与修改图片
 Route::post('uploadimglistimgser', 'admin/ImgList/uploadImgSer');
 //获取图片列表
