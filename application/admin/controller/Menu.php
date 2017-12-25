@@ -242,6 +242,7 @@ class Menu extends Common
     {
         $field = "id,name as text,flag_name,title,type_name,tag_name";
         $user = $this->getSessionUser();
+        $where['p_id'] = 0;
         $where["node_id"] = $user["user_node_id"];
         $data = (new \app\admin\model\Menu())->getlist($where, $field);
         return $this->resultArray('', '', $data);

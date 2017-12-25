@@ -23,7 +23,6 @@ class Menu extends Model
      */
     public function getMenu($limit, $rows, $where)
     {
-        $where['p_id']=0;
         $count = $this->where($where)->count();
         $data = $this->limit($limit, $rows)->where($where)->order('id desc,sort asc')->select();
         return [
