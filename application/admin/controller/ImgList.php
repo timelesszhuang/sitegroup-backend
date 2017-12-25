@@ -248,4 +248,33 @@ class ImgList extends Common
         }
         return $this->resultArray('删除完成', '', $imgser);
     }
+
+    public function saveinfo(){
+        $rule = [
+            ["id", "require", "参数错误"],
+            ["index", "require", "参数错误"],
+            ["title", "require", "请输入标题"],
+            ["link", "require", "请输入链接"],
+        ];
+        $validate = new Validate($rule);
+        $data = \request()->post();
+        if (!$validate->check($data)) {
+            return $this->resultArray($validate->getError(), "failed");
+        }
+        $id = \request()->post('id');
+        $index = \request()->post('index');
+        $title = \request()->post('title');
+        $link = \request()->post('link');
+        $data = (new Img_list)->where(["id" => $id])->field("id,imgser")->find();
+        $imgser = [];
+        if ($data->imgser) {
+            $imgser = unserialize($data->imgser);
+            $imgser[$index]['title']=$title;
+            $imgser[$index]['link']=$link;
+            $imgser = array_values($imgser);
+        }
+        $data->imgser = serialize($imgser);
+        $data->save();
+        return $this->resultArray('修改完成', '', $imgser);
+    }
 }
