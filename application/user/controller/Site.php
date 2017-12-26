@@ -47,11 +47,10 @@ class Site extends Common
         if(empty($site_id)){
             return $this->resultArray("获取站点错误","failed");
         }
-        $site_contact=$request->post("site_contact");
-        if(empty($site_contact)){
-            return $this->resultArray("请填写联系方式","failed");
-        }
-        if(!\app\admin\model\Site::update(["site_contact"=>$site_contact],["id"=>$site_id])){
+        $data = \request()->post();
+        $id = $data['id'];
+        unset($data['id']);
+        if(!\app\admin\model\Site::update($data,["id"=>$site_id])){
             return $this->resultArray("修改站点失败!!","failed");
         }
         return $this->resultArray("修改成功!!");

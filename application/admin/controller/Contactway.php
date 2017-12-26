@@ -47,10 +47,11 @@ class Contactway extends Common
     {
         $rule = [
             ['detail','require','请填写描述'],
-            ['html', 'require', "请填写代码"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
+        $data['html'] = serialize($data['html']);
+        //dump($data);die;
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
@@ -69,7 +70,9 @@ class Contactway extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Contactway),$id);
+        $data = (new \app\admin\model\Contactway)->where(["id" => $id])->field("create_time,update_time", true)->find();
+        $data['html'] = unserialize($data['html']);
+        return $this->resultArray('', '', $data);
     }
 
     /**
@@ -94,10 +97,10 @@ class Contactway extends Common
     {
         $rule = [
             ['detail','require','请填写描述'],
-            ['html', 'require', "请填写代码"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
+        $data['html'] = serialize($data['html']);
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
@@ -121,7 +124,7 @@ class Contactway extends Common
      */
     public function getContactway()
     {
-        $field="id,detail as text";
+        $field="id,name as text";
         return $this->getList((new \app\admin\model\Contactway),$field);
     }
 }

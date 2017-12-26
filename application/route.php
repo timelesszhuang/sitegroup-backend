@@ -163,6 +163,7 @@ Route::post('uploadimglistimgser', 'admin/ImgList/uploadImgSer');
 Route::get('getimgser/:id', 'admin/ImgList/getImgSer');
 //删除图片
 Route::get('deleteImgser/:id/:index', 'admin/ImgList/deleteImgser');
+Route::post('saveinfo', 'admin/ImgList/saveinfo');
 Route::get('changeimgliststatus/:id/:status', 'admin/ImgList/changeStatus');
 Route::post('articleshowhtml', 'admin/Article/articleshowhtml');
 Route::post('article/sync', 'admin/Article/syncArticle');
