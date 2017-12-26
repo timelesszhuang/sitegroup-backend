@@ -72,7 +72,6 @@ class Contactway extends Common
     {
         $data = (new \app\admin\model\Contactway)->where(["id" => $id])->field("create_time,update_time", true)->find();
         $data['html'] = unserialize($data['html']);
-
         return $this->resultArray('', '', $data);
     }
 
