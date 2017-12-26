@@ -265,12 +265,12 @@ class Article extends Common
 
     /**
      * @return array
-     * 预览页面
+     * 文章预览页面
      */
     public function articleshowhtml()
     {
         $data = $this->request->post();
-        $where['type_id'] = $data['articletype_id'];
+        $where['type_id'] = ['like', ",{$data['articletype_id']},"];
         $where['flag'] = 3;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
         if (!$menu) {
@@ -337,12 +337,12 @@ class Article extends Common
                         $value['update_time'] = time();
                         $values[] = $value;
                     }
-                    if(count($values)>=30){
+                    if (count($values) >= 30) {
                         $sql->insertAll($values);
-                        $values=[];
+                        $values = [];
                     }
                 }
-            if(count($values)>0){
+            if (count($values) > 0) {
                 $sql->insertAll($values);
             }
             // 提交事务

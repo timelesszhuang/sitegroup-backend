@@ -350,12 +350,12 @@ class Product extends Common
 
     /**
      * @return array
-     * 页面预览
+     * 产品页面预览
      */
     public function productshowhtml()
     {
         $data = $this->request->post();
-        $where['type_id'] = $data['type_id'];
+        $where['type_id'] = ['like', ",{$data['type_id']},"];
         $where['flag'] = 5;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
         if (!$menu) {
@@ -366,8 +366,8 @@ class Product extends Common
             $sitedata = \app\admin\model\Site::where($wh)->select();
             foreach ($sitedata as $kk => $vv) {
                 $showhtml[] = [
-                    'url' =>  $vv['url'] . '/preview/product/'.$data['id'] . '.html',
-                    'site_name' =>  $vv['site_name'],
+                    'url' => $vv['url'] . '/preview/product/' . $data['id'] . '.html',
+                    'site_name' => $vv['site_name'],
                 ];
             }
             if (!empty($showhtml)) {

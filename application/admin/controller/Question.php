@@ -182,6 +182,13 @@ class Question extends Common
         ];
     }
 
+    /***
+     * 问答相关预览
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function questionshowhtml()
     {
         $data = $this->request->post();
