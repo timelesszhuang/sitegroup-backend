@@ -257,11 +257,6 @@ class Site extends Common
     }
 
 
-
-
-
-
-
     /**
      * 获取手机网站
      * @return false|\PDOStatement|string|\think\Collection
@@ -312,14 +307,17 @@ class Site extends Common
                 return $this->resultArray("活动创意同步失败", "failed");
                 break;
             case "template":
-                $this->open_start("正在发送模板,请等待..");
                 $template = \app\admin\model\Template::get($site["template_id"]);
                 if (!$template) {
-                    exit("未找到模板");
+                    $msg = "未找到该模板，请选择模板。";
+                    $this->open_start($msg);
+                } else {
+                    $id = $template->id;
+                    $msg = '"正在发送模板,请等待.."';
+                    $dest = $site->url . '/index.php/filemanage/uploadFile/' . $id;
+                    $this->open_start($msg, $dest);
                 }
                 //用curl 相关的
-                $id = $template->id;
-                $dest = $site->url . '/index.php/filemanage/uploadFile/' . $id;
                 $this->curl_get($dest);
                 break;
         }
