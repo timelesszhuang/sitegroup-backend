@@ -14,10 +14,10 @@ trait Obtrait
      * 停止前台request
      * @param $msg
      */
-    public function open_start($msg)
+    public function open_start($msg, $info = '')
     {
         ob_start();
-        print_r(json_encode(['status' => "success", 'data' => '', 'msg' => $msg]));
+        print_r(json_encode(['status' => "success", 'data' => '', 'msg' => $msg, 'info' => $info]));
         $size = ob_get_length();
         header("Content-Length: $size");
         header('Connection: close');
@@ -132,10 +132,10 @@ trait Obtrait
                     if ($fileinfo["dirname"] != "." && strstr($fileinfo["dirname"], "/") === false) {
                         $made_path = $directiry . $fileinfo["dirname"];
                         chmod($obj . $fileinfo["dirname"], 0755);
-                        $md5_name=mb_substr(md5(time()),0,12,'UTF-8');
-                        $rename_file=$obj.$md5_name;
-                        if(rename($obj . $fileinfo["dirname"],$rename_file)){
-                            $made_path=$directiry.$md5_name;
+                        $md5_name = mb_substr(md5(time()), 0, 12, 'UTF-8');
+                        $rename_file = $obj . $md5_name;
+                        if (rename($obj . $fileinfo["dirname"], $rename_file)) {
+                            $made_path = $directiry . $md5_name;
                         }
                         break;
                     }
@@ -184,7 +184,7 @@ trait Obtrait
                 if (isset($fileinfo["dirname"])) {
                     if ($fileinfo["dirname"] != "." && strstr($fileinfo["dirname"], "/") === false) {
                         $made_path = $fileinfo["dirname"];
-                        if (file_exists(ROOT_PATH . "public".$directory . $made_path)) {
+                        if (file_exists(ROOT_PATH . "public" . $directory . $made_path)) {
                             return true;
                         }
                     }
@@ -213,10 +213,9 @@ trait Obtrait
     public function analyseUrlFileType($fileurl)
     {
         $path_info = pathinfo(parse_url($fileurl)['path']);
-        if(isset($path_info['extension'])){
+        if (isset($path_info['extension'])) {
             return pathinfo(parse_url($fileurl)['path'])['extension'];
-        }
-        else{
+        } else {
             return "";
         }
     }
