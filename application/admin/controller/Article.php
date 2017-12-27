@@ -131,12 +131,13 @@ class Article extends Common
                     //表示之前缩略图是oss的 现在新添加的一定是oss的
                     $this->ossDeleteObject($id_data->thumbnails);
                 }
-                //删除
-                //获取后缀
-                $filetype = $this->analyseUrlFileType($data["thumbnails"]);
-                $filename = $this->formUniqueString();
-                //缩略图名称 用于静态化到其他地方时候使用
-                $data["thumbnails_name"] = $filename . "." . $filetype;
+                //如果是引用的图片链接的话 不需要生成缩略图名 只有oss的形式才会
+                if (strpos($data['thumbnails'], $url) !== false) {
+                    $filetype = $this->analyseUrlFileType($data["thumbnails"]);
+                    $filename = $this->formUniqueString();
+                    //缩略图名称 用于静态化到其他地方时候使用
+                    $data["thumbnails_name"] = $filename . "." . $filetype;
+                }
             }
         }
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
