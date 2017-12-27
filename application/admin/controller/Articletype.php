@@ -6,6 +6,7 @@ use app\common\controller\Common;
 use think\Db;
 use think\Validate;
 use think\Request;
+use app\admin\model\TypeTag as Type_Tag;
 
 class Articletype extends Common
 {
@@ -63,7 +64,6 @@ class Articletype extends Common
         $rule = [
             ["name", "require", "请输入文章分类名"],
             ["detail", "require", "请输入详情"],
-            ["tag", "require", "请输入此分类的标签"],
             ["alias", "require", "请输入此分类的英文名"]
         ];
         $validate = new Validate($rule);
@@ -145,7 +145,7 @@ class Articletype extends Common
         $data = (new \app\admin\model\Articletype())->getArttype($where);
         $dates=[];
         foreach ($data as$k=>$v){
-            $dates[][$v['tag']] = ['id'=>$v['id'],'name'=>$v['name']];
+            $dates[$v['tag']][] = ['id'=>$v['id'],'name'=>$v['name']];
         }
         return $this->resultArray('', '', $dates);
     }
