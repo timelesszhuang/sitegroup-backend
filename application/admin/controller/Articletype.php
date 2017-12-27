@@ -94,8 +94,8 @@ class Articletype extends Common
                     }
                     $data['tag_id']=$Type_Tag->getLastInsID();
                 }
-                unset($data['tag_name']);
             }
+            unset($data['tag_name']);
             if (!$validate->check($data)) {
                 return $this->resultArray($validate->getError(), "failed");
             }
