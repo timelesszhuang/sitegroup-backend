@@ -97,6 +97,7 @@ class Questiontype extends Common
                 }
             }
             unset($data['tag_name']);
+            $data['node_id'] = $user['user_node_id'];
             if (!$validate->check($data)) {
                 return $this->resultArray($validate->getError(), "failed");
             }
