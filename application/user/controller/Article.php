@@ -220,10 +220,14 @@ class Article extends Common
             }
         }
         $type_ids=array_keys($type_ids);
-        $data =(new \app\admin\model\Articletype)->alias('type')->field('type.id,name,tag_id,tag')->join('type_tag','type_tag.id = tag_id')->where('type.id','in',$type_ids)->select();
+        $data =(new \app\admin\model\Articletype)->alias('type')->field('type.id,name,tag_id,tag')->join('type_tag','type_tag.id = tag_id','LEFT')->where('type.id','in',$type_ids)->select();
         $dates=[];
         foreach ($data as$k=>$v){
-            $dates[$v['tag']][] = ['id'=>$v['id'],'name'=>$v['name']];
+            if(!$v['tag']){
+                $dates['未定义'][] = ['id'=>$v['id'],'name'=>$v['name']];
+            }else{
+                $dates[$v['tag']][] = ['id'=>$v['id'],'name'=>$v['name']];
+            }
         }
         return $this->resultArray('', '', $dates);
     }
