@@ -363,7 +363,7 @@ Route::get('admin/userdefine', 'admin/Rejection/getUserDefind');
 //产品分类
 Route::resource('admin/productType', 'admin/ProductType');
 //获取产品分类列表
-Route::get('admin/getProductType', 'admin/ProductType/getTypes');
+Route::get('admin/getProductType', 'admin/ProductType/getType');
 //产品
 Route::resource('admin/product', 'admin/Product');
 //预览产品
@@ -496,7 +496,7 @@ Route::get('user/getErrorStatus/', 'user/Article/getErrorStatus');
 //问答
 Route::resource('user/question', 'user/Question');
 //问答分类
-Route::get('user/QuestionType', 'user/Question/getQuestionType');
+Route::get('user/QuestionType', 'admin/QuestionType/getType');
 
 //问答预览
 Route::post('user/questionshowhtml', 'user/Question/questionshowhtml');
