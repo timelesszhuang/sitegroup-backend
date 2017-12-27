@@ -140,8 +140,6 @@ class Article extends Common
                 }
             }
         }
-        print_r($data);
-        exit;
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
