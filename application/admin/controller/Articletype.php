@@ -18,7 +18,7 @@ class Articletype extends Common
         $request = $this->getLimit();
         $name = $this->request->get('name');
         $id = $this->request->get('id');
-        $id = $this->request->get('tag_id');
+        $tag_id = $this->request->get('tag_id');
         $where = [];
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
