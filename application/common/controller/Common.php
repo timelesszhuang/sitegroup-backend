@@ -65,7 +65,7 @@ class Common extends Controller
      */
     public function resultArray($msg = 0, $stat = '', $data = 0)
     {
-        if (empty($stat)) {
+        if (empty($stat) || $stat == 'success') {
             $status = "success";
         } else {
             $status = "failed";
@@ -296,9 +296,9 @@ class Common extends Controller
     public function getList($model, $field)
     {
         $user = $this->getSessionUser();
-        $where["node_id"] = [["=",$user["user_node_id"]],["=",0],"or"];
+        $where["node_id"] = [["=", $user["user_node_id"]], ["=", 0], "or"];
         $data = $model->field($field)->where($where)->select();
-        array_walk($data,[$this,"formatter_data"]);
+        array_walk($data, [$this, "formatter_data"]);
         return $this->resultArray('', '', $data);
     }
 
@@ -307,13 +307,13 @@ class Common extends Controller
      * @param $v
      * @param $k
      */
-    public function formatter_data($v,$k)
+    public function formatter_data($v, $k)
     {
-        if(isset($v["node_id"]) && ($v["node_id"]==0)){
-            $v["text"]=$v["text"]."—".$v["industry_name"]."—公共模板";
-        }else{
-            if(isset($v["industry_name"]) && isset($v["text"])){
-                $v["text"]=$v["text"]."—专属";
+        if (isset($v["node_id"]) && ($v["node_id"] == 0)) {
+            $v["text"] = $v["text"] . "—" . $v["industry_name"] . "—公共模板";
+        } else {
+            if (isset($v["industry_name"]) && isset($v["text"])) {
+                $v["text"] = $v["text"] . "—专属";
             }
         }
     }
