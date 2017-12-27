@@ -141,12 +141,13 @@ class Articletype extends Common
     {
         $where = [];
         $user = $this->getSessionUser();
-        $where['node_id'] = $user['user_node_id'];
+        $where['articletype.node_id'] = $user['user_node_id'];
         $data = (new \app\admin\model\Articletype())->getArttype($where);
+        $dates=[];
         foreach ($data as$k=>$v){
-            $v['text'] = $v['name'].'['.$v['tag'].']';
+            $dates[][$v['tag']] = ['id'=>$v['id'],'name'=>$v['name']];
         }
-        return $this->resultArray('', '', $data);
+        return $this->resultArray('', '', $dates);
     }
 
 
