@@ -120,22 +120,15 @@ class Question extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         $this->publicUpdate((new \app\admin\model\Question), $data, $id);
-//        dump($data);die;
         $this->open_start('正在修改中');
-        $where['type_id'] = $data['type_id'];
-        $where['flag'] = 2;
-        $menu = (new \app\admin\model\Menu())->where($where)->select();
-        foreach ($menu as $k => $v) {
-            $wh['menu'] = ["like", "%,{$v['id']},%"];
-            $sitedata = \app\admin\model\Site::where($wh)->select();
-            foreach ($sitedata as $kk => $vv) {
-                $send = [
-                    "id" => $data['id'],
-                    "searchType" => 'question',
-                    "type" => $data['type_id']
-                ];
-                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
-            }
+        $sitedata = $this->getQuestionSite($data['type_id']);
+        foreach ($sitedata as $kk => $vv) {
+            $send = [
+                "id" => $data['id'],
+                "searchType" => 'question',
+                "type" => $data['type_id']
+            ];
+            $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
         }
     }
 
@@ -182,18 +175,18 @@ class Question extends Common
         ];
     }
 
-    /***
-     * 问答相关预览
+    /**
+     * 获取 问题对应的站点
+     * @param $type_id
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function questionshowhtml()
+    private function getQuestionSite($type_id)
     {
-        $data = $this->request->post();
         //首先取出选择该文章分类的菜单 注意有可能是子菜单
-        $where['type_id'] = ['like', ",{$data['type_id']},"];
+        $where['type_id'] = ['like', ",{$type_id},"];
         $where['flag'] = 2;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
         if (!$menu) {
@@ -223,6 +216,21 @@ class Question extends Common
             $map .= ' or ' . $permap;
         }
         $sitedata = \app\admin\model\Site::where($map)->field('id,site_name,url')->select();
+        return $sitedata;
+    }
+
+
+    /***
+     * 问答相关预览
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function questionshowhtml()
+    {
+        $data = $this->request->post();
+        $sitedata = $this->getQuestionSite($data['type_id']);
         foreach ($sitedata as $kk => $vv) {
             $showhtml[] = [
                 'url' => $vv['url'] . '/preview/question/' . $data['id'] . '.html',

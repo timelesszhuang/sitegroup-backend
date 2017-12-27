@@ -145,21 +145,17 @@ class Article extends Common
         //先返回给前台 然后去后端 重新生成页面 这块暂时有问题
         $this->open_start('正在修改中');
         //找出有这篇  文章的菜单
-        $where['type_id'] = $data['articletype_id'];
-        $where['flag'] = 3;
-        $menu = (new \app\admin\model\Menu())->where($where)->select();
-        foreach ($menu as $k => $v) {
-            $wh['menu'] = ["like", "%,{$v['id']},%"];
-            $sitedata = \app\admin\model\Site::where($wh)->select();
-            foreach ($sitedata as $kk => $vv) {
-                $send = [
-                    "id" => $data['id'],
-                    "searchType" => 'article',
-                    "type" => $data['articletype_id'],
-                ];
-                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
-            }
+        $articletype_id = $data['articletype_id'];
+        $sitedata = $this->getArticleSite($articletype_id);
+        foreach ($sitedata as $kk => $vv) {
+            $send = [
+                "id" => $data['id'],
+                "searchType" => 'article',
+                "type" => $data['articletype_id'],
+            ];
+            $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
         }
+
     }
 
     /**
@@ -263,15 +259,19 @@ class Article extends Common
         }
     }
 
+
     /**
-     * @return array
-     * 文章预览页面
+     * 获取一篇文章对应的站点 可能是多个站
+     * @param $articletype_id
+     * @return array|false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    public function articleshowhtml()
+    private function getArticleSite($articletype_id)
     {
-        $data = $this->request->post();
         //首先取出选择该文章分类的菜单 注意有可能是子菜单
-        $where['type_id'] = ['like', ",{$data['articletype_id']},"];
+        $where['type_id'] = ['like', ",{$articletype_id},"];
         $where['flag'] = 3;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
         if (!$menu) {
@@ -301,6 +301,19 @@ class Article extends Common
             $map .= ' or ' . $permap;
         }
         $sitedata = \app\admin\model\Site::where($map)->field('id,site_name,url')->select();
+        return $sitedata;
+    }
+
+
+    /**
+     * @return array
+     * 文章预览页面
+     */
+    public function articleshowhtml()
+    {
+        $data = $this->request->post();
+        $articletype_id = $data['articletype_id'];
+        $sitedata = $this->getArticleSite($articletype_id);
         foreach ($sitedata as $kk => $vv) {
             $showhtml[] = [
                 'url' => $vv['url'] . '/preview/article/' . $data['id'] . '.html',
@@ -315,7 +328,8 @@ class Article extends Common
     }
 
     /**
-     * csv导入
+     * csv导入 文章
+     * @access public
      */
     public function csvimport()
     {
