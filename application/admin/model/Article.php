@@ -44,6 +44,9 @@ class Article extends Model
                     //有上传缩略图 一定是oss的
                     //拼接缩略图名称
                     //没有图片的
+                    var_dump(array_key_exists('id',$article));
+                    print_r($article);
+                    exit;
                     if (!array_key_exists('id', $article)) {
                         //添加的时候才需要操作
                         $imgname = md5(uniqid(rand(), true));
