@@ -204,19 +204,28 @@ class Article extends Common
     public function getArticleType()
     {
         $where = [];
-        $wh['id'] = $this->request->session()['website']['id'];
-        $Site = new \app\admin\model\Site();
-        $menuid = $Site->where($wh)->field('menu')->find()->menu;
-        $Menuid = explode(',', $menuid);
-        $where['id'] = $Menuid;
+        $Menuid = $this->request->session()['website']['menu'];
         $menu = new \app\admin\model\Menu();
         $whe['flag'] = 3;
-        $data = $menu->where('id', 'in', $Menuid)->where($whe)->field('type_id,type_name,tag_name')->select();
-        foreach ($data as $k => $v) {
-            $v['text'] = $v['type_name'] . '[' . $v['tag_name'] . ']';
-            $v['id'] = $v['type_id'];
+        $data = $menu->where($whe)->where('id', 'in', $Menuid);
+        foreach (array_filter(explode(',',$Menuid)) as $menu_id){
+            $data=$data->whereOr('path','like',"%,$menu_id,%");
         }
-        return $this->resultArray('', '', $data);
+        $data=$data->field('type_id,type_name,tag_name');
+        $data=$data->select();
+        $type_ids=[];
+        foreach ($data as $k => $v) {
+            foreach(array_filter(explode(',',$v['type_id'])) as $value){
+                $type_ids[$value]=1;
+            }
+        }
+        $type_ids=array_keys($type_ids);
+        $data =(new \app\admin\model\Articletype)->alias('type')->field('type.id,name,tag_id,tag')->join('type_tag','type_tag.id = tag_id')->where('type.id','in',$type_ids)->select();
+        $dates=[];
+        foreach ($data as$k=>$v){
+            $dates[$v['tag']][] = ['id'=>$v['id'],'name'=>$v['name']];
+        }
+        return $this->resultArray('', '', $dates);
     }
 
     /**
