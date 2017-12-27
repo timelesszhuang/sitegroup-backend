@@ -150,7 +150,8 @@ Route::get('keyword/KeywordCount', 'admin/keyword/KeywordCount');
 //文章分类
 Route::resource('articletype', 'admin/Articletype');
 Route::rule('articletype/gettype', 'admin/Articletype/getType');
-
+//标签分类
+Route::resource('typetag', 'admin/typetag');
 //文章
 Route::resource('article', 'admin/Article');
 //图集
