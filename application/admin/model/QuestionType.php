@@ -7,13 +7,17 @@ use think\Model;
 class QuestionType extends Model
 {
     //只读字段
-    protected $readonly=["node_id"];
+    protected $readonly = ["node_id"];
+
     /**
      * 获取所有数据
      * @param $limit
      * @param $rows
      * @param $where
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author guozhen
      */
     public function getAll($limit, $rows, $where)
@@ -25,5 +29,18 @@ class QuestionType extends Model
             "rows" => $data
         ];
 
+    }
+
+    /**
+     * @param int $where
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getArttype($where = 0)
+    {
+        $data = $this->alias('type')->field('type.id,name,detail,tag_id,tag')->join('type_tag', 'type_tag.id = tag_id')->where($where)->select();
+        return $data;
     }
 }

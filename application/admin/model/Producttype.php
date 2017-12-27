@@ -22,4 +22,13 @@ class Producttype extends Model
             "rows" => $data
         ];
     }
+    /**
+     * @param int $where
+     * @return false|\PDOStatement|string|\think\Collection
+     */
+    public function getArttype($where=0)
+    {
+        $data =$this->alias('type')->field('type.id,name,detail,tag_id,tag')->join('type_tag','type_tag.id = tag_id')->where($where)->select();
+        return $data;
+    }
 }

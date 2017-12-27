@@ -18,12 +18,16 @@ class Articletype extends Common
         $request = $this->getLimit();
         $name = $this->request->get('name');
         $id = $this->request->get('id');
+        $id = $this->request->get('tag_id');
         $where = [];
         if (!empty($name)) {
             $where["name"] = ["like", "%$name%"];
         }
         if (!empty($id)) {
             $where["id"] = $id;
+        }
+        if (!empty($tag_id)) {
+            $where["tag_id"] = $tag_id;
         }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
@@ -195,7 +199,7 @@ class Articletype extends Common
     {
         $where = [];
         $user = $this->getSessionUser();
-        $where['articletype.node_id'] = $user['user_node_id'];
+        $where['type.node_id'] = $user['user_node_id'];
         $data = (new \app\admin\model\Articletype())->getArttype($where);
         $dates=[];
         foreach ($data as$k=>$v){
