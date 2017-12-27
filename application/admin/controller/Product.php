@@ -359,25 +359,42 @@ class Product extends Common
         $where['flag'] = 5;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
         if (!$menu) {
-            return $this->resultArray('当前无法预览', 'failed');
+            return $this->resultArray('产品分类没有菜单选中页面，暂时不能预览。', 'failed');
         }
+        //一个菜单有可能被多个站点选择 site表中只会存储第一级别的菜单 需要找出当前的pid=0的父级菜单
+        $pid = [];
         foreach ($menu as $k => $v) {
-            $wh['menu'] = ["like", "%,{$v['id']},%"];
-            $sitedata = \app\admin\model\Site::where($wh)->select();
-            foreach ($sitedata as $kk => $vv) {
-                $showhtml[] = [
-                    'url' => $vv['url'] . '/preview/product/' . $data['id'] . '.html',
-                    'site_name' => $vv['site_name'],
-                ];
-            }
-            if (!empty($showhtml)) {
-                return $this->resultArray('', '', $showhtml);
+            $path = $v['path'];
+            //该菜单的跟
+            if ($path) {
+                //获取第一级别的菜单
+                $pid[] = array_values(array_filter(explode(',', $path)))[0];
             } else {
-                return $this->resultArray('当前无法预览', 'failed');
+                $pid[] = $v['id'];
             }
         }
-
+        $pid = array_unique($pid);
+        //查询选择当前菜单的站点相关信息
+        $map = '';
+        foreach ($pid as $k => $v) {
+            $permap = " menu like ',%$v%,' ";
+            if ($k == 0) {
+                $map = $permap;
+                continue;
+            }
+            $map .= ' or ' . $permap;
+        }
+        $sitedata = \app\admin\model\Site::where($map)->field('id,site_name,url')->select();
+        foreach ($sitedata as $kk => $vv) {
+            $showhtml[] = [
+                'url' => $vv['url'] . '/preview/product/' . $data['id'] . '.html',
+                'site_name' => $vv['site_name'],
+            ];
+        }
+        if (!empty($showhtml)) {
+            return $this->resultArray('', '', $showhtml);
+        } else {
+            return $this->resultArray('当前文章对应的菜单页面没有站点选择，暂时不能预览。', 'failed');
+        }
     }
-
-
 }
