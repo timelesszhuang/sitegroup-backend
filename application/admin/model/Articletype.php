@@ -36,7 +36,7 @@ class Articletype extends Model
      */
     public function getArttype($where=0)
     {
-        $data =$this->field('id,name,detail,tag')->where($where)->select();
+        $data =$this->alias('articletype')->field('articletype.id,name,detail,tag_id,tag')->join('type_tag','type_tag.id = tag_id')->where($where)->select();
         return $data;
     }
 
