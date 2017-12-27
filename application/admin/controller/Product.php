@@ -148,21 +148,17 @@ class Product extends Common
         }
         //正在修改中 首先提示前台已经生成完成然后去服务器上面 重新生成新的页面
         $this->open_start('正在修改中');
-        $where['type_id'] = $post['type_id'];
-        $where['flag'] = 5;
-        $menu = (new \app\admin\model\Menu())->where($where)->select();
-        foreach ($menu as $k => $v) {
-            $wh['menu'] = ["like", "%,{$v['id']},%"];
-            $sitedata = \app\admin\model\Site::where($wh)->select();
-            foreach ($sitedata as $kk => $vv) {
-                $send = [
-                    "id" => $post['id'],
-                    "searchType" => 'product',
-                    "type" => $post['type_id'],
-                ];
-                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
-            }
+        $type_id = $post['type_id'];
+        $sitedata = $this->getProductSite($type_id);
+        foreach ($sitedata as $kk => $vv) {
+            $send = [
+                "id" => $post['id'],
+                "searchType" => 'product',
+                "type" => $post['type_id'],
+            ];
+            $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
         }
+
     }
 
     /**
@@ -348,14 +344,16 @@ class Product extends Common
         ];
     }
 
-    /**
+    /***
+     * 获取某个网站对应的产品
      * @return array
-     * 产品页面预览
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    public function productshowhtml()
+    private function getProductSite($type_id)
     {
-        $data = $this->request->post();
-        $where['type_id'] = ['like', ",{$data['type_id']},"];
+        $where['type_id'] = ['like', ",{$type_id},"];
         $where['flag'] = 5;
         $menu = (new \app\admin\model\Menu())->where($where)->select();
         if (!$menu) {
@@ -385,6 +383,17 @@ class Product extends Common
             $map .= ' or ' . $permap;
         }
         $sitedata = \app\admin\model\Site::where($map)->field('id,site_name,url')->select();
+        return $sitedata;
+    }
+
+    /**
+     * @return array
+     * 产品页面预览
+     */
+    public function productshowhtml()
+    {
+        $data = $this->request->post();
+        $sitedata = $this->getProductSite($data['type_id']);
         foreach ($sitedata as $kk => $vv) {
             $showhtml[] = [
                 'url' => $vv['url'] . '/preview/product/' . $data['id'] . '.html',
