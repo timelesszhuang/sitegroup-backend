@@ -189,7 +189,7 @@ Route::resource('question', 'admin/Question');
 Route::post('questionshowhtml', 'admin/Question/questionshowhtml');
 //问答分类
 Route::resource('questionType', 'admin/Questiontype');
-Route::get('questionType/list', 'admin/Questiontype/getQuestionType');
+Route::get('questionType/list', 'admin/Questiontype/getType');
 //统计问答
 Route::get('questiontype/QuestionCount', 'admin/Questiontype/QuestionCount');
 //段落文章
