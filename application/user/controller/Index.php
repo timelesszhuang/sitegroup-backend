@@ -121,6 +121,7 @@ class Index extends Common
         $arr["menu"]=$site_info->getAttr("menu");
         $arr["template_id"]=$site_info->getAttr("template_id");
         $arr["domain_id"]=$site_info->getAttr("domain");
+        $arr['url'] = $site_info->getAttr("url");
         $arr["site_name"]=$site_info->getAttr("site_name");
         $arr["main_site"]=$site_info->getAttr("main_site");
         $arr["site_type"]=$site_info->getAttr("site_type");

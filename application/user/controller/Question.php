@@ -209,9 +209,8 @@ class Question extends Common
     public function questionshowhtml()
     {
         $id = $this->request->post('id');
-        $where["id"] = $this->getSiteSession('website')["id"];
-        $Site = (new Site())->where($where)->field('url')->find();
-        $showurl = $Site['url'] . '/preview/question/' . $id . '.html';
+        $url =  $this->getSiteSession('website')['url'];
+        $showurl = $url . '/preview/question/' . $id . '.html';
         return $this->resultArray('', '', $showurl);
 
     }

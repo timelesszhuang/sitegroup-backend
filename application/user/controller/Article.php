@@ -396,9 +396,8 @@ class Article extends Common
     public function articleshowhtml()
     {
         $id = $this->request->post('id');
-        $where["id"] = $this->getSiteSession('website')["id"];
-        $Site = (new Site())->where($where)->field('url')->find();
-        $showurl = $Site['url'] . '/preview/article/' . $id . '.html';
+        $url =  $this->getSiteSession('website')['url'];
+        $showurl = $url . '/preview/article/' . $id . '.html';
         return $this->resultArray('', '', $showurl);
     }
 
