@@ -49,6 +49,7 @@ class Question extends Common
         $where['id'] = ['in', $menuid];
         $where['flag'] = 2;
         $menudata = (new Menu())->where($where)->field('type_id')->select();
+        $arr =[];
         foreach ($menudata as $k => $v) {
             $arr[] = $v['type_id'];
         };
@@ -180,7 +181,7 @@ class Question extends Common
     public function getQuestionType()
     {
         $wh['id'] = $this->request->session()['website']['id'];
-        $menu = $this->getSiteSession('website');
+        $menu = $this->getSiteSession('website')['menu'];
         $pmenuids = array_filter(explode(',', $menu));
         $menuObj = new \app\admin\model\Menu();
         $menuObj = $menuObj->where('flag', 2)->whereIn('id', $pmenuids);
