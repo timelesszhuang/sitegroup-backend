@@ -150,6 +150,9 @@ class Product extends Common
         $this->open_start('正在修改中');
         $type_id = $post['type_id'];
         $sitedata = $this->getProductSite($type_id);
+        if (array_key_exists('status', $sitedata)) {
+            return $sitedata;
+        }
         foreach ($sitedata as $kk => $vv) {
             $send = [
                 "id" => $post['id'],
@@ -361,7 +364,7 @@ class Product extends Common
             $query->where('type_id', ['=', $type_id], ['like', "%,$type_id,%"], 'or');
         })->select();
         if (!$menu) {
-            exit($this->resultArray('产品分类没有菜单选中页面，暂时不能预览。', 'failed'));
+            return $this->resultArray('产品分类没有菜单选中页面，暂时不能预览。', 'failed');
         }
         //一个菜单有可能被多个站点选择 site表中只会存储第一级别的菜单 需要找出当前的pid=0的父级菜单
         $pid = [];
@@ -398,6 +401,9 @@ class Product extends Common
     {
         $data = $this->request->post();
         $sitedata = $this->getProductSite($data['type_id']);
+        if (array_key_exists('status', $sitedata)) {
+            return $sitedata;
+        }
         foreach ($sitedata as $kk => $vv) {
             $showhtml[] = [
                 'url' => $vv['url'] . '/preview/product/' . $data['id'] . '.html',

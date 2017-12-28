@@ -122,6 +122,9 @@ class Question extends Common
         $this->publicUpdate((new \app\admin\model\Question), $data, $id);
         $this->open_start('正在修改中');
         $sitedata = $this->getQuestionSite($data['type_id']);
+        if (array_key_exists('status', $sitedata)) {
+            return $sitedata;
+        }
         foreach ($sitedata as $kk => $vv) {
             $send = [
                 "id" => $data['id'],
@@ -235,6 +238,9 @@ class Question extends Common
     {
         $data = $this->request->post();
         $sitedata = $this->getQuestionSite($data['type_id']);
+        if (array_key_exists('status', $sitedata)) {
+            return $sitedata;
+        }
         foreach ($sitedata as $kk => $vv) {
             $showhtml[] = [
                 'url' => $vv['url'] . '/preview/question/' . $data['id'] . '.html',

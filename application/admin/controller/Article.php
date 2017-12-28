@@ -148,6 +148,9 @@ class Article extends Common
         //找出有这篇  文章的菜单
         $articletype_id = $data['articletype_id'];
         $sitedata = $this->getArticleSite($articletype_id);
+        if (array_key_exists('status', $sitedata)) {
+            return $sitedata;
+        }
         foreach ($sitedata as $kk => $vv) {
             $send = [
                 "id" => $data['id'],
@@ -274,10 +277,10 @@ class Article extends Common
         //首先取出选择该文章分类的菜单 注意有可能是子菜单
         $where['flag'] = 3;
         $model_menu = (new \app\admin\model\Menu());
-        $menu = $model_menu->where(function($query)use($where){
+        $menu = $model_menu->where(function ($query) use ($where) {
             $query->where($where);
-        })->where(function($query)use($articletype_id){
-            $query->where('type_id',['=',$articletype_id],['like',"%,$articletype_id,%"],'or');
+        })->where(function ($query) use ($articletype_id) {
+            $query->where('type_id', ['=', $articletype_id], ['like', "%,$articletype_id,%"], 'or');
         })->select();
         if (!$menu) {
             return $this->resultArray('文章分类没有菜单选中页面，暂时不能预览。', 'failed');
@@ -319,6 +322,9 @@ class Article extends Common
         $data = $this->request->post();
         $articletype_id = $data['articletype_id'];
         $sitedata = $this->getArticleSite($articletype_id);
+        if (array_key_exists('status', $sitedata)) {
+            return $sitedata;
+        }
         foreach ($sitedata as $kk => $vv) {
             $showhtml[] = [
                 'url' => $vv['url'] . '/preview/article/' . $data['id'] . '.html',
