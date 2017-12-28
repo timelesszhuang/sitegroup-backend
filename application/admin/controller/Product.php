@@ -355,13 +355,13 @@ class Product extends Common
     {
         $where['flag'] = 5;
         $model_menu = (new \app\admin\model\Menu());
-        $menu = $model_menu->where(function($query)use($where){
+        $menu = $model_menu->where(function ($query) use ($where) {
             $query->where($where);
-        })->where(function($query)use($type_id){
-            $query->where('type_id',['=',$type_id],['like',"%,$type_id,%"],'or');
+        })->where(function ($query) use ($type_id) {
+            $query->where('type_id', ['=', $type_id], ['like', "%,$type_id,%"], 'or');
         })->select();
         if (!$menu) {
-            return $this->resultArray('产品分类没有菜单选中页面，暂时不能预览。', 'failed');
+            exit($this->resultArray('产品分类没有菜单选中页面，暂时不能预览。', 'failed'));
         }
         //一个菜单有可能被多个站点选择 site表中只会存储第一级别的菜单 需要找出当前的pid=0的父级菜单
         $pid = [];
@@ -398,8 +398,6 @@ class Product extends Common
     {
         $data = $this->request->post();
         $sitedata = $this->getProductSite($data['type_id']);
-        print_r($sitedata);
-        exit;
         foreach ($sitedata as $kk => $vv) {
             $showhtml[] = [
                 'url' => $vv['url'] . '/preview/product/' . $data['id'] . '.html',
