@@ -154,7 +154,6 @@ class Menu extends Common
         } else {
             $data["type_id"] = "";
         }
-        $data["content"] = "";
         $pid = [];
         if (isset($data["p_id"]) && $data["p_id"] != 0) {
             $field = \app\admin\model\Menu::where(["id" => $data["p_id"]])->find();
