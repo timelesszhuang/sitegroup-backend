@@ -3,6 +3,7 @@
 namespace app\user\controller;
 
 use app\admin\model\Menu;
+use app\admin\model\QuestionType;
 use app\admin\model\Site;
 use app\common\controller\Common;
 use think\Controller;
@@ -24,7 +25,7 @@ class Question extends Common
     public function index()
     {
         $content = $this->request->get('content');
-        $type_id =$this->request->get("type_id");
+        $type_id = $this->request->get("type_id");
 
 //        $limits = $this->getLimit();
 
@@ -176,23 +177,38 @@ class Question extends Common
     }
 
 
-
     public function getQuestionType()
     {
-        $where = [];
         $wh['id'] = $this->request->session()['website']['id'];
-        $Site = new \app\admin\model\Site();
-        $menuid = $Site->where($wh)->field('menu')->find()->menu;
-        $Menuid = explode(',', $menuid);
-        $where['id'] = $Menuid;
-        $menu = new \app\admin\model\Menu();
-        $whe['flag'] = 2;
-        $data = $menu->where('id', 'in', $Menuid)->where($whe)->select();
-        foreach ($data as $k => $v) {
-            $v['name'] = $v['type_name'];
-            $v['id'] = $v['type_id'];
+        $menu = $this->getSiteSession('website');
+        $pmenuids = array_filter(explode(',', $menu));
+        $menuObj = new \app\admin\model\Menu();
+        $menuObj = $menuObj->where('flag', 2)->whereIn('id', $pmenuids);
+        foreach ($pmenuids as $v) {
+            $menuObj = $menuObj->whereOr('path', 'like', "%,$v,%");
         }
-        return $this->resultArray('', '', $data);
+        $menus = $menuObj->select()->toArray();
+        $type_id = array_column($menus['type_id']);
+        $types = [];
+        foreach ($type_id as $ptype) {
+            array_merge($types, array_filter(explode(',', $ptype)));
+        }
+        $typearr = (new QuestionType())->alias('type')->join('type_tag', 'type_tag.id=type.tag', 'LEFT')->whereIn('type.id', $types)->field('type.id,name,tag')->select();
+        $final = [];
+        foreach ($typearr as $v) {
+            if($v['tag']){
+                $final[$v['tag']][] = [
+                    'id' => $v['id'],
+                    'name' => $v['name']
+                ];
+            }else{
+                $final['未定义'][] = [
+                    'id' => $v['id'],
+                    'name' => $v['name']
+                ];
+            }
+        }
+        return $this->resultArray('', '', $final);
     }
 
     /**
