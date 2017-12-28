@@ -203,7 +203,11 @@ class Articletype extends Common
         $data = (new \app\admin\model\Articletype())->getArttype($where);
         $dates=[];
         foreach ($data as$k=>$v){
-            $dates[$v['tag']][] = ['id'=>$v['id'],'name'=>$v['name']];
+            if(!$v['tag']){
+                $dates['未定义'][] = ['id'=>$v['id'],'name'=>$v['name']];
+            }else{
+                $dates[$v['tag']][] = ['id'=>$v['id'],'name'=>$v['name']];
+            }
         }
         return $this->resultArray('', '', $dates);
     }

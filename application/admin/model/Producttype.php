@@ -28,7 +28,7 @@ class Producttype extends Model
      */
     public function getArttype($where=0)
     {
-        $data =$this->alias('type')->field('type.id,name,detail,tag_id,tag')->join('type_tag','type_tag.id = tag_id')->where($where)->select();
+        $data =$this->alias('type')->field('type.id,name,detail,tag_id,tag')->join('type_tag','type_tag.id = tag_id','LEFT')->where($where)->select();
         return $data;
     }
 }
