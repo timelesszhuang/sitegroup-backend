@@ -49,7 +49,7 @@ class Question extends Common
         $where['id'] = ['in', $menuid];
         $where['flag'] = 2;
         $menudata = (new Menu())->where($where)->field('type_id')->select();
-        $arr =[];
+        $arr = [];
         foreach ($menudata as $k => $v) {
             $arr[] = $v['type_id'];
         };
@@ -184,25 +184,24 @@ class Question extends Common
         $menu = $this->getSiteSession('website')['menu'];
         $pmenuids = array_filter(explode(',', $menu));
         $menuObj = new \app\admin\model\Menu();
-        $menuObj = $menuObj->where('flag', 2)->whereIn('id', $pmenuids);
+        $menuObj = $menuObj->where('flag', 2)->where('id', 'in', $pmenuids);
         foreach ($pmenuids as $v) {
             $menuObj = $menuObj->whereOr('path', 'like', "%,$v,%");
         }
-        $menus = $menuObj->select()->toArray();
-        $type_id = array_column($menus['type_id']);
+        $menus = $menuObj->select();
         $types = [];
-        foreach ($type_id as $ptype) {
-            array_merge($types, array_filter(explode(',', $ptype)));
+        foreach ($menus as $v) {
+            $types=array_merge($types, array_filter(explode(',', $v['type_id'])));
         }
-        $typearr = (new QuestionType())->alias('type')->join('type_tag', 'type_tag.id=type.tag', 'LEFT')->whereIn('type.id', $types)->field('type.id,name,tag')->select();
+        $typearr = (new QuestionType())->alias('type')->join('type_tag', 'type_tag.id=type.tag_id', 'LEFT')->whereIn('type.id', $types)->field('type.id,name,tag')->select();
         $final = [];
         foreach ($typearr as $v) {
-            if($v['tag']){
+            if ($v['tag']) {
                 $final[$v['tag']][] = [
                     'id' => $v['id'],
                     'name' => $v['name']
                 ];
-            }else{
+            } else {
                 $final['未定义'][] = [
                     'id' => $v['id'],
                     'name' => $v['name']
