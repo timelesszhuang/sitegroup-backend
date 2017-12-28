@@ -398,6 +398,8 @@ class Product extends Common
     {
         $data = $this->request->post();
         $sitedata = $this->getProductSite($data['type_id']);
+        print_r($sitedata);
+        exit;
         foreach ($sitedata as $kk => $vv) {
             $showhtml[] = [
                 'url' => $vv['url'] . '/preview/product/' . $data['id'] . '.html',
