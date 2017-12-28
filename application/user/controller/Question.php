@@ -26,34 +26,9 @@ class Question extends Common
     {
         $content = $this->request->get('content');
         $type_id = $this->request->get("type_id");
-
-//        $limits = $this->getLimit();
-
-//        $where = [];
-//        $node_id = $this->getSiteSession('login_site');
-//        $where["node_id"] = $node_id["node_id"];
-//        $where["site_id"] = $this->getSiteSession('website')["id"];
-
-//        $user = $this->getSessionUser();
-//        $site["node_id"] = $user["user_node_id"];
-//        $data = (new \app\admin\model\Question)->getAll($limits['limit'], $limits['rows'], $site);
-//        return $this->resultArray('','',$data);
-
         $request = $this->getLimit();
-        $node_id = $this->getSiteSession('login_site');
-        $where = [];
-        $where["node_id"] = $node_id["node_id"];
-        $site_id['id'] = $this->getSiteSession('website')["id"];
-        $menu = (new Site())->where($site_id)->field('menu')->find();
-        $menuid = array_filter(explode(",", $menu->menu));
-        $where['id'] = ['in', $menuid];
-        $where['flag'] = 2;
-        $menudata = (new Menu())->where($where)->field('type_id')->select();
-        $arr = [];
-        foreach ($menudata as $k => $v) {
-            $arr[] = $v['type_id'];
-        };
-        $aricle['type_id'] = ['in', $arr];
+        $type_ids = $this->__getSiteQuestionTypeids();
+        $aricle['type_id'] = ['in', $type_ids];
         if (!empty($content)) {
             $aricle['question'] = ["like", "%$content%"];
         }
@@ -177,8 +152,14 @@ class Question extends Common
         //
     }
 
-
-    public function getQuestionType()
+    /**
+     * 获取 站点对应的文章分类的typeid 数组
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    private function __getSiteQuestionTypeids()
     {
         $wh['id'] = $this->request->session()['website']['id'];
         $menu = $this->getSiteSession('website')['menu'];
@@ -191,8 +172,17 @@ class Question extends Common
         $menus = $menuObj->select();
         $types = [];
         foreach ($menus as $v) {
-            $types=array_merge($types, array_filter(explode(',', $v['type_id'])));
+            $types = array_merge($types, array_filter(explode(',', $v['type_id'])));
         }
+        return $types;
+    }
+
+    /**
+     *
+     */
+    public function getQuestionType()
+    {
+        $types = $this->__getSiteQuestionTypeids();
         $typearr = (new QuestionType())->alias('type')->join('type_tag', 'type_tag.id=type.tag_id', 'LEFT')->whereIn('type.id', $types)->field('type.id,name,tag')->select();
         $final = [];
         foreach ($typearr as $v) {
@@ -219,12 +209,9 @@ class Question extends Common
     public function questionshowhtml()
     {
         $id = $this->request->post('id');
-        //$where['node_id'] = $this->getSiteSession('login_site')["node_id"];
         $where["id"] = $this->getSiteSession('website')["id"];
-        // dump($where);die;
         $Site = (new Site())->where($where)->field('url')->find();
         $showurl = $Site['url'] . '/preview/question/' . $id . '.html';
-        //dump($Site['url']);die;
         return $this->resultArray('', '', $showurl);
 
     }

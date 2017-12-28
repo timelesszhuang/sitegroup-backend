@@ -28,24 +28,13 @@ class Article extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $node_id = $this->getSiteSession('login_site');
-        $where = [];
-        $where["node_id"] = $node_id["node_id"];
-        $site_id['id'] = $this->getSiteSession('website')["id"];
-        $menu = (new Site())->where($site_id)->field('menu')->find();
-        $menuid = array_filter(explode(",", $menu->menu));
-        $where['id'] = ['in', $menuid];
-        $where['flag']=3;
-        $menudata = (new Menu())->where($where)->field('type_id')->select();
-        foreach ($menudata as $k=>$v){
-          $arr[] = $v['type_id'];
-        };
+        $type_ids = $this->__getSiteArticleTypeids();
         $aricle = [];
-        $aricle['articletype_id'] = ['in',  $arr];
+        $aricle['articletype_id'] = ['in', $type_ids];
         $articleid = $this->request->get('article_type');
         $title = $this->request->get('title');
         if (!empty($articleid)) {
-            $aricle['articletype_id'] =  $articleid;
+            $aricle['articletype_id'] = $articleid;
         }
         if (!empty($title)) {
             $aricle['title'] = ["like", "%$title%"];
@@ -56,7 +45,7 @@ class Article extends Common
             "total" => $count,
             "rows" => $articledata
         ];
-        return $this->resultArray('','',$data);
+        return $this->resultArray('', '', $data);
     }
 
     /**
@@ -171,9 +160,7 @@ class Article extends Common
         }
         $this->open_start('正在修改中');
         $where["id"] = $this->getSiteSession('website')["id"];
-        // dump($where);die;
         $Site = (new Site())->where($where)->field('url')->find();
-        //dump($Site['url']);die;
         $send = [
             "id" => $data['id'],
             "searchType" => 'article',
@@ -193,40 +180,49 @@ class Article extends Common
         return $this->deleteRecord((new \app\admin\model\Article), $id);
     }
 
+
     /**
-     * 获取文章类型
+     * 获取站点的对应的 type_id
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
+    private function __getSiteArticleTypeids()
+    {
+        $Menuid = $this->request->session()['website']['menu'];
+        $menu = new \app\admin\model\Menu();
+        $whe['flag'] = 3;
+        $data = $menu->where($whe)->where('id', 'in', $Menuid);
+        foreach (array_filter(explode(',', $Menuid)) as $menu_id) {
+            $data = $data->whereOr('path', 'like', "%,$menu_id,%");
+        }
+        $data = $data->field('type_id,type_name,tag_name');
+        $data = $data->select();
+        $type_ids = [];
+        foreach ($data as $k => $v) {
+            foreach (array_filter(explode(',', $v['type_id'])) as $value) {
+                $type_ids[$value] = 1;
+            }
+        }
+        $type_ids = array_keys($type_ids);
+        return $type_ids;
+    }
+
     /**
      * 获取站点文章分类
      * @return array
      */
     public function getArticleType()
     {
-        $where = [];
-        $Menuid = $this->request->session()['website']['menu'];
-        $menu = new \app\admin\model\Menu();
-        $whe['flag'] = 3;
-        $data = $menu->where($whe)->where('id', 'in', $Menuid);
-        foreach (array_filter(explode(',',$Menuid)) as $menu_id){
-            $data=$data->whereOr('path','like',"%,$menu_id,%");
-        }
-        $data=$data->field('type_id,type_name,tag_name');
-        $data=$data->select();
-        $type_ids=[];
+        $type_ids = $this->__getSiteArticleTypeids();
+        $data = (new \app\admin\model\Articletype)->alias('type')->field('type.id,name,tag_id,tag')->join('type_tag', 'type_tag.id = tag_id', 'LEFT')->where('type.id', 'in', $type_ids)->select();
+        $dates = [];
         foreach ($data as $k => $v) {
-            foreach(array_filter(explode(',',$v['type_id'])) as $value){
-                $type_ids[$value]=1;
-            }
-        }
-        $type_ids=array_keys($type_ids);
-        $data =(new \app\admin\model\Articletype)->alias('type')->field('type.id,name,tag_id,tag')->join('type_tag','type_tag.id = tag_id','LEFT')->where('type.id','in',$type_ids)->select();
-        $dates=[];
-        foreach ($data as$k=>$v){
-            if(!$v['tag']){
-                $dates['未定义'][] = ['id'=>$v['id'],'name'=>$v['name']];
-            }else{
-                $dates[$v['tag']][] = ['id'=>$v['id'],'name'=>$v['name']];
+            if (!$v['tag']) {
+                $dates['未定义'][] = ['id' => $v['id'], 'name' => $v['name']];
+            } else {
+                $dates[$v['tag']][] = ['id' => $v['id'], 'name' => $v['name']];
             }
         }
         return $this->resultArray('', '', $dates);
@@ -400,12 +396,9 @@ class Article extends Common
     public function articleshowhtml()
     {
         $id = $this->request->post('id');
-        //$where['node_id'] = $this->getSiteSession('login_site')["node_id"];
         $where["id"] = $this->getSiteSession('website')["id"];
-        // dump($where);die;
         $Site = (new Site())->where($where)->field('url')->find();
         $showurl = $Site['url'] . '/preview/article/' . $id . '.html';
-        //dump($Site['url']);die;
         return $this->resultArray('', '', $showurl);
     }
 
