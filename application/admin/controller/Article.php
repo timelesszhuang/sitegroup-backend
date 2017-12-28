@@ -272,9 +272,13 @@ class Article extends Common
     private function getArticleSite($articletype_id)
     {
         //首先取出选择该文章分类的菜单 注意有可能是子菜单
-        $where['type_id'] = ['like', ",{$articletype_id},"];
         $where['flag'] = 3;
-        $menu = (new \app\admin\model\Menu())->where($where)->select();
+        $model_menu = (new \app\admin\model\Menu());
+        $menu = $model_menu->where(function($query)use($where){
+            $query->where($where);
+        })->where(function($query)use($articletype_id){
+            $query->where('type_id',['=',$articletype_id],['like',"%,$articletype_id,%"],'or');
+        })->select();
         if (!$menu) {
             return $this->resultArray('文章分类没有菜单选中页面，暂时不能预览。', 'failed');
         }

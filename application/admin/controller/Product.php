@@ -353,9 +353,13 @@ class Product extends Common
      */
     private function getProductSite($type_id)
     {
-        $where['type_id'] = ['like', ",{$type_id},"];
         $where['flag'] = 5;
-        $menu = (new \app\admin\model\Menu())->where($where)->select();
+        $model_menu = (new \app\admin\model\Menu());
+        $menu = $model_menu->where(function($query)use($where){
+            $query->where($where);
+        })->where(function($query)use($type_id){
+            $query->where('type_id',['=',$type_id],['like',"%,$type_id,%"],'or');
+        })->select();
         if (!$menu) {
             return $this->resultArray('产品分类没有菜单选中页面，暂时不能预览。', 'failed');
         }

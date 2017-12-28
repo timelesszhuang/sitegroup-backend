@@ -186,9 +186,13 @@ class Question extends Common
     private function getQuestionSite($type_id)
     {
         //首先取出选择该文章分类的菜单 注意有可能是子菜单
-        $where['type_id'] = ['like', ",{$type_id},"];
         $where['flag'] = 2;
-        $menu = (new \app\admin\model\Menu())->where($where)->select();
+        $model_menu = (new \app\admin\model\Menu());
+        $menu = $model_menu->where(function($query)use($where){
+            $query->where($where);
+        })->where(function($query)use($type_id){
+            $query->where('type_id',['=',$type_id],['like',"%,$type_id,%"],'or');
+        })->select();
         if (!$menu) {
             return $this->resultArray('问答分类没有菜单选中页面，暂时不能预览。', 'failed');
         }
