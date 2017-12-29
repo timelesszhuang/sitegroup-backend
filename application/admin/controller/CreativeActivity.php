@@ -4,6 +4,7 @@ namespace app\admin\controller;
 
 use app\common\controller\Common;
 use think\Config;
+use think\Model;
 use think\Request;
 use app\common\model\CreativeActivity as creative;
 use app\common\traits\Osstrait;
@@ -131,10 +132,16 @@ class CreativeActivity extends Common
             return $this->resultArray($validate->getError(), "failed");
         }
         //本地图片位置
-        $type = $this->analyseUrlFileType($data['oss_img_src']);
         //生成随机的文件名
-        $data['img_name'] = $this->formUniqueString() . ".{$type}";
-        $data['small_img_name'] = $this->formUniqueString() . ".{$type}";
+        $old_data = Model('creative_activity')->find($id);
+        if($old_data['oss_img_src']!=$data['oss_img_src']){
+            $type = $this->analyseUrlFileType($data['oss_img_src']);
+            $data['img_name'] = $this->formUniqueString() . ".{$type}";
+        }
+        if($old_data['smalloss_img_src']!=$data['smalloss_img_src']){
+            $type = $this->analyseUrlFileType($data['smalloss_img_src']);
+            $data['small_img_name'] = $this->formUniqueString() . ".{$type}";
+        }
         if (!creative::update($data, ["id" => $id])) {
             return $this->resultArray("修改失败", "failed");
         }
