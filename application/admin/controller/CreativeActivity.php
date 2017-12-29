@@ -61,17 +61,17 @@ class CreativeActivity extends Common
         $rule = [
             ["title", "require", "请输入标题"],
             ["oss_img_src", "require", "请传递封面"],
-            ["en_name", "require|unique:creative_activity,node_id^status", "请输入英文名|英文名重复"],
+            ["en_name", "require|unique:creative_activity,en_name^node_id", "请输入英文名|英文名重复"],
             ["keywords", "require", "请输入页面关键词"],
             ["summary", "require", "请输入页面描述"],
             ["content", "require", '请输入活动详情'],
         ];
         $validate = new Validate($rule);
         $data = $request->post();
+        $data["node_id"] = $user["user_node_id"];
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $data["node_id"] = $user["user_node_id"];
         //本地图片位置
         $type = $this->analyseUrlFileType($data['oss_img_src']);
         //生成随机的文件名
@@ -117,18 +117,18 @@ class CreativeActivity extends Common
         $rule = [
             ["title", "require", "请输入标题"],
             ["oss_img_src", "require", "请传递封面"],
+            ["en_name", "require|unique:creative_activity,en_name^node_id", "请输入英文名|英文名重复"],
             ["img_name", "require", "请上传图片名"],
-            ["en_name", "require|unique:creative_activity,node_id^status", "请输入英文名|英文名重复"],
             ["keywords", "require", "请输入页面关键词"],
             ["summary", "require", "请输入页面描述"],
             ["content", "require", '请输入活动详情'],
         ];
         $validate = new Validate($rule);
-        $data = $request->post();
+        $data = $request->put();
+        $data["node_id"] = $user["user_node_id"];
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $data["node_id"] = $user["user_node_id"];
         //本地图片位置
         $type = $this->analyseUrlFileType($data['oss_img_src']);
         //生成随机的文件名
