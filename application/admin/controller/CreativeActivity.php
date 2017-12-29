@@ -77,7 +77,10 @@ class CreativeActivity extends Common
         $type = $this->analyseUrlFileType($data['oss_img_src']);
         //生成随机的文件名
         $data['img_name'] = $this->formUniqueString() . ".{$type}";
-        $data['small_img_name'] = $this->formUniqueString() . ".{$type}";
+        if($data['smalloss_img_src']){
+            $type = $this->analyseUrlFileType($data['smalloss_img_src']);
+            $data['small_img_name'] = $this->formUniqueString() . ".{$type}";
+        }
         if (creative::create($data)) {
             return $this->resultArray("添加成功");
         }
