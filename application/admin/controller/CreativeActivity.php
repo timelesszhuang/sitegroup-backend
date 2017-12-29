@@ -61,7 +61,7 @@ class CreativeActivity extends Common
         $rule = [
             ["title", "require", "请输入标题"],
             ["oss_img_src", "require", "请传递封面"],
-            ["en_name", "require|unique:creative_activity,node_id=".$user["user_node_id"], "请输入英文名|英文名重复"],
+            ["en_name", "require|unique:creative_activity,node_id^status", "请输入英文名|英文名重复"],
             ["keywords", "require", "请输入页面关键词"],
             ["summary", "require", "请输入页面描述"],
             ["content", "require", '请输入活动详情'],
@@ -118,7 +118,7 @@ class CreativeActivity extends Common
             ["title", "require", "请输入标题"],
             ["oss_img_src", "require", "请传递封面"],
             ["img_name", "require", "请上传图片名"],
-            ["en_name", "require|unique:creative_activity,node_id=".$user["user_node_id"], "请输入英文名|英文名重复"],
+            ["en_name", "require|unique:creative_activity,node_id^status", "请输入英文名|英文名重复"],
             ["keywords", "require", "请输入页面关键词"],
             ["summary", "require", "请输入页面描述"],
             ["content", "require", '请输入活动详情'],
