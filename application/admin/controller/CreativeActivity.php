@@ -57,9 +57,11 @@ class CreativeActivity extends Common
      */
     public function save(Request $request)
     {
+        $user = $this->getSessionUser();
         $rule = [
             ["title", "require", "请输入标题"],
             ["oss_img_src", "require", "请传递封面"],
+            ["en_name", "require|unique:node_id=".$user["user_node_id"], "请输入英文名|英文名重复"],
             ["keywords", "require", "请输入页面关键词"],
             ["summary", "require", "请输入页面描述"],
             ["content", "require", '请输入活动详情'],
@@ -69,7 +71,6 @@ class CreativeActivity extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $user = $this->getSessionUser();
         $data["node_id"] = $user["user_node_id"];
         //本地图片位置
         $type = $this->analyseUrlFileType($data['oss_img_src']);
@@ -112,10 +113,12 @@ class CreativeActivity extends Common
      */
     public function update(Request $request, $id)
     {
+        $user = $this->getSessionUser();
         $rule = [
             ["title", "require", "请输入标题"],
             ["oss_img_src", "require", "请传递封面"],
             ["img_name", "require", "请上传图片名"],
+            ["en_name", "require|unique:node_id=".$user["user_node_id"], "请输入英文名|英文名重复"],
             ["keywords", "require", "请输入页面关键词"],
             ["summary", "require", "请输入页面描述"],
             ["content", "require", '请输入活动详情'],
@@ -125,7 +128,6 @@ class CreativeActivity extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $user = $this->getSessionUser();
         $data["node_id"] = $user["user_node_id"];
         //本地图片位置
         $type = $this->analyseUrlFileType($data['oss_img_src']);
