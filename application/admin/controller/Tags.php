@@ -103,7 +103,7 @@ class Tags extends Common
         foreach ($datas as $value){
             $datass[$value['id']]= $value['name'];
         }
-        return $this->resultArray("添加成功",'success', ['id'=>$id,'data'=>$datass]);
+        return $this->resultArray("添加成功",'success', ['id'=>(int)$id,'data'=>$datass]);
     }
 
     /**
