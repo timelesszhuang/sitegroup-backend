@@ -73,6 +73,7 @@ class Question extends Common
         }else{
             $data['tags']="";
         }
+        unset($data['tag_id']);
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\Question::create($data)) {
             return $this->resultArray('添加失败', 'failed');
@@ -129,6 +130,7 @@ class Question extends Common
         }else{
             $data['tags']="";
         }
+        unset($data['tag_id']);
         $this->publicUpdate((new \app\admin\model\Question), $data, $id);
         $this->open_start('正在修改中');
         $sitedata = $this->getQuestionSite($data['type_id']);

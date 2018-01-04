@@ -84,6 +84,7 @@ class Article extends Common
         }else{
             $data['tags']="";
         }
+        unset($data['tag_id']);
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -150,6 +151,7 @@ class Article extends Common
         }else{
             $data['tags']="";
         }
+        unset($data['tag_id']);
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
