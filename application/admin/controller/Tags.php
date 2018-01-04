@@ -60,7 +60,11 @@ class Tags extends Common
         $where['type']=$data['type'];
         $where['node_id']=$user['user_node_id'];
         $datas = (new Type_Tag)->where($where)->select();
-        return $this->resultArray("",'', $datas);
+        $datass=[];
+        foreach ($datas as $value){
+            $datass[$value['id']]= $value['name'];
+        }
+        return $this->resultArray("",'', $datass);
     }
 
     /**
@@ -95,7 +99,11 @@ class Tags extends Common
         $where['type']=$data['type'];
         $where['node_id']=$user['user_node_id'];
         $datas = (new Type_Tag)->where($where)->select();
-        return $this->resultArray("添加成功",'success', ['id'=>$id,'data'=>$datas]);
+        $datass=[];
+        foreach ($datas as $value){
+            $datass[$value['id']]= $value['name'];
+        }
+        return $this->resultArray("添加成功",'success', ['id'=>$id,'data'=>$datass]);
     }
 
     /**
