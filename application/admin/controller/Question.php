@@ -68,10 +68,10 @@ class Question extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        if(isset($data['tags'])&&is_array($data['tags'])){
-            $data['tags']=','.implode(',',$data['tags']).',';
+        if(isset($data['tag_id'])&&is_array($data['tag_id'])){
+            $data['tag_id']=','.implode(',',$data['tag_id']).',';
         }else{
-            $data['tags']="";
+            $data['tag_id']="";
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\Question::create($data)) {
@@ -124,10 +124,10 @@ class Question extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        if(isset($data['tags'])&&is_array($data['tags'])){
-            $data['tags']=','.implode(',',$data['tags']).',';
+        if(isset($data['tag_id'])&&is_array($data['tag_id'])){
+            $data['tag_id']=','.implode(',',$data['tag_id']).',';
         }else{
-            $data['tags']="";
+            $data['tag_id']="";
         }
         $this->publicUpdate((new \app\admin\model\Question), $data, $id);
         $this->open_start('正在修改中');

@@ -78,10 +78,10 @@ class Product extends Common
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new productM();
-        if(isset($data['tags'])&&is_array($post['tags'])){
-            $post['tags']=','.implode(',',$post['tags']).',';
+        if(isset($data['tag_id'])&&is_array($post['tag_id'])){
+            $post['tag_id']=','.implode(',',$post['tag_id']).',';
         }else{
-            $post['tags']="";
+            $post['tag_id']="";
         }
         $model->save($post);
         if ($model->id) {
@@ -148,10 +148,10 @@ class Product extends Common
             $type = $this->analyseUrlFileType($post['image']);
             $post['image_name'] = $this->formUniqueString() . ".$type";
         }
-        if(isset($data['tags'])&&is_array($post['tags'])){
-            $post['tags']=','.implode(',',$post['tags']).',';
+        if(isset($data['tag_id'])&&is_array($post['tag_id'])){
+            $post['tag_id']=','.implode(',',$post['tag_id']).',';
         }else{
-            $post['tags']="";
+            $post['tag_id']="";
         }
         if (!(new productM)->save($post, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
