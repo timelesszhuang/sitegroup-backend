@@ -90,7 +90,9 @@ class Question extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Question), $id);
+        $data = $this->getread((new \app\admin\model\Question), $id);
+        $data['tags'] = array_filter(explode(',',$data['tags']));
+        return $data;
     }
 
     /**

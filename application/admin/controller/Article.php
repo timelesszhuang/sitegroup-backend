@@ -46,7 +46,9 @@ class Article extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Article), $id);
+        $data = $this->getread((new \app\admin\model\Article), $id);
+        $data['tags'] = array_filter(explode(',',$data['tags']));
+        return $data;
     }
 
     /**
