@@ -69,9 +69,9 @@ class Question extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         if(isset($data['tag_id'])&&is_array($data['tag_id'])){
-            $data['tag_id']=','.implode(',',$data['tag_id']).',';
+            $data['tags']=','.implode(',',$data['tag_id']).',';
         }else{
-            $data['tag_id']="";
+            $data['tags']="";
         }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\Question::create($data)) {
@@ -125,9 +125,9 @@ class Question extends Common
             return $this->resultArray($validate->getError(), 'failed');
         }
         if(isset($data['tag_id'])&&is_array($data['tag_id'])){
-            $data['tag_id']=','.implode(',',$data['tag_id']).',';
+            $data['tags']=','.implode(',',$data['tag_id']).',';
         }else{
-            $data['tag_id']="";
+            $data['tags']="";
         }
         $this->publicUpdate((new \app\admin\model\Question), $data, $id);
         $this->open_start('正在修改中');

@@ -79,9 +79,9 @@ class Product extends Common
         $post["node_id"] = $user["user_node_id"];
         $model = new productM();
         if(isset($data['tag_id'])&&is_array($post['tag_id'])){
-            $post['tag_id']=','.implode(',',$post['tag_id']).',';
+            $post['tags']=','.implode(',',$post['tag_id']).',';
         }else{
-            $post['tag_id']="";
+            $post['tags']="";
         }
         $model->save($post);
         if ($model->id) {
@@ -149,9 +149,9 @@ class Product extends Common
             $post['image_name'] = $this->formUniqueString() . ".$type";
         }
         if(isset($data['tag_id'])&&is_array($post['tag_id'])){
-            $post['tag_id']=','.implode(',',$post['tag_id']).',';
+            $post['tags']=','.implode(',',$post['tag_id']).',';
         }else{
-            $post['tag_id']="";
+            $post['tags']="";
         }
         if (!(new productM)->save($post, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
