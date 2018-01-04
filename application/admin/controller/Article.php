@@ -79,6 +79,11 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
+        if(isset($data['tags'])&&is_array($data['tags'])){
+            $data['tags']=','.implode(',',$data['tags']).',';
+        }else{
+            $data['tags']="";
+        }
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -139,6 +144,11 @@ class Article extends Common
                     $data["thumbnails_name"] = $filename . "." . $filetype;
                 }
             }
+        }
+        if(isset($data['tags'])&&is_array($data['tags'])){
+            $data['tags']=','.implode(',',$data['tags']).',';
+        }else{
+            $data['tags']="";
         }
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');

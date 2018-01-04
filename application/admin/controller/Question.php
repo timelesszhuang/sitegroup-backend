@@ -68,6 +68,11 @@ class Question extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
+        if(isset($data['tags'])&&is_array($data['tags'])){
+            $data['tags']=','.implode(',',$data['tags']).',';
+        }else{
+            $data['tags']="";
+        }
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\Question::create($data)) {
             return $this->resultArray('添加失败', 'failed');
@@ -118,6 +123,11 @@ class Question extends Common
         $data = $this->request->put();
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
+        }
+        if(isset($data['tags'])&&is_array($data['tags'])){
+            $data['tags']=','.implode(',',$data['tags']).',';
+        }else{
+            $data['tags']="";
         }
         $this->publicUpdate((new \app\admin\model\Question), $data, $id);
         $this->open_start('正在修改中');

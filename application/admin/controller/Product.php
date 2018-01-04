@@ -78,6 +78,11 @@ class Product extends Common
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new productM();
+        if(isset($data['tags'])&&is_array($post['tags'])){
+            $post['tags']=','.implode(',',$post['tags']).',';
+        }else{
+            $post['tags']="";
+        }
         $model->save($post);
         if ($model->id) {
             return $this->resultArray("添加成功");
@@ -142,6 +147,11 @@ class Product extends Common
             //要静态化的文件名
             $type = $this->analyseUrlFileType($post['image']);
             $post['image_name'] = $this->formUniqueString() . ".$type";
+        }
+        if(isset($data['tags'])&&is_array($post['tags'])){
+            $post['tags']=','.implode(',',$post['tags']).',';
+        }else{
+            $post['tags']="";
         }
         if (!(new productM)->save($post, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
