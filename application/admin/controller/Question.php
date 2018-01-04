@@ -91,7 +91,7 @@ class Question extends Common
     public function read($id)
     {
         $data = $this->getread((new \app\admin\model\Question), $id);
-        $data['data']['tags'] = array_filter(explode(',',$data['data']['tags']));
+        $data['data']['tags'] = implode(',',array_filter(explode(',',$data['data']['tags'])));
         return $data;
     }
 
