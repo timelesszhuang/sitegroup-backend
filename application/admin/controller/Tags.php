@@ -83,13 +83,19 @@ class Tags extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        if (!Type_Tag::create($data)) {
-            return $this->resultArray("添加失败", "failed");
+        $dataa = (new Type_Tag)->where($data)->find();
+        if(!$dataa){
+            if (!Type_Tag::create($data)) {
+                return $this->resultArray("添加失败", "failed");
+            }
+            $id=(new Type_Tag)->getLastInsID();
+        }else{
+            $id=$dataa['id'];
         }
         $where['type']=$data['type'];
         $where['node_id']=$user['user_node_id'];
         $datas = (new Type_Tag)->where($where)->select();
-        return $this->resultArray("添加成功",'success', $datas);
+        return $this->resultArray("添加成功",'success', ['id'=>$id,'data'=>$datas]);
     }
 
     /**
