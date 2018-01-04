@@ -435,6 +435,9 @@ Route::post('admin/storyOut', 'admin/CreativeActivity/storyOut');
 Route::post('admin/saveOut/:id', 'admin/CreativeActivity/saveOut');
 //活动相关
 Route::resource('admin/activityabout', 'admin/CreativeActivity');
+//活动相关
+Route::resource('admin/tags', 'admin/Tags');
+Route::post('admin/gettags', 'admin/getTagList');
 //活动 修改/添加 图片
 Route::post('admin/uploadactivitySerImg', 'admin/CreativeActivity/uploadImgSer');
 // 活动轮播获取
