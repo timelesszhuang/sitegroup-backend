@@ -460,7 +460,8 @@ Route::resource('admin/souhu',"admin/Souhu");
 //搜狐分类列表
 Route::get('admin/souhuList',"admin/Souhu/typeList");
 
-
+//短信相关
+Route::get('smssend','common/Sms/sendSms');
 
 
 
