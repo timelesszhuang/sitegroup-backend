@@ -100,7 +100,7 @@ class Product extends Common
     public function read($id)
     {
         $data = (new productM)->where(["id" => $id])->field("create_time,update_time,imgser", true)->find();
-        $data['data']['tags'] = implode(',',array_filter(explode(',',$data['data']['tags'])));
+        $data['tags'] = implode(',',array_filter(explode(',',$data['tags'])));
         return $this->resultArray('', '', $data);
     }
 
