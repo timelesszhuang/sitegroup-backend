@@ -96,8 +96,9 @@ class Send extends Controller
         $sitearr = $rejection->where($where)->select();
         $sarr = [];
         $node = [];
+
         foreach ($sitearr as $k => $v) {
-            $sarr[$v['site_id']][] = $v['id'];
+            $node[$v['node_id']][$v['id']] = $v['id'];
         };
         foreach ($node as $k => $v) {
             $name = (new Node())->where(['id' => $k])->field('name,mobile')->find();

@@ -590,6 +590,11 @@ Route::resource('user/souhu',"user/Souhu");
 Route::get('user/souhuList',"user/Souhu/typeList");
 //获取站点联系方式
 Route::resource('user/siteResource','user/Site');
+//标签
+Route::resource('user/tags', 'user/Tags');
+Route::post('user/gettags', 'user/Tags/getTagList');
+
+
 Route::post('common/send','common/Send/Send');
 Route::get('common/site_send','common/Send/site_send');
 Route::get('common/node_send','common/Send/node_send');
