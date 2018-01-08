@@ -463,6 +463,12 @@ Route::get('admin/souhuList',"admin/Souhu/typeList");
 //短信相关
 Route::get('smssend','common/Sms/sendSms');
 
+//支付相关
+Route::get('pay/Pay','common/Pay/pay');
+Route::get('pay/notify_url','common/Pay/notify_url');
+Route::post('pay/return_url','common/Pay/return_url');
+Route::post('pagepay','common/Pay/pagepay');
+
 
 
 
