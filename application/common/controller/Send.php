@@ -11,6 +11,7 @@ use app\admin\model\Rejection;
 use app\admin\model\Site;
 use app\sysadmin\model\Node;
 use AlibabaAliqinFcSmsNumSendRequest;
+use app\common\model\User;
 
 include(EXTEND_PATH . "taobao-sdk-PHP/TopSdk.php");
 
@@ -51,10 +52,8 @@ class Send extends Controller
         $rejection = new Rejection();
         $sitearr = $rejection->where($where)->select();
         $sarr = [];
-        $node = [];
         foreach ($sitearr as $k => $v) {
             $sarr[$v['site_id']][$v['id']] = $v['id'];
-            $node[$v['node_id']][] = $v['id'];
         };
         foreach ($sarr as $k => $v) {
             $name = (new Site())->where(['id' => $k])->field('site_name,telephone,mobile')->find();
@@ -94,15 +93,14 @@ class Send extends Controller
         $where['status'] = 20;
         $rejection = new Rejection();
         $sitearr = $rejection->where($where)->select();
-        $sarr = [];
         $node = [];
-
         foreach ($sitearr as $k => $v) {
             $node[$v['node_id']][$v['id']] = $v['id'];
         };
         foreach ($node as $k => $v) {
             $name = (new Node())->where(['id' => $k])->field('name,mobile')->find();
-            $phone = $name['mobile'];
+            $mobile = (new User())->where(['node_id'=>$k])->field('mobile')->find();
+            $phone = $mobile['mobile'];
             $nodename = $name['name'];
             $nodecount = count($v);
             $nodeerr = $this->send($nodename, $nodecount, $phone);
