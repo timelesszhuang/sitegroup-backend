@@ -101,7 +101,6 @@ class Login extends Controller
 //        if (!captcha_check($post["verifyCode"])) {
 //            return  $this->resultArray('验证码错误', "failed");
 //        };
-        dump($post);die;
         $user_arr = (new User())->checkUser($post["user_name"], $post["pwd"]);
         return $this->resultArray($user_arr[0], $user_arr[1], $user_arr[2]);
     }
