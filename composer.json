@@ -33,7 +33,8 @@
         "topthink/think-worker": "^1.0",
         "topthink/think-queue": "^1.0",
         "topthink/think-testing": "^1.0",
-        "aliyuncs/oss-sdk-php": "^2.2"
+        "aliyuncs/oss-sdk-php": "^2.2",
+        "riverslei/payment": "^4.1"
     },
     "extra": {
         "think-path": "thinkphp"

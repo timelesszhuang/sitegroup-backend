@@ -100,16 +100,8 @@ Route::resource('sys/systemNotice', 'sysadmin/SystemNotice');
 Route::resource('sys/CaseCenter', "sysadmin/CaseCenter");
 //营销模式上传缩略图
 Route::post('sys/uploadMarketingmode', 'sysadmin/Marketingmode/uploadImage');
-//营销事件活动
-Route::resource('sys/eventmarketholiday', 'sysadmin/Eventmarketingholiday');
-//上传html5模板
-Route::post('sys/uploadHtmlTemplate', 'sysadmin/HtmlTemplate/uploadTemplate');
-//上传html5模板缩略图
-Route::post('sys/uploadHtmlTemplateImg', 'sysadmin/HtmlTemplate/uploadTemplateImg');
 //html5模板模块
 Route::resource('sys/HtmlTemplate', 'sysadmin/HtmlTemplate');
-//获取多条模板
-Route::get('sys/AllHtmlTemplate/:id', 'sysadmin/HtmlTemplate/readAll');
 //媒体分类
 Route::resource('sys/mediaType', 'sysadmin/MediaType');
 //媒体
@@ -460,7 +452,14 @@ Route::resource('admin/souhu',"admin/Souhu");
 //搜狐分类列表
 Route::get('admin/souhuList',"admin/Souhu/typeList");
 
+//短信相关
+Route::get('smssend','common/Sms/sendSms');
 
+//支付相关
+Route::get('pay/Pay','common/Pay/pay');
+Route::get('pay/notify_url','common/Pay/notify_url');
+Route::post('pay/return_url','common/Pay/return_url');
+Route::post('pagepay','common/Pay/pagepay');
 
 
 
@@ -589,3 +588,11 @@ Route::resource('user/souhu',"user/Souhu");
 Route::get('user/souhuList',"user/Souhu/typeList");
 //获取站点联系方式
 Route::resource('user/siteResource','user/Site');
+//标签
+Route::resource('user/tags', 'user/Tags');
+Route::post('user/gettags', 'user/Tags/getTagList');
+
+
+Route::post('common/send','common/Send/Send');
+Route::get('common/site_send','common/Send/site_send');
+Route::get('common/node_send','common/Send/node_send');
