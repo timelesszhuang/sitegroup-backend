@@ -18,11 +18,11 @@ include(EXTEND_PATH . "taobao-sdk-PHP/TopSdk.php");
 class Send extends Controller
 {
     static $acsClient = null;
-
     /**
      * 发送甩单短信
      * @param $name
      * @param $count
+     * @param $phone
      * @return mixed|\ResultSet|\SimpleXMLElement
      */
     public function send($name, $count, $phone)
