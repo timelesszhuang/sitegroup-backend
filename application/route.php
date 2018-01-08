@@ -100,16 +100,8 @@ Route::resource('sys/systemNotice', 'sysadmin/SystemNotice');
 Route::resource('sys/CaseCenter', "sysadmin/CaseCenter");
 //营销模式上传缩略图
 Route::post('sys/uploadMarketingmode', 'sysadmin/Marketingmode/uploadImage');
-//营销事件活动
-Route::resource('sys/eventmarketholiday', 'sysadmin/Eventmarketingholiday');
-//上传html5模板
-Route::post('sys/uploadHtmlTemplate', 'sysadmin/HtmlTemplate/uploadTemplate');
-//上传html5模板缩略图
-Route::post('sys/uploadHtmlTemplateImg', 'sysadmin/HtmlTemplate/uploadTemplateImg');
 //html5模板模块
 Route::resource('sys/HtmlTemplate', 'sysadmin/HtmlTemplate');
-//获取多条模板
-Route::get('sys/AllHtmlTemplate/:id', 'sysadmin/HtmlTemplate/readAll');
 //媒体分类
 Route::resource('sys/mediaType', 'sysadmin/MediaType');
 //媒体

@@ -266,5 +266,7 @@ return [
     'database'       => 'yiqixiu',
     'username'       => 'yiqixiu',
     'password'       => 'LiuRui123$%^',
-    ]
+    ],
+
+
 ];
