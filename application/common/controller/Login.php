@@ -87,6 +87,7 @@ class Login extends Controller
     public function login()
     {
         $post = $this->request->post();
+        dump($post);die;
         $rule = [
             ["user_name", "require", "请填写用户名"],
             ["pwd", "require", "请填写密码"],
