@@ -36,7 +36,7 @@ class Send extends Controller
         $req->setSmsType("normal");
         $req->setSmsFreeSignName('乐销易');
         $req->setSmsParam('{"name":"' . $name . '","num":"' . $count . '"}');
-        $req->setRecNum("17862520398");
+        $req->setRecNum($phone);
         $req->setSmsTemplateCode('SMS_118715177');
         $resp = $c->execute($req);
         return $resp;
