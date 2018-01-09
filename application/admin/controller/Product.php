@@ -145,10 +145,10 @@ class Product extends Common
                     //原图存在则去oss删除文件
                     $this->ossDeleteObject($pre_src);
                 }
+                $type = $this->analyseUrlFileType($post['image']);
+                $post['image_name'] = $this->formUniqueString() . ".$type";
             }
             //要静态化的文件名
-            $type = $this->analyseUrlFileType($post['image']);
-            $post['image_name'] = $this->formUniqueString() . ".$type";
         }
         if(isset($post['tag_id'])&&is_array($post['tag_id'])){
             $post['tags']=','.implode(',',$post['tag_id']).',';
