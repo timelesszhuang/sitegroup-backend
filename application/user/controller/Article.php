@@ -70,6 +70,7 @@ class Article extends Common
             ["title", "require", "请输入标题"],
             ["content", "require", "请输入内容"],
             ["articletype_id", "require", "请选择文章分类"],
+            ["tag_id", "require", "请选择标签"],
         ];
         $validate = new Validate($rule);
         $data = $request->post();
@@ -81,6 +82,12 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
+        if(isset($data['tag_id'])&&is_array($data['tag_id'])){
+            $data['tags']=','.implode(',',$data['tag_id']).',';
+        }else{
+            $data['tags']="";
+        }
+        unset($data['tag_id']);
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
@@ -95,7 +102,9 @@ class Article extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\admin\model\Article), $id);
+        $data = $this->getread((new \app\admin\model\Article), $id);
+        $data['data']['tags'] = implode(',',array_filter(explode(',',$data['data']['tags'])));
+        return $data;
     }
 
     /**
@@ -122,6 +131,7 @@ class Article extends Common
             ["title", "require", "请输入标题"],
             ["content", "require", "请输入内容"],
             ["articletype_id", "require", "请选择文章分类"],
+            ["tag_id", "require", "请选择标签"],
         ];
         $validate = new Validate($rule);
         $data = $request->post();
@@ -155,6 +165,12 @@ class Article extends Common
                 $data["thumbnails_name"] = $filename . "." . $filetype;
             }
         }
+        if(isset($data['tag_id'])&&is_array($data['tag_id'])){
+            $data['tags']=','.implode(',',$data['tag_id']).',';
+        }else{
+            $data['tags']="";
+        }
+        unset($data['tag_id']);
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }

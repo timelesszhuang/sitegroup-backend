@@ -98,12 +98,11 @@ class Send extends Controller
             $node[$v['node_id']][$v['id']] = $v['id'];
         };
         foreach ($node as $k => $v) {
-            $name = (new Node())->where(['id' => $k])->field('name,mobile')->find();
-            $mobile = (new User())->where(['node_id'=>$k])->field('mobile')->find();
-            $phone = $mobile['mobile'];
+            $name = (new Node())->where(['id' => $k])->field('name')->find();
+            $mobile = (new User())->where(['node_id'=> $k])->field('mobile')->find();
             $nodename = $name['name'];
             $nodecount = count($v);
-            $nodeerr = $this->send($nodename, $nodecount, $phone);
+            $nodeerr = $this->send($nodename, $nodecount,  $mobile['mobile']);
             if (!isset($nodeerr->result)) {
                 $code = $nodeerr->code;
             } else {
@@ -111,7 +110,7 @@ class Send extends Controller
                 $rejection->where($where)->setField('status', 10);
             }
             $newdata[] = [
-                'tel_num' => $name['mobile'],
+                'tel_num' => $mobile['mobile'],
                 'content' => "【乐销易】您的" . $nodename . "有" . $nodecount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163",
                 "send_status" => $code,
                 'send_time' => time(),
