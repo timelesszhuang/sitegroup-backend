@@ -110,7 +110,7 @@ class Send extends Controller
                 $rejection->where($where)->setField('status', 10);
             }
             $newdata[] = [
-                'tel_num' => $name['mobile'],
+                'tel_num' => $mobile['mobile'],
                 'content' => "【乐销易】您的" . $nodename . "有" . $nodecount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163",
                 "send_status" => $code,
                 'send_time' => time(),
