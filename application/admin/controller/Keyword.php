@@ -126,6 +126,7 @@ class Keyword extends Common
      */
     public function insertKeyword(Request $request)
     {
+        $one_class_num = 20;
         $post = $request->post();
         $rule = [
             ["id", "require", "请传入id"],
@@ -139,10 +140,15 @@ class Keyword extends Common
         $file_info = $this->getKeywordInfo($post["path"], $post["id"], $model);
         //如果是A 那么当前上传的就是B类
         $count = \app\admin\model\Keyword::where(["path" => ["like", "%," . $post['id'] . ",%"]])->count();
-        if ($count > 20) {
-            return $this->resultArray("当前分类下面关键词超过20个");
+        if ($count > $one_class_num) {
+            return $this->resultArray("当前分类下面关键词超过 $one_class_num 个",'failed');
         }
+        $num = $count;
         while ($key = fgets($file_info["file"])) {
+            $num +=1;
+            if($num>$one_class_num){
+                return $this->resultArray("当前分类下面关键词不能超过 $one_class_num 个,新导入".($num-$count-1)."个关键词,满 $one_class_num 个",'failed');
+            }
             $key = str_replace(PHP_EOL, '', trim($key));
             if (empty($key)) {
                 continue;
