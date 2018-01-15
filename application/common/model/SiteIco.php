@@ -4,7 +4,7 @@ namespace app\common\model;
 
 use think\Model;
 
-class SiteIcon extends Model
+class SiteIco extends Model
 {
     /**
      * 获取所有的数据

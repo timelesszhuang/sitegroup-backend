@@ -5,11 +5,11 @@ namespace app\admin\controller;
 use app\common\controller\Common;
 
 use think\Request;
-use app\common\model\SiteIcon as site;
+use app\common\model\SiteIco as site;
 use app\common\traits\Osstrait;
 use app\common\traits\Obtrait;
 use think\Validate;
-class SiteIcon extends Common
+class SiteIco extends Common
 {
     use Osstrait;
     use Obtrait;
@@ -46,7 +46,7 @@ class SiteIcon extends Common
     public function save(Request $request)
     {
         $rule=[
-            ["oss_icon_path","require","请先上传icon"],
+            ["oss_ico_path","require","请先上传ico"],
             ["name","require","请输入名称"]
         ];
         $post=$request->post();
@@ -94,7 +94,7 @@ class SiteIcon extends Common
     public function update(Request $request, $id)
     {
         $rule=[
-            ["oss_icon_path","require","请先上传图片"],
+            ["oss_ico_path","require","请先上传图片"],
             ["name","require","请输入名称"]
         ];
         $put=$request->put();
@@ -120,12 +120,12 @@ class SiteIcon extends Common
     }
 
     /**
-     * 网站icon上传
+     * 网站ico上传
      * @return array
      */
-    public function uploadIconImg()
+    public function uploadIcoImg()
     {
-        $data=$this->uploadImg('siteicon/');
+        $data=$this->uploadImg('siteico/');
         if($data["status"]){
             $data["msg"]="上传成功";
             return $data;
@@ -137,11 +137,11 @@ class SiteIcon extends Common
      * 获取列表
      * @return array
      */
-    public function iconList()
+    public function icoList()
     {
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        $sites=(new site)->where($where)->field(["id,name,oss_icon_path"])->select();
+        $sites=(new site)->where($where)->field(["id,name,oss_ico_path"])->select();
         return $this->resultArray("","",$sites);
     }
 }

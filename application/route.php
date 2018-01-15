@@ -447,12 +447,12 @@ Route::resource('admin/siteLogo','admin/SiteLogo');
 Route::post('admin/sitelogoup','admin/SiteLogo/uploadLoginImg');
 //站点logo列表
 Route::get('admin/getsitelogolist',"admin/SiteLogo/logoList");
-//站点icon
-Route::resource('admin/siteIcon','admin/SiteIcon');
+//站点ico
+Route::resource('admin/siteIco','admin/SiteIco');
 //站点logo 图片上传
-Route::post('admin/siteiconup','admin/SiteIcon/uploadIconImg');
+Route::post('admin/siteicoup','admin/SiteIco/uploadIcoImg');
 //站点logo列表
-Route::get('admin/getsiteiconlist',"admin/SiteIcon/iconList");
+Route::get('admin/getsiteicolist',"admin/SiteIco/icoList");
 //搜狐新闻
 Route::resource('admin/souhu',"admin/Souhu");
 //搜狐分类列表
