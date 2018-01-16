@@ -449,10 +449,16 @@ Route::post('admin/sitelogoup','admin/SiteLogo/uploadLoginImg');
 Route::get('admin/getsitelogolist',"admin/SiteLogo/logoList");
 //站点ico
 Route::resource('admin/siteIco','admin/SiteIco');
-//站点logo 图片上传
+//站点ico 图片上传
 Route::post('admin/siteicoup','admin/SiteIco/uploadIcoImg');
-//站点logo列表
+//站点ico列表
 Route::get('admin/getsiteicolist',"admin/SiteIco/icoList");
+//站点water_image
+Route::resource('admin/siteWaterImage','admin/SiteWaterImage');
+//站点water_image 图片上传
+Route::post('admin/sitewaterimageup','admin/SiteWaterImage/uploadWaterImageImg');
+//站点water_image 列表
+Route::get('admin/getsitewaterimagelist',"admin/SiteWaterImage/waterimageList");
 //搜狐新闻
 Route::resource('admin/souhu',"admin/Souhu");
 //搜狐分类列表
