@@ -467,7 +467,10 @@ Route::get('pay/notify_url','common/Pay/notify_url');
 Route::post('pay/return_url','common/Pay/return_url');
 Route::post('pagepay','common/Pay/pagepay');
 
-
+//素材库文章
+Route::get('library/article', 'admin/LibraryArticle/index');
+//获取一篇采集文章
+Route::get('library/getOneArticle/:id', 'admin/LibraryArticle/read');
 
 
 
