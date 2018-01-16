@@ -605,3 +605,4 @@ Route::post('user/gettags', 'user/Tags/getTagList');
 Route::post('common/send','common/Send/Send');
 Route::get('common/site_send','common/Send/site_send');
 Route::get('common/node_send','common/Send/node_send');
+Route::get('common/notaddsend','common/Send/notaddsend');
