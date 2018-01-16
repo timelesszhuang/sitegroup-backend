@@ -107,7 +107,7 @@ class Send extends Controller
                 $code = $nodeerr->code;
             } else {
                 $code = 0;
-                $rejection->where($where)->setField('status', 10);
+                $rejection->where($where)->setField('nodestatus', 10);
             }
             $newdata[] = [
                 'tel_num' => $mobile['mobile'],
