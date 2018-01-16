@@ -70,10 +70,8 @@ trait Obtrait
         //设置获取的信息以文件流的形式返回，而不是直接输出。
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
-
         //执行命令
         $data = curl_exec($curl);
-
         //关闭URL请求
         curl_close($curl);
         //显示获得的数据

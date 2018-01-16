@@ -170,7 +170,6 @@ class Product extends Common
             $send = [
                 "id" => $post['id'],
                 "searchType" => 'product',
-                "type" => $post['type_id'],
             ];
             $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
         }

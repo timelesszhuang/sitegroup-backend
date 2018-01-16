@@ -143,7 +143,6 @@ class Question extends Common
             $send = [
                 "id" => $data['id'],
                 "searchType" => 'question',
-                "type" => $data['type_id']
             ];
             $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
         }
