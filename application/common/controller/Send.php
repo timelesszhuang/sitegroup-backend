@@ -37,7 +37,8 @@ class Send extends Controller
             $sarr[$v['site_id']][$v['id']] = $v['id'];
         };
         foreach ($sarr as $k => $v) {
-            $name = (new Site())->where(['id' => $k])->field('site_name,telephone,mobile')->find();
+            $name = (new Site())->where(['id' => $k])->field('site_name,telephone,mobile,node_id')->find();
+            $node_id = $name['node_id'];
             $sitename = $name['site_name'];
             $phone = $name['mobile'];
             $sitecount = count($v);
@@ -52,6 +53,7 @@ class Send extends Controller
                 'tel_num' => $name['mobile'],
                 'content' => "【乐销易】您的" . $sitename . "有" . $sitecount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163",
                 "send_status" => $code,
+                'node_id'=>$node_id,
                 'send_time' => time(),
                 'sg_rejection_id' => key($v),
                 'tag_id'=>10,
@@ -100,6 +102,7 @@ class Send extends Controller
                 'send_time' => time(),
                 'sg_rejection_id' => key($v),
                 'tag_id'=>10,
+                'node_id'=>$k,
                 'tag_name'=>'甩单接收提醒',
             ];
         }
@@ -148,6 +151,7 @@ class Send extends Controller
                     'send_time' => time(),
                     'sg_rejection_id' => 0,
                     'tag_id'=>20,
+                    'node_id'=>$v['id'],
                     'tag_name'=>'内容添加提醒',
                     ];
             }
