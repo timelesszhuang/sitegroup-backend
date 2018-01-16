@@ -117,7 +117,7 @@ class Send extends Controller
      */
     public function notaddsend()
     {
-        $SmsTemplateCode = 'SMS_121960058';
+        $SmsTemplateCode = 'SMS_122000046';
         $node_id = (new Node())->field('id')->select();
         foreach ($node_id as $k => $v) {
             $article[$v['id']] = (new Article())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
