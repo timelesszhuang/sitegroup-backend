@@ -143,7 +143,7 @@ class Send extends Controller
                 }
                 $newdata[] = [
                     'tel_num' => $mobile['mobile'],
-                    'content' =>"您的. $nodename .网站，超过. $nodecount .天未添加内容，请及时添加，如有疑问请联系：4006-360-163",
+                    'content' =>"您的". $nodename ."网站，超过".$nodecount ."天未添加内容，请及时添加，如有疑问请联系：4006-360-163",
                     "send_status" => $code,
                     'send_time' => time(),
                     'sg_rejection_id' => 0,
