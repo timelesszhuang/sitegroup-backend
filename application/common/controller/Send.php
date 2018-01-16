@@ -18,6 +18,7 @@ include(EXTEND_PATH . "taobao-sdk-PHP/TopSdk.php");
 class Send extends Controller
 {
     static $acsClient = null;
+
     /**
      * 发送甩单短信
      * @param $name
@@ -123,9 +124,9 @@ class Send extends Controller
                 return $this->resultArray("发送成功");
             }
         }
-
-
     }
+
+
 
     public function resultArray($msg = 0, $stat = '', $data = 0)
     {
