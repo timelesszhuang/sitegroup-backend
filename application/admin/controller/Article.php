@@ -171,7 +171,6 @@ class Article extends Common
             $send = [
                 "id" => $data['id'],
                 "searchType" => 'article',
-                "type" => $data['articletype_id'],
             ];
             $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
         }
