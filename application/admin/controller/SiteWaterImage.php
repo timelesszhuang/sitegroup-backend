@@ -46,7 +46,7 @@ class SiteWaterImage extends Common
     public function save(Request $request)
     {
         $rule=[
-            ["oss_ico_path","require","请先上传水印图片"],
+            ["oss_water_image_path","require","请先上传水印图片"],
             ["name","require","请输入名称"]
         ];
         $post=$request->post();
@@ -94,7 +94,7 @@ class SiteWaterImage extends Common
     public function update(Request $request, $id)
     {
         $rule=[
-            ["oss_ico_path","require","请先上传图片"],
+            ["oss_water_image_path","require","请先上传图片"],
             ["name","require","请输入名称"]
         ];
         $put=$request->put();
