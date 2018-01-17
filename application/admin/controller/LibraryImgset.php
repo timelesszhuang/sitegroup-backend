@@ -34,11 +34,14 @@ class LibraryImgset extends Common
         $request = $this->getLimit();
         $title= $this->request->get('title');
         $where = [];
-        if (!empty($title)) {
-            $where["title"] = ["like", "%$title%"];
-        }
-        $data = $this->conn->getArticle($request["limit"], $request["rows"], $where);
-        return $this->resultArray('', '', $data);
+        $user = $this->getSessionUser();
+        $where["node_id"] = $user["user_node_id"];
+        $count = $this->conn->where($where)->count();
+        $data = $this->conn->limit($request["limit"], $request["rows"])->where($where)->field('id,imgsrc,comefrom,tags,alt,create_time')->order('id desc')->select();
+        return $this->resultArray('', '', [
+            "total" => $count,
+            "rows" => $data
+        ]);
     }
 
     /**

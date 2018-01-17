@@ -10,6 +10,8 @@ use think\Validate;
 
 class LibraryArticle extends Common
 {
+    use Obtrait;
+    use Osstrait;
     protected $conn='';
     /**
      * 初始化操作
@@ -32,6 +34,8 @@ class LibraryArticle extends Common
         if (!empty($title)) {
             $where["title"] = ["like", "%$title%"];
         }
+        $user = $this->getSessionUser();
+        $where["node_id"] = $user["user_node_id"];
         $data = $this->conn->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
@@ -49,5 +53,20 @@ class LibraryArticle extends Common
         return $this->resultArray('','',$this->conn->getOne($id));
     }
 
+
+    /**
+     * 图片上传到 oss相关操作
+     * @access public
+     */
+    public function imageupload()
+    {
+        $data = $this->uploadImg("libraryimgset/");
+        if ($data['status']) {
+            $data["msg"] = "上传成功";
+            return $data;
+        } else {
+            return $this->resultArray('上传失败', 'failed');
+        }
+    }
 
 }
