@@ -31,15 +31,12 @@ class Mysql extends Connection
      */
     protected function parseDsn($config)
     {
-        if (!empty($config['socket'])) {
-            $dsn = 'mysql:unix_socket=' . $config['socket'];
-        } elseif (!empty($config['hostport'])) {
-            $dsn = 'mysql:host=' . $config['hostname'] . ';port=' . $config['hostport'];
-        } else {
-            $dsn = 'mysql:host=' . $config['hostname'];
+        $dsn = 'mysql:dbname=' . $config['database'] . ';host=' . $config['hostname'];
+        if (!empty($config['hostport'])) {
+            $dsn .= ';port=' . $config['hostport'];
+        } elseif (!empty($config['socket'])) {
+            $dsn .= ';unix_socket=' . $config['socket'];
         }
-        $dsn .= ';dbname=' . $config['database'];
-
         if (!empty($config['charset'])) {
             $dsn .= ';charset=' . $config['charset'];
         }

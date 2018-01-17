@@ -67,11 +67,7 @@ class Redirect extends Response
      */
     public function getTargetUrl()
     {
-        if (strpos($this->data, '://') || (0 === strpos($this->data, '/') && empty($this->params))) {
-            return $this->data;
-        } else {
-            return Url::build($this->data, $this->params);
-        }
+        return strpos($this->data, '://') ? $this->data : Url::build($this->data, $this->params);
     }
 
     public function params($params = [])

@@ -110,9 +110,11 @@ class File extends Driver
         if (false !== $content) {
             $expire = (int) substr($content, 8, 12);
             if (0 != $expire && $_SERVER['REQUEST_TIME'] > filemtime($filename) + $expire) {
+                //缓存过期删除缓存文件
+                $this->unlink($filename);
                 return $default;
             }
-            $content = substr($content, 32);
+            $content = substr($content, 20, -3);
             if ($this->options['data_compress'] && function_exists('gzcompress')) {
                 //启用数据压缩
                 $content = gzuncompress($content);
@@ -127,18 +129,15 @@ class File extends Driver
     /**
      * 写入缓存
      * @access public
-     * @param string            $name 缓存变量名
-     * @param mixed             $value  存储数据
-     * @param integer|\DateTime $expire  有效时间（秒）
+     * @param string    $name 缓存变量名
+     * @param mixed     $value  存储数据
+     * @param int       $expire  有效时间 0为永久
      * @return boolean
      */
     public function set($name, $value, $expire = null)
     {
         if (is_null($expire)) {
             $expire = $this->options['expire'];
-        }
-        if ($expire instanceof \DateTime) {
-            $expire = $expire->getTimestamp() - time();
         }
         $filename = $this->getCacheKey($name);
         if ($this->tag && !is_file($filename)) {
@@ -149,7 +148,7 @@ class File extends Driver
             //数据压缩
             $data = gzcompress($data, 3);
         }
-        $data   = "<?php\n//" . sprintf('%012d', $expire) . "\n exit();?>\n" . $data;
+        $data   = "<?php\n//" . sprintf('%012d', $expire) . $data . "\n?>";
         $result = file_put_contents($filename, $data);
         if ($result) {
             isset($first) && $this->setTagItem($filename);
@@ -202,8 +201,7 @@ class File extends Driver
      */
     public function rm($name)
     {
-        $filename = $this->getCacheKey($name);
-        return $this->unlink($filename);
+        return $this->unlink($this->getCacheKey($name));
     }
 
     /**

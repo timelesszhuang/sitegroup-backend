@@ -11,7 +11,6 @@
 
 namespace think;
 
-use BadMethodCallException;
 use InvalidArgumentException;
 use think\db\Query;
 use think\exception\ValidateException;
@@ -354,7 +353,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             // 检测修改器
             $method = 'set' . Loader::parseName($name, 1) . 'Attr';
             if (method_exists($this, $method)) {
-                $value = $this->$method($value, array_merge($this->data, $data), $this->relation);
+                $value = $this->$method($value, array_merge($this->data, $data));
             } elseif (isset($this->type[$name])) {
                 // 类型转换
                 $value = $this->writeTransform($value, $this->type[$name]);
@@ -533,7 +532,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         // 检测属性获取器
         $method = 'get' . Loader::parseName($name, 1) . 'Attr';
         if (method_exists($this, $method)) {
-            $value = $this->$method($value, $this->data, $this->relation);
+            $value = $this->$method($value, $this->data);
         } elseif (isset($this->type[$name])) {
             // 类型转换
             $value = $this->readTransform($value, $this->type[$name]);
@@ -568,7 +567,6 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      * @access public
      * @param Relation        $modelRelation 模型关联对象
      * @return mixed
-     * @throws BadMethodCallException
      */
     protected function getRelationData(Relation $modelRelation)
     {
@@ -576,11 +574,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             $value = $this->parent;
         } else {
             // 首先获取关联数据
-            if (method_exists($modelRelation, 'getRelation')) {
-                $value = $modelRelation->getRelation();
-            } else {
-                throw new BadMethodCallException('method not exists:' . get_class($modelRelation) . '-> getRelation');
-            }
+            $value = $modelRelation->getRelation();
         }
         return $value;
     }
@@ -933,11 +927,6 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      */
     public function save($data = [], $where = [], $sequence = null)
     {
-        if (is_string($data)) {
-            $sequence = $data;
-            $data     = [];
-        }
-
         if (!empty($data)) {
             // 数据自动验证
             if (!$this->validateData($data)) {
@@ -948,8 +937,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
                 $this->setAttr($key, $value, $data);
             }
             if (!empty($where)) {
-                $this->isUpdate    = true;
-                $this->updateWhere = $where;
+                $this->isUpdate = true;
             }
         }
 
@@ -1106,18 +1094,19 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
 
     protected function checkAllowField($auto = [])
     {
-        if (true === $this->field) {
-            $this->field = $this->getQuery()->getTableInfo('', 'fields');
-            $field       = $this->field;
-        } elseif (!empty($this->field)) {
-            $field = array_merge($this->field, $auto);
-            if ($this->autoWriteTimestamp) {
-                array_push($field, $this->createTime, $this->updateTime);
+        if (!empty($this->field)) {
+            if (!empty($this->origin)) {
+                $this->field = array_keys($this->origin);
+                $field       = $this->field;
+            } elseif (true === $this->field) {
+                $this->field = $this->getQuery()->getTableInfo('', 'fields');
+                $field       = $this->field;
+            } else {
+                $field = array_merge($this->field, $auto);
             }
         } else {
             $field = [];
         }
-
         return $field;
     }
 
@@ -1144,7 +1133,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     public function getChangedData()
     {
         $data = array_udiff_assoc($this->data, $this->origin, function ($a, $b) {
-            if ((empty($a) || empty($b)) && $a !== $b) {
+            if ((empty($b) || empty($b)) && $a !== $b) {
                 return 1;
             }
             return is_object($a) || $a != $b ? 1 : 0;
@@ -1173,8 +1162,16 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      */
     public function setInc($field, $step = 1, $lazyTime = 0)
     {
-        // 更新条件
-        $where = $this->getWhere();
+        // 删除条件
+        $pk = $this->getPk();
+
+        if (is_string($pk) && isset($this->data[$pk])) {
+            $where = [$pk => $this->data[$pk]];
+        } elseif (!empty($this->updateWhere)) {
+            $where = $this->updateWhere;
+        } else {
+            $where = null;
+        }
 
         $result = $this->getQuery()->where($where)->setInc($field, $step, $lazyTime);
         if (true !== $result) {
@@ -1195,23 +1192,6 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      */
     public function setDec($field, $step = 1, $lazyTime = 0)
     {
-        // 更新条件
-        $where  = $this->getWhere();
-        $result = $this->getQuery()->where($where)->setDec($field, $step, $lazyTime);
-        if (true !== $result) {
-            $this->data[$field] -= $step;
-        }
-
-        return $result;
-    }
-
-    /**
-     * 获取更新条件
-     * @access protected
-     * @return mixed
-     */
-    protected function getWhere()
-    {
         // 删除条件
         $pk = $this->getPk();
 
@@ -1222,7 +1202,13 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         } else {
             $where = null;
         }
-        return $where;
+
+        $result = $this->getQuery()->where($where)->setDec($field, $step, $lazyTime);
+        if (true !== $result) {
+            $this->data[$field] -= $step;
+        }
+
+        return $result;
     }
 
     /**
@@ -1350,7 +1336,14 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         }
 
         // 删除条件
-        $where = $this->getWhere();
+        $pk = $this->getPk();
+        if (is_string($pk) && isset($this->data[$pk])) {
+            $where = [$pk => $this->data[$pk]];
+        } elseif (!empty($this->updateWhere)) {
+            $where = $this->updateWhere;
+        } else {
+            $where = null;
+        }
 
         // 删除当前模型数据
         $result = $this->getQuery()->where($where)->delete();
@@ -1675,7 +1668,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      * 设置是否使用全局查询范围
      * @param bool $use 是否启用全局查询范围
      * @access public
-     * @return Query
+     * @return Model
      */
     public static function useGlobalScope($use)
     {
@@ -1867,7 +1860,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      * @access public
      * @param string $model      模型名
      * @param string $foreignKey 关联外键
-     * @param string $localKey   当前模型主键
+     * @param string $localKey   关联主键
      * @param array  $alias      别名定义（已经废弃）
      * @param string $joinType   JOIN类型
      * @return HasOne
@@ -1907,7 +1900,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      * @access public
      * @param string $model      模型名
      * @param string $foreignKey 关联外键
-     * @param string $localKey   当前模型主键
+     * @param string $localKey   关联主键
      * @return HasMany
      */
     public function hasMany($model, $foreignKey = '', $localKey = '')
@@ -1926,7 +1919,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      * @param string $through    中间模型名
      * @param string $foreignKey 关联外键
      * @param string $throughKey 关联外键
-     * @param string $localKey   当前模型主键
+     * @param string $localKey   关联主键
      * @return HasManyThrough
      */
     public function hasManyThrough($model, $through, $foreignKey = '', $throughKey = '', $localKey = '')

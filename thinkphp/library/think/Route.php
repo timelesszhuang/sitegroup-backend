@@ -255,11 +255,9 @@ class Route
                     $option1  = array_merge($option, $val[1]);
                     $pattern1 = array_merge($pattern, isset($val[2]) ? $val[2] : []);
                 } else {
-                    $option1  = null;
-                    $pattern1 = null;
-                    $route    = $val;
+                    $route = $val;
                 }
-                self::setRule($key, $route, $type, !is_null($option1) ? $option1 : $option, !is_null($pattern1) ? $pattern1 : $pattern, $group);
+                self::setRule($key, $route, $type, isset($option1) ? $option1 : $option, isset($pattern1) ? $pattern1 : $pattern, $group);
             }
         } else {
             self::setRule($rule, $route, $type, $option, $pattern, $group);
@@ -430,8 +428,7 @@ class Route
                     self::$rules['*'][$name]['pattern'] = $pattern;
                 }
             } else {
-                $item          = [];
-                $completeMatch = Config::get('route_complete_match');
+                $item = [];
                 foreach ($routes as $key => $val) {
                     if (is_numeric($key)) {
                         $key = array_shift($val);
@@ -450,8 +447,6 @@ class Route
                         // 是否完整匹配
                         $options['complete_match'] = true;
                         $key                       = substr($key, 0, -1);
-                    } elseif ($completeMatch) {
-                        $options['complete_match'] = true;
                     }
                     $key    = trim($key, '/');
                     $vars   = self::parseVar($key);
@@ -1512,13 +1507,12 @@ class Route
         if ($request->isGet() && isset($option['cache'])) {
             $cache = $option['cache'];
             if (is_array($cache)) {
-                list($key, $expire, $tag) = array_pad($cache, 3, null);
+                list($key, $expire) = $cache;
             } else {
                 $key    = str_replace('|', '/', $pathinfo);
                 $expire = $cache;
-                $tag    = null;
             }
-            $request->cache($key, $expire, $tag);
+            $request->cache($key, $expire);
         }
         return $result;
     }
@@ -1549,7 +1543,7 @@ class Route
     /**
      * 解析URL地址中的参数Request对象
      * @access private
-     * @param string    $url 路由规则
+     * @param string    $rule 路由规则
      * @param array     $var 变量
      * @return void
      */

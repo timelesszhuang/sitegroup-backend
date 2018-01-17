@@ -22,7 +22,6 @@ class Sqlite extends Builder
     /**
      * limit
      * @access public
-     * @param string $limit
      * @return string
      */
     public function parseLimit($limit)

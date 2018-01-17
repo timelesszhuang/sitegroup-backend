@@ -108,8 +108,7 @@ abstract class Relation
      * @access protected
      * @return void
      */
-    protected function baseQuery()
-    {}
+    abstract protected function baseQuery();
 
     public function __call($method, $args)
     {
