@@ -9,4 +9,6 @@
 return [
     'accessKeyId' => '23328827',
     'accessKeySecret' => '757f8a6d2f69aee59e0771b1e9c1d540',
+    'sendmail' =>'support@qiangbi.net',
+    'sendnam' =>'强比科技'
 ];

@@ -34,7 +34,8 @@
         "topthink/think-queue": "1.1.4",
         "topthink/think-testing": "1.0.6",
         "aliyuncs/oss-sdk-php": "2.2.4",
-        "riverslei/payment": "4.1.4"
+        "riverslei/payment": "4.1.4",
+        "phpmailer/phpmailer": "^6.0"
     },
     "extra": {
         "think-path": "thinkphp"
