@@ -13,6 +13,7 @@ use think\Validate;
 use think\Request;
 use app\common\traits\Obtrait;
 use think\View;
+use app\admin\model\LibraryImgset;
 
 class Article extends Common
 {
@@ -82,7 +83,9 @@ class Article extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
+        $library_img_tags = [];
         if(isset($data['tag_id'])&&is_array($data['tag_id'])){
+            $library_img_tags = $data['tag_id'];
             $data['tags']=','.implode(',',$data['tag_id']).',';
         }else{
             $data['tags']="";
@@ -91,6 +94,17 @@ class Article extends Common
         if (!\app\admin\model\Article::create($data)) {
             return $this->resultArray("添加失败", "failed");
         }
+
+
+        $library_img_set = new LibraryImgset();
+        $src_list = $library_img_set->getList($data['content']);
+        if($data['thumbnails']){
+            $src_list[]=$data['thumbnails'];
+        }
+        $library_img_set->batche_add($src_list,$library_img_tags,$data['title'],'article');
+
+
+
         return $this->resultArray("添加成功");
     }
 
@@ -150,7 +164,9 @@ class Article extends Common
                 }
             }
         }
+        $library_img_tags=[];
         if(isset($data['tag_id'])&&is_array($data['tag_id'])){
+            $library_img_tags = $data['tag_id'];
             $data['tags']=','.implode(',',$data['tag_id']).',';
         }else{
             $data['tags']="";
@@ -159,6 +175,16 @@ class Article extends Common
         if (!(new \app\admin\model\Article)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
+
+
+        $library_img_set = new LibraryImgset();
+        $src_list = $library_img_set->getList($data['content']);
+        if($data['thumbnails']){
+            $src_list[]=$data['thumbnails'];
+        }
+        $library_img_set->batche_add($src_list,$library_img_tags,$data['title'],'article');
+
+
         //先返回给前台 然后去后端 重新生成页面 这块暂时有问题
         $this->open_start('正在修改中');
         //找出有这篇  文章的菜单

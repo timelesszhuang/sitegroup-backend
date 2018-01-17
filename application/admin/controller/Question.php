@@ -8,6 +8,7 @@ use app\common\controller\Common;
 use think\Validate;
 use app\common\traits\Obtrait;
 use app\common\traits\Osstrait;
+use app\admin\model\LibraryImgset;
 
 class Question extends Common
 {
@@ -68,7 +69,9 @@ class Question extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
+        $library_img_tags = [];
         if(isset($data['tag_id'])&&is_array($data['tag_id'])){
+            $library_img_tags = $data['tag_id'];
             $data['tags']=','.implode(',',$data['tag_id']).',';
         }else{
             $data['tags']="";
@@ -76,6 +79,16 @@ class Question extends Common
         unset($data['tag_id']);
         $data["node_id"] = $this->getSessionUser()['user_node_id'];
         if (!\app\admin\model\Question::create($data)) {
+
+
+            $library_img_set = new LibraryImgset();
+            $src_list = $library_img_set->getList($data['content_paragraph']);
+            if($data['thumbnails']){
+                $src_list[]=$data['thumbnails'];
+            }
+            $library_img_set->batche_add($src_list,$library_img_tags,$data['title'],'question');
+
+
             return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
@@ -127,13 +140,25 @@ class Question extends Common
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
+        $library_img_tags = [];
         if(isset($data['tag_id'])&&is_array($data['tag_id'])){
+            $library_img_tags = $data['tag_id'];
             $data['tags']=','.implode(',',$data['tag_id']).',';
         }else{
             $data['tags']="";
         }
         unset($data['tag_id']);
         $this->publicUpdate((new \app\admin\model\Question), $data, $id);
+
+
+        $library_img_set = new LibraryImgset();
+        $src_list = $library_img_set->getList($data['content_paragraph']);
+        if($data['thumbnails']){
+            $src_list[]=$data['thumbnails'];
+        }
+        $library_img_set->batche_add($src_list,$library_img_tags,$data['title'],'article');
+
+
         $this->open_start('正在修改中');
         $sitedata = $this->getQuestionSite($data['type_id']);
         if (array_key_exists('status', $sitedata)) {

@@ -10,6 +10,7 @@ use think\Request;
 use app\common\traits\Obtrait;
 use think\Validate;
 use app\admin\model\Product as productM;
+use app\admin\model\LibraryImgset;
 
 class Product extends Common
 {
@@ -78,7 +79,9 @@ class Product extends Common
         $user = $this->getSessionUser();
         $post["node_id"] = $user["user_node_id"];
         $model = new productM();
+        $library_img_tags = [];
         if(isset($post['tag_id'])&&is_array($post['tag_id'])){
+            $library_img_tags = $post['tag_id'];
             $post['tags']=','.implode(',',$post['tag_id']).',';
         }else{
             $post['tags']="";
@@ -86,6 +89,16 @@ class Product extends Common
         unset($post['tag_id']);
         $model->save($post);
         if ($model->id) {
+
+
+            $library_img_set = new LibraryImgset();
+            $src_list = $library_img_set->getList($post['detail']);
+            if($post['image']){
+                $src_list[]=$post['image'];
+            }
+            $library_img_set->batche_add($src_list,$library_img_tags,$post['title'],'product');
+
+
             return $this->resultArray("添加成功");
         }
         return $this->resultArray('添加失败', 'failed');
@@ -150,7 +163,9 @@ class Product extends Common
             }
             //要静态化的文件名
         }
+        $library_img_tags = [];
         if(isset($post['tag_id'])&&is_array($post['tag_id'])){
+            $library_img_tags = $post['tag_id'];
             $post['tags']=','.implode(',',$post['tag_id']).',';
         }else{
             $post['tags']="";
@@ -159,6 +174,16 @@ class Product extends Common
         if (!(new productM)->save($post, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
+
+
+        $library_img_set = new LibraryImgset();
+        $src_list = $library_img_set->getList($post['detail']);
+        if($post['image']){
+            $src_list[]=$post['image'];
+        }
+        $library_img_set->batche_add($src_list,$library_img_tags,$post['title'],'product');
+
+
         //正在修改中 首先提示前台已经生成完成然后去服务器上面 重新生成新的页面
         $this->open_start('正在修改中');
         $type_id = $post['type_id'];
@@ -290,6 +315,10 @@ class Product extends Common
         foreach ($imgser as $v) {
             $imglist[] = $v['osssrc'];
         }
+
+        $library_img_set = new LibraryImgset();
+        $library_img_set->batche_add($imglist,[],'','product');
+
         return [
             "imglist" => $imglist,
             'status' => $status,
