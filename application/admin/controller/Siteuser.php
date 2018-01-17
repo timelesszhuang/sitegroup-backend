@@ -48,6 +48,7 @@ class Siteuser extends Common
             ['name','require','请填写昵称'],
             ['pwd', 'require', "请填写密码"],
             ['account','require','请填写帐号'],
+            ['mobile','require','请填写手机号'],
             ['confirmPwd',"require","请填写确认密码"]
         ];
         $validate = new Validate($rule);
@@ -99,7 +100,8 @@ class Siteuser extends Common
     {
         $rule = [
             ['name','require','请填写昵称'],
-            ['account','require','请填写帐号']
+            ['account','require','请填写帐号'],
+            ['mobile','require','请填写手机号'],
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
