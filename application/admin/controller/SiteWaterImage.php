@@ -137,11 +137,11 @@ class SiteWaterImage extends Common
      * 获取列表
      * @return array
      */
-    public function icoList()
+    public function waterimageList()
     {
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        $sites=(new site)->where($where)->field(["id,name,oss_ico_path"])->select();
+        $sites=(new site)->where($where)->field(["id,name,oss_water_image_path"])->select();
         return $this->resultArray("","",$sites);
     }
 }

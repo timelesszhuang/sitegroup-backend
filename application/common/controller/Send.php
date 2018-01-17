@@ -16,12 +16,13 @@ use app\sysadmin\model\Node;
 use AlibabaAliqinFcSmsNumSendRequest;
 use app\common\model\User;
 use app\common\traits\Smsali;
+use app\common\traits\SendMail;
 
 
 class Send extends Controller
 {
     use Smsali;
-
+    use SendMail;
     /**
      * 小站点短信发送
      */
@@ -43,6 +44,7 @@ class Send extends Controller
             $phone = $name['mobile'];
             $sitecount = count($v);
             $siteerr = $this->send($sitename, $sitecount, $phone,$SmsTemplateCode);
+
             if (!isset($siteerr->result)) {
                 $code = $siteerr->code;
             } else {
@@ -85,10 +87,15 @@ class Send extends Controller
         };
         foreach ($node as $k => $v) {
             $name = (new Node())->where(['id' => $k])->field('name')->find();
-            $mobile = (new User())->where(['node_id' => $k])->field('mobile')->find();
+            $mobile = (new User())->where(['node_id' => $k])->field('mobile,email')->find();
             $nodename = $name['name'];
             $nodecount = count($v);
             $nodeerr = $this->send($nodename, $nodecount, $mobile['mobile'],$SmsTemplateCode);
+            $email = $this->getEmailAccount();
+            if ($email) {
+                $content = "【乐销易】您的" . $nodename . "有" . $nodecount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163";
+                $this->phpmailerSend($email['email'], $email['password'], $email["host"], $nodename . "您有新的线索",$mobile['email'], $content, $email["email"]);
+            }
             if (!isset($nodeerr->result)) {
                 $code = $nodeerr->code;
             } else {
@@ -127,7 +134,6 @@ class Send extends Controller
             $question[$v['id']] = (new Question())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
             $product[$v['id']] = (new Product())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
             $lasttime[$v['id']] = (new SmsLog())->where(['node_id' => $v['id'],'send_status'=>0])->field('send_time')->order('send_time desc')->find();
-
         }
         foreach ($node_id as $k => $v) {
             $articletime =strtotime($article[$v['id']]['create_time']);
