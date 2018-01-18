@@ -12,6 +12,8 @@ namespace app\admin\controller;
 use think\Controller;
 use app\common\controller\Common;
 use app\admin\model\LibraryImgset as Library;
+use think\Request;
+use think\Validate;
 
 class LibraryImgset extends Common
 {
@@ -73,37 +75,16 @@ class LibraryImgset extends Common
     public function save(Request $request)
     {
         $rule = [
-            ["title", "require", "请输入标题"],
-            ["content", "require", "请输入内容"],
-            ["articletype_id", "require", "请选择文章分类"],
-//            ["tag_id", "require", "请选择标签"],
+            ["imgsrc", "require", "请上传图片"],
         ];
         $validate = new Validate($rule);
         $data = $request->post();
-        $user = $this->getSessionUser();
-        $data['node_id'] = $user['user_node_id'];
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        $library_img_tags = [];
-        if(isset($data['tag_id'])&&is_array($data['tag_id'])){
-            $library_img_tags = $data['tag_id'];
-            $data['tags']=','.implode(',',$data['tag_id']).',';
-        }else{
-            $data['tags']="";
-        }
-        unset($data['tag_id']);
-        if (!\app\admin\model\Article::create($data)) {
-            return $this->resultArray("添加失败", "failed");
-        }
 
-
-        $library_img_set = new LibraryImgset();
-        $src_list = $library_img_set->getList($data['content']);
-        if($data['thumbnails']){
-            $src_list[]=$data['thumbnails'];
-        }
-        $library_img_set->batche_add($src_list,$library_img_tags,$data['title'],'article');
+        $library_img_set = $this->conn;
+        $library_img_set->batche_add([$data['imgsrc']],$data['tags'],$data['alt'],'selfadd');
 
 
 
