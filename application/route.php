@@ -479,7 +479,7 @@ Route::get('library/article', 'admin/LibraryArticle/index');
 Route::get('library/getOneArticle/:id', 'admin/LibraryArticle/read');
 //公共图片资源路由
 Route::resource('admin/libraryimgset',"admin/LibraryImgset");
-Route::post('admin/uploadlibraryimage', 'admin/LibraryArticle/imageupload');
+Route::post('admin/uploadlibraryimage', 'admin/LibraryImgset/imageupload');
 
 
 

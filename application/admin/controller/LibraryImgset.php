@@ -14,9 +14,13 @@ use app\common\controller\Common;
 use app\admin\model\LibraryImgset as Library;
 use think\Request;
 use think\Validate;
+use app\common\traits\Obtrait;
+use app\common\traits\Osstrait;
 
 class LibraryImgset extends Common
 {
+    use Obtrait;
+    use Osstrait;
     protected $conn='';
     /**
      * 初始化操作
@@ -89,5 +93,19 @@ class LibraryImgset extends Common
 
 
         return $this->resultArray("添加成功");
+    }
+    /**
+     * 图片上传到 oss相关操作
+     * @access public
+     */
+    public function imageupload()
+    {
+        $data = $this->uploadImg("libraryimgset/");
+        if ($data['status']) {
+            $data["msg"] = "上传成功";
+            return $data;
+        } else {
+            return $this->resultArray('上传失败', 'failed');
+        }
     }
 }

@@ -10,8 +10,6 @@ use think\Validate;
 
 class LibraryArticle extends Common
 {
-    use Obtrait;
-    use Osstrait;
     protected $conn='';
     /**
      * 初始化操作
