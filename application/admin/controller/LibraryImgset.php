@@ -38,8 +38,15 @@ class LibraryImgset extends Common
     public function index()
     {
         $request = $this->getLimit();
-        $title= $this->request->get('title');
+        $type= $this->request->get('type');
+        $tag_id= $this->request->get('tag_id');
         $where = [];
+        if($type){
+            $where['comefrom']=$type;
+        }
+        if($tag_id){
+            $where['tags']=['like',"%,$tag_id,%"];
+        }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $count = $this->conn->where($where)->count();

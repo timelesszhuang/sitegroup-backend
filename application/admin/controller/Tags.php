@@ -57,12 +57,17 @@ class Tags extends Common
     {
         $data = $request->post();
         $user = $this->getSessionUser();
-        $where['type']=$data['type'];
+        if(isset($data['type'])&&$data['type']){
+            $where['type']=$data['type'];
+        }
         $where['node_id']=$user['user_node_id'];
         $datas = (new Type_Tag)->where($where)->select();
         $datass=[];
         foreach ($datas as $value){
-            $datass[$value['id']]= $value['name'];
+            $datass[$value['type']][$value['id']]= $value['name'];
+        }
+        if(isset($data['type'])&&$data['type']){
+            $datass=$datass[$data['type']];
         }
         return $this->resultArray("",'', $datass);
     }
