@@ -86,7 +86,7 @@ class Question extends Common
             if(isset($data['thumbnails'])&&$data['thumbnails']){
                 $src_list[]=$data['thumbnails'];
             }
-            $library_img_set->batche_add($src_list,$library_img_tags,$data['title'],'question');
+            $library_img_set->batche_add($src_list,$library_img_tags,$data['question'],'question');
 
 
             return $this->resultArray('添加失败', 'failed');
@@ -156,7 +156,7 @@ class Question extends Common
         if(isset($data['thumbnails'])&&$data['thumbnails']){
             $src_list[]=$data['thumbnails'];
         }
-        $library_img_set->batche_add($src_list,$library_img_tags,$data['title'],'article');
+        $library_img_set->batche_add($src_list,$library_img_tags,$data['question'],'article');
 
 
         $this->open_start('正在修改中');
