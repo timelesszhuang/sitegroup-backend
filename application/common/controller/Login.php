@@ -52,10 +52,17 @@ class Login extends Controller
      */
     public function imageupload()
     {
+        $request = Request::instance();
+        $whitelist=Config::get('whitelist.whitelist');
+        if (!in_array(parse_url($request->header('Origin'))['host'],$whitelist)){
+            return [
+                'msg' => '请登录',
+                'status' => false
+            ];
+        }
         $dest_dir = 'pic/';
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
-        $request = Request::instance();
         $file = $request->file("img");
         $localpath = ROOT_PATH . "public/upload/";
         $fileInfo = $file->move($localpath);
@@ -74,7 +81,7 @@ class Login extends Controller
         return [
             'msg' => $msg,
             "url" => $url,
-            'status' => $status
+            'status' => $status,
         ];
     }
 
