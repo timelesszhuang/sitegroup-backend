@@ -67,7 +67,9 @@ class Tags extends Common
             $datass[$value['type']][$value['id']]= $value['name'];
         }
         if(isset($data['type'])&&$data['type']){
-            $datass=$datass[$data['type']];
+            if(isset($datass[$data['type']])){
+                $datass=$datass[$data['type']];
+            }
         }
         return $this->resultArray("",'', $datass);
     }
