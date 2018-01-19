@@ -83,7 +83,7 @@ class Question extends Common
 
             $library_img_set = new LibraryImgset();
             $src_list = $library_img_set->getList($data['content_paragraph']);
-            if($data['thumbnails']){
+            if(isset($data['thumbnails'])&&$data['thumbnails']){
                 $src_list[]=$data['thumbnails'];
             }
             $library_img_set->batche_add($src_list,$library_img_tags,$data['title'],'question');
@@ -153,7 +153,7 @@ class Question extends Common
 
         $library_img_set = new LibraryImgset();
         $src_list = $library_img_set->getList($data['content_paragraph']);
-        if($data['thumbnails']){
+        if(isset($data['thumbnails'])&&$data['thumbnails']){
             $src_list[]=$data['thumbnails'];
         }
         $library_img_set->batche_add($src_list,$library_img_tags,$data['title'],'article');
