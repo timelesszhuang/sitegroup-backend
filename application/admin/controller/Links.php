@@ -51,6 +51,7 @@ class Links extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
+        $data['domain']=  "http://".$data['domain'];
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
