@@ -19,35 +19,7 @@ class Omapi extends Controller
      */
     public function index()
     {
-        //
-        $type = '';
-        // 是否为 GET 请求
-        if (Request::instance()->isGet()) $type = "当前为 GET 请求";
-// 是否为 POST 请求
-        if (Request::instance()->isPost()) $type = "当前为 POST 请求";
-// 是否为 PUT 请求
-        if (Request::instance()->isPut()) $type = "当前为 PUT 请求";
-// 是否为 DELETE 请求
-        if (Request::instance()->isDelete()) $type = "当前为 DELETE 请求";
-// 是否为 Ajax 请求
-        if (Request::instance()->isAjax()) $type = "当前为 Ajax 请求";
-// 是否为 Pjax 请求
-        if (Request::instance()->isPjax()) $type = "当前为 Pjax 请求";
-// 是否为手机访问
-        if (Request::instance()->isMobile()) $type = "当前为手机访问";
-// 是否为 HEAD 请求
-        if (Request::instance()->isHead()) $type = "当前为 HEAD 请求";
-// 是否为 Patch 请求
-        if (Request::instance()->isPatch()) $type = "当前为 PATCH 请求";
-// 是否为 OPTIONS 请求
-        if (Request::instance()->isOptions()) $type = "当前为 OPTIONS 请求";
-// 是否为 cli
-        if (Request::instance()->isCli()) $type = "当前为 cli";
-// 是否为 cgi
-        if (Request::instance()->isCgi()) $type = "当前为 cgi";
         $xmldata = file_get_contents('php://input');
-        file_put_contents('type.txt', $type, FILE_APPEND);
-        file_put_contents('aa.txt', $xmldata, FILE_APPEND);
         $this->analyse_data($xmldata);
     }
 
