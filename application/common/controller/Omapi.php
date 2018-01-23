@@ -139,7 +139,9 @@ class Omapi extends Controller
      */
     private function exec_add_cdr_data($cdr_data)
     {
-        (new VoiceCdr())->save($cdr_data);
+        $model = new VoiceCdr();
+        $model->save($cdr_data);
+        file_put_contents('bb.txt', $model->getLastSql(), FILE_APPEND);
     }
 
     /**
