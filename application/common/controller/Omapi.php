@@ -124,6 +124,7 @@ class Omapi extends Controller
         }
         //通话的时间长度
         $cdr_data['duration'] = $data['Duration']['val']>0?$data['Duration']['val']:0;
+        $cdr_data['status'] = $data['Duration']['val']>0?10:20;
         //中继号码
         $cdr_data['trunknum'] = $data['TrunkNumber']['val'];
         //记录文件的名字
@@ -163,10 +164,5 @@ class Omapi extends Controller
             }
         }
         return $info;
-    }
-
-    public function test($test,$name="test.txt"){
-        file_put_contents($name, $test, FILE_APPEND);
-        file_put_contents($name, '-----------------------', FILE_APPEND);
     }
 }
