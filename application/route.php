@@ -11,6 +11,9 @@
 
 use think\Route;
 
+//用户电话记录数据管理
+Route::resource('voice_cdr', 'admin/VoiceCdr');
+//用户电话记录数据获取api
 Route::get('omapi','common/Omapi/index');
 //======================================== 系统管理后台
 //公共的上传图片接口
