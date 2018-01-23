@@ -20,6 +20,7 @@ class Omapi extends Controller
     public function index()
     {
         $xmldata = file_get_contents('php://input');
+        $this->test($xmldata);
         $this->analyse_data($xmldata);
     }
 
@@ -41,6 +42,7 @@ class Omapi extends Controller
         switch ($root_name) {
             case 'Cdr':
                 //话单数据
+                $this->test('Cdr');
                 $cdr_data = $this->exec_analyse_cdr_data($xml_obj);
                 $this->exec_add_cdr_data($cdr_data, $xmldata);
                 break;
@@ -141,7 +143,7 @@ class Omapi extends Controller
     {
         $model = new VoiceCdr();
         $model->save($cdr_data);
-        file_put_contents('bb.txt', $model->getLastSql(), FILE_APPEND);
+        $this->test($model->getLastSql());
     }
 
     /**
@@ -162,5 +164,10 @@ class Omapi extends Controller
             }
         }
         return $info;
+    }
+
+    public function test($test,$name="test.txt"){
+        file_put_contents($name, $test, FILE_APPEND);
+        file_put_contents($name, '-----------------------', FILE_APPEND);
     }
 }
