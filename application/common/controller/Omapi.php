@@ -45,7 +45,7 @@ class Omapi extends Controller
 // 是否为 cgi
         if (Request::instance()->isCgi()) $type = "当前为 cgi";
         $xmldata = file_get_contents('php://input');
-        file_put_contents('a.txt', $type, FILE_APPEND);
+        file_put_contents('type.txt', $type, FILE_APPEND);
         $this->analyse_data($xmldata);
     }
 
