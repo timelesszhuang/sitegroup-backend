@@ -6,6 +6,7 @@ use think\Controller;
 use think\Model;
 use app\sysadmin\model\Node;
 use app\common\model\VoiceCdr;
+use think\Request;
 
 class Omapi extends Controller
 {
