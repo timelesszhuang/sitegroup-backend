@@ -10,9 +10,6 @@ use app\common\model\VoiceCdr as model;
 
 class VoiceCdr extends Common
 {
-    use Obtrait;
-    use Osstrait;
-
     /**
      * 显示资源列表
      *
