@@ -18,6 +18,9 @@ class VoiceCdr extends Common
      *
      * @param Request $request
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author guozhen
      */
     public function index(Request $request)
@@ -26,6 +29,10 @@ class VoiceCdr extends Common
         $where = [];
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        return $this->resultArray('', '', (new model())->getAll($limits['limit'], $limits['rows'], $where));
+        $data=(new model())->getAll($limits['limit'], $limits['rows'], $where);
+        $data['timestart']=date('Y-m-d H:i:s',$data['timestart']);
+        $data['timeend']=date('Y-m-d H:i:s',$data['timeend']);
+        $data['create_time']=date('Y-m-d H:i:s',$data['create_time']);
+        return $this->resultArray('', '',$data);
     }
 }
