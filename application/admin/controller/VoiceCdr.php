@@ -30,6 +30,7 @@ class VoiceCdr extends Common
         foreach($data['rows'] as $key=>$datas){
             $data['rows'][$key]['timestart']=date('Y-m-d H:i:s',$datas['timestart']);
             $data['rows'][$key]['timeend']=date('Y-m-d H:i:s',$datas['timeend']);
+            $data['rows'][$key]['rec_name']='http://voice.salesman.cc/lexiaoyi/'.$datas['rec_name'].'.mp3';
         }
         return $this->resultArray('', '',$data);
     }
