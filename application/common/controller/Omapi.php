@@ -20,7 +20,6 @@ class Omapi extends Controller
     public function index()
     {
         $xmldata = file_get_contents('php://input');
-        $this->test($xmldata);
         $this->analyse_data($xmldata);
     }
 
@@ -42,7 +41,6 @@ class Omapi extends Controller
         switch ($root_name) {
             case 'Cdr':
                 //话单数据
-                $this->test('Cdr');
                 $cdr_data = $this->exec_analyse_cdr_data($xml_obj);
                 $this->exec_add_cdr_data($cdr_data, $xmldata);
                 break;
@@ -129,7 +127,9 @@ class Omapi extends Controller
         //中继号码
         $cdr_data['trunknum'] = $data['TrunkNumber']['val'];
         //记录文件的名字
-        $cdr_data['rec_name'] = $data['Recording']['val'];
+        if(isset($data['Recording']['val'])){
+            $cdr_data['rec_name'] = $data['Recording']['val'];
+        }
         $cdr_data['create_time'] = time();
         return $cdr_data;
     }
@@ -143,7 +143,6 @@ class Omapi extends Controller
     {
         $model = new VoiceCdr();
         $model->save($cdr_data);
-        $this->test($model->getLastSql());
     }
 
     /**
