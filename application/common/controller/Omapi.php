@@ -130,6 +130,8 @@ class Omapi extends Controller
         //记录文件的名字
         if(isset($data['Recording']['val'])){
             $cdr_data['rec_name'] = $data['Recording']['val'];
+        }else{
+            $cdr_data['rec_name'] = '';
         }
         $cdr_data['create_time'] = time();
         return $cdr_data;
