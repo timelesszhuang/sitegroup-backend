@@ -19,23 +19,6 @@ class Omapi extends Controller
         $xmldata = file_get_contents('php://input');
         file_put_contents('a.txt', 'DSADAS', FILE_APPEND);
         file_put_contents('a.txt', $xmldata, FILE_APPEND);
-    }
-
-    public function test(){
-        $xmldata = <<<xmldata
-<Cdr id="20920150929140022-0">
-      <callid>49394</callid>
-      <TimeStart>20150929135957</TimeStart>
-      <Type>OU</Type>
-      <Route>OP</Route>
-      <CPN>13698612743</CPN>
-      <CDPN>334</CDPN>
-      <TimeEnd>20150929140022</TimeEnd>
-      <Duration>4</Duration>
-      <TrunkNumber>13698612743</TrunkNumber>
-      <Recording>20150929/13698612743_316_20150929-140018_49394</Recording>
-      </Cdr>
-xmldata;
         $this->analyse_data($xmldata);
     }
 
@@ -43,6 +26,9 @@ xmldata;
      * 解析获取到的xml数据
      * @access private
      * @param xml数据 $xmldata xml数据  cdr 话单 /answered信息  answer信息
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     private function analyse_data($xmldata)
     {
