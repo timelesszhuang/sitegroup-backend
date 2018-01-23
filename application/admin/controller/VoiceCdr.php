@@ -27,9 +27,10 @@ class VoiceCdr extends Common
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
         $data=(new model())->getAll($limits['limit'], $limits['rows'], $where);
-        $data['timestart']=date('Y-m-d H:i:s',$data['timestart']);
-        $data['timeend']=date('Y-m-d H:i:s',$data['timeend']);
-        $data['create_time']=date('Y-m-d H:i:s',$data['create_time']);
+        foreach($data['rows'] as $key=>$datas){
+            $data['rows'][$key]['timestart']=date('Y-m-d H:i:s',$datas['timestart']);
+            $data['rows'][$key]['timeend']=date('Y-m-d H:i:s',$datas['timeend']);
+        }
         return $this->resultArray('', '',$data);
     }
 }
