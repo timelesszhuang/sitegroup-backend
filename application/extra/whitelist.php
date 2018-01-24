@@ -9,6 +9,7 @@
 return [
     'whitelist' => [
         'localhost',
-        'admin.salesman.cc'
+        'admin.salesman.cc',
+        'site.salesman.cc'
     ]
 ];
