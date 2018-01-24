@@ -34,4 +34,6 @@ class VoiceCdr extends Common
         }
         return $this->resultArray('', '',$data);
     }
+
+
 }
