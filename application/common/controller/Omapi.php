@@ -111,6 +111,7 @@ class Omapi extends Controller
             $cdr_data['telnum'] = $data['CPN']['val'];
             //分机号码
             $cdr_data['ext_num'] = $data['CDPN']['val'];
+            exit;
         }
         //还需要判断一下是不是存在这个信息
         $ext_num = $cdr_data['ext_num'];
