@@ -7,7 +7,6 @@ use think\Model;
 use app\sysadmin\model\Node;
 use app\common\model\VoiceCdr;
 use think\Request;
-use think\cache;
 
 class Omapi extends Controller
 {
@@ -80,12 +79,7 @@ class Omapi extends Controller
             $data[$name]['val'] = empty($val) ? '' : $val;
         }
         //获取   分机号码=>array(userid,flag)  跨分组调用模块
-        file_put_contents('test.log', "load", FILE_APPEND);
-        $extnum_nodeid_arr = Cache::remember('extnum_nodeid_arr',function(){
-            file_put_contents('test.log', "load_new", FILE_APPEND);
-            return  $this->get_extnum_nodeid_arr();
-        });
-        file_put_contents('test.log', "load_over", FILE_APPEND);
+        $extnum_nodeid_arr = $this->get_extnum_nodeid_arr();
         //通话的唯一标识
         $cdr_data['callid'] = $data['callid']['val'];
         //$cdr_data['visitor'] = $data['visitor']['attr']['id'];
