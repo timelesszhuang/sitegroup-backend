@@ -3,4 +3,4 @@ application/database.php
 /public/
 将删除 public/upload/template/
 /public/upload/
-thinkphp
+thinkphp/
