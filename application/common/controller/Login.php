@@ -37,7 +37,6 @@ class Login extends Common
             header('Access-Control-Allow-Credentials: true');
             header('Access-Control-Max-Age: 86400');    // cache for 1 day
         }
-
         if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
             if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
                 // may also be using PUT, PATCH, HEAD etc
@@ -97,6 +96,8 @@ class Login extends Common
      */
     public function login()
     {
+        echo 'dsadsa';
+        exit('dsadsa');
         $data = Request::instance()->post();
         $rule = [
             ["user_name", "require", "请填写用户名"],
