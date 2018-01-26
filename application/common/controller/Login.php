@@ -133,6 +133,7 @@ class Login extends Common
             $request = Request::instance();
             $ip = $request->ip();
             $user_info['ip'] = $ip;
+            $user_info['type_name'] = $data['login_type'];
             //如果存在
             $return["remember_key"] =(isset($data['remember'])&&$data['remember'])?$this->getNewRememberStr($user_info['id'], $data['login_type']):'';
             $return["login_type"] = $user_info['type'];
@@ -152,6 +153,7 @@ class Login extends Common
         Session::set('login_id', $user_info["id"],'login');
         Session::set('login_type', $user_info["type"],'login');
         Session::set('login_ip', $user_info["ip"],'login');
+        Session::set('login_type_name', $user_info["type_name"],'login');
     }
 
     public function setLoginLog($user_info){
@@ -209,6 +211,7 @@ class Login extends Common
             $request = Request::instance();
             $ip = $request->ip();
             $user_info['ip'] = $ip;
+            $user_info['type_name'] = $data['login_type'];
             //如果存在
             $return["remember_key"] =(isset($data['remember_key'])&&$data['remember_key'])?$this->getNewRememberStr($user_info['id'], $data['login_type']):'';
             $return["login_type"] = $user_info['type'];

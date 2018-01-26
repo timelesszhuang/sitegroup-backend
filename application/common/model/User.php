@@ -31,6 +31,11 @@ class User extends Model
             $user->salt = chr(rand(97, 122)) . chr(rand(65, 90)) . chr(rand(97, 122)) . chr(rand(65, 90));
             $user->pwd = md5($user->pwd . $user->user_name);
         });
+        User::event('before_update', function ($siteuser) {
+            if (isset($siteuser->pwd)) {
+                $siteuser->pwd = md5($siteuser->pwd . $siteuser->account);
+            }
+        });
     }
 
     /**

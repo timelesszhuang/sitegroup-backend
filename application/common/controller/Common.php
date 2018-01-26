@@ -64,6 +64,13 @@ class Common extends Controller
         ];
     }
 
+    public function getSessionUserInfo(){
+        $user_info_array['user_id'] = Session::get('login_id','login');
+        $user_info_array['user_type'] = Session::get('login_type','login');
+        $user_info_array['user_type_name'] = Session::get('login_type_name','login');
+        return $user_info_array;
+    }
+
     /**
      * 获取配置列表
      * 重组数组
