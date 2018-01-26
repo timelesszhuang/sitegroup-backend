@@ -4,10 +4,9 @@ namespace app\common\controller;
 
 use app\common\model\AccessKeyword;
 use app\common\model\BrowseRecord;
-use think\Controller;
 use think\Request;
 
-class ExternalAccess extends Controller
+class ExternalAccess extends Common
 {
     /**
      * 显示资源列表

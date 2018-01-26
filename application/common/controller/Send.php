@@ -5,21 +5,16 @@ namespace app\common\controller;
 use app\admin\model\Article;
 use app\admin\model\Product;
 use app\admin\model\Question;
-use app\common\model\SmsLog;
-use GuzzleHttp\Promise\RejectedPromise;
-use think\Config;
-use think\Controller;
-use TopClient;
 use app\admin\model\Rejection;
 use app\admin\model\Site;
-use app\sysadmin\model\Node;
-use AlibabaAliqinFcSmsNumSendRequest;
+use app\common\model\SmsLog;
 use app\common\model\User;
-use app\common\traits\Smsali;
 use app\common\traits\SendMail;
+use app\common\traits\Smsali;
+use app\sysadmin\model\Node;
 
 
-class Send extends Controller
+class Send extends Common
 {
     use Smsali;
     use SendMail;

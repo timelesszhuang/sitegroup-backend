@@ -8,11 +8,10 @@
 
 namespace app\common\controller;
 
-use Payment\Common\PayException;
 use Payment\Client\Charge;
-use think\Controller;
+use Payment\Common\PayException;
 
-class Pay extends Controller
+class Pay extends Common
 {
     public function pay(){
         $config = config("pay");// 这里我假设大家都已经配置好了。不会的请去看配置设置文档

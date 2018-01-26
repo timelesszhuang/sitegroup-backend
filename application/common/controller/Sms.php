@@ -10,16 +10,16 @@ namespace app\common\controller;
 
 require_once dirname(__DIR__) . '/../../aliyun-dysms-php-sdk/api_sdk/vendor/autoload.php';
 
-use Aliyun\Core\Config;
-use Aliyun\Core\Profile\DefaultProfile;
-use Aliyun\Core\DefaultAcsClient;
-use Aliyun\Api\Sms\Request\V20170525\SendSmsRequest;
 use Aliyun\Api\Sms\Request\V20170525\QuerySendDetailsRequest;
+use Aliyun\Api\Sms\Request\V20170525\SendSmsRequest;
+use Aliyun\Core\Config;
+use Aliyun\Core\DefaultAcsClient;
+use Aliyun\Core\Profile\DefaultProfile;
 
 // 加载区域结点配置
 Config::load();
 
-class Sms
+class Sms extends Common
 {
     static $acsClient = null;
 

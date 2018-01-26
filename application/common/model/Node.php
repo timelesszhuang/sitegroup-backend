@@ -6,7 +6,7 @@
  * Time: 11:35
  */
 
-namespace app\sysadmin\model;
+namespace app\common\model;
 
 use think\Model;
 

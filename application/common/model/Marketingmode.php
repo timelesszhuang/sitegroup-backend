@@ -1,6 +1,6 @@
 <?php
 
-namespace app\sysadmin\model;
+namespace app\admin\model;
 
 use think\Model;
 
@@ -21,5 +21,17 @@ class Marketingmode extends Model
             "total" => $count,
             "rows" => $data
         ];
+    }
+
+    /**
+     * 格式化时间
+     * @param $key
+     * @return false|string
+     */
+    public function getCreateTimeAttr($key)
+    {
+        if(!empty($key)){
+            return date("y-m-d H:i",$key);
+        }
     }
 }

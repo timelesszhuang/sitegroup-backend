@@ -2,14 +2,11 @@
 
 namespace app\common\controller;
 
-use think\Controller;
-use think\Model;
-use app\sysadmin\model\Node;
 use app\common\model\VoiceCdr;
-use think\Request;
+use app\sysadmin\model\Node;
 use think\Cache;
 
-class Omapi extends Controller
+class Omapi extends Common
 {
     /**
      * 显示资源列表

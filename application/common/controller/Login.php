@@ -7,18 +7,21 @@
 
 namespace app\common\controller;
 
+use app\common\model\LoginLog;
+use app\common\model\SiteUser;
 use app\common\model\User;
-use app\sysadmin\model\Node;
-use think\Config;
-use think\Controller;
-use think\Request;
-use think\Validate;
-use think\Model;
+use app\common\traits\Obtrait;
 use app\common\traits\Osstrait;
+use app\common\model\Node;
+use think\Config;
+use think\Request;
+use think\Session;
+use think\Validate;
 
-class Login extends Controller
+class Login extends Common
 {
     use Osstrait;
+    use Obtrait;
 
     /**
      * 本地测试开启下 允许跨域ajax 获取数据
@@ -50,11 +53,12 @@ class Login extends Controller
      * 图片上传到 oss相关操作
      * @access public
      */
+    //TODO 删除
     public function imageupload()
     {
         $request = Request::instance();
-        $whitelist=Config::get('whitelist.whitelist');
-        if (!in_array(parse_url($request->header('Origin'))['host'],$whitelist)){
+        $whitelist = Config::get('whitelist.whitelist');
+        if (!in_array(parse_url($request->header('Origin'))['host'], $whitelist)) {
             return [
                 'msg' => '请登录',
                 'status' => false
@@ -89,84 +93,148 @@ class Login extends Controller
     /**
      * 执行第一次的登陆操作
      * @access public
-     * @author guozhen
+     * @author jingyang
      */
     public function login()
     {
-        $post = Request::instance()->post();
+        $data = Request::instance()->post();
         $rule = [
             ["user_name", "require", "请填写用户名"],
-            ["pwd", "require", "请填写密码"],
-            ["verifyCode", "require", "请填写验证码"]
+            ["password", "require", "请填写密码"],
+            ["verify_code", "require", "请填写验证码"],
+            ["login_type", "require", "未知错误"]
         ];
         $validate = new Validate($rule);
-        //检查参数传递
-        if (!$validate->check($post)) {
-            return $this->resultArray($validate->getError(), "failed");
+        try {
+            //验证字段
+            if (!$validate->check($data)) {
+                $error = $validate->getError();
+                exception($error[0]);
+            }
+//            验证验证码
+//            if (!captcha_check($data["verify_code"])) {
+//                exception('验证码错误');
+//            };
+            //返回结果容器
+            $return = [];
+            //登录日志容器
+            //登录信息容器
+            $user_info = [];
+            if ($data['login_type'] == 'node') {
+                $user_info = (new User())->checkUserLogin($data["user_name"], $data["password"]);
+            } elseif ($data['login_type'] == 'site') {
+                $user_info = (new SiteUser())->checkUserLogin($data["user_name"], $data["password"]);
+                $log['site_id'] = $user_info['$user_info'];
+            } else {
+                exception('未知错误');
+            }
+            // 获取ip信息
+            $request = Request::instance();
+            $ip = $request->ip();
+            $user_info['ip'] = $ip;
+            //如果存在
+            $return["remember_key"] =(isset($data['remember'])&&$data['remember'])?$this->getRememberStr($user_info['id'], $user_info['salt']):'';
+            $return["login_type"] = $user_info['type'];
+            $return["login_id"] = $user_info['id'];
+            //记录日志
+            $this->setLoginLog($user_info);
+            //设置session信息
+            $this->setLoginSession($user_info);
+            return $this->resultArray('success', '登陆成功', $return);
+        } catch (\Exception $exception) {
+            return $this->resultArray("failed", $exception->getMessage());
         }
-        //检查验证码
-//        if (!captcha_check($post["verifyCode"])) {
-//            return  $this->resultArray('验证码错误', "failed");
-//        };
-        $user_arr = (new User())->checkUser($post["user_name"], $post["pwd"]);
-        return $this->resultArray($user_arr[0], $user_arr[1], $user_arr[2]);
+    }
+
+    public function setLoginSession($user_info)
+    {
+        Session::set('login_id', $user_info["id"]);
+        Session::set('login_type', $user_info["type"]);
+        Session::set('login_ip', $user_info["ip"]);
+    }
+
+    public function setLoginLog($user_info){
+        $request = Request::instance();
+        $ip = $request->ip();
+        $location_info = "未获取到";
+        $ip_info = $this->get_ip_info($ip);
+        if (!empty($ip_info)) {
+            $location_info = $ip_info['data']['country'] . $ip_info['data']['region'] . $ip_info['data']['city'];
+        }
+        $log = [];
+        $log['ip'] = $ip;
+        $log['node_id'] = $user_info['node_id'];
+        $log['name'] = $user_info['name'];
+        $log['type_name'] = $user_info['type_name'];
+        $log['location'] = $location_info;
+        LoginLog::create($log);
+    }
+
+    /***
+     * @param $id
+     * @param $salt
+     * @return string
+     */
+    public function getRememberStr($id, $salt)
+    {
+        $private = Config::get("crypt.cookiePrivate");
+        return md5($id . $salt . $private);
     }
 
     /**
      * 七天免登录验证
-     * @return string
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author guozhen
      */
     public function autoLogin()
     {
-        $post = $this->request->post();
-        if (empty($post["user_id"]) || empty($post["remember"])) {
-            return $this->resultArray('', "failed");
-        }
-        $userInfo = User::get($post["user_id"]);
-        $private = Config::get("crypt.cookiePrivate");
-        if ($post["remember"] != md5($userInfo["id"] . $userInfo["salt"] . $private)) {
-            return $this->resultArray('', "failed");
-        }
-        // root用户免除限制
-        if ($userInfo["id"] != 1) {
-            // 查询node_id是否被禁用 如果被禁同样禁止登录
-            $node_info = Node::where(["id" => $userInfo["node_id"]])->find();
-            if (empty($node_info)) {
-                return $this->resultArray('当前用户没有节点后台', "failed");
-            }
-            if ($node_info["status"] == "off") {
-                return $this->resultArray('当前节点后台禁止登录', "failed");
-            }
-        }
-        $user_arr = $userInfo->getData();
-        unset($user_arr["pwd"]);
-        //获取私钥
-        $private = Config::get("crypt.cookiePrivate");
-        $user_arr["remember"] = md5($user_arr["id"] . $user_arr["salt"] . $private);
-        (new User)->setSession($user_arr);
-        return $this->resultArray('', '', $user_arr);
-    }
-
-    /**
-     * 返回对象  默认不填为success 否则是failed
-     * @param $array 响应数据
-     * @return array
-     * @return array
-     * @author guozhen
-     */
-    public function resultArray($msg = 0, $stat = '', $data = 0)
-    {
-        if (empty($stat)) {
-            $status = "success";
-        } else {
-            $status = "failed";
-        }
-        return [
-            'status' => $status,
-            'data' => $data,
-            'msg' => $msg
+        $data = Request::instance()->post();
+        $rule = [
+            ["remember_key", "require", "未知错误"],
+            ["login_id", "require", "未知错误"],
+            ["login_type", "require", "未知错误"]
         ];
+        $validate = new Validate($rule);
+        try {
+            //验证字段
+            if (!$validate->check($data)) {
+                $error = $validate->getError();
+                exception($error[0]);
+            }
+//            验证验证码
+//            if (!captcha_check($data["verify_code"])) {
+//                exception('验证码错误');
+//            };
+            //返回结果容器
+            $return = [];
+            //登录日志容器
+            //登录信息容器
+            $user_info = [];
+            if ($data['login_type'] == 'node') {
+                $user_info = (new User())->checkUserLogin($data["login_id"], $data["remember_key"],'auto');
+            } elseif ($data['login_type'] == 'site') {
+                $user_info = (new SiteUser())->checkUserLogin($data["login_id"], $data["remember_key"],'auto');
+                $log['site_id'] = $user_info['$user_info'];
+            } else {
+                exception('未知错误');
+            }
+            // 获取ip信息
+            $request = Request::instance();
+            $ip = $request->ip();
+            $user_info['ip'] = $ip;
+            //如果存在
+            $return["remember_key"] =(isset($data['remember'])&&$data['remember'])?$this->getRememberStr($user_info['id'], $user_info['salt']):'';
+            $return["login_type"] = $user_info['type'];
+            $return["login_id"] = $user_info['id'];
+            //设置session信息
+            $this->setLoginSession($user_info);
+            return $this->resultArray('success', '自动登陆成功', $return);
+        } catch (\Exception $exception) {
+            return $this->resultArray("failed", $exception->getMessage());
+        }
     }
 
     /**

@@ -8,8 +8,14 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
 use think\Route;
+/***
+ * 公共api
+ */
+//登录
+Route::post('login', 'common/Login/login');
+//验证码
+//Route::get('captcha', 'common/Login/login');
 
 //用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');
