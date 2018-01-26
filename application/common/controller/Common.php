@@ -10,6 +10,7 @@ namespace app\common\controller;
 
 use app\admin\model\SystemConfig;
 use app\common\model\User;
+use think\Config;
 use think\Controller;
 use think\Request;
 use think\Session;
@@ -121,6 +122,17 @@ class Common extends Controller
         }
         $user_info = (new User)->changePwd($post["oldPwd"], $post['newPwd']);
         return $this->resultArray($user_info[0], $user_info[1], $user_info[2]);
+    }
+
+    /***
+     * @param $id
+     * @param $salt
+     * @return string
+     */
+    static public function getRememberStr($id, $salt)
+    {
+        $private = Config::get("crypt.cookiePrivate");
+        return md5($id . $salt . $private);
     }
 
     /**

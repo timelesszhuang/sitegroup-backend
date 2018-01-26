@@ -35,25 +35,38 @@ class User extends Model
 
     /**
      * 用户验证
-     * @param $username
-     * @param $pwd
+     * @param $username_or_user_id
+     * @param $pwd_or_remember_key
+     * @param string $option
      * @return array
+     * @throws \Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      * @author jingyang
-     * @throws \Exception
      */
-    public function checkUserLogin($username, $pwd, $option = 'login')
+    public function checkUserLogin($username_or_user_id, $pwd_or_remember_key, $option = 'login')
     {
-        $user_info = self::where(["user_name" => $username])->find();
-        if (empty($user_info)) {
-            exception('用户名错误');
+        if($option=='login'){
+            $user_info = self::where(["user_name" => $username_or_user_id])->find();
+            if (empty($user_info)) {
+                exception('用户名错误');
+            }
+            $user_info_arr = $user_info->toArray();
+            if (md5($pwd_or_remember_key . $username_or_user_id) != $user_info_arr["pwd"]) {
+                exception('用户名,密码不匹配');
+            }
+        }elseif($option=='auto'){
+            $user_info = self::where(["id" => $username_or_user_id])->find();
+            if (empty($user_info)) {
+                exception('用户名错误');
+            }
+            $user_info_arr = $user_info->toArray();
+            if (Common::getRememberStr($user_info_arr['id'],$user_info_arr['salt']) != $pwd_or_remember_key) {
+                exception('用户名,密码不匹配');
+            }
         }
-        $user_info_arr = $user_info->toArray();
-        if ($option == 'login'&&md5($pwd . $username) != $user_info_arr["pwd"]) {
-            exception('用户名,密码不匹配');
-        }
+        /** @var array $user_info_arr */
         if ($user_info_arr["id"] != 1) {
             // 查询node_id是否被禁用 如果被禁同样禁止登录
             $node_info = (new Node)->where(["id" => $user_info_arr["node_id"]])->find();
@@ -65,6 +78,7 @@ class User extends Model
             }
         }
         $return_arr = [];
+        /** @var array $user_info */
         $return_arr['id'] = $user_info['id'];
         $return_arr['node_id'] = $user_info['node_id'];
         $return_arr['name'] = $user_info['name'];

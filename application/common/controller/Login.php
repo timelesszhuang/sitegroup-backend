@@ -96,8 +96,6 @@ class Login extends Common
      */
     public function login()
     {
-        echo 'dsadsa';
-        exit('dsadsa');
         $data = Request::instance()->post();
         $rule = [
             ["user_name", "require", "请填写用户名"],
@@ -110,7 +108,8 @@ class Login extends Common
             //验证字段
             if (!$validate->check($data)) {
                 $error = $validate->getError();
-                exception($error[0]);
+                /** @var string $error */
+                exception($error);
             }
 //            验证验证码
 //            if (!captcha_check($data["verify_code"])) {
@@ -171,23 +170,9 @@ class Login extends Common
         LoginLog::create($log);
     }
 
-    /***
-     * @param $id
-     * @param $salt
-     * @return string
-     */
-    public function getRememberStr($id, $salt)
-    {
-        $private = Config::get("crypt.cookiePrivate");
-        return md5($id . $salt . $private);
-    }
-
     /**
      * 七天免登录验证
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      * @author guozhen
      */
     public function autoLogin()
@@ -209,8 +194,6 @@ class Login extends Common
 //            if (!captcha_check($data["verify_code"])) {
 //                exception('验证码错误');
 //            };
-            //返回结果容器
-            $return = [];
             //登录日志容器
             //登录信息容器
             $user_info = [];
