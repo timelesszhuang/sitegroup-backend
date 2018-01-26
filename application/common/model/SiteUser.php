@@ -32,7 +32,7 @@ class SiteUser extends Model
         });
         //修改事件
         SiteUser::event('before_update', function ($siteuser) {
-            if (!empty($siteuser->pwd)) {
+            if (isset($siteuser->pwd)) {
                 $siteuser->pwd = md5($siteuser->pwd . $siteuser->account);
             }
         });

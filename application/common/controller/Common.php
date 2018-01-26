@@ -149,9 +149,9 @@ class Common extends Controller
         $update['salt'] = $salt;
         $update['id'] = $id;
         if ($option == 'node') {
-            (new User())->save($update);
+            (new User())->isUpdate(true)->save($update);
         } elseif ($option == 'site') {
-            (new SiteUser())->save($update);
+            (new SiteUser())->isUpdate(true)->save($update);
         } else {
             exception('未知错误');
         }

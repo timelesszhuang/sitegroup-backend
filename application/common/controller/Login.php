@@ -133,7 +133,7 @@ class Login extends Common
             $ip = $request->ip();
             $user_info['ip'] = $ip;
             //如果存在
-            $return["remember_key"] =(isset($data['remember'])&&$data['remember'])?$this->getRememberStr($user_info['id'], $user_info['salt']):'';
+            $return["remember_key"] =(isset($data['remember'])&&$data['remember'])?$this->getNewRememberStr($user_info['id'], $data['login_type']):'';
             $return["login_type"] = $user_info['type'];
             $return["login_id"] = $user_info['id'];
             //记录日志
@@ -205,7 +205,7 @@ class Login extends Common
             $ip = $request->ip();
             $user_info['ip'] = $ip;
             //如果存在
-            $return["remember_key"] =(isset($data['remember_key'])&&$data['remember_key'])?$this->getRememberStr($user_info['id'], $user_info['salt']):'';
+            $return["remember_key"] =(isset($data['remember_key'])&&$data['remember_key'])?$this->getNewRememberStr($user_info['id'], $data['login_type']):'';
             $return["login_type"] = $user_info['type'];
             $return["login_id"] = $user_info['id'];
             //设置session信息
