@@ -16,6 +16,11 @@ use think\Route;
 Route::post('login', 'common/Login/login');
 //自动登录
 Route::post('auto_login', 'common/Login/autoLogin');
+//获取验证码
+//Route::get('captcha');
+//更新密码
+Route::get('logout','common/Login/logout');
+//退出登录
 
 //用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

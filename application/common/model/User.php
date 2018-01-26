@@ -39,7 +39,7 @@ class User extends Model
      * @param $pwd_or_remember_key
      * @param string $option
      * @return array
-     * @throws \Exception
+     * @throws \app\common\exception\ProcessException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -50,20 +50,20 @@ class User extends Model
         if($option=='login'){
             $user_info = self::where(["user_name" => $username_or_user_id])->find();
             if (empty($user_info)) {
-                exception('用户名错误');
+                Common::processException('用户名错误');
             }
             $user_info_arr = $user_info->toArray();
             if (md5($pwd_or_remember_key . $username_or_user_id) != $user_info_arr["pwd"]) {
-                exception('用户名,密码不匹配');
+                Common::processException('用户名,密码不匹配');
             }
         }elseif($option=='auto'){
             $user_info = self::where(["id" => $username_or_user_id])->find();
             if (empty($user_info)) {
-                exception('用户名错误');
+                Common::processException('用户名错误');
             }
             $user_info_arr = $user_info->toArray();
             if (Common::getRememberStr($user_info_arr['id'],$user_info_arr['salt']) != $pwd_or_remember_key) {
-                exception('用户名,密码不匹配');
+                Common::processException('用户名,密码不匹配');
             }
         }
         /** @var array $user_info_arr */
@@ -71,10 +71,10 @@ class User extends Model
             // 查询node_id是否被禁用 如果被禁同样禁止登录
             $node_info = (new Node)->where(["id" => $user_info_arr["node_id"]])->find();
             if (empty($node_info)) {
-                exception("当前用户没有节点后台!!");
+                Common::processException("当前用户没有节点后台!!");
             }
             if ($node_info["status"] == "off") {
-                exception("当前节点后台禁止登录!!");
+                Common::processException("当前节点后台禁止登录!!");
             }
         }
         $return_arr = [];

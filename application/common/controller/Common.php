@@ -16,6 +16,7 @@ use think\Controller;
 use think\Request;
 use think\Session;
 use think\Validate;
+use app\common\exception\ProcessException;
 
 
 class Common extends Controller
@@ -43,17 +44,6 @@ class Common extends Controller
         }
         return $this->resultArray(['data' => $systemConfig]);
     }
-
-    /**
-     * 获取 验证码测试
-     * @access public
-     */
-    public function getCaptcha()
-    {
-        //captcha_check()
-        print_r(Session::get('name'));
-    }
-
 
     /**
      * 返回对象  默认不填为success
@@ -140,7 +130,7 @@ class Common extends Controller
      * @param $id
      * @param $option
      * @return string
-     * @throws \Exception
+     * @throws ProcessException
      */
     static public function getNewRememberStr($id, $option)
     {
@@ -153,7 +143,7 @@ class Common extends Controller
         } elseif ($option == 'site') {
             (new SiteUser())->isUpdate(true)->save($update);
         } else {
-            exception('未知错误');
+            Common::processException('未知错误');
         }
         return md5($id . $salt . $private);
     }
@@ -167,20 +157,22 @@ class Common extends Controller
     }
 
     /**
-     * 检查session
+     * @return void
      */
-    public function checkSession()
+    public function checkLogin()
     {
-        $user = $this->getSessionUser();
-        if (empty($user["user_id"])) {
-            exit(json_encode(
-                [
-                    'status' => "loginout",
-                    'data' => '',
-                    'msg' => "请先登录"
-                ]
-            ));
+        if (!Session::has('login_id','login')&&Session::has('login_id','login_type')){
+            exit($this->resultArray('logout','没有登录'));
         }
+    }
+
+    /**
+     * @param $error
+     * @param int $code
+     * @throws ProcessException
+     */
+    static public function processException($error,$code=0){
+        throw new ProcessException($error,$code);
     }
 
     /**

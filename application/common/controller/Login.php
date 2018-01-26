@@ -7,12 +7,12 @@
 
 namespace app\common\controller;
 
+use app\common\exception\ProcessException;
 use app\common\model\LoginLog;
 use app\common\model\SiteUser;
 use app\common\model\User;
 use app\common\traits\Obtrait;
 use app\common\traits\Osstrait;
-use app\common\model\Node;
 use think\Config;
 use think\Request;
 use think\Session;
@@ -93,6 +93,7 @@ class Login extends Common
      * 执行第一次的登陆操作
      * @access public
      * @author jingyang
+     * @throws \Exception
      */
     public function login()
     {
@@ -109,7 +110,7 @@ class Login extends Common
             if (!$validate->check($data)) {
                 $error = $validate->getError();
                 /** @var string $error */
-                exception($error);
+                Common::processException($error);
             }
 //            验证验证码
 //            if (!captcha_check($data["verify_code"])) {
@@ -126,7 +127,7 @@ class Login extends Common
                 $user_info = (new SiteUser())->checkUserLogin($data["user_name"], $data["password"]);
                 $log['site_id'] = $user_info['$user_info'];
             } else {
-                exception('未知错误');
+                Common::processException('未知错误');
             }
             // 获取ip信息
             $request = Request::instance();
@@ -141,16 +142,16 @@ class Login extends Common
             //设置session信息
             $this->setLoginSession($user_info);
             return $this->resultArray('success', '登陆成功', $return);
-        } catch (\Exception $exception) {
+        } catch (ProcessException $exception) {
             return $this->resultArray("failed", $exception->getMessage());
         }
     }
 
     public function setLoginSession($user_info)
     {
-        Session::set('login_id', $user_info["id"]);
-        Session::set('login_type', $user_info["type"]);
-        Session::set('login_ip', $user_info["ip"]);
+        Session::set('login_id', $user_info["id"],'login');
+        Session::set('login_type', $user_info["type"],'login');
+        Session::set('login_ip', $user_info["ip"],'login');
     }
 
     public function setLoginLog($user_info){
@@ -173,6 +174,10 @@ class Login extends Common
     /**
      * 七天免登录验证
      * @return array
+     * @throws \Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author guozhen
      */
     public function autoLogin()
@@ -189,7 +194,7 @@ class Login extends Common
             if (!$validate->check($data)) {
                 $error = $validate->getError();
                 /** @var string $error */
-                exception($error);
+                Common::processException($error);
             }
             //登录信息容器
             if ($data['login_type'] == 'node') {
@@ -198,7 +203,7 @@ class Login extends Common
                 $user_info = (new SiteUser())->checkUserLogin($data["login_id"], $data["remember_key"],'auto');
                 $log['site_id'] = $user_info['$user_info'];
             } else {
-                exception('未知错误');
+                Common::processException('未知错误');
             }
             // 获取ip信息
             $request = Request::instance();
@@ -211,10 +216,20 @@ class Login extends Common
             //设置session信息
             $this->setLoginSession($user_info);
             return $this->resultArray('success', '自动登陆成功', $return);
-        } catch (\Exception $exception) {
+        } catch (ProcessException $exception) {
             return $this->resultArray("failed", $exception->getMessage());
         }
     }
+
+    /***
+     * 登出
+     */
+    public function logout()
+    {
+        Session::clear('login');
+        return $this->resultArray('success', '登出成功');
+    }
+
 
     /**
      * 调用resultArray方法

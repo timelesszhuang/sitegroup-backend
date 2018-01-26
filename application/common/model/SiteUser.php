@@ -55,34 +55,34 @@ class SiteUser extends Model
         if ($option == 'login') {
             $user_info = self::where(["account" => $username_or_user_id])->find();
             if (empty($user_info)) {
-                exception("用户名错误");
+                Common::processException("用户名错误");
             }
             $user_info_arr = $user_info->toArray();
             if (md5($pwd_or_remenber_key . $username_or_user_id) != $user_info_arr["pwd"]) {
-                exception("用户名或密码错误");
+                Common::processException("用户名或密码错误");
             }
         } elseif ($option == 'auto') {
             $user_info = self::where(["id" => $username_or_user_id])->find();
             if (empty($user_info)) {
-                exception('用户名错误');
+                Common::processException('用户名错误');
             }
             $user_info_arr = $user_info->toArray();
             if (Common::getRememberStr($user_info_arr['id'], $user_info_arr['salt']) != $pwd_or_remenber_key) {
-                exception('用户名,密码不匹配');
+                Common::processException('用户名,密码不匹配');
             }
         }
         // 查询当前用户是否被禁止登录
         /** @var array $user_info_arr */
         if ($user_info_arr['is_on'] == 20) {
-            exception("当前用户被禁止登录!!");
+            Common::processException("当前用户被禁止登录!!");
         }
         // 查询node_id是否被禁用 如果被禁同样禁止登录
         $node_info = (new Node)->where(["id" => $user_info_arr["node_id"]])->find();
         if (empty($node_info)) {
-            exception("当前用户没有节点后台!!");
+            Common::processException("当前用户没有节点后台!!");
         }
         if ($node_info["status"] == "off") {
-            exception("当前节点后台禁止登录!!");
+            Common::processException("当前节点后台禁止登录!!");
         }
         $return_arr = [];
         /** @var array $user_info */
