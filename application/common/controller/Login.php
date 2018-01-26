@@ -101,7 +101,7 @@ class Login extends Common
             ["user_name", "require", "请填写用户名"],
             ["password", "require", "请填写密码"],
             ["verify_code", "require", "请填写验证码"],
-            ["login_type", "require", "未知错误"]
+            ["login_type", "require", "未知用户类型"]
         ];
         $validate = new Validate($rule);
         try {
@@ -179,24 +179,19 @@ class Login extends Common
     {
         $data = Request::instance()->post();
         $rule = [
-            ["remember_key", "require", "未知错误"],
-            ["login_id", "require", "未知错误"],
-            ["login_type", "require", "未知错误"]
+            ["remember_key", "require", "未获取到自动登录key"],
+            ["login_id", "require", "未获取到自动登录用户id"],
+            ["login_type", "require", "未知的用户类型"]
         ];
         $validate = new Validate($rule);
         try {
             //验证字段
             if (!$validate->check($data)) {
                 $error = $validate->getError();
-                exception($error[0]);
+                /** @var string $error */
+                exception($error);
             }
-//            验证验证码
-//            if (!captcha_check($data["verify_code"])) {
-//                exception('验证码错误');
-//            };
-            //登录日志容器
             //登录信息容器
-            $user_info = [];
             if ($data['login_type'] == 'node') {
                 $user_info = (new User())->checkUserLogin($data["login_id"], $data["remember_key"],'auto');
             } elseif ($data['login_type'] == 'site') {
@@ -210,7 +205,7 @@ class Login extends Common
             $ip = $request->ip();
             $user_info['ip'] = $ip;
             //如果存在
-            $return["remember_key"] =(isset($data['remember'])&&$data['remember'])?$this->getRememberStr($user_info['id'], $user_info['salt']):'';
+            $return["remember_key"] =(isset($data['remember_key'])&&$data['remember_key'])?$this->getRememberStr($user_info['id'], $user_info['salt']):'';
             $return["login_type"] = $user_info['type'];
             $return["login_id"] = $user_info['id'];
             //设置session信息

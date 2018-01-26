@@ -14,8 +14,8 @@ use think\Route;
  */
 //登录
 Route::post('login', 'common/Login/login');
-//验证码
-//Route::get('captcha', 'common/Login/login');
+//自动登录
+Route::post('auto_login', 'common/Login/autoLogin');
 
 //用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

@@ -9,6 +9,7 @@ namespace app\common\controller;
 
 
 use app\admin\model\SystemConfig;
+use app\common\model\SiteUser;
 use app\common\model\User;
 use think\Config;
 use think\Controller;
@@ -133,6 +134,36 @@ class Common extends Controller
     {
         $private = Config::get("crypt.cookiePrivate");
         return md5($id . $salt . $private);
+    }
+
+    /***
+     * @param $id
+     * @param $option
+     * @return string
+     * @throws \Exception
+     */
+    static public function getNewRememberStr($id, $option)
+    {
+        $private = Config::get("crypt.cookiePrivate");
+        $salt = Common::getNewSale();
+        $update['salt'] = $salt;
+        $update['id'] = $id;
+        if ($option == 'node') {
+            (new User())->save($update);
+        } elseif ($option == 'site') {
+            (new SiteUser())->save($update);
+        } else {
+            exception('未知错误');
+        }
+        return md5($id . $salt . $private);
+    }
+
+    /**
+     * @return string
+     */
+    static public function getNewSale()
+    {
+        return chr(rand(97, 122)) . chr(rand(65, 90)) . chr(rand(97, 122)) . chr(rand(65, 90));
     }
 
     /**
