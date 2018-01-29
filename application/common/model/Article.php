@@ -22,9 +22,11 @@ class Article extends Model
      * 初始化函数
      * @author guozhen
      */
+    //TODO oldfunction
     public static function init()
     {
         parent::init();
+    //TODO oldfunction
         $common_func = function ($article) {
             if (isset($article->content)) {
                 //提取summary
@@ -106,6 +108,7 @@ class Article extends Model
      * @param int $where
      * @return array
      */
+    //TODO oldfunction
     public function getArticle($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
@@ -124,6 +127,7 @@ class Article extends Model
      * @return array
      */
     public
+    //TODO oldfunction
     function getArticletdk($limit, $rows, $w = '', $wheresite = '', $wheretype_id = '')
     {
         $count = $this->where('articletype_id', 'in', $wheretype_id)->where($w)->whereOr($wheresite)->count();

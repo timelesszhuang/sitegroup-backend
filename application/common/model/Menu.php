@@ -21,6 +21,7 @@ class Menu extends Model
      * @param $where
      * @return array
      */
+    //TODO oldfunction
     public function getMenu($limit, $rows, $where)
     {
         $count = $this->where($where)->count();
@@ -38,6 +39,7 @@ class Menu extends Model
      * @param $field
      * @return false|\PDOStatement|string|\think\Collection
      */
+    //TODO oldfunction
     public function getlist($where, $field)
     {
         $data = $this->where($where)->field($field)->select();
@@ -58,6 +60,7 @@ class Menu extends Model
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function getSiteTypeIds($menu_id_array,$menu_flag)
     {
         $whe['flag'] = $menu_flag;

@@ -8,7 +8,7 @@
 namespace app\common\controller;
 
 
-use app\admin\model\SystemConfig;
+use app\common\model\SystemConfig;
 use app\common\model\SiteUser;
 use app\common\model\User;
 use think\Config;
@@ -24,6 +24,7 @@ class Common extends Controller
     /**
      * 本地测试开启下 允许跨域ajax 获取数据
      */
+    //TODO oldfunction
     public function __construct()
     {
         parent::__construct();
@@ -32,6 +33,7 @@ class Common extends Controller
     /**
      * 获取配置信息
      */
+    //TODO oldfunction
     function getConfigInfo()
     {
         $systemConfig = cache('DB_CONFIG_DATA');
@@ -53,6 +55,7 @@ class Common extends Controller
      * @return array
      * @author guozhen
      */
+    //TODO oldfunction
     public function resultArray($status = 'success', $msg = '',$data = [], $detail = '')
     {
         if(is_array($status)){
@@ -68,6 +71,7 @@ class Common extends Controller
         ];
     }
 
+    //TODO oldfunction
     public function getSessionUserInfo(){
         $user_info_array['user_id'] = Session::get('login_id','login');
         $user_info_array['user_type'] = Session::get('login_type','login');
@@ -87,6 +91,7 @@ class Common extends Controller
      * @author jingzheng
      * */
 
+    //TODO oldfunction
     public function getDataList($auth)
     {
         $SystemConfig = new \app\common\model\SystemConfig();
@@ -106,6 +111,7 @@ class Common extends Controller
      * @author jingzheng
      */
 
+    //TODO oldfunction
     public function getAuth()
     {
         $systemConfig = $this->getDataList(1);
@@ -117,6 +123,7 @@ class Common extends Controller
      * @param $salt
      * @return string
      */
+    //TODO oldfunction
     static public function getRememberStr($id, $salt)
     {
         $private = Config::get("crypt.cookiePrivate");
@@ -129,6 +136,7 @@ class Common extends Controller
      * @return string
      * @throws ProcessException
      */
+    //TODO oldfunction
     static public function getNewRememberStr($id, $option)
     {
         $private = Config::get("crypt.cookiePrivate");
@@ -148,6 +156,7 @@ class Common extends Controller
     /**
      * @return string
      */
+    //TODO oldfunction
     static public function getNewSale()
     {
         return chr(rand(97, 122)) . chr(rand(65, 90)) . chr(rand(97, 122)) . chr(rand(65, 90));
@@ -156,6 +165,7 @@ class Common extends Controller
     /**
      * @return void
      */
+    //TODO oldfunction
     public function checkLogin()
     {
         if (!Session::has('login_id','login')&&!Session::has('login_type','login')){
@@ -168,6 +178,7 @@ class Common extends Controller
      * @param int $code
      * @throws ProcessException
      */
+    //TODO oldfunction
     static public function processException($error,$code=0){
         throw new ProcessException($error,$code);
     }
@@ -177,6 +188,7 @@ class Common extends Controller
      * @return array
      * @author guozhen
      */
+    //TODO oldfunction
     public function getLimit()
     {
         $page = $this->request->get("page");
@@ -200,6 +212,7 @@ class Common extends Controller
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function getread(Model $model, $id)
     {
         return $this->resultArray($model->where(["id" => $id])->field("create_time,update_time", true)->find()->toArray());
@@ -212,6 +225,7 @@ class Common extends Controller
      * @author guozhen
      * @return array
      */
+    //TODO oldfunction
     public function deleteRecord(Model $model, $id)
     {
         $user = $this->getSessionUserInfo();
@@ -233,6 +247,7 @@ class Common extends Controller
      * @author guozhen
      * @return array
      */
+    //TODO oldfunction
     public function publicUpdate($controller, $data, $id)
     {
         $user = $this->getSessionUser();
@@ -258,6 +273,7 @@ class Common extends Controller
      * @param $dest 解压缩到的路径
      * @return bool
      */
+    //TODO oldfunction
     public function unzipFile($path, $dest)
     {
         $path = ROOT_PATH . 'public/' . $path;
@@ -283,6 +299,7 @@ class Common extends Controller
      * @param $field
      * @return array
      */
+    //TODO oldfunction
     public function getList($model, $field)
     {
         $user = $this->getSessionUser();
@@ -297,6 +314,7 @@ class Common extends Controller
      * @param $v
      * @param $k
      */
+    //TODO oldfunction
     public function formatter_data($v, $k)
     {
         if (isset($v["node_id"]) && ($v["node_id"] == 0)) {
@@ -313,6 +331,7 @@ class Common extends Controller
      * @param $item
      * @return mixed
      */
+    //TODO oldfunction
     public function getSiteSession($item)
     {
         $arr = Session::get($item);
@@ -324,6 +343,7 @@ class Common extends Controller
      * @param $http
      * @return string
      */
+    //TODO oldfunction
     public function searchHttp($http)
     {
         return strrchr("http", $http);
@@ -336,6 +356,7 @@ class Common extends Controller
      * @param $len
      * @return
      */
+    //TODO oldfunction
     public function utf8chstringsubstr($str, $len)
     {
         $str = strip_tags($str);

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Db;
 use think\Model;
@@ -39,6 +39,7 @@ class WeixinKeywordType extends Model
      * @param $value
      * @param $key
      */
+    //TODO oldfunction
     public function formatter_date(&$value, $key)
     {
         if ($value['create_time']) {
@@ -50,6 +51,7 @@ class WeixinKeywordType extends Model
      * 获取所有关键字分类
      * @return false|\PDOStatement|string|\think\Collection
      */
+    //TODO oldfunction
     public function getKeywordType($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
@@ -66,6 +68,7 @@ class WeixinKeywordType extends Model
      * @param $name
      * @return $this
      */
+    //TODO oldfunction
     public function addKeyword($name)
     {
         return self::create(["name" => $name, "status" => 10]);
@@ -77,6 +80,7 @@ class WeixinKeywordType extends Model
      * @param $name
      * @return false|int
      */
+    //TODO oldfunction
     public function editKeyword($id, $name)
     {
         return Db::connect($this->connection)->table("sc_weixin_keyword")->order('id desc')->where(["id" => $id])->update(["name" => $name]);
@@ -87,12 +91,14 @@ class WeixinKeywordType extends Model
      * @param $id
      * @return null|static
      */
+    //TODO oldfunction
     public function getOne($id)
     {
         $key = self::get($id);
         return $key;
     }
 
+    //TODO oldfunction
     public function getKeyTypeList()
     {
         return Db::connect($this->connection)->table("sc_weixin_keyword_type")->field("id,name as text")->select();

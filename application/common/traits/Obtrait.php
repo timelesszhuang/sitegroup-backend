@@ -15,6 +15,7 @@ trait Obtrait
      * @param $msg
      * @param string $info
      */
+    //TODO oldfunction
     public function open_start($msg, $info = '')
     {
         ob_start();
@@ -33,6 +34,7 @@ trait Obtrait
      * @param $data post数据 数组格式
      * @return mixed
      */
+    //TODO oldfunction
     public function curl_post($url, $data)
     {
         //初始化
@@ -60,6 +62,7 @@ trait Obtrait
      * @param $url
      * @return mixed
      */
+    //TODO oldfunction
     public function curl_get($url)
     {
         //初始化
@@ -84,6 +87,7 @@ trait Obtrait
      * @param $image_file
      * @return string
      */
+    //TODO oldfunction
     public function base64EncodeImage($image_file)
     {
         $base64_image = '';
@@ -98,6 +102,7 @@ trait Obtrait
      * @return mixed
      * 调用接口根据ip查询地址
      */
+    //TODO oldfunction
     public function get_ip_info($ip)
     {
         $curl = curl_init(); //这是curl的handle
@@ -118,6 +123,7 @@ trait Obtrait
      * @param $obj 解压缩后的目录
      * @param $directiry 解压的目录
      */
+    //TODO oldfunction
     public function ZipArchive($src, $obj, $directiry)
     {
         $made_path = '';
@@ -150,6 +156,7 @@ trait Obtrait
      * @param $dir
      * @return bool
      */
+    //TODO oldfunction
     public function del_dir($dir)
     {
         if (!is_dir($dir)) {
@@ -172,6 +179,7 @@ trait Obtrait
      * @param $src
      * @param $directory
      */
+    //TODO oldfunction
     public function checkZipDirectory($src, $directory)
     {
         $made_path = '';
@@ -198,6 +206,7 @@ trait Obtrait
      * 生成唯一的string
      * @access public
      */
+    //TODO oldfunction
     public function formUniqueString()
     {
         return md5(uniqid(rand(), true));
@@ -209,6 +218,7 @@ trait Obtrait
      * @param string $fileurl 要获取后缀的文件url 路径
      * @access public
      */
+    //TODO oldfunction
     public function analyseUrlFileType($fileurl)
     {
         $path_info = pathinfo(parse_url($fileurl)['path']);

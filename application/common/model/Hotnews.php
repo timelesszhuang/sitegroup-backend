@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Db;
 use think\Model;
@@ -39,6 +39,7 @@ class Hotnews extends Model
      * @param $value
      * @param $key
      */
+    //TODO oldfunction
     public function formatter_date(&$value, $key)
     {
         if ($value['create_time']) {
@@ -50,6 +51,7 @@ class Hotnews extends Model
      * 获取所有关键字分类
      * @return false|\PDOStatement|string|\think\Collection
      */
+    //TODO oldfunction
     public function getHot($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
@@ -67,12 +69,14 @@ class Hotnews extends Model
      * @param $id
      * @return null|static
      */
+    //TODO oldfunction
     public function getOne($id)
     {
         $key = self::get($id);
         return $key;
     }
 
+    //TODO oldfunction
     public function getKeyTypeList()
     {
         return Db::connect($this->connection)->table("sc_weixin_keyword_type")->field("id,name as text")->select();

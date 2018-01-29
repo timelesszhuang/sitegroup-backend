@@ -13,6 +13,7 @@ use Payment\Common\PayException;
 
 class Pay extends Common
 {
+    //TODO oldfunction
     public function pay(){
         $config = config("pay");// 这里我假设大家都已经配置好了。不会的请去看配置设置文档
 

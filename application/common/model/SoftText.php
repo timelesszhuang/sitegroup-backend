@@ -13,6 +13,7 @@ class SoftText extends Model
      * @param int $where
      * @return array
      */
+    //TODO oldfunction
     public function getAll($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();

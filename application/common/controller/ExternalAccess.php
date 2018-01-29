@@ -13,6 +13,7 @@ class ExternalAccess extends Common
      *
      * @return \think\Response
      */
+    //TODO oldfunction
     public function index()
     {
         //
@@ -23,6 +24,7 @@ class ExternalAccess extends Common
      *
      * @return \think\Response
      */
+    //TODO oldfunction
     public function create()
     {
         //
@@ -34,6 +36,7 @@ class ExternalAccess extends Common
      * @param  \think\Request  $request
      * @return \think\Response
      */
+    //TODO oldfunction
     public function save(Request $request)
     {
         $browse=new BrowseRecord($request->post());
@@ -62,6 +65,7 @@ class ExternalAccess extends Common
      * @param  int  $id
      * @return \think\Response
      */
+    //TODO oldfunction
     public function read($id)
     {
         //
@@ -73,6 +77,7 @@ class ExternalAccess extends Common
      * @param  int  $id
      * @return \think\Response
      */
+    //TODO oldfunction
     public function edit($id)
     {
         //
@@ -85,6 +90,7 @@ class ExternalAccess extends Common
      * @param  int  $id
      * @return \think\Response
      */
+    //TODO oldfunction
     public function update(Request $request, $id)
     {
         //
@@ -96,6 +102,7 @@ class ExternalAccess extends Common
      * @param  int  $id
      * @return \think\Response
      */
+    //TODO oldfunction
     public function delete($id)
     {
         //

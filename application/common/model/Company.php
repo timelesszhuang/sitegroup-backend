@@ -6,7 +6,7 @@
  * Time: 11:34
  */
 
-namespace app\sysadmin\model;
+namespace app\common\model;
 use think\Model;
 class Company extends Model
 {
@@ -17,6 +17,7 @@ class Company extends Model
      * @return array
      * @author guozhen
      */
+    //TODO oldfunction
     public function getCompany($limit,$rows,$where=0)
     {
         $count=$this->where($where)->count();

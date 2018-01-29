@@ -17,6 +17,7 @@ class VoiceCdr extends Model
      * @throws \think\exception\DbException
      * @author guozhen
      */
+    //TODO oldfunction
     public function getAll($limit, $rows, $where)
     {
         $count = $this->where($where)->count();

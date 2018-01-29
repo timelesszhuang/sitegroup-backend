@@ -6,7 +6,7 @@
  * Time: 下午17:25
  */
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Model;
 
@@ -20,6 +20,7 @@ class Activity extends Model
      * @param int $where
      * @return array
      */
+    //TODO oldfunction
     public function getActivity($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();

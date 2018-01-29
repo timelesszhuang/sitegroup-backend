@@ -6,7 +6,7 @@
  * Time: 11:19 AM
  */
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Model;
 use app\common\controller\Common;
@@ -26,13 +26,14 @@ class LibraryImgset extends Model
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
+    //TODO oldfunction
     public function batche_add($srclist,$tag_ids=[],$alt='',$comefrom='selfadd'){
         $model = $this;
         $srclist=array_unique($srclist);
         $save_arr = [];
         $update_arr = [];
-        $user = (new Common())->getSessionUser();
-        $node_id = $user["user_node_id"];
+        $user = (new Common())->getSessionUserInfo();
+        $node_id = $user["node_id"];
         $old_arr = $model->field('id,imgsrc,tags')->where(['imgsrc'=>['in',$srclist],'node_id'=>$node_id])->select();
         $old_src_arr=[];
         if($old_arr){
@@ -69,6 +70,7 @@ class LibraryImgset extends Model
         return true;
     }
 
+    //TODO oldfunction
     public function getList($content){
         $src_list=[];
         preg_match_all('/<img[^>]+src\s*=\\s*[\'\"]([^\'\"]+)[\'\"][^>]*>/i', $content, $match);

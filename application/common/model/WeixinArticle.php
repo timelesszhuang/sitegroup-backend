@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Db;
 use think\Model;
@@ -37,6 +37,7 @@ class WeixinArticle extends Model
      * 获取所有关键字
      * @return false|\PDOStatement|string|\think\Collection
      */
+    //TODO oldfunction
     public function getArticle($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
@@ -53,6 +54,7 @@ class WeixinArticle extends Model
      * @param $value
      * @param $key
      */
+    //TODO oldfunction
     public function formatter_date(&$value,$key)
     {
         if($value['scrapytime']){
@@ -65,6 +67,7 @@ class WeixinArticle extends Model
      * @param $id
      * @return null|static
      */
+    //TODO oldfunction
     public function getOne($id)
     {
         $key=self::get($id);
@@ -78,6 +81,7 @@ class WeixinArticle extends Model
      * @param $content
      * @return int|string
      */
+    //TODO oldfunction
     public function editKeyword($id,$title,$content,$summary='',$source='')
     {
         $update=[
@@ -97,6 +101,7 @@ class WeixinArticle extends Model
      * 删除文章
      * @param $id
      */
+    //TODO oldfunction
     public function deleteOne($id)
     {
        return  Db::connect($this->connection)->table("sc_weixin_keywordarticle")->delete($id);

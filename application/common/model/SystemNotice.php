@@ -1,6 +1,6 @@
 <?php
 
-namespace app\sysadmin\model;
+namespace app\common\model;
 
 use think\Model;
 
@@ -13,6 +13,7 @@ class SystemNotice extends Model
      * @return array
      * @author jingzheng
      */
+    //TODO oldfunction
     public function getList($limit, $rows,$where=0)
     {
         $count=$this->where($where)->count();

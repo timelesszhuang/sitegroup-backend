@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Model;
 
@@ -20,6 +20,7 @@ class QuestionType extends Model
      * @throws \think\exception\DbException
      * @author guozhen
      */
+    //TODO oldfunction
     public function getAll($limit, $rows, $where)
     {
         $count = $this->where($where)->count();
@@ -38,6 +39,7 @@ class QuestionType extends Model
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function getArttype($where = 0)
     {
         $data = $this->alias('type')->field('type.id,name,alias,tag_id,tag')->join('type_tag', 'type_tag.id = tag_id','LEFT')->where($where)->select();

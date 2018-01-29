@@ -14,7 +14,7 @@ use think\Validate;
 use think\Request;
 use app\common\traits\Obtrait;
 use think\View;
-use app\admin\model\LibraryImgset;
+use app\common\model\LibraryImgset;
 use app\common\model\Article as this_model;
 
 class Article extends CommonLogin
@@ -28,6 +28,7 @@ class Article extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function index()
     {
         $request = $this->getLimit();
@@ -58,6 +59,7 @@ class Article extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function read($id)
     {
         $data = $this->getread((new this_model), $id);
@@ -75,6 +77,7 @@ class Article extends CommonLogin
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
+    //TODO oldfunction
     public function save(Request $request)
     {
         try {
@@ -125,6 +128,7 @@ class Article extends CommonLogin
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
+    //TODO oldfunction
     public function update(Request $request, $id)
     {
         try {
@@ -211,71 +215,17 @@ class Article extends CommonLogin
      * @param  int $id
      * @return array
      */
+    //TODO oldfunction
     public function delete($id)
     {
         return $this->deleteRecord((new this_model()), $id);
     }
 
-
-    /**
-     * 获取错误信息
-     * @return false|\PDOStatement|string|\think\Collection
-     */
-    public function getErrorInfo()
-    {
-        $user = $this->getSessionUser();
-        $request = $this->getLimit();
-        $where = [
-            "node_id" => $user["user_node_id"],
-        ];
-        $data = (new \app\common\model\SiteErrorInfo())->getAll($request["limit"], $request["rows"], $where);
-        return $this->resultArray('', '', $data);
-    }
-
-    /**
-     * 获取当前节点有多少没有查看的日志
-     * @return array
-     */
-    public function getErrorStatus()
-    {
-        $user = $this->getSessionUser();
-        $where = [
-            "node_id" => $user["user_node_id"],
-            "status" => 20
-        ];
-        $count = (new \app\common\model\SiteErrorInfo())->where($where)->count();
-        if ($count < 1) {
-            $count = "无";
-        }
-        return $this->resultArray('', '', $count);
-    }
-
-    /**
-     * 修改错误信息status
-     * @param $id
-     * @return array
-     */
-    public function changeErrorStatus($id)
-    {
-        $user = $this->getSessionUser();
-        $where = [
-            "id" => $id,
-            "node_id" => $user["user_node_id"],
-        ];
-        $site = \app\common\model\SiteErrorInfo::where($where)->find();
-        $site->status = 10;
-        $site->update_time = time();
-        if (!$site->save()) {
-            return $this->resultArray('修改失败', 'failed');
-        }
-        return $this->resultArray('修改成功');
-    }
-
-
     /**
      * 图片上传到 oss相关操作
      * @access public
      */
+    //TODO oldfunction
     public function imageupload()
     {
         $data = $this->uploadImg("article/");
@@ -291,6 +241,7 @@ class Article extends CommonLogin
      * csv上传到 oss相关操作
      * @access public
      */
+    //TODO oldfunction
     public function csvupload()
     {
         $request = Request::instance();
@@ -316,11 +267,12 @@ class Article extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     private function getArticleSite($articletype_id)
     {
         //首先取出选择该文章分类的菜单 注意有可能是子菜单
         $where['flag'] = 3;
-        $model_menu = (new \app\admin\model\Menu());
+        $model_menu = (new \app\common\model\Menu());
         $menu = $model_menu->where(function ($query) use ($where) {
             $query->where($where);
         })->where(function ($query) use ($articletype_id) {
@@ -352,7 +304,7 @@ class Article extends CommonLogin
             }
             $map .= ' or ' . $permap;
         }
-        $sitedata = \app\admin\model\Site::where($map)->field('id,site_name,url')->select();
+        $sitedata = \app\common\model\Site::where($map)->field('id,site_name,url')->select();
         return $sitedata;
     }
 
@@ -361,6 +313,7 @@ class Article extends CommonLogin
      * @return array
      * 文章预览页面
      */
+    //TODO oldfunction
     public function articleshowhtml()
     {
         $data = $this->request->post();
@@ -386,9 +339,10 @@ class Article extends CommonLogin
      * csv导入 文章
      * @access public
      */
+    //TODO oldfunction
     public function csvimport()
     {
-        $sql = new \app\admin\model\Article();
+        $sql = new \app\common\model\Article();
         $data = $this->request->post();
         $url = $data['csvupload'];
         $article_type_id = $data['articletype_id'];
@@ -449,6 +403,7 @@ class Article extends CommonLogin
      * @param $url
      * @return bool|string
      */
+    //TODO oldfunction
     public function getCsvFromOSS($url)
     {
         $file = fopen($url, 'r');

@@ -36,6 +36,7 @@ class Sohunews extends Model
      * 获取所有关键字
      * @return false|\PDOStatement|string|\think\Collection
      */
+    //TODO oldfunction
     public function getArticle($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
@@ -52,6 +53,7 @@ class Sohunews extends Model
      * @param $value
      * @param $key
      */
+    //TODO oldfunction
     public function formatter_date(&$value,$key)
     {
         if(isset($value['create_time'])){
@@ -65,6 +67,7 @@ class Sohunews extends Model
      * @param $id
      * @return null|static
      */
+    //TODO oldfunction
     public function getOne($id)
     {
         $key=self::get($id);

@@ -2,16 +2,16 @@
 
 namespace app\common\controller;
 
-use app\admin\model\Article;
-use app\admin\model\Product;
-use app\admin\model\Question;
-use app\admin\model\Rejection;
-use app\admin\model\Site;
+use app\common\model\Article;
+use app\common\model\Product;
+use app\common\model\Question;
+use app\common\model\Rejection;
+use app\common\model\Site;
 use app\common\model\SmsLog;
 use app\common\model\User;
 use app\common\traits\SendMail;
 use app\common\traits\Smsali;
-use app\sysadmin\model\Node;
+use app\common\model\Node;
 
 
 class Send extends Common
@@ -21,6 +21,7 @@ class Send extends Common
     /**
      * 小站点短信发送
      */
+    //TODO oldfunction
     public function site_send()
     {
         $SmsTemplateCode='SMS_118715177';
@@ -69,6 +70,7 @@ class Send extends Common
     /**
      * 节点短信发送
      */
+    //TODO oldfunction
     public function node_send()
     {
         $SmsTemplateCode='SMS_118715177';
@@ -120,6 +122,7 @@ class Send extends Common
     /**
      * 7天未添加内容发送短信
      */
+    //TODO oldfunction
     public function notaddsend()
     {
         $SmsTemplateCode = 'SMS_122000046';

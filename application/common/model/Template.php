@@ -6,7 +6,7 @@
  * Time: 下午17:25
  */
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Model;
 
@@ -22,6 +22,7 @@ class Template extends Model
      * @param int $where
      * @return array
      */
+    //TODO oldfunction
     public function getTemplate($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
@@ -37,6 +38,7 @@ class Template extends Model
      * @param $key
      * @return false|string
      */
+    //TODO oldfunction
     public function getCreateTimeAttr($key)
     {
         if(!empty($key)){

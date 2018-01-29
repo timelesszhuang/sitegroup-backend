@@ -1,6 +1,6 @@
 <?php
 
-namespace app\user\model;
+namespace app\common\model;
 
 use think\Model;
 
@@ -13,6 +13,7 @@ class ArticleReplaceKeyword extends Model
      * @param int $where
      * @return array
      */
+    //TODO oldfunction
     public function getAll($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();

@@ -19,6 +19,7 @@ trait Osstrait
      * url 安全的base64 编码
      * @access private
      */
+    //TODO oldfunction
     private function urlsafe_b64encode($string)
     {
         $data = base64_encode($string);
@@ -31,6 +32,7 @@ trait Osstrait
      * @param $object 服务器上文件名
      * @param $filepath 本地文件的绝对路径 比如/home/wwwroot/***.jpg
      */
+    //TODO oldfunction
     public function ossPutObject($object, $filepath)
     {
         $accessKeyId = Config::get('oss.accessKeyId');
@@ -54,6 +56,7 @@ trait Osstrait
      * oss 获取对象
      * @access public
      */
+    //TODO oldfunction
     public function ossGetObject($object, $filepath)
     {
         $accessKeyId = Config::get('oss.accessKeyId');
@@ -81,6 +84,7 @@ trait Osstrait
      * @param $object 要删除的对象  支持带着绝对路径
      * @return array
      */
+    //TODO oldfunction
     public function ossDeleteObject($object)
     {
         $accessKeyId = Config::get('oss.accessKeyId');
@@ -109,6 +113,7 @@ trait Osstrait
      * @param string $bucket bucket名字
      * @return null
      */
+    //TODO oldfunction
     function checkObjectExist($ossClient, $bucket, $object)
     {
         $exist = false;
@@ -124,6 +129,7 @@ trait Osstrait
      * 处理oss 相关操作
      * @access public
      */
+    //TODO oldfunction
     public function ossCreateObject()
     {
         $accessKeyId = Config::get('oss.accessKeyId');
@@ -150,6 +156,7 @@ trait Osstrait
      * @param string $uname
      * @return array
      */
+    //TODO oldfunction
     public function uploadImg($dest_dir,$uname="file")
     {
         $endpoint = Config::get('oss.endpoint');
@@ -182,6 +189,7 @@ trait Osstrait
      * @return array
      */
 
+    //TODO oldfunction
     public function uploadObj($dest_dir, $filepath)
     {
         $endpoint = Config::get('oss.endpoint');

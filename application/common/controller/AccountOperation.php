@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by IntelliJ IDEA.
- * User: qiangbi
+ * User: jingyang
  * Date: 1/26/18
  * Time: 6:34 PM
  */
@@ -21,6 +21,9 @@ class AccountOperation extends CommonLogin
      * @return array
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
+    //TODO old function
+    //TODO oldfunction
     public function changePassword(){
         $data = Request::instance()->post();
         $rule = [

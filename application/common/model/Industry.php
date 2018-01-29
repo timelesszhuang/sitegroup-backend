@@ -5,7 +5,7 @@
  * Date: 2017/4/21
  * Time: 11:35
  */
-namespace app\sysadmin\model;
+namespace app\common\model;
 
 use think\Model;
 
@@ -17,6 +17,7 @@ class Industry extends Model{
      * @return array
      * @author jingzheng
      */
+    //TODO oldfunction
     public function getIndustry($limit, $rows,$where=0)
     {
         $count=$this->where($where)->count();
@@ -27,6 +28,7 @@ class Industry extends Model{
         ];
     }
 
+    //TODO oldfunction
     public function getSort()
     {
         $data = $this->order("sort", "desc")->field("id,name")->select();

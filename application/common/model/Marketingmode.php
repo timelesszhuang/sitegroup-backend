@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Model;
 
@@ -13,6 +13,7 @@ class Marketingmode extends Model
      * @return array
      * @author jingzheng
      */
+    //TODO oldfunction
     public function getList($limit, $rows,$where=0)
     {
         $count=$this->where($where)->count();
@@ -28,6 +29,7 @@ class Marketingmode extends Model
      * @param $key
      * @return false|string
      */
+    //TODO oldfunction
     public function getCreateTimeAttr($key)
     {
         if(!empty($key)){

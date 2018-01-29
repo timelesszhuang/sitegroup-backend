@@ -5,7 +5,7 @@
 // | Author: linchuangbin <linchuangbin@honraytech.com>
 // +----------------------------------------------------------------------
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Model;
 
@@ -17,6 +17,7 @@ class SystemConfig extends Model
 	 * 获取配置列表
 	 * @param  array   $param  [description]
 	 */
+    //TODO oldfunction
 	public function getDataList()
 	{
 		$list = $this->select();
@@ -31,6 +32,7 @@ class SystemConfig extends Model
 	 * 批量修改配置
 	 * @param  array   $param  [description]
 	 */
+    //TODO oldfunction
 	public function createData($param)
 	{
 		$list = [

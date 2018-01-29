@@ -6,7 +6,7 @@
  * Time: 下午2:25
  */
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use app\common\traits\Osstrait;
 use think\Config;
@@ -28,6 +28,7 @@ class Imglist extends Model
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function getImgList($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();

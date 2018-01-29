@@ -25,6 +25,7 @@ class Articletype extends Model
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function getArticletype($limit,$rows,$where=0)
     {
         $count=$this->where($where)->count();
@@ -42,6 +43,7 @@ class Articletype extends Model
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function getArticleTypeByNodeId($node_id)
     {
         $where['type.node_id'] = $node_id;
@@ -55,6 +57,7 @@ class Articletype extends Model
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function getArticleTypeByIdArray($ids)
     {
         $where['type.id'] = ['in',$ids];
@@ -68,6 +71,7 @@ class Articletype extends Model
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     private function getArticleTypeByWhere($where){
         $data =$this->alias('type')->field('type.id,name,detail,tag_id,tag')->join('type_tag','type_tag.id = tag_id','LEFT')->where($where)->select();
         return $data;

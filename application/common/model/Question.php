@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Model;
 
@@ -16,6 +16,7 @@ class Question extends Model
      * @return array
      * @author guozhen
      */
+    //TODO oldfunction
     public function getAll($limit, $rows, $where)
     {
         $count = $this->where($where)->count();
@@ -28,6 +29,7 @@ class Question extends Model
     }
 
 
+    //TODO oldfunction
     public function getQuestiontdk($limit, $rows,$w='',$wheretype_id='')
     {
         $count = $this->where('type_id', 'in', $wheretype_id)->count();

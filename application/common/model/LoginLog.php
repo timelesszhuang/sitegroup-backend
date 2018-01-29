@@ -14,6 +14,7 @@ class LoginLog extends Model
      * @param int $where
      * @return array
      */
+    //TODO oldfunction
     public function getList($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();

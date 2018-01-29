@@ -3,7 +3,7 @@
 namespace app\common\controller;
 
 use app\common\model\VoiceCdr;
-use app\sysadmin\model\Node;
+use app\common\model\Node;
 use think\Cache;
 
 class Omapi extends Common
@@ -15,6 +15,7 @@ class Omapi extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function index()
     {
         $xmldata = file_get_contents('php://input');
@@ -29,6 +30,7 @@ class Omapi extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     private function analyse_data($xmldata)
     {
         //xml 转换为对象
@@ -56,6 +58,7 @@ class Omapi extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     private function exec_analyse_cdr_data($xml_obj)
     {
         //解析对象数据为array
@@ -146,6 +149,7 @@ class Omapi extends Common
      * @access private
      * @param $cdr_data
      */
+    //TODO oldfunction
     private function exec_add_cdr_data($cdr_data)
     {
         $model = new VoiceCdr();
@@ -158,6 +162,7 @@ class Omapi extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function get_extnum_nodeid_arr() {
         // 获取 分级号码 user_id  role_id
         $node =  (new Node())->select();

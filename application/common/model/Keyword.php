@@ -6,7 +6,7 @@
  * Time: 下午2:25
  */
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use app\common\controller\Common;
 
@@ -21,6 +21,7 @@ class Keyword extends Model
      * @param $tag
      * @return false|\PDOStatement|string|\think\Collection
      */
+    //TODO oldfunction
     public function getKeyword($tag="",$id=0)
     {
         $where=[];
@@ -40,6 +41,7 @@ class Keyword extends Model
      * 获取A类关键词
      * @return false|\PDOStatement|string|\think\Collection
      */
+    //TODO oldfunction
     public function keyword(){
         $where=[];
         $where['tag']="A";

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Model;
 
@@ -13,6 +13,7 @@ class Product extends Model
      * @param int $where
      * @return array
      */
+    //TODO oldfunction
     public function getAll($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
@@ -24,6 +25,7 @@ class Product extends Model
     }
 
 
+    //TODO oldfunction
     public function getProducttdk($limit, $rows, $w = '',$wheretype_id='')
     {
 

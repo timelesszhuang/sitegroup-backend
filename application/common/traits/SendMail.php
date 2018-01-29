@@ -25,6 +25,7 @@ trait SendMail
      * @param $sendBody 发送内容
      * @return array
      */
+    //TODO oldfunction
     public function phpmailerSend($sendUser, $sendpwd, $host, $subject, $toUser, $sendBody, $fromname)
     {
         $mail = new PHPMailer();
@@ -58,6 +59,7 @@ trait SendMail
      * 获取support邮箱帐号
      * @return array|bool
      */
+    //TODO oldfunction
     public function getEmailAccount()
     {
         //support邮箱

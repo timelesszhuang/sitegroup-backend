@@ -1,6 +1,6 @@
 <?php
 
-namespace app\user\model;
+namespace app\common\model;
 
 use think\Model;
 
@@ -16,6 +16,7 @@ class SitePageinfo extends Model
      * @return array
      * @author guozhen
      */
+    //TODO oldfunction
     public function getAll($limit, $rows, $where)
     {
         $count = $this->where($where)->count();

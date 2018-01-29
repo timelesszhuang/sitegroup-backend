@@ -6,7 +6,7 @@
  * Time: 下午2:25
  */
 
-namespace app\admin\model;
+namespace app\common\model;
 use think\Model;
 
 class ArticlekeywordSubstitution extends Model
@@ -22,6 +22,7 @@ class ArticlekeywordSubstitution extends Model
      * @param int $where
      * @return array
      */
+    //TODO oldfunction
     public function getAll($limit,$rows,$where=0)
     {
         $count = $this->where($where)->count();

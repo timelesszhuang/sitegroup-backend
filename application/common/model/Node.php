@@ -20,6 +20,7 @@ class Node extends Model
      * @return array
      * @author jingzheng
      */
+    //TODO oldfunction
     public function getNode($limit, $rows)
     {
         $count = $this->count();
@@ -31,6 +32,7 @@ class Node extends Model
     }
 
 
+    //TODO oldfunction
     public function getUser()
     {
         $data = $this->order("id", "desc")->select();

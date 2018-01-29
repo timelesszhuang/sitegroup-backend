@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Db;
 use think\Model;
@@ -39,6 +39,7 @@ class  MainkeywordSearchengineorder extends Model
      * @param $value
      * @param $key
      */
+    //TODO oldfunction
     public function formatter_date(&$value, $key)
     {
         if ($value['create_time']) {
@@ -51,6 +52,7 @@ class  MainkeywordSearchengineorder extends Model
      * 组织数据
      * @return false|\PDOStatement|string|\think\Collection
      */
+    //TODO oldfunction
     public function getType($limit, $rows, $where = 0,$url='')
     {
         $count = $this->where($where)->where('url','like',"%$url%")->count();

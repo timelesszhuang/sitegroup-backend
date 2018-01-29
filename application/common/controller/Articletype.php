@@ -7,13 +7,14 @@ use think\Db;
 use think\Validate;
 use think\Request;
 use app\common\model\Articletype as this_model;
-use app\admin\model\TypeTag as Type_Tag;
+use app\common\model\TypeTag as Type_Tag;
 
 class Articletype extends CommonLogin
 {
     /**
      * @return array
      */
+    //TODO oldfunction
     public function index()
     {
         $request = $this->getLimit();
@@ -32,7 +33,7 @@ class Articletype extends CommonLogin
         }
         $user = $this->getSessionUser();
         $where["node_id"] = $user["user_node_id"];
-        $data = (new \app\admin\model\Articletype())->getArticletype($request["limit"], $request["rows"], $where);
+        $data = (new \app\common\model\Articletype())->getArticletype($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
@@ -40,9 +41,10 @@ class Articletype extends CommonLogin
      * @param $id
      * @return array
      */
+    //TODO oldfunction
     public function read($id)
     {
-        return $this->resultArray('', '', \app\admin\model\Articletype::get($id));
+        return $this->resultArray('', '', \app\common\model\Articletype::get($id));
     }
 
     /**
@@ -50,6 +52,7 @@ class Articletype extends CommonLogin
      *
      * @return void
      */
+    //TODO oldfunction
     public function create()
     {
         //
@@ -64,6 +67,7 @@ class Articletype extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function save(Request $request)
     {
         $rule = [
@@ -78,7 +82,7 @@ class Articletype extends CommonLogin
         $data['node_id'] = $user['user_node_id'];
         $where['node_id'] = $user['user_node_id'];
         $where['alias'] = $data['alias'];
-        $typedata = (new \app\admin\model\Articletype())->where($where)->select();
+        $typedata = (new \app\common\model\Articletype())->where($where)->select();
         Db::startTrans();
         try{
             if ($typedata) {
@@ -104,7 +108,7 @@ class Articletype extends CommonLogin
             if (!$validate->check($data)) {
                 return $this->resultArray($validate->getError(), "failed");
             }
-            if (!\app\admin\model\Articletype::create($data)) {
+            if (!\app\common\model\Articletype::create($data)) {
                 exception("类型创建失败");
             }
             Db::commit();
@@ -122,6 +126,7 @@ class Articletype extends CommonLogin
      * @param  int $id
      * @return void
      */
+    //TODO oldfunction
     public function edit($id)
     {
         //
@@ -137,6 +142,7 @@ class Articletype extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function update(Request $request, $id)
     {
         //
@@ -154,7 +160,7 @@ class Articletype extends CommonLogin
         $where['node_id'] = $user['user_node_id'];
         $where['alias'] = $data['alias'];
         $where['id'] = ['neq',$id];
-        $typedata = (new \app\admin\model\Articletype())->where($where)->select();
+        $typedata = (new \app\common\model\Articletype())->where($where)->select();
         Db::startTrans();
         try{
             if ($typedata) {
@@ -180,7 +186,7 @@ class Articletype extends CommonLogin
             if (!$validate->check($data)) {
                 return $this->resultArray($validate->getError(), "failed");
             }
-            if (!$this->publicUpdate((new \app\admin\model\Articletype), $data, $id)) {
+            if (!$this->publicUpdate((new \app\common\model\Articletype), $data, $id)) {
                 exception("类型修改失败");
             }
             Db::commit();
@@ -200,6 +206,7 @@ class Articletype extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
+    //TODO oldfunction
     public function getType()
     {
         $user_info = $this->getSessionUserInfo();
@@ -227,6 +234,7 @@ class Articletype extends CommonLogin
      * 统计文章
      * @return array
      */
+    //TODO oldfunction
     public function ArticleCount()
     {
         $count = [];
@@ -239,13 +247,14 @@ class Articletype extends CommonLogin
         return $this->resultArray('', '', $arr);
     }
 
+    //TODO oldfunction
     public function countArticle()
     {
         $user = $this->getSessionUser();
         $where = [
             'node_id' => $user["user_node_id"],
         ];
-        $articleTypes = \app\admin\model\Articletype::all($where);
+        $articleTypes = \app\common\model\Articletype::all($where);
         foreach ($articleTypes as $item) {
             yield $this->foreachArticle($item);
         }
@@ -253,9 +262,10 @@ class Articletype extends CommonLogin
 
     }
 
+    //TODO oldfunction
     public function foreachArticle($articleType)
     {
-        $count = \app\admin\model\Article::where(["articletype_id" => $articleType->id])->count();
+        $count = \app\common\model\Article::where(["articletype_id" => $articleType->id])->count();
         return ["count" => $count, "name" => $articleType->name];
 
     }

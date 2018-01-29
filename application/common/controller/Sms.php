@@ -28,6 +28,7 @@ class Sms extends Common
      *
      * @return DefaultAcsClient
      */
+    //TODO oldfunction
     public static function getAcsClient() {
         //产品名称:云通信流量服务API产品,开发者无需替换
         $product = "Dysmsapi";
@@ -69,6 +70,7 @@ class Sms extends Common
      * 发送短信
      * @return stdClass
      */
+    //TODO oldfunction
     public function sendSms() {
 
         // 初始化SendSmsRequest实例用于设置发送短信的参数
@@ -106,6 +108,7 @@ class Sms extends Common
      * 短信发送记录查询
      * @return stdClass
      */
+    //TODO oldfunction
     public static function querySendDetails() {
 
         // 初始化QuerySendDetailsRequest实例用于设置短信查询的参数

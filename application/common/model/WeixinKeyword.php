@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use think\Db;
 use think\Model;
@@ -37,6 +37,7 @@ class WeixinKeyword extends Model
      * 获取所有关键字
      * @return false|\PDOStatement|string|\think\Collection
      */
+    //TODO oldfunction
     public function getKeyword($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
@@ -55,6 +56,7 @@ class WeixinKeyword extends Model
      * @param $name
      * @return false|int
      */
+    //TODO oldfunction
     public function editKeyword($id, $name)
     {
         return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id" => $id])->update(["name" => $name]);
@@ -65,6 +67,7 @@ class WeixinKeyword extends Model
      * @param $id
      * @return null|static
      */
+    //TODO oldfunction
     public function getOne($id)
     {
         $key = self::get($id);
@@ -76,6 +79,7 @@ class WeixinKeyword extends Model
      * @param $id
      * @return int|string
      */
+    //TODO oldfunction
     public function stopStatus($id)
     {
         return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id" => $id])->update(["status" => 20]);
@@ -86,6 +90,7 @@ class WeixinKeyword extends Model
      * @param $id
      * @return int|string
      */
+    //TODO oldfunction
     public function startStatus($id)
     {
         return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id" => $id])->update(["status" => 10]);
@@ -96,6 +101,7 @@ class WeixinKeyword extends Model
      * @param $id
      * @return int|string
      */
+    //TODO oldfunction
     public function startScrapy($id)
     {
         return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id" => $id])->update(["scrapystatus" => 10]);
@@ -106,6 +112,7 @@ class WeixinKeyword extends Model
      * @param $id
      * @return int|string
      */
+    //TODO oldfunction
     public function stopScrapy($id)
     {
         return Db::connect($this->connection)->table("sc_weixin_keyword")->where(["id" => $id])->update(["scrapystatus" => 20]);
@@ -115,6 +122,7 @@ class WeixinKeyword extends Model
      * 获取列表格式的数据
      * @return false|\PDOStatement|string|\think\Collection
      */
+    //TODO oldfunction
     public function getKeyList()
     {
         $where = [];
@@ -127,6 +135,7 @@ class WeixinKeyword extends Model
        return $arr;
     }
 
+    //TODO oldfunction
     public function getlist(){
         $where['status'] = 10;
         $data = Db::connect($this->connection)->table("sc_weixin_keyword")->where($where)->field("id,name as text,scrapystatus,type_name")->order('type_name')->select();

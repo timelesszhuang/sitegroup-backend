@@ -18,6 +18,7 @@ class Site extends Model
      * @return array
      * @author guozhen
      */
+    //TODO oldfunction
     public function getAll($limit, $rows, $where)
     {
         $data = $this->where($where)->order('id', 'desc')->select();
@@ -31,6 +32,7 @@ class Site extends Model
      * @param $menu
      * @return string
      */
+    //TODO oldfunction
     public function getMenuAttr($menu)
     {
         if(is_string($menu)){
@@ -43,6 +45,7 @@ class Site extends Model
      * @param $key
      * @return string
      */
+    //TODO oldfunction
     public function getKeywordIdsAttr($key)
     {
         if(is_string($key)){
@@ -55,6 +58,7 @@ class Site extends Model
      * @param $key
      * @return string
      */
+    //TODO oldfunction
     public function getLinkIdAttr($key)
     {
         if(is_string($key)){

@@ -14,6 +14,7 @@ class SiteErrorInfo extends Model
      * @param $where
      * @return array
      */
+    //TODO oldfunction
     public function getAll($limit,$rows,$where)
     {
         $count = $this->where($where)->count();
@@ -29,6 +30,7 @@ class SiteErrorInfo extends Model
      * @param $status
      * @return string
      */
+    //TODO oldfunction
     public function getStatusAttr($status)
     {
         if($status==10){
