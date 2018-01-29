@@ -22,6 +22,9 @@ Route::post('auto_login', 'common/Login/autoLogin');
 Route::post('change_password', 'common/AccountOperation/changePassword');
 //退出登录
 Route::get('logout','common/Login/logout');
+//获取文章分类列表
+Route::get('get_article_type_list','common/Articletype/getType');
+
 
 //用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

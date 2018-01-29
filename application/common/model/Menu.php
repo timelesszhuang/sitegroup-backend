@@ -49,13 +49,32 @@ class Menu extends Model
         return $data;
     }
 
-//    /**
-//     * 获取栏目分类
-//     */
-//    public function getmenutype()
-//    {
-//
-//
-//    }
+    /**
+     * 获取站点的对应的 type_id
+     * @param $menu_id_array
+     * @param $menu_flag
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getSiteTypeIds($menu_id_array,$menu_flag)
+    {
+        $whe['flag'] = $menu_flag;
+        $data = $this->where($whe)->where('id', 'in', $menu_id_array);
+        foreach (array_filter(explode(',', $menu_id_array)) as $menu_id) {
+            $data = $data->whereOr('path', 'like', "%,$menu_id,%");
+        }
+        $data = $data->field('type_id,type_name,tag_name');
+        $data = $data->select();
+        $type_ids = [];
+        foreach ($data as $k => $v) {
+            foreach (array_filter(explode(',', $v['type_id'])) as $value) {
+                $type_ids[$value] = 1;
+            }
+        }
+        $type_ids = array_keys($type_ids);
+        return $type_ids;
+    }
 
 }

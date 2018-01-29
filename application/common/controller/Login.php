@@ -7,6 +7,7 @@
 
 namespace app\common\controller;
 
+use app\admin\model\Site;
 use app\common\exception\ProcessException;
 use app\common\model\LoginLog;
 use app\common\model\SiteUser;
@@ -135,7 +136,7 @@ class Login extends Common
             $user_info['ip'] = $ip;
             $user_info['type_name'] = $data['login_type'];
             //如果存在
-            $return["remember_key"] =(isset($data['remember'])&&$data['remember'])?$this->getNewRememberStr($user_info['id'], $data['login_type']):'';
+            $return["remember_key"] = (isset($data['remember']) && $data['remember']) ? $this->getNewRememberStr($user_info['id'], $data['login_type']) : '';
             $return["login_type"] = $user_info['type'];
             $return["login_id"] = $user_info['id'];
             //记录日志
@@ -148,15 +149,30 @@ class Login extends Common
         }
     }
 
+    /**
+     * @param $user_info
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function setLoginSession($user_info)
     {
-        Session::set('login_id', $user_info["id"],'login');
-        Session::set('login_type', $user_info["type"],'login');
-        Session::set('login_ip', $user_info["ip"],'login');
-        Session::set('login_type_name', $user_info["type_name"],'login');
+        Session::set('login_id', $user_info["id"], 'login');
+        Session::set('login_type', $user_info["type"], 'login');
+        Session::set('login_ip', $user_info["ip"], 'login');
+        Session::set('login_type_name', $user_info["type_name"], 'login');
+        Session::set('login_node_id', $user_info["node_id"], 'login');
+        if ($user_info["type_name"] == 'site') {
+            $site_model = new Site();
+            $site_info = $site_model->find(['user_id' => $user_info["id"]]);
+            Session::set('site_id', $site_info["id"], 'login_site');
+            Session::set('menu', array_unique(array_filter(explode(",", $site_info["menu"]))), 'login_site');
+            Session::set('site_name', $site_info["site_name"], 'login_site');
+        }
     }
 
-    public function setLoginLog($user_info){
+    public function setLoginLog($user_info)
+    {
         $request = Request::instance();
         $ip = $request->ip();
         $location_info = "未获取到";
@@ -200,9 +216,9 @@ class Login extends Common
             }
             //登录信息容器
             if ($data['login_type'] == 'node') {
-                $user_info = (new User())->checkUserLogin($data["login_id"], $data["remember_key"],'auto');
+                $user_info = (new User())->checkUserLogin($data["login_id"], $data["remember_key"], 'auto');
             } elseif ($data['login_type'] == 'site') {
-                $user_info = (new SiteUser())->checkUserLogin($data["login_id"], $data["remember_key"],'auto');
+                $user_info = (new SiteUser())->checkUserLogin($data["login_id"], $data["remember_key"], 'auto');
                 $log['site_id'] = $user_info['$user_info'];
             } else {
                 Common::processException('未知错误');
@@ -213,7 +229,7 @@ class Login extends Common
             $user_info['ip'] = $ip;
             $user_info['type_name'] = $data['login_type'];
             //如果存在
-            $return["remember_key"] =(isset($data['remember_key'])&&$data['remember_key'])?$this->getNewRememberStr($user_info['id'], $data['login_type']):'';
+            $return["remember_key"] = (isset($data['remember_key']) && $data['remember_key']) ? $this->getNewRememberStr($user_info['id'], $data['login_type']) : '';
             $return["login_type"] = $user_info['type'];
             $return["login_id"] = $user_info['id'];
             //设置session信息
@@ -230,6 +246,7 @@ class Login extends Common
     public function logout()
     {
         Session::clear('login');
+        Session::clear('login_site');
         return $this->resultArray('success', '登出成功');
     }
 

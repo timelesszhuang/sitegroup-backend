@@ -68,6 +68,12 @@ class Common extends Controller
         $user_info_array['user_id'] = Session::get('login_id','login');
         $user_info_array['user_type'] = Session::get('login_type','login');
         $user_info_array['user_type_name'] = Session::get('login_type_name','login');
+        $user_info_array['node_id'] = Session::get('login_node_id','login');
+        if($user_info_array['user_type_name'] == 'site'){
+            $user_info_array['site_id'] = Session::get('site_id','login_site');
+            $user_info_array['menu'] = Session::get('menu','login_site');
+            $user_info_array['site_name'] = Session::get('site_name','login_site');
+        }
         return $user_info_array;
     }
 
@@ -100,26 +106,6 @@ class Common extends Controller
     {
         $systemConfig = $this->getDataList(1);
         return $this->resultArray('', '', $systemConfig);
-    }
-
-    /**
-     * 修改密码
-     * @return array|void
-     * @author guozhen
-     */
-    public function changePwd()
-    {
-        $rule = [
-            ["oldPwd", "require", "请输入原始密码"],
-            ["newPwd", "require", "请输入新密码"]
-        ];
-        $post = $this->request->post();
-        $validate = new Validate($rule);
-        if (!$validate->check($post)) {
-            return $this->resultArray($validate->getError(), "failed");
-        }
-        $user_info = (new User)->changePwd($post["oldPwd"], $post['newPwd']);
-        return $this->resultArray($user_info[0], $user_info[1], $user_info[2]);
     }
 
     /***
@@ -168,7 +154,7 @@ class Common extends Controller
      */
     public function checkLogin()
     {
-        if (!Session::has('login_id','login')&&Session::has('login_id','login_type')){
+        if (!Session::has('login_id','login')&&Session::has('login_type','login')){
             exit($this->resultArray('logout','没有登录'));
         }
     }

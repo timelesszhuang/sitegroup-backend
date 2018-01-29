@@ -87,7 +87,7 @@ class SiteUser extends Model
         $return_arr = [];
         /** @var array $user_info */
         $return_arr['id'] = $user_info['id'];
-        $return_arr['user_id'] = $user_info['node_id'];
+        $return_arr['node_id'] = $user_info['node_id'];
         $return_arr['name'] = $user_info['name'];
         $return_arr['salt'] = $user_info['salt'];
         $return_arr['type'] = 3;
