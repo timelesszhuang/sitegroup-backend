@@ -19,8 +19,9 @@ Route::post('auto_login', 'common/Login/autoLogin');
 //获取验证码
 //Route::get('captcha');
 //更新密码
-Route::get('logout','common/Login/logout');
+Route::post('change_password', 'common/AccountOperation/changePassword');
 //退出登录
+Route::get('logout','common/Login/logout');
 
 //用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

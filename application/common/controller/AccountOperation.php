@@ -21,7 +21,7 @@ class AccountOperation extends CommonLogin
      * @return array
      * @throws \think\exception\DbException
      */
-    public function change_password(){
+    public function changePassword(){
         $data = Request::instance()->post();
         $rule = [
             ["old_password", "require", "请填写原始密码"],
@@ -38,16 +38,36 @@ class AccountOperation extends CommonLogin
             }
             if ($login_user_info['user_type_name'] == 'node') {
                 $model = (new User());
+                $obj = $model->get($login_user_info['user_id']);
+                if (isset($obj->pwd)) {
+                    if (isset($obj->user_name)) {
+                        if($obj->pwd != md5($data['old_password'] . $obj->user_name)){
+                            Common::processException('密码验证错误');
+                        }
+                    }else{
+                        Common::processException('密码验证错误');
+                    }
+                }else{
+                    Common::processException('密码验证错误');
+                }
             } elseif ($login_user_info['user_type_name'] == 'site') {
                 $model = (new SiteUser());
+                $obj = $model->get($login_user_info['user_id']);
+                if (isset($obj->pwd)) {
+                    if (isset($obj->account)) {
+                        if($obj->pwd != md5($data['old_password'] . $obj->account)){
+                            Common::processException('密码验证错误');
+                        }
+                    }else{
+                        Common::processException('密码验证错误');
+                    }
+                }else{
+                    Common::processException('密码验证错误');
+                }
             } else {
                 Common::processException('未知错误');
             }
-            /** @var \think\model $model */
-            $obj = $model->get($login_user_info['user_id']);
-            if($obj->pwd != $data['old_password']){
-                Common::processException('密码验证错误');
-            }
+            /** @var \stdClass $obj */
             $obj->pwd = $data['new_password'];
             $obj->save();
             return $this->resultArray();
