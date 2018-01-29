@@ -24,9 +24,15 @@ Route::post('change_password', 'common/AccountOperation/changePassword');
 Route::get('logout','common/Login/logout');
 //获取文章分类列表
 Route::get('get_article_type_list','common/Articletype/getType');
+//登陆后获取站点列表
+Route::get('get_site_list','common/Login/siteList');
+//登陆后设置站点信息
+Route::post('set_site_info','common/Login/setSiteInfo');
+//文章相关
+Route::resource('article','common/Article');
 
 
-//用户电话记录数据管理
+/*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');
 Route::resource('sys/voice_cdr', 'sysadmin/VoiceCdr');
 //用户电话记录数据获取api
@@ -633,4 +639,4 @@ Route::post('user/gettags', 'user/Tags/getTagList');
 Route::post('common/send','common/Send/Send');
 Route::get('common/site_send','common/Send/site_send');
 Route::get('common/node_send','common/Send/node_send');
-Route::get('common/notaddsend','common/Send/notaddsend');
+Route::get('common/notaddsend','common/Send/notaddsend');*/

@@ -13,9 +13,8 @@ use app\common\model\SiteUser;
 use app\common\model\User;
 use think\Config;
 use think\Controller;
-use think\Request;
+use think\Model;
 use think\Session;
-use think\Validate;
 use app\common\exception\ProcessException;
 
 
@@ -56,6 +55,11 @@ class Common extends Controller
      */
     public function resultArray($status = 'success', $msg = '',$data = [], $detail = '')
     {
+        if(is_array($status)){
+            $data=$status;
+            $status = 'success';
+            $msg = '';
+        }
         return [
             'status' => $status,
             'data' => $data,
@@ -154,8 +158,8 @@ class Common extends Controller
      */
     public function checkLogin()
     {
-        if (!Session::has('login_id','login')&&Session::has('login_type','login')){
-            exit($this->resultArray('logout','没有登录'));
+        if (!Session::has('login_id','login')&&!Session::has('login_type','login')){
+            exit(json_encode($this->resultArray('logout','没有登录')));
         }
     }
 
@@ -188,69 +192,34 @@ class Common extends Controller
     }
 
     /**
-     * 获取前后台用户统一session信息
-     * @author guozhen
-     * @return array
-     */
-    public function getSessionUser()
-    {
-        $request = Request::instance();
-        $module = $request->module();
-        $arr = [];
-        switch ($module) {
-            //大后台
-            case "common":
-            case "sysadmin":
-                $arr["user_id"] = Session::get("sys_id");
-                $arr["user_name"] = Session::get("sys_user_name");
-                $arr["user_commpany_name"] = Session::get("sys_name");
-                $arr["user_type"] = Session::get("sys_type");
-                $arr["user_node_id"] = Session::get("sys_node_id");
-                break;
-            //节点后台
-            case "admin":
-                $arr["user_id"] = Session::get("admin_id");
-                $arr["user_name"] = Session::get("admin_user_name");
-                $arr["user_commpany_name"] = Session::get("admin_name");
-                $arr["user_type"] = Session::get("admin_type");
-                $arr["user_node_id"] = Session::get("admin_node_id");
-                break;
-            //站点后台
-            case "user":
-                $arr["user_id"] = Session::get("login_site")["id"];
-                $arr["user_name"] = Session::get("login_site")["name"];
-                $arr["user_node_id"] = Session::get("login_site")["node_id"];
-                break;
-        }
-        return $arr;
-    }
-
-    /**
      * 获取单条数据
-     * @param $rescoure
+     * @param Model $model
      * @param $id
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    public function getread($rescoure, $id)
+    public function getread(Model $model, $id)
     {
-        return $this->resultArray('', '', $rescoure->where(["id" => $id])->field("create_time,update_time", true)->find());
+        return $this->resultArray($model->where(["id" => $id])->field("create_time,update_time", true)->find()->toArray());
     }
 
     /**
      * 统一删除接口
-     * @param $controller
+     * @param $model
      * @param $id
      * @author guozhen
      * @return array
      */
-    public function deleteRecord($controller, $id)
+    public function deleteRecord(Model $model, $id)
     {
-        $user = $this->getSessionUser();
+        $user = $this->getSessionUserInfo();
         $where = [
             "id" => $id,
-            "node_id" => $user["user_node_id"]
+            "node_id" => $user["node_id"]
         ];
-        if (!$controller->where($where)->delete()) {
+        if (!$model->where($where)->delete()) {
             return $this->resultArray('删除失败', 'failed');
         }
         return $this->resultArray('删除成功');

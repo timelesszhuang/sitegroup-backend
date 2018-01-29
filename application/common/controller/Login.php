@@ -7,7 +7,7 @@
 
 namespace app\common\controller;
 
-use app\admin\model\Site;
+use app\common\model\Site;
 use app\common\exception\ProcessException;
 use app\common\model\LoginLog;
 use app\common\model\SiteUser;
@@ -126,7 +126,7 @@ class Login extends Common
                 $user_info = (new User())->checkUserLogin($data["user_name"], $data["password"]);
             } elseif ($data['login_type'] == 'site') {
                 $user_info = (new SiteUser())->checkUserLogin($data["user_name"], $data["password"]);
-                $log['site_id'] = $user_info['$user_info'];
+                $log['site_id'] = $user_info['id'];
             } else {
                 Common::processException('未知错误');
             }
@@ -151,9 +151,6 @@ class Login extends Common
 
     /**
      * @param $user_info
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      */
     public function setLoginSession($user_info)
     {
@@ -162,13 +159,68 @@ class Login extends Common
         Session::set('login_ip', $user_info["ip"], 'login');
         Session::set('login_type_name', $user_info["type_name"], 'login');
         Session::set('login_node_id', $user_info["node_id"], 'login');
-        if ($user_info["type_name"] == 'site') {
+    }
+
+    /***
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function siteList()
+    {
+        try {
             $site_model = new Site();
-            $site_info = $site_model->find(['user_id' => $user_info["id"]]);
-            Session::set('site_id', $site_info["id"], 'login_site');
-            Session::set('menu', array_unique(array_filter(explode(",", $site_info["menu"]))), 'login_site');
-            Session::set('site_name', $site_info["site_name"], 'login_site');
+            $user_info = $this->getSessionUserInfo();
+            $site_info = $site_model->where(['user_id' => $user_info["user_id"]])->select();
+            if(!$site_info){
+                Common::processException('无网站');
+            }
+            $return=[];
+            foreach ($site_info as $info){
+                $return[] = array('id'=>$info['id'],'url'=>$info['url'],'site_name'=>$info['site_name']);
+            }
+            return $this->resultArray('success', '登陆成功', $return);
+        } catch (ProcessException $exception) {
+            return $this->resultArray("failed", $exception->getMessage());
         }
+
+    }
+
+    /**
+     * 小网站用户存储站点信息
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function setSiteInfo()
+    {
+        try {
+            $site_id = $this->request->post("site_id");
+            $rule = [
+                ["site_id", "require", "请选择站点"],
+            ];
+            $validate = new Validate($rule);
+            $data = $this->request->post();
+            if (!$validate->check($data)) {
+                Common::processException($validate->getError());
+            }
+            $site_info = (new Site)->where(["id" => $site_id])->find();
+            if (!$site_info) {
+                Common::processException('无此网站');
+            }
+            $this->setSiteSession($site_info);
+            return $this->resultArray('success', '成功');
+        } catch (ProcessException $exception) {
+            return $this->resultArray("failed", $exception->getMessage());
+        }
+    }
+
+    public function setSiteSession($site_info)
+    {
+        Session::set('site_id', $site_info["id"], 'login_site');
+        Session::set('menu', array_unique(array_filter(explode(",", $site_info["menu"]))), 'login_site');
+        Session::set('site_name', $site_info["site_name"], 'login_site');
     }
 
     public function setLoginLog($user_info)

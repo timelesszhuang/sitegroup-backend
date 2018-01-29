@@ -2,7 +2,7 @@
 
 namespace app\common\controller;
 
-use app\admin\model\Menu;
+use app\common\model\Menu;
 use think\Db;
 use think\Validate;
 use think\Request;

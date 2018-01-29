@@ -6,7 +6,7 @@
  * Time: 下午2:25
  */
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use app\common\traits\Osstrait;
 use think\Config;

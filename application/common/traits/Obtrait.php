@@ -13,6 +13,7 @@ trait Obtrait
     /**
      * 停止前台request
      * @param $msg
+     * @param string $info
      */
     public function open_start($msg, $info = '')
     {
