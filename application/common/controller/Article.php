@@ -28,7 +28,6 @@ class Article extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function index()
     {
         $request = $this->getLimit();
@@ -59,7 +58,6 @@ class Article extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function read($id)
     {
         $data = $this->getread((new this_model), $id);
@@ -77,7 +75,6 @@ class Article extends CommonLogin
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    //TODO oldfunction
     public function save(Request $request)
     {
         try {
@@ -128,7 +125,6 @@ class Article extends CommonLogin
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    //TODO oldfunction
     public function update(Request $request, $id)
     {
         try {
@@ -215,7 +211,6 @@ class Article extends CommonLogin
      * @param  int $id
      * @return array
      */
-    //TODO oldfunction
     public function delete($id)
     {
         return $this->deleteRecord((new this_model()), $id);

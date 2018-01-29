@@ -206,7 +206,6 @@ class Articletype extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function getType()
     {
         $user_info = $this->getSessionUserInfo();

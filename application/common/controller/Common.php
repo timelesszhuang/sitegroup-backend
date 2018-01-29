@@ -20,11 +20,9 @@ use app\common\exception\ProcessException;
 
 class Common extends Controller
 {
-
     /**
      * 本地测试开启下 允许跨域ajax 获取数据
      */
-    //TODO oldfunction
     public function __construct()
     {
         parent::__construct();
@@ -55,7 +53,6 @@ class Common extends Controller
      * @return array
      * @author guozhen
      */
-    //TODO oldfunction
     public function resultArray($status = 'success', $msg = '',$data = [], $detail = '')
     {
         if(is_array($status)){
@@ -71,7 +68,6 @@ class Common extends Controller
         ];
     }
 
-    //TODO oldfunction
     public function getSessionUserInfo(){
         $user_info_array['user_id'] = Session::get('login_id','login');
         $user_info_array['user_type'] = Session::get('login_type','login');
@@ -123,7 +119,6 @@ class Common extends Controller
      * @param $salt
      * @return string
      */
-    //TODO oldfunction
     static public function getRememberStr($id, $salt)
     {
         $private = Config::get("crypt.cookiePrivate");
@@ -136,7 +131,6 @@ class Common extends Controller
      * @return string
      * @throws ProcessException
      */
-    //TODO oldfunction
     static public function getNewRememberStr($id, $option)
     {
         $private = Config::get("crypt.cookiePrivate");
@@ -156,16 +150,15 @@ class Common extends Controller
     /**
      * @return string
      */
-    //TODO oldfunction
     static public function getNewSale()
     {
         return chr(rand(97, 122)) . chr(rand(65, 90)) . chr(rand(97, 122)) . chr(rand(65, 90));
     }
 
     /**
+     * 检查登录状态
      * @return void
      */
-    //TODO oldfunction
     public function checkLogin()
     {
         if (!Session::has('login_id','login')&&!Session::has('login_type','login')){
@@ -174,11 +167,11 @@ class Common extends Controller
     }
 
     /**
+     * 抛出逻辑错误
      * @param $error
      * @param int $code
      * @throws ProcessException
      */
-    //TODO oldfunction
     static public function processException($error,$code=0){
         throw new ProcessException($error,$code);
     }
@@ -188,7 +181,6 @@ class Common extends Controller
      * @return array
      * @author guozhen
      */
-    //TODO oldfunction
     public function getLimit()
     {
         $page = $this->request->get("page");
@@ -212,7 +204,6 @@ class Common extends Controller
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function getread(Model $model, $id)
     {
         return $this->resultArray($model->where(["id" => $id])->field("create_time,update_time", true)->find()->toArray());
@@ -225,7 +216,6 @@ class Common extends Controller
      * @author guozhen
      * @return array
      */
-    //TODO oldfunction
     public function deleteRecord(Model $model, $id)
     {
         $user = $this->getSessionUserInfo();

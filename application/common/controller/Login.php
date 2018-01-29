@@ -27,7 +27,6 @@ class Login extends Common
     /**
      * 本地测试开启下 允许跨域ajax 获取数据
      */
-    //TODO oldfunction
     public function __construct()
     {
         parent::__construct();
@@ -98,7 +97,6 @@ class Login extends Common
      * @author jingyang
      * @throws \Exception
      */
-    //TODO oldfunction
     public function login()
     {
         $data = Request::instance()->post();
@@ -155,7 +153,6 @@ class Login extends Common
     /**
      * @param $user_info
      */
-    //TODO oldfunction
     public function setLoginSession($user_info)
     {
         Session::set('login_id', $user_info["id"], 'login');
@@ -170,7 +167,6 @@ class Login extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function siteList()
     {
         try {
@@ -198,7 +194,6 @@ class Login extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function setSiteInfo()
     {
         try {
@@ -222,7 +217,9 @@ class Login extends Common
         }
     }
 
-    //TODO oldfunction
+    /**
+     * @param $site_info
+     */
     public function setSiteSession($site_info)
     {
         Session::set('site_id', $site_info["id"], 'login_site');
@@ -230,7 +227,9 @@ class Login extends Common
         Session::set('site_name', $site_info["site_name"], 'login_site');
     }
 
-    //TODO oldfunction
+    /**
+     * @param $user_info
+     */
     public function setLoginLog($user_info)
     {
         $request = Request::instance();
@@ -258,7 +257,6 @@ class Login extends Common
      * @throws \think\exception\DbException
      * @author guozhen
      */
-    //TODO oldfunction
     public function autoLogin()
     {
         $data = Request::instance()->post();
@@ -304,7 +302,6 @@ class Login extends Common
     /***
      * 登出
      */
-    //TODO oldfunction
     public function logout()
     {
         Session::clear('login');

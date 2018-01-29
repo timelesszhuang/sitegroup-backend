@@ -10,7 +10,6 @@ namespace app\common\controller;
 
 class CommonLogin extends Common
 {
-    //TODO oldfunction
     public function __construct()
     {
         parent::__construct();

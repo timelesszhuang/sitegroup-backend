@@ -21,9 +21,6 @@ class AccountOperation extends CommonLogin
      * @return array
      * @throws \think\exception\DbException
      */
-    //TODO oldfunction
-    //TODO old function
-    //TODO oldfunction
     public function changePassword(){
         $data = Request::instance()->post();
         $rule = [

@@ -60,7 +60,6 @@ class Menu extends Model
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function getSiteTypeIds($menu_id_array,$menu_flag)
     {
         $whe['flag'] = $menu_flag;
