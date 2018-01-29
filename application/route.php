@@ -30,6 +30,7 @@ Route::get('get_site_list','common/Login/siteList');
 Route::post('set_site_info','common/Login/setSiteInfo');
 //文章相关
 Route::resource('article','common/Article');
+Route::post('article_image_upload',function(){(new \app\common\controller\OssUpload())->imageUpload('article');});
 
 
 /*//用户电话记录数据管理

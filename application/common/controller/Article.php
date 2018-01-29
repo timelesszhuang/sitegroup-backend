@@ -217,44 +217,6 @@ class Article extends CommonLogin
     }
 
     /**
-     * 图片上传到 oss相关操作
-     * @access public
-     */
-    //TODO oldfunction
-    public function imageupload()
-    {
-        $data = $this->uploadImg("article/");
-        if ($data['status']) {
-            $data["msg"] = "上传成功";
-            return $data;
-        } else {
-            return $this->resultArray('上传失败', 'failed');
-        }
-    }
-
-    /**
-     * csv上传到 oss相关操作
-     * @access public
-     */
-    //TODO oldfunction
-    public function csvupload()
-    {
-        $request = Request::instance();
-        $file = $request->file('file');
-        $localpath = ROOT_PATH . "public/upload/";
-        $fileInfo = $file->move($localpath);
-        $localfilepath = $localpath . $fileInfo->getSaveName();
-        $data = $this->uploadObj("article/csv/" . $fileInfo->getSaveName(), $localfilepath);
-        if ($data['status']) {
-            $data["msg"] = "上传成功";
-            return $data;
-        } else {
-            return $this->resultArray('上传失败', 'failed');
-        }
-    }
-
-
-    /**
      * 获取一篇文章对应的站点 可能是多个站
      * @param $articletype_id
      * @return array|false|\PDOStatement|string|\think\Collection

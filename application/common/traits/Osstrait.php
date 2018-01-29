@@ -9,6 +9,8 @@
 
 namespace app\common\traits;
 
+use app\common\controller\Common;
+use OSS\Core\OssException;
 use OSS\OssClient;
 use think\Config;
 use think\Request;
@@ -29,10 +31,10 @@ trait Osstrait
 
     /**
      * oss 对象上传
-     * @param $object 服务器上文件名
-     * @param $filepath 本地文件的绝对路径 比如/home/wwwroot/***.jpg
+     * @param string $object 服务器上文件名
+     * @param string $filepath 本地文件的绝对路径 比如/home/wwwroot/***.jpg
+     * @return array
      */
-    //TODO oldfunction
     public function ossPutObject($object, $filepath)
     {
         $accessKeyId = Config::get('oss.accessKeyId');
@@ -155,8 +157,8 @@ trait Osstrait
      * @param $dest_dir
      * @param string $uname
      * @return array
+     * @throws \app\common\exception\ProcessException
      */
-    //TODO oldfunction
     public function uploadImg($dest_dir,$uname="file")
     {
         $endpoint = Config::get('oss.endpoint');
@@ -168,28 +170,25 @@ trait Osstrait
         $object = $dest_dir . $fileInfo->getSaveName();
         $localfilepath = $localpath . $fileInfo->getSaveName();
 
+        /** @var string $object */
+        /** @var string $localfilepath */
         $put_info = $this->ossPutObject($object, $localfilepath);
         unlink($localfilepath);
-        $url = '';
-        $status = false;
-        if ($put_info['status']) {
-            $status = true;
-            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        if (!$put_info['status']) {
+            Common::processException('上传失败');
         }
-        return [
-            "url" => $url,
-            'status' => $status
-        ];
+        $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        return $url;
     }
 
     /**
      * oss模板上传
      * @param $dest_dir
-     * @param string $uname
+     * @param $filepath
      * @return array
+     * @throws \app\common\exception\ProcessException
      */
 
-    //TODO oldfunction
     public function uploadObj($dest_dir, $filepath)
     {
         $endpoint = Config::get('oss.endpoint');
@@ -197,16 +196,11 @@ trait Osstrait
         $object = $dest_dir;
         $put_info = $this->ossPutObject($object, $filepath);
         unlink($filepath);
-        $url = '';
-        $status = false;
-        if ($put_info['status']) {
-            $status = true;
-            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        if (!$put_info['status']) {
+            Common::processException('上传失败');
         }
-        return [
-            "url" => $url,
-            'status' => $status
-        ];
+        $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        return $url;
     }
 
 
