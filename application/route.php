@@ -30,8 +30,14 @@ Route::get('get_site_list','common/Login/siteList');
 Route::post('set_site_info','common/Login/setSiteInfo');
 //文章相关
 Route::resource('article','common/Article');
-Route::post('article_image_upload',function(){(new \app\common\controller\OssUpload())->imageUpload('article');});
-
+//图片上传
+Route::post('article_image_upload',function(){return (new \app\common\controller\OssUpload())->imageUpload('article');});
+Route::post('library_image_upload',function(){return (new \app\common\controller\OssUpload())->imageUpload('libraryimgset');});
+//标签获取
+Route::get('get_tags', 'common/Tags/getTagList');
+Route::resource('tags', 'common/Tags');
+//公共图片资源路由
+Route::resource('libraryimgset',"common/LibraryImgset");
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');
