@@ -21,7 +21,11 @@ class Article extends CommonLogin
 {
     use Obtrait;
     use Osstrait;
-
+    public function __construct()
+    {
+        parent::__construct();
+        $this->model = new this_model();
+    }
     /**
      * @return array
      * @throws \think\db\exception\DataNotFoundException
@@ -47,7 +51,7 @@ class Article extends CommonLogin
             $type_ids = (new Menu())->getSiteTypeIds($user_info['user_id'], 3);
             $where['articletype_id'] = ['in', $type_ids];
         }
-        $data = (new this_model())->getArticle($request["limit"], $request["rows"], $where);
+        $data = $this->model->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray($data);
     }
 
@@ -99,7 +103,7 @@ class Article extends CommonLogin
                 $data['tags'] = "";
             }
             unset($data['tag_id']);
-            if (!(new this_model())->create($data)) {
+            if (!$this->model->create($data)) {
                 Common::processException('添加失败');
             }
             $library_img_set = new LibraryImgset();
@@ -141,7 +145,7 @@ class Article extends CommonLogin
         }
         // 如果传递了缩略图的话 比对删除
         if ($data["thumbnails"]) {
-            $id_data = (new this_model())->get($id);
+            $id_data = $this->model->get($id);
             if (empty($id_data)) {
                 Common::processException("获取数据失败");
             }
@@ -172,7 +176,7 @@ class Article extends CommonLogin
             $data['tags'] = "";
         }
         unset($data['tag_id']);
-        if (!(new this_model())->save($data, ["id" => $id])) {
+        if (!$this->model->save($data, ["id" => $id])) {
             Common::processException('修改失败');
         }
 
@@ -213,7 +217,7 @@ class Article extends CommonLogin
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new this_model()), $id);
+        return $this->deleteRecord($this->model, $id);
     }
 
     /**
@@ -296,17 +300,16 @@ class Article extends CommonLogin
      * csv导入 文章
      * @access public
      */
-    //TODO oldfunction
     public function csvimport()
     {
-        $sql = new \app\common\model\Article();
+        $sql = $this->model;
         $data = $this->request->post();
         $url = $data['csvupload'];
         $article_type_id = $data['articletype_id'];
         $article_type_name = $data['articletype_name'];
         $csv = $this->getCsvFromOSS($url);
         $values = [];
-        $user = $this->getSessionUser();
+        $user = $this->getSessionUserInfo();
         $result = [];
         Db::startTrans();
         try {
@@ -332,7 +335,7 @@ class Article extends CommonLogin
                         $value['keywords'] = $item[6];
                         $value['articletype_name'] = $article_type_name;
                         $value['articletype_id'] = $article_type_id;
-                        $value['node_id'] = $user["user_node_id"];
+                        $value['node_id'] = $user["node_id"];
                         $value['create_time'] = time();
                         $value['update_time'] = time();
                         $values[] = $value;
@@ -347,11 +350,11 @@ class Article extends CommonLogin
             }
             // 提交事务
             Db::commit();
-            return $this->resultArray("添加成功", '', $result);
+            return $this->resultArray( 'success',"添加成功", $result);
         } catch (\Exception $e) {
             // 回滚事务
             Db::rollback();
-            return $this->resultArray("添加失败", 'failed');
+            return $this->resultArray('failed', "添加失败");
         }
     }
 
@@ -360,7 +363,6 @@ class Article extends CommonLogin
      * @param $url
      * @return bool|string
      */
-    //TODO oldfunction
     public function getCsvFromOSS($url)
     {
         $file = fopen($url, 'r');

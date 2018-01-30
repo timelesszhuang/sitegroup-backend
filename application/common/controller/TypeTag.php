@@ -78,7 +78,6 @@ class TypeTag extends CommonLogin
      * @param  int $id
      * @return array
      */
-    //TODO oldfunction
     public function update(Request $request, $id)
     {
         $rule = [
@@ -92,7 +91,7 @@ class TypeTag extends CommonLogin
         if (!(new this_model)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
-        return $this->resultArray("修改成功");
+        return $this->resultArray('success',"修改成功");
     }
 
     /**

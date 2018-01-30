@@ -61,6 +61,11 @@ class Common extends Controller
             $data=$status;
             $status = 'success';
             $msg = '';
+        }else{
+            if(($status!='success')&&($status!='failed')&&($status!='logout')&&($status!='noauth')){
+                $msg=$status;
+                $status='success';
+            }
         }
         return [
             'status' => $status,

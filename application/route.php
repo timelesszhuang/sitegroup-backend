@@ -33,9 +33,12 @@ Route::get('get_site_list','common/Login/siteList');
 Route::post('set_site_info','common/Login/setSiteInfo');
 //文章相关
 Route::resource('article','common/Article');
+Route::post('article_csv_import','common/Article/csvimport');
 //图片上传
 Route::post('article_image_upload',function(){return (new \app\common\controller\OssUpload())->imageUpload('article');});
 Route::post('library_image_upload',function(){return (new \app\common\controller\OssUpload())->imageUpload('libraryimgset');});
+//csv上传
+Route::post('article_csv_upload',function(){return (new \app\common\controller\OssUpload())->csvUpload('article/csv');});
 //标签获取
 Route::get('get_tags', 'common/Tags/getTagList');
 Route::resource('tags', 'common/Tags');

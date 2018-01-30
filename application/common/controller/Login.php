@@ -18,7 +18,11 @@ use think\Config;
 use think\Request;
 use think\Session;
 use think\Validate;
-
+/**
+ * @title 用户登录
+ * @description 用户登录
+ * @group 登录
+ */
 class Login extends Common
 {
     use Osstrait;
@@ -48,54 +52,20 @@ class Login extends Common
         }
     }
 
-
     /**
-     * 图片上传到 oss相关操作
-     * @access public
-     */
-    //TODO 删除
-    //TODO oldfunction
-    public function imageupload()
-    {
-        $request = Request::instance();
-        $whitelist = Config::get('whitelist.whitelist');
-        if (!in_array(parse_url($request->header('Origin'))['host'], $whitelist)) {
-            return [
-                'msg' => '请登录',
-                'status' => false
-            ];
-        }
-        $dest_dir = 'pic/';
-        $endpoint = Config::get('oss.endpoint');
-        $bucket = Config::get('oss.bucket');
-        $file = $request->file("img");
-        $localpath = ROOT_PATH . "public/upload/";
-        $fileInfo = $file->move($localpath);
-        $object = $dest_dir . $fileInfo->getSaveName();
-        $localfilepath = $localpath . $fileInfo->getSaveName();
-        $put_info = $this->ossPutObject($object, $localfilepath);
-        unlink($localfilepath);
-        $msg = '上传图片失败';
-        $url = '';
-        $status = false;
-        if ($put_info['status']) {
-            $msg = '上传图片成功';
-            $status = true;
-            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
-        }
-        return [
-            'msg' => $msg,
-            "url" => $url,
-            'status' => $status,
-        ];
-    }
-
-
-    /**
-     * 执行第一次的登陆操作
-     * @access public
-     * @author jingyang
+     * @title 登录接口
+     * @description 接口说明
+     * @author 孙靖洋
+     * @url login
+     * @method GET
+     * @module 用户模块
+     * @return array
+     * @return_data remember_key:11;
+     * @return_data remember_key1:11;
      * @throws \Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function login()
     {
