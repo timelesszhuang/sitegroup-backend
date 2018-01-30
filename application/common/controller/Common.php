@@ -20,6 +20,8 @@ use app\common\exception\ProcessException;
 
 class Common extends Controller
 {
+    protected $model;
+
     /**
      * 本地测试开启下 允许跨域ajax 获取数据
      */
@@ -237,13 +239,12 @@ class Common extends Controller
      * @author guozhen
      * @return array
      */
-    //TODO oldfunction
     public function publicUpdate($controller, $data, $id)
     {
-        $user = $this->getSessionUser();
+        $user = $this->getSessionUserInfo();
         $where = [
             "id" => $id,
-            "node_id" => $user["user_node_id"]
+            "node_id" => $user["node_id"]
         ];
         //前台可能会提交id过来,为了防止错误,所以将其删除掉
         if (array_key_exists('id', $data)) {

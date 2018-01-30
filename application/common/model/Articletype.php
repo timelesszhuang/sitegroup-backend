@@ -15,27 +15,6 @@ class Articletype extends Model
 {
     //只读字段
     protected $readonly=["node_id"];
-
-    /**
-     * @param $limit
-     * @param $rows
-     * @param int $where
-     * @return array
-     * @throws DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    //TODO oldfunction
-    public function getArticletype($limit,$rows,$where=0)
-    {
-        $count=$this->where($where)->count();
-        $data=$this->limit($limit,$rows)->where($where)->order('id desc')->select();
-        return [
-            "total"=>$count,
-            "rows"=>$data
-        ];
-    }
-
     /**
      * @param $node_id
      * @return false|\PDOStatement|string|\think\Collection

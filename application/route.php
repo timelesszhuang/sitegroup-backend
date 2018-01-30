@@ -22,8 +22,11 @@ Route::post('auto_login', 'common/Login/autoLogin');
 Route::post('change_password', 'common/AccountOperation/changePassword');
 //退出登录
 Route::get('logout','common/Login/logout');
-//获取文章分类列表
-Route::get('get_article_type_list','common/Articletype/getType');
+//获取分类列表
+Route::get('get_type_list','common/Types/getType');
+Route::resource('type','common/Types');
+//分类标签
+Route::resource('type_tag', 'common/TypeTag');
 //登陆后获取站点列表
 Route::get('get_site_list','common/Login/siteList');
 //登陆后设置站点信息
@@ -175,8 +178,6 @@ Route::get('keyword/KeywordCount', 'admin/keyword/KeywordCount');
 //文章分类
 Route::resource('articletype', 'admin/Articletype');
 Route::rule('articletype/gettype', 'admin/Articletype/getType');
-//标签分类
-Route::resource('typetag', 'admin/TypeTag');
 //文章
 Route::resource('article', 'admin/Article');
 //图集

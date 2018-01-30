@@ -8,30 +8,6 @@ class QuestionType extends Model
 {
     //只读字段
     protected $readonly = ["node_id"];
-
-    /**
-     * 获取所有数据
-     * @param $limit
-     * @param $rows
-     * @param $where
-     * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     * @author guozhen
-     */
-    //TODO oldfunction
-    public function getAll($limit, $rows, $where)
-    {
-        $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->order('id', 'desc')->select();
-        return [
-            "total" => $count,
-            "rows" => $data
-        ];
-
-    }
-
     /**
      * @param int $where
      * @return false|\PDOStatement|string|\think\Collection

@@ -53,7 +53,6 @@ class SiteUser extends Model
      * @throws \think\exception\DbException
      * @author jingyang
      */
-    //TODO oldfunction
     public function checkUserLogin($username_or_user_id, $pwd_or_remenber_key, $option = 'login')
     {
         if ($option == 'login') {
@@ -72,7 +71,7 @@ class SiteUser extends Model
             }
             $user_info_arr = $user_info->toArray();
             if (Common::getRememberStr($user_info_arr['id'], $user_info_arr['salt']) != $pwd_or_remenber_key) {
-                Common::processException('用户名,密码不匹配');
+                Common::processException('用户名或密码错误');
             }
         }
         // 查询当前用户是否被禁止登录
