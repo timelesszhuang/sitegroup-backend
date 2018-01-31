@@ -64,7 +64,7 @@ class Menu extends Model
     {
         $whe['flag'] = $menu_flag;
         $data = $this->where($whe)->where('id', 'in', $menu_id_array);
-        foreach (array_filter(explode(',', $menu_id_array)) as $menu_id) {
+        foreach ($menu_id_array as $menu_id) {
             $data = $data->whereOr('path', 'like', "%,$menu_id,%");
         }
         $data = $data->field('type_id,type_name,tag_name');
