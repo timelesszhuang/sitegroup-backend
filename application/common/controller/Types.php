@@ -6,6 +6,7 @@ use app\common\exception\ProcessException;
 use app\common\model\Menu;
 use Exception;
 use think\Db;
+use think\db\exception\DataNotFoundException;
 use think\Validate;
 use think\Request;
 use app\common\model\Articletype;
@@ -16,6 +17,7 @@ use app\common\model\TypeTag;
 class Types extends CommonLogin
 {
     private $model_name;
+    private $menu_flag;
 
     /**
      * Types constructor.
@@ -28,15 +30,19 @@ class Types extends CommonLogin
         if ($module == 'article') {
             $this->model = new Articletype();
             $this->model_name = 'articletype';
+            $this->menu_flag = 3;
         } elseif ($module == 'product') {
             $this->model = new Producttype();
             $this->model_name = 'producttype';
+            $this->menu_flag = 5;
         } elseif ($module == 'question') {
             $this->model = new QuestionType();
             $this->model_name = 'question_type';
+            $this->menu_flag = 2;
         } else {
             $this->model = new Articletype();
             $this->model_name = 'articletype';
+            $this->menu_flag = 3;
         }
     }
 
@@ -159,7 +165,6 @@ class Types extends CommonLogin
         unset($data['module_type']);
         unset($data['create_time']);
         $data['update_time'] = time();
-        $user = $this->getSessionUserInfo();
         Db::startTrans();
         try {
             if (isset($data['tag_name']) && $data['tag_name']) {
@@ -197,10 +202,10 @@ class Types extends CommonLogin
     {
         $user_info = $this->getSessionUserInfo();
         if ($user_info['user_type_name'] == 'node') {
-            $data = $this->model->getArticleTypeByNodeId($user_info['node_id']);
+            $data = $this->getTypeByNodeId($user_info['node_id']);
         } elseif ($user_info['user_type_name'] == 'site') {
-            $type_ids = (new Menu())->getSiteTypeIds($user_info['user_id'], 3);
-            $data = $this->model->getArticleTypeByIdArray($type_ids);
+            $type_ids = (new Menu())->getSiteTypeIds($user_info['menu'], 3);
+            $data = $this->getTypeByIdArray($type_ids);
         } else {
             Common::processException('未知错误');
         }
@@ -214,6 +219,44 @@ class Types extends CommonLogin
             }
         }
         return $this->resultArray('success', '获取成功', $dates);
+    }
+
+    /**
+     * @param $node_id
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getTypeByNodeId($node_id)
+    {
+        $where['type.node_id'] = $node_id;
+        return $this->getTypeByWhere($where);
+    }
+
+    /**
+     * @param $ids
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getTypeByIdArray($ids)
+    {
+        $where['type.id'] = ['in',$ids];
+        return $this->getTypeByWhere($where);
+    }
+
+    /**
+     * @param $where
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    private function getTypeByWhere($where){
+        $data =$this->model->alias('type')->field('type.id,name,detail,tag_id,tag')->join('type_tag','type_tag.id = tag_id','LEFT')->where($where)->select();
+        return $data;
     }
 
     /**

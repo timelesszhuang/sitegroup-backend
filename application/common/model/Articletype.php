@@ -13,43 +13,4 @@ use think\Model;
 
 class Articletype extends Model
 {
-    //只读字段
-    protected $readonly=["node_id"];
-    /**
-     * @param $node_id
-     * @return false|\PDOStatement|string|\think\Collection
-     * @throws DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function getArticleTypeByNodeId($node_id)
-    {
-        $where['type.node_id'] = $node_id;
-        return $this->getArticleTypeByWhere($where);
-    }
-
-    /**
-     * @param $ids
-     * @return false|\PDOStatement|string|\think\Collection
-     * @throws DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function getArticleTypeByIdArray($ids)
-    {
-        $where['type.id'] = ['in',$ids];
-        return $this->getArticleTypeByWhere($where);
-    }
-
-    /**
-     * @param $where
-     * @return false|\PDOStatement|string|\think\Collection
-     * @throws DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    private function getArticleTypeByWhere($where){
-        $data =$this->alias('type')->field('type.id,name,detail,tag_id,tag')->join('type_tag','type_tag.id = tag_id','LEFT')->where($where)->select();
-        return $data;
-    }
 }
