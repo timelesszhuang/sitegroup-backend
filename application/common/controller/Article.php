@@ -273,9 +273,11 @@ class Article extends CommonLogin
     /**
      * @return array
      * 文章预览页面
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    //TODO oldfunction
-    public function articleshowhtml()
+    public function articleShowHtml()
     {
         $data = $this->request->post();
         $articletype_id = $data['articletype_id'];
@@ -290,9 +292,9 @@ class Article extends CommonLogin
             ];
         }
         if (!empty($showhtml)) {
-            return $this->resultArray('', '', $showhtml);
+            return $this->resultArray($showhtml);
         } else {
-            return $this->resultArray('当前文章对应的菜单页面没有站点选择，暂时不能预览。', 'failed');
+            return $this->resultArray('failed','当前文章对应的菜单页面没有站点选择，暂时不能预览。' );
         }
     }
 
