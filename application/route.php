@@ -22,20 +22,32 @@ Route::post('auto_login', 'common/Login/autoLogin');
 Route::post('change_password', 'common/AccountOperation/changePassword');
 //退出登录
 Route::get('logout','common/Login/logout');
-//获取分类列表
-Route::get('get_type_list','common/Types/getType');
-Route::resource('type','common/Types');
 //分类标签
 Route::resource('type_tag', 'common/TypeTag');
 //登陆后获取站点列表
 Route::get('get_site_list','common/Login/siteList');
 //登陆后设置站点信息
 Route::post('set_site_info','common/Login/setSiteInfo');
+/***
+ * 内容管理
+ */
+//获取分类列表
+Route::get('get_type_list','common/Types/getType');
+Route::resource('type','common/Types');
 //文章相关
 Route::resource('article','common/Article');
 Route::post('article_csv_import','common/Article/csvimport');
+Route::post('article_show_html','common/Article/articleShowHtml');
+//问答相关
+Route::resource('question','common/Question');
+Route::post('question_show_html','common/Question/questionShowHtml');
+//产品相关
+Route::resource('product','common/Product');
+Route::post('product_show_html','common/Product/questionShowHtml');
 //图片上传
 Route::post('article_image_upload',function(){return (new \app\common\controller\OssUpload())->imageUpload('article');});
+Route::post('question_image_upload',function(){return (new \app\common\controller\OssUpload())->imageUpload('question');});
+Route::post('product_image_upload',function(){return (new \app\common\controller\OssUpload())->imageUpload('product/mainimg');});
 Route::post('library_image_upload',function(){return (new \app\common\controller\OssUpload())->imageUpload('libraryimgset');});
 //csv上传
 Route::post('article_csv_upload',function(){return (new \app\common\controller\OssUpload())->csvUpload('article/csv');});
@@ -43,7 +55,7 @@ Route::post('article_csv_upload',function(){return (new \app\common\controller\O
 Route::get('get_tags', 'common/Tags/getTagList');
 Route::resource('tags', 'common/Tags');
 //公共图片资源路由
-Route::resource('libraryimgset',"common/LibraryImgset");
+Route::resource('library_imgset',"common/LibraryImgset");
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

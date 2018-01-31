@@ -15,7 +15,6 @@ trait Obtrait
      * @param $msg
      * @param string $info
      */
-    //TODO oldfunction
     public function open_start($msg, $info = '')
     {
         ob_start();
@@ -31,10 +30,9 @@ trait Obtrait
     /**
      * 发送curl post请求
      * @param $url
-     * @param $data post数据 数组格式
+     * @param array $data post数据 数组格式
      * @return mixed
      */
-    //TODO oldfunction
     public function curl_post($url, $data)
     {
         //初始化

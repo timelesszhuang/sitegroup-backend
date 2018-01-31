@@ -48,7 +48,7 @@ class Article extends CommonLogin
         if ($user_info['user_type_name'] == 'node') {
             $where["node_id"] = $user_info["node_id"];
         } else {
-            $type_ids = (new Menu())->getSiteTypeIds($user_info['user_id'], 3);
+            $type_ids = (new Menu())->getSiteTypeIds($user_info['menu'], 3);
             $where['articletype_id'] = ['in', $type_ids];
         }
         $data = $this->model->getArticle($request["limit"], $request["rows"], $where);

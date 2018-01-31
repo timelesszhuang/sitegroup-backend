@@ -83,10 +83,9 @@ trait Osstrait
     /**
      * 删除 oss 中的对象
      * @access public
-     * @param $object 要删除的对象  支持带着绝对路径
+     * @param string $object 要删除的对象  支持带着绝对路径
      * @return array
      */
-    //TODO oldfunction
     public function ossDeleteObject($object)
     {
         $accessKeyId = Config::get('oss.accessKeyId');

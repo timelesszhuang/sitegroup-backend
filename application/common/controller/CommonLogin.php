@@ -8,11 +8,13 @@
 namespace app\common\controller;
 
 
+
 class CommonLogin extends Common
 {
     public function __construct()
     {
         parent::__construct();
         $this->checkLogin();
+        $this->checkAuth();
     }
 }

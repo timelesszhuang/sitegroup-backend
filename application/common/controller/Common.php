@@ -13,7 +13,11 @@ use app\common\model\SiteUser;
 use app\common\model\User;
 use think\Config;
 use think\Controller;
+use think\exception\HttpException;
+use think\exception\HttpResponseException;
 use think\Model;
+use think\Request;
+use think\Response;
 use think\Session;
 use app\common\exception\ProcessException;
 
@@ -63,8 +67,13 @@ class Common extends Controller
             $msg = '';
         }else{
             if(($status!='success')&&($status!='failed')&&($status!='logout')&&($status!='noauth')){
+                $old_msg = $msg;
                 $msg=$status;
-                $status='success';
+                if($old_msg ==''){
+                    $status='success';
+                }else{
+                    $status=$old_msg;
+                }
             }
         }
         return [
@@ -172,6 +181,22 @@ class Common extends Controller
             exit(json_encode($this->resultArray('logout','没有登录')));
         }
     }
+    /**
+     * 检查登录状态
+     * @return void
+     */
+    public function checkAuth()
+    {
+        $request = Request::instance();
+        $this_function = $request->module().'/'.$request->controller().'/'.$request->action();
+        $auth_config = Config::get("auth");
+        $user = $this->getSessionUserInfo();
+        if(!(isset($auth_config[$this_function])&&in_array($user['user_type'],$auth_config[$this_function]))){
+            header('HTTP/1.1 403 Forbidden');
+            exit(json_encode($this->resultArray('noauth','没有权限')));
+        }
+    }
+
 
     /**
      * 抛出逻辑错误
@@ -231,14 +256,14 @@ class Common extends Controller
             "node_id" => $user["node_id"]
         ];
         if (!$model->where($where)->delete()) {
-            return $this->resultArray('删除失败', 'failed');
+            return $this->resultArray('failed','删除失败');
         }
         return $this->resultArray('删除成功');
     }
 
     /**
      * 统一修改接口
-     * @param $controller
+     * @param Model $controller
      * @param $data
      * @param $id
      * @author guozhen
@@ -256,7 +281,7 @@ class Common extends Controller
             unset($data["id"]);
         }
         if (!$controller->where($where)->update($data)) {
-            return $this->resultArray('修改失败', 'failed');
+            return $this->resultArray('failed','修改失败');
         }
         return $this->resultArray('修改成功');
     }

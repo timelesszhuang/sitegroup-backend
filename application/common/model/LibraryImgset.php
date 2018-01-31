@@ -16,7 +16,7 @@ class LibraryImgset extends Model
     /***
      * 批量添加图片信息到图片集
      * 可多张传
-     * @param $srclist 图片地址数组
+     * @param array $srclist 图片地址数组
      * @param array $tag_ids
      * @param string $alt
      * @param string $comefrom
@@ -26,7 +26,6 @@ class LibraryImgset extends Model
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    //TODO oldfunction
     public function batche_add($srclist,$tag_ids=[],$alt='',$comefrom='selfadd'){
         $model = $this;
         $srclist=array_unique($srclist);
@@ -70,7 +69,11 @@ class LibraryImgset extends Model
         return true;
     }
 
-    //TODO oldfunction
+    /**
+     * 获取文章中的图片列表
+     * @param $content
+     * @return array
+     */
     public function getList($content){
         $src_list=[];
         preg_match_all('/<img[^>]+src\s*=\\s*[\'\"]([^\'\"]+)[\'\"][^>]*>/i', $content, $match);
