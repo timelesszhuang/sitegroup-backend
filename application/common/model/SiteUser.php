@@ -62,7 +62,7 @@ class SiteUser extends Model
             }
             $user_info_arr = $user_info->toArray();
             if (md5($pwd_or_remenber_key . $username_or_user_id) != $user_info_arr["pwd"]) {
-                Common::processException("用户名或密码错误");
+                Common::processException("用户名或密码错误1");
             }
         } elseif ($option == 'auto') {
             $user_info = self::where(["id" => $username_or_user_id])->find();
@@ -71,7 +71,7 @@ class SiteUser extends Model
             }
             $user_info_arr = $user_info->toArray();
             if (Common::getRememberStr($user_info_arr['id'], $user_info_arr['salt']) != $pwd_or_remenber_key) {
-                Common::processException('用户名或密码错误');
+                Common::processException('用户名或密码错误2');
             }
         }
         // 查询当前用户是否被禁止登录

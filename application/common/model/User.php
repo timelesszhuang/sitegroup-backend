@@ -63,7 +63,7 @@ class User extends Model
             }
             $user_info_arr = $user_info->toArray();
             if (md5($pwd_or_remember_key . $username_or_user_id) != $user_info_arr["pwd"]) {
-                Common::processException('用户名或密码错误');
+                Common::processException('用户名或密码错误1');
             }
         }elseif($option=='auto'){
             $user_info = self::where(["id" => $username_or_user_id])->find();
@@ -72,7 +72,7 @@ class User extends Model
             }
             $user_info_arr = $user_info->toArray();
             if (Common::getRememberStr($user_info_arr['id'],$user_info_arr['salt']) != $pwd_or_remember_key) {
-                Common::processException('用户名或密码错误');
+                Common::processException('用户名或密码错误2');
             }
         }
         /** @var array $user_info_arr */

@@ -13,6 +13,13 @@ class TypeTag extends CommonLogin
     use Obtrait;
     use Osstrait;
 
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->model = new this_model();
+    }
+
     /**
      * @return array
      * @throws \think\db\exception\DataNotFoundException
@@ -29,9 +36,9 @@ class TypeTag extends CommonLogin
         }
         $user = $this->getSessionUserInfo();
         $where["node_id"] = $user["node_id"];
-        $data = (new this_model)->getList($request["limit"], $request["rows"], $where);
+        $data = $this->model->getList($request["limit"], $request["rows"], $where);
         if($all){
-            $data = (new this_model)->where($where)->select();
+            $data = $this->model->where($where)->select();
         }
         return $this->resultArray($data);
     }
@@ -39,11 +46,14 @@ class TypeTag extends CommonLogin
     /**
      * @param $id
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     //TODO oldfunction
     public function read($id)
     {
-        return $this->getread((new this_model), $id);
+        return $this->getread($this->model, $id);
     }
 
     /**
@@ -88,7 +98,7 @@ class TypeTag extends CommonLogin
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        if (!(new this_model)->save($data, ["id" => $id])) {
+        if (!$this->model->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
         return $this->resultArray('success',"修改成功");
@@ -102,6 +112,6 @@ class TypeTag extends CommonLogin
     //TODO oldfunction
     public function delete(Request $request, $id)
     {
-        return $this->deleteRecord((new this_model),$id);
+        return $this->deleteRecord($this->model,$id);
     }
 }

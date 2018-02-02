@@ -4,6 +4,7 @@ namespace app\common\controller;
 
 use app\common\exception\ProcessException;
 use app\common\model\Menu;
+use app\common\model\Site;
 use app\common\traits\Osstrait;
 use OSS\OssClient;
 use think\Cache;
@@ -228,12 +229,11 @@ class Article extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     private function getArticleSite($articletype_id)
     {
         //首先取出选择该文章分类的菜单 注意有可能是子菜单
         $where['flag'] = 3;
-        $model_menu = (new \app\common\model\Menu());
+        $model_menu = (new Menu());
         $menu = $model_menu->where(function ($query) use ($where) {
             $query->where($where);
         })->where(function ($query) use ($articletype_id) {
@@ -265,7 +265,7 @@ class Article extends CommonLogin
             }
             $map .= ' or ' . $permap;
         }
-        $sitedata = \app\common\model\Site::where($map)->field('id,site_name,url')->select();
+        $sitedata = (new Site())->where($map)->field('id,site_name,url')->select();
         return $sitedata;
     }
 

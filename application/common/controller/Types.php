@@ -112,7 +112,6 @@ class Types extends CommonLogin
     {
         $rule = [
             ["name", "require", "请输入文章分类名"],
-            ["detail", "require", "请输入详情"],
             ["tag_id", "require", "请输入或选择分类"],
             ["alias", "require|unique:" . $this->model_name . ",alias^node_id", "请输入此分类的英文名|英文名重复"]
         ];
@@ -156,7 +155,6 @@ class Types extends CommonLogin
         //
         $rule = [
             ["name", "require", "请输入文章分类名"],
-            ["detail", "require", "请输入详情"],
             ["tag_id", "require", "请输入或选择分类"],
             ["alias", "require", "请输入此分类的英文名"]
         ];
@@ -204,7 +202,10 @@ class Types extends CommonLogin
         if ($user_info['user_type_name'] == 'node') {
             $data = $this->getTypeByNodeId($user_info['node_id']);
         } elseif ($user_info['user_type_name'] == 'site') {
-            $type_ids = (new Menu())->getSiteTypeIds($user_info['menu'], 3);
+            if(!is_array($user_info['menu'])){
+                Common::processException('未知错误');
+            }
+            $type_ids = (new Menu())->getSiteTypeIds($user_info['menu'], $this->menu_flag);
             $data = $this->getTypeByIdArray($type_ids);
         } else {
             Common::processException('未知错误');

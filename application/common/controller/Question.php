@@ -28,6 +28,9 @@ class Question extends CommonLogin
      *
      * @param Request $request
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author guozhen
      */
     public function index(Request $request)
@@ -43,7 +46,12 @@ class Question extends CommonLogin
             $where['type_id'] = $type_id;
         }
         $user = $this->getSessionUserInfo();
-        $where["node_id"] = $user["node_id"];
+        if ($user['user_type_name'] == 'node') {
+            $where["node_id"] = $user["node_id"];
+        } else {
+            $type_ids = (new Menu())->getSiteTypeIds($user['menu'], 2);
+            $where['type_id'] = ['in', $type_ids];
+        }
         return $this->resultArray($this->model->getAll($limits['limit'], $limits['rows'], $where));
     }
 

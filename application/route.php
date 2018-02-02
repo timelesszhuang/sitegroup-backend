@@ -8,12 +8,15 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+use think\Request;
 use think\Route;
 /***
  * 公共api
  */
 //登录
 Route::post('login', 'common/Login/login');
+Route::get('clear_session', 'common/Login/clearSession');
+Route::get('get_session', 'common/Login/getSession');
 //自动登录
 Route::post('auto_login', 'common/Login/autoLogin');
 //获取验证码
@@ -42,20 +45,43 @@ Route::post('article_show_html','common/Article/articleShowHtml');
 Route::resource('question','common/Question');
 Route::post('question_show_html','common/Question/questionShowHtml');
 //产品相关
-Route::resource('product','common/Product');
-Route::post('product_show_html','common/Product/questionShowHtml');
+Route::resource('product','admin/Product');
+Route::post('product_show_html','admin/Product/questionShowHtml');
+//图集
+Route::resource('imglist', 'admin/ImgList');
 //图片上传
-Route::post('article_image_upload',function(){return (new \app\common\controller\OssUpload())->imageUpload('article');});
-Route::post('question_image_upload',function(){return (new \app\common\controller\OssUpload())->imageUpload('question');});
-Route::post('product_image_upload',function(){return (new \app\common\controller\OssUpload())->imageUpload('product/mainimg');});
-Route::post('library_image_upload',function(){return (new \app\common\controller\OssUpload())->imageUpload('libraryimgset');});
+Route::post('article_image_upload',function(){
+    Request::instance()->module('common');
+    Request::instance()->controller('OssUpload');
+    Request::instance()->action('imageUpload');
+    return (new \app\common\controller\OssUpload())->imageUpload('article');});
+Route::post('question_image_upload',function(){
+    Request::instance()->module('common');
+    Request::instance()->controller('OssUpload');
+    Request::instance()->action('imageUpload');
+    return (new \app\common\controller\OssUpload())->imageUpload('question');});
+Route::post('product_image_upload',function(){
+    Request::instance()->module('common');
+    Request::instance()->controller('OssUpload');
+    Request::instance()->action('imageUpload');
+    return (new \app\common\controller\OssUpload())->imageUpload('product/mainimg');});
+Route::post('library_image_upload',function(){
+    Request::instance()->module('common');
+    Request::instance()->controller('OssUpload');
+    Request::instance()->action('imageUpload');
+    return (new \app\common\controller\OssUpload())->imageUpload('libraryimgset');});
 //csv上传
-Route::post('article_csv_upload',function(){return (new \app\common\controller\OssUpload())->csvUpload('article/csv');});
+Route::post('article_csv_upload',function(){
+    Request::instance()->module('common');
+    Request::instance()->controller('OssUpload');
+    Request::instance()->action('csvUpload');
+    return (new \app\common\controller\OssUpload())->csvUpload('article/csv');});
 //标签获取
 Route::get('get_tags', 'common/Tags/getTagList');
 Route::resource('tags', 'common/Tags');
 //公共图片资源路由
 Route::resource('library_imgset',"common/LibraryImgset");
+Route::get('test',"admin/Oschina/test");
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

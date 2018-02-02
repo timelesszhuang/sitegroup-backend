@@ -13,7 +13,11 @@ class Tags extends CommonLogin
 {
     use Obtrait;
     use Osstrait;
-
+    public function __construct()
+    {
+        parent::__construct();
+        $this->model = new this_model();
+    }
     /**
      * @param Request $request
      * @param this_model $this_model
@@ -50,7 +54,7 @@ class Tags extends CommonLogin
     //TODO oldfunction
     public function read($id)
     {
-        return $this->getread((new this_model), $id);
+        return $this->getread($this->model, $id);
     }
 
     /**
@@ -68,7 +72,7 @@ class Tags extends CommonLogin
             $where['type'] = $data['type'];
         }
         $where['node_id'] = $user['node_id'];
-        $datas = (new this_model)->where($where)->select();
+        $datas = $this->model->where($where)->select();
         $datass = [];
         foreach ($datas as $value) {
             $datass[$value['type']][$value['id']] = $value['name'];
@@ -104,18 +108,18 @@ class Tags extends CommonLogin
             if (!$validate->check($data)) {
                 Common::processException($validate->getError());
             }
-            $dataa = (new this_model)->where($data)->find();
+            $dataa = $this->model->where($data)->find();
             if (!$dataa) {
                 if (!this_model::create($data)) {
                     Common::processException("添加失败");
                 }
-                $id = (new this_model)->getLastInsID();
+                $id = $this->model->getLastInsID();
             } else {
                 $id = $dataa['id'];
             }
             $where['type'] = $data['type'];
             $where['node_id'] = $user['node_id'];
-            $datas = (new this_model)->where($where)->select();
+            $datas = $this->model->where($where)->select();
             $datass = [];
             foreach ($datas as $value) {
                 $datass[$value['id']] = $value['name'];
@@ -144,7 +148,7 @@ class Tags extends CommonLogin
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), 'failed');
         }
-        if (!(new this_model)->save($data, ["id" => $id])) {
+        if (!$this->model->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }
         return $this->resultArray("修改成功");
@@ -158,6 +162,6 @@ class Tags extends CommonLogin
     //TODO oldfunction
     public function delete(Request $request, $id)
     {
-        return $this->deleteRecord((new this_model), $id);
+        return $this->deleteRecord($this->model, $id);
     }
 }

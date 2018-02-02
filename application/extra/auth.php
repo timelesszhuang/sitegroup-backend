@@ -26,6 +26,10 @@ return [
     'common/TypeTag/save' => [1,2],
     'common/TypeTag/update' => [1,2],
     'common/TypeTag/read' => [1,2],
+    'admin/Product/index' => [1,2,3],
+    'admin/Product/save' => [1,2,3],
+    'admin/Product/update' => [1,2,3],
+    'admin/Product/read' => [1,2,3],
     //'common/TypeTag/delete' => [1,2],
     'common/Question/index' => [1,2,3],
     'common/Question/save' => [1,2,3],
@@ -44,6 +48,6 @@ return [
     //'common/Tags/delete' => [1,2],
     'common/Article/csvimport' => [1,2,3],
     'common/Article/articleShowHtml' => [1,2,3],
-    'common\controller\OssUpload' => [1,2,3],
+    'common/OssUpload/imageUpload' => [1,2,3],
 
 ];

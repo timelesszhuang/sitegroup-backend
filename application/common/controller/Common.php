@@ -193,7 +193,7 @@ class Common extends Controller
         $user = $this->getSessionUserInfo();
         if(!(isset($auth_config[$this_function])&&in_array($user['user_type'],$auth_config[$this_function]))){
             header('HTTP/1.1 403 Forbidden');
-            exit(json_encode($this->resultArray('noauth','没有权限')));
+            exit(json_encode($this->resultArray('noauth','没有权限'.$this_function.'aaa')));
         }
     }
 

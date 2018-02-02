@@ -9,6 +9,7 @@
 namespace app\common\controller;
 
 
+use app\common\exception\ProcessException;
 use app\common\model\LibraryImgset as this_model;
 use think\Request;
 use think\Validate;
@@ -19,6 +20,12 @@ class LibraryImgset extends CommonLogin
 {
     use Obtrait;
     use Osstrait;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->model = new this_model();
+    }
 
     /**
      * 获取所有爬虫文章
@@ -42,8 +49,8 @@ class LibraryImgset extends CommonLogin
         }
         $user = $this->getSessionUserInfo();
         $where["node_id"] = $user["node_id"];
-        $count = (new this_model)->where($where)->count();
-        $data = (new this_model)->limit($request["limit"], $request["rows"])->where($where)->field('id,imgsrc,comefrom,tags,alt,create_time')->order('id desc')->select();
+        $count = $this->model->where($where)->count();
+        $data = $this->model->limit($request["limit"], $request["rows"])->where($where)->field('id,imgsrc,comefrom,tags,alt,create_time')->order('id desc')->select();
         return $this->resultArray(["total" => $count, "rows" => $data]);
     }
 
@@ -57,7 +64,7 @@ class LibraryImgset extends CommonLogin
      */
     public function read($id)
     {
-        return $this->resultArray($this->getread((new this_model), $id));
+        return $this->resultArray($this->getread($this->model, $id));
     }
 
     /**
@@ -67,7 +74,7 @@ class LibraryImgset extends CommonLogin
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new this_model), $id);
+        return $this->deleteRecord($this->model, $id);
     }
 
     /**
@@ -81,19 +88,20 @@ class LibraryImgset extends CommonLogin
      */
     public function save(Request $request)
     {
-        $rule = [
-            ["imgsrc", "require", "请上传图片"],
-        ];
-        $validate = new Validate($rule);
-        $data = $request->post();
-        if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), "failed");
+        try {
+            $rule = [
+                ["imgsrc", "require", "请上传图片"],
+            ];
+            $validate = new Validate($rule);
+            $data = $request->post();
+            if (!$validate->check($data)) {
+                Common::processException($validate->getError());
+            }
+            $library_img_set = $this->model;
+            $library_img_set->batche_add([$data['imgsrc']], $data['tags'], $data['alt'], 'selfadd');
+            return $this->resultArray("添加成功");
+        } catch (ProcessException $e) {
+        return $this->resultArray('failed', $e->getMessage());
         }
-
-        $library_img_set = (new this_model);
-        $library_img_set->batche_add([$data['imgsrc']], $data['tags'], $data['alt'], 'selfadd');
-
-
-        return $this->resultArray("添加成功");
     }
 }

@@ -1,7 +1,9 @@
 <?php
 
-namespace app\common\controller;
+namespace app\admin\controller;
 
+use app\common\controller\Common;
+use app\common\controller\CommonLogin;
 use app\common\exception\ProcessException;
 use app\common\model\Menu;
 use app\common\model\Site;
@@ -28,6 +30,9 @@ class Product extends CommonLogin
      * 显示资源列表
      *
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function index()
     {
@@ -42,7 +47,12 @@ class Product extends CommonLogin
             $where["type_id"] = $type_id;
         }
         $user = $this->getSessionUserInfo();
-        $where["node_id"] = $user["node_id"];
+        if ($user['user_type_name'] == 'node') {
+            $where["node_id"] = $user["node_id"];
+        } else {
+            $type_ids = (new Menu())->getSiteTypeIds($user['menu'], 5);
+            $where['type_id'] = ['in', $type_ids];
+        }
         $data = $this->model->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray($data);
 

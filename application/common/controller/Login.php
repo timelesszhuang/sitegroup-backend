@@ -18,6 +18,7 @@ use think\Config;
 use think\Request;
 use think\Session;
 use think\Validate;
+
 /**
  * @title 用户登录
  * @description 用户登录
@@ -139,16 +140,17 @@ class Login extends Common
      */
     public function siteList()
     {
+        $this->checkLogin();
         try {
             $site_model = new Site();
             $user_info = $this->getSessionUserInfo();
             $site_info = $site_model->where(['user_id' => $user_info["user_id"]])->select();
-            if(!$site_info){
+            if (!$site_info) {
                 Common::processException('无网站');
             }
-            $return=[];
-            foreach ($site_info as $info){
-                $return[] = array('id'=>$info['id'],'url'=>$info['url'],'site_name'=>$info['site_name']);
+            $return = [];
+            foreach ($site_info as $info) {
+                $return[] = array('id' => $info['id'], 'url' => $info['url'], 'site_name' => $info['site_name']);
             }
             return $this->resultArray('success', '登陆成功', $return);
         } catch (ProcessException $exception) {
@@ -166,7 +168,9 @@ class Login extends Common
      */
     public function setSiteInfo()
     {
+        $this->checkLogin();
         try {
+            Session::clear('login_site');
             $site_id = $this->request->post("site_id");
             $rule = [
                 ["site_id", "require", "请选择站点"],
@@ -218,6 +222,14 @@ class Login extends Common
         LoginLog::create($log);
     }
 
+    public function clearSession(){
+        Session::clear('login');
+        Session::clear('login_site');
+    }
+    public function getSession(){
+        echo Session::get('login_id','login');
+    }
+
     /**
      * 七天免登录验证
      * @return array
@@ -248,7 +260,7 @@ class Login extends Common
                 $user_info = (new User())->checkUserLogin($data["login_id"], $data["remember_key"], 'auto');
             } elseif ($data['login_type'] == 'site') {
                 $user_info = (new SiteUser())->checkUserLogin($data["login_id"], $data["remember_key"], 'auto');
-                $log['site_id'] = $user_info['$user_info'];
+                $log['site_id'] = $user_info['id'];
             } else {
                 Common::processException('未知错误');
             }
