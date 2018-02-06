@@ -59,8 +59,7 @@ class Common extends Controller
             $content_four00 = $post['content_four00'];
             $content_qq = $post['content_qq'];
             $content_address = $post['content_address'];
-
-            $user['user_node_id'] = 66;
+            $user = $this->getSessionUser();
             //添加文章分类标签
             $Type_Tag = new TypeTag();
             $tag_where['node_id'] = $user['user_node_id'];
