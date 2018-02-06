@@ -212,8 +212,8 @@ class Common extends Controller
             $data_site['support_hotline'] = $content_id;
             $data_site["node_id"] = $user['user_node_id'];
             $site->create($data_site);
-//            Db::commit();
-            Db::rollback();
+            Db::commit();
+//            Db::rollback();
             return $this->resultArray('成功');
         } catch (\Exception $exception) {
             Db::rollback();
