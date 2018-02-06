@@ -166,6 +166,7 @@ class Common extends Controller
             $data_content['html']['four00'] = $content_four00;
             $data_content['html']['qq'] = $content_qq;
             $data_content['html']['address'] = $content_address;
+            $data_content['html'] = serialize($data_content['html']);
             $data_content['node_id'] = $user['user_node_id'];
             if (!$content->create($data_content)) {
                 exception("添加联系方式失败");
