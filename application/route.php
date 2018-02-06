@@ -49,7 +49,18 @@ Route::resource('product','admin/Product');
 Route::post('product_show_html','admin/Product/questionShowHtml');
 //图集
 Route::resource('imglist', 'admin/ImgList');
+Route::get('change_imglist_status/:id/:status', 'admin/ImgList/changeStatus');
+Route::resource('imglist_change_status', 'admin/ImgList');
+Route::get('get_imgser/:id', 'admin/ImgList/getImgSer');
+Route::post('upload_img_list_imgser', 'admin/ImgList/uploadImgSer');
+Route::get('delete_imgser/:id/:index', 'admin/ImgList/deleteImgser');
+Route::post('save_info', 'admin/ImgList/saveInfo');
 //图片上传
+Route::post('image_upload',function(){
+    Request::instance()->module('common');
+    Request::instance()->controller('OssUpload');
+    Request::instance()->action('imageUpload');
+    return (new \app\common\controller\OssUpload())->imageUpload('pic');});
 Route::post('article_image_upload',function(){
     Request::instance()->module('common');
     Request::instance()->controller('OssUpload');
@@ -226,13 +237,6 @@ Route::resource('imglist', 'admin/ImgList');
 //content_get
 Route::resource('content_get', 'admin/ContentGet');
 //添加与修改图片
-Route::post('uploadimglistimgser', 'admin/ImgList/uploadImgSer');
-//获取图片列表
-Route::get('getimgser/:id', 'admin/ImgList/getImgSer');
-//删除图片
-Route::get('deleteImgser/:id/:index', 'admin/ImgList/deleteImgser');
-Route::post('saveinfo', 'admin/ImgList/saveinfo');
-Route::get('changeimgliststatus/:id/:status', 'admin/ImgList/changeStatus');
 Route::post('articleshowhtml', 'admin/Article/articleshowhtml');
 Route::post('article/sync', 'admin/Article/syncArticle');
 Route::post('article/csvupload', 'admin/Article/csvupload');
@@ -689,3 +693,39 @@ Route::post('common/send','common/Send/Send');
 Route::get('common/site_send','common/Send/site_send');
 Route::get('common/node_send','common/Send/node_send');
 Route::get('common/notaddsend','common/Send/notaddsend');*/
+
+/*
+<VirtualHost *:80>
+ServerAdmin jishu@qiangbi.net
+#php_admin_value open_basedir "/home/wwwroot/default:/tmp/:/var/tmp/:/proc/"
+DocumentRoot "/home/wwwroot/$serverpath/"
+ServerName $servername
+ServerAlias $serveralias
+ErrorLog "/home/wwwlogs/IP-error-$servername"
+CustomLog "/home/wwwlogs/IP-access_log-$servername" combined
+<Directory "/home/wwwroot/$serverpath">
+SetOutputFilter DEFLATE
+    Options FollowSymLinks
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+    DirectoryIndex index.html index.php
+</Directory>
+</VirtualHost>
+*/
+
+//ping -t 1 wap.163hm.com.cn         无问题
+//ping -t 1 www.163hm.com.cn         无问题
+//ping -t 1   m.163hmail.com.cn      已删除
+//ping -t 1 www.163hmail.com.cn      无问题        163hmail/public 正常
+//ping -t 1 wap.163yanxuan.cn        无问题      sitegroup-node-wap.163yanxuan.cn/public
+//ping -t 1 www.163yanxuan.cn        无问题          sitegroup-node-163yanxuan.cn/public
+//ping -t 1   m.jifentang.cn         无问题
+//ping -t 1 www.jifentang.cn         无问题
+//ping -t 1 www.cio.club             无问题
+//ping -t 1   m.mall163.cn           已删除
+//ping -t 1 www.mall163.cn           无问题              mall163/public
+//ping -t 1 www.mall163.xyz          无问题
+//ping -t 1 www.youdao.so            无问题
+//
+//59.111.92.173

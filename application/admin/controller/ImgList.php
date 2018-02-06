@@ -122,7 +122,7 @@ class ImgList extends CommonLogin
     {
         $data['status'] = $status;
         if (!$this->model->save($data, ["id" => $id])) {
-            return $this->resultArray('禁用失败', 'failed');
+            return $this->resultArray('failed', '禁用失败');
         }
         return $this->resultArray("禁用成功");
     }
@@ -144,7 +144,7 @@ class ImgList extends CommonLogin
             unset($data['imgser']);
         }
         $data['imglist'] = $imgser;
-        return $this->resultArray('', '', $data);
+        return $this->resultArray($data);
     }
 
     /**
@@ -279,7 +279,7 @@ class ImgList extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function saveinfo()
+    public function saveInfo()
     {
         try {
             $rule = [
