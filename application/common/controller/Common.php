@@ -33,7 +33,7 @@ class Common extends Controller
     /**
      * @return array
      */
-    public function one_key_add_page()
+    public function add_page()
     {
         try {
             Db::startTrans();

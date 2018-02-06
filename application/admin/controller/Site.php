@@ -2,6 +2,16 @@
 
 namespace app\admin\controller;
 
+
+
+use app\admin\model\Articletype;
+use app\admin\model\Contactway;
+use app\admin\model\Domain;
+use app\admin\model\Keyword;
+use app\admin\model\Menu;
+use app\admin\model\SiteType;
+use app\admin\model\SiteUser;
+use app\admin\model\TypeTag;
 use app\admin\model\Useragent;
 use app\common\controller\Common;
 use app\common\model\BrowseRecord;
@@ -23,6 +33,14 @@ class Site extends Common
 {
     use Obtrait;
     public $all_count = [];
+
+    /**
+     * @return void
+     */
+    public function one_key_add_page()
+    {
+        return $this->add_page();
+    }
 
     /**
      * 显示资源列表
