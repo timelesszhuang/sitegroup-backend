@@ -458,7 +458,7 @@ class Article extends Common
             }
             if ($encoding !== "" && $encoding)
                 foreach ($data as $key => $value) {
-                    $data[$key] = iconv($encoding, 'UTF-8', $value);
+                    $data[$key] =   iconv($encoding,'UTF-8//TRANSLIT//IGNORE', $value);
                 }
             $datas = array_merge($datas, [$data]);
         }
