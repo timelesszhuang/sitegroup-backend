@@ -8,16 +8,219 @@
 namespace app\common\controller;
 
 
+use app\admin\model\Articletype;
+use app\admin\model\Contactway;
+use app\admin\model\Domain;
+use app\admin\model\Keyword;
+use app\admin\model\Menu;
+use app\admin\model\Site;
+use app\admin\model\SiteType;
+use app\admin\model\SiteUser;
+use app\admin\model\TypeTag;
 use app\admin\model\SystemConfig;
 use app\common\model\User;
 use think\Controller;
+use think\Db;
 use think\Request;
 use think\Session;
 use think\Validate;
-
+use app\admin\model\Menutag;
 
 class Common extends Controller
 {
+
+
+    /**
+     * @return array
+     */
+    public function one_key_add_page()
+    {
+        try {
+            Db::startTrans();
+            $post = $this->request->post();
+            $yuming = $post['yuming'];
+            $gongsiming = $post['gongsiming'];
+            $gongsiyingwenming = $post['gongsiyingwenming'];
+            $gongsijianjie = $post['gongsijianjie'];
+
+            //注册用户相关信息
+            $name = $gongsiming;
+            $username = $yuming;
+            $email = $post['email'];
+            $phone = $post['phone'];
+            $pwd = 'admin123';
+            //content
+            $content_zipcode = $post['content_zipcode'];
+            $content_fax = $post['content_fax'];
+            $content_telephone = $post['content_telephone'];
+            $content_weixin = $post['content_weixin'];
+            $content_email = $post['content_email'];
+            $content_mobile = $post['content_mobile'];
+            $content_four00 = $post['content_four00'];
+            $content_qq = $post['content_qq'];
+            $content_address = $post['content_address'];
+
+            $user['user_node_id'] = 66;
+            //添加文章分类标签
+            $Type_Tag = new TypeTag();
+            $tag_where['node_id'] = $user['user_node_id'];
+            $tag_where['tag'] = $gongsiming;
+            $typetag = $Type_Tag->where($tag_where)->find();
+            if ($typetag) {
+                $tag_id = $typetag['id'];
+            } else {
+                $data_tag['tag'] = $gongsiming;
+                $data_tag['node_id'] = $user['user_node_id'];
+                if (!$Type_Tag->create($data_tag)) {
+                    exception("标签创建失败");
+                }
+                $tag_id = $Type_Tag->getLastInsID();
+            }
+            //添加文章分类
+            $Articletype = new Articletype();
+            $data_art_type['tag_id'] = $tag_id;
+            $data_art_type['name'] = '公司资讯';
+            $data_art_type['detail'] = $gongsiming;
+            $data_art_type['alias'] = 'gongsizixun' . time();
+            $data_art_type['node_id'] = $user['user_node_id'];
+            if (!$Articletype->create($data_art_type)) {
+                exception("类型创建失败");
+            }
+            $art_type_id = $Articletype->getLastInsID();
+            //添加栏目标签
+            $Menutag = new Menutag();
+            $data_menu_tag['node_id'] = $user['user_node_id'];
+            $data_menu_tag['name'] = $gongsiming;
+            $data_menu_tag['detail'] = $gongsiming;
+            if (!$Menutag->create($data_menu_tag)) {
+                exception("Menutag创建失败");
+            }
+            $menu_tag_id = $Menutag->getLastInsID();
+            //添加栏目
+            $Menu = new Menu();
+            $data_menu['node_id'] = $user['user_node_id'];
+            $data_menu['name'] = '公司资讯';
+            $data_menu['generate_name'] = 'gongsizixun' . time();
+            $data_menu['title'] = '公司资讯';
+            $data_menu['flag'] = 3;
+            $data_menu['flag_name'] = '文章型';
+            $data_menu['content'] = '';
+            $data_menu['type_id'] = $art_type_id;
+            $data_menu['tag_id'] = $menu_tag_id;
+            $data_menu['tag_name'] = $gongsiming;
+            if (!$Menu->create($data_menu)) {
+                exception("公司资讯创建失败");
+            }
+            $menu_id1 = $Menu->getLastInsID();
+            $data_menu['name'] = '关于我们';
+            $data_menu['title'] = '关于我们';
+            $data_menu['flag'] = 1;
+            $data_menu['generate_name'] = 'guanyuwomen' . time();
+            $data_menu['flag_name'] = '详情型';
+            $data_menu['content'] = $gongsijianjie;
+            $data_menu['type_id'] = '';
+            $data_menu['covertemplate'] = 'guanyuwomen.html';
+            if (!$Menu->create($data_menu)) {
+                exception("关于我们创建失败");
+            }
+            $menu_id2 = $Menu->getLastInsID();
+            //网站分类
+            $site_type = new SiteType();
+            $data_site_type['node_id'] = $user['user_node_id'];
+            $data_site_type['name'] = $gongsiming;
+            $data_site_type['detail'] = $gongsiming;
+            $data_site_type['chain_type'] = 10;
+            if (!$site_type->create($data_site_type)) {
+                exception("site_type创建失败");
+            }
+            $site_type_id = $site_type->getLastInsID();
+            //用户名
+            $site_user = new SiteUser();
+            $data_site_user['name'] = $name;
+            $data_site_user['pwd'] = $pwd;
+            $data_site_user['email'] = $email;
+            $data_site_user['mobile'] = $phone;
+            $data_site_user['account'] = $username;
+            $data_site_user['node_id'] = $user['user_node_id'];
+            if (!$site_user->create($data_site_user)) {
+                exception("公司用户失败");
+            }
+            $site_user_id = $site_user->getLastInsID();
+            //添加域名
+            $domain = new Domain();
+            $data_domain['domain'] = $yuming;
+            $data_domain['node_id'] = $user['user_node_id'];
+            if (!$domain->create($data_domain)) {
+                exception("公司用户失败");
+            }
+            $domain_id = $domain->getLastInsID();
+            //联系方式
+            $content = new Contactway();
+            $data_content['name'] = $gongsiming;
+            $data_content['detail'] = $gongsiming;
+            $data_content['html']['zipcode'] = $content_zipcode;
+            $data_content['html']['fax'] = $content_fax;
+            $data_content['html']['telephone'] = $content_telephone;
+            $data_content['html']['weixin'] = $content_weixin;
+            $data_content['html']['email'] = $content_email;
+            $data_content['html']['mobile'] = $content_mobile;
+            $data_content['html']['four00'] = $content_four00;
+            $data_content['html']['qq'] = $content_qq;
+            $data_content['html']['address'] = $content_address;
+            $data_content['node_id'] = $user['user_node_id'];
+            if (!$content->create($data_content)) {
+                exception("添加联系方式失败");
+            }
+            $content_id = $content->getLastInsID();
+            //关键词
+            $keyword = new Keyword();
+            $data_keyword['name'] = $gongsiming;
+            $data_keyword['node_id'] = $user['user_node_id'];
+            $data_keyword['parent_id'] = 0;
+            $data_keyword['path'] = '';
+            if (!$keyword->create($data_keyword)) {
+                exception("添加关键词失败");
+            }
+            $keyword_id_A = $keyword->getLastInsID();
+            $data_keyword['parent_id'] = $keyword_id_A;
+            $data_keyword['path'] = ",$keyword_id_A,";
+            if (!$keyword->create($data_keyword)) {
+                exception("添加关键词失败");
+            }
+            $keyword_id_B = $keyword->getLastInsID();
+            $data_keyword['parent_id'] = $keyword_id_B;
+            $data_keyword['path'] = ",$keyword_id_A,$keyword_id_B,";
+            if (!$keyword->create($data_keyword)) {
+                exception("添加关键词失败");
+            }
+            //添加站点
+            $site = new Site();
+
+            $data_site['site_name'] = $gongsiming;
+            $data_site['com_name'] = $gongsiming;
+            $data_site['is_mobile'] = 10;
+            $data_site['url'] = "http://".$yuming;
+            $data_site['domain_id'] = $domain_id;
+            $data_site['domain'] = $yuming;
+            $data_site['user_id'] = $site_user_id;
+            $data_site['user_name'] = $name;
+            $data_site['menu'] = ",$menu_id1,$menu_id2,";
+            $data_site['keyword_ids'] = ",$keyword_id_A,";
+            $data_site['site_type'] = $site_type_id;
+            $data_site['site_type_name'] = $data_site_type['name'];
+            $data_site['template_id'] = 78;
+            $data_site['support_hotline'] = $content_id;
+            $data_site["node_id"] = $user['user_node_id'];
+            $site->create($data_site);
+//            Db::commit();
+            Db::rollback();
+            return $this->resultArray('成功');
+        } catch (\Exception $exception) {
+            Db::rollback();
+            return $this->resultArray($exception->getMessage(), "failed");
+        }
+    }
+
 
     /**
      * 本地测试开启下 允许跨域ajax 获取数据
