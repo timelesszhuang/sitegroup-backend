@@ -38,6 +38,7 @@ class Common extends Controller
         try {
             Db::startTrans();
             $post = $this->request->post();
+            $lang = $post['lang'];
             $yuming = $post['yuming'];
             $gongsiming = $post['gongsiming'];
             $gongsiyingwenming = $post['gongsiyingwenming'];
@@ -78,9 +79,14 @@ class Common extends Controller
             //添加文章分类
             $Articletype = new Articletype();
             $data_art_type['tag_id'] = $tag_id;
-            $data_art_type['name'] = '公司资讯';
+            if($lang == 'zh'){
+                $data_art_type['name'] = '公司资讯';
+                $data_art_type['alias'] = 'gongsizixun' . time();
+            }else{
+                $data_art_type['name'] = 'company news';
+                $data_art_type['alias'] = 'companynews' . time();
+            }
             $data_art_type['detail'] = $gongsiming;
-            $data_art_type['alias'] = 'gongsizixun' . time();
             $data_art_type['node_id'] = $user['user_node_id'];
             if (!$Articletype->create($data_art_type)) {
                 exception("类型创建失败");
@@ -98,9 +104,15 @@ class Common extends Controller
             //添加栏目
             $Menu = new Menu();
             $data_menu['node_id'] = $user['user_node_id'];
-            $data_menu['name'] = '公司资讯';
-            $data_menu['generate_name'] = 'gongsizixun' . time();
-            $data_menu['title'] = '公司资讯';
+            if($lang == 'zh'){
+                $data_menu['name'] = '公司资讯';
+                $data_menu['title'] = '公司资讯';
+                $data_menu['generate_name'] = 'gongsizixun' . time();
+            }else{
+                $data_menu['name'] = 'company news';
+                $data_menu['title'] = 'company news';
+                $data_menu['generate_name'] = 'companynews' . time();
+            }
             $data_menu['flag'] = 3;
             $data_menu['flag_name'] = '文章型';
             $data_menu['content'] = '';
@@ -111,10 +123,16 @@ class Common extends Controller
                 exception("公司资讯创建失败");
             }
             $menu_id1 = $Menu->getLastInsID();
-            $data_menu['name'] = '关于我们';
-            $data_menu['title'] = '关于我们';
+            if($lang == 'zh'){
+                $data_menu['name'] = '关于我们';
+                $data_menu['title'] = '关于我们';
+                $data_menu['generate_name'] = 'guanyuwomen' . time();
+            }else{
+                $data_menu['name'] = 'about us';
+                $data_menu['title'] = 'about us';
+                $data_menu['generate_name'] = 'aboutus' . time();
+            }
             $data_menu['flag'] = 1;
-            $data_menu['generate_name'] = 'guanyuwomen' . time();
             $data_menu['flag_name'] = '详情型';
             $data_menu['content'] = $gongsijianjie;
             $data_menu['type_id'] = '';
@@ -177,6 +195,7 @@ class Common extends Controller
             $data_keyword['name'] = $gongsiming;
             $data_keyword['node_id'] = $user['user_node_id'];
             $data_keyword['parent_id'] = 0;
+            $data_keyword['tag'] = 'A';
             $data_keyword['path'] = '';
             if (!$keyword->create($data_keyword)) {
                 exception("添加关键词失败");
@@ -184,12 +203,14 @@ class Common extends Controller
             $keyword_id_A = $keyword->getLastInsID();
             $data_keyword['parent_id'] = $keyword_id_A;
             $data_keyword['path'] = ",$keyword_id_A,";
+            $data_keyword['tag'] = 'B';
             if (!$keyword->create($data_keyword)) {
                 exception("添加关键词失败");
             }
             $keyword_id_B = $keyword->getLastInsID();
             $data_keyword['parent_id'] = $keyword_id_B;
             $data_keyword['path'] = ",$keyword_id_A,$keyword_id_B,";
+            $data_keyword['tag'] = 'C';
             if (!$keyword->create($data_keyword)) {
                 exception("添加关键词失败");
             }
@@ -208,7 +229,11 @@ class Common extends Controller
             $data_site['keyword_ids'] = ",$keyword_id_A,";
             $data_site['site_type'] = $site_type_id;
             $data_site['site_type_name'] = $data_site_type['name'];
-            $data_site['template_id'] = 78;
+            if($lang == 'zh'){
+                $data_site['template_id'] = 78;
+            }else{
+                $data_site['template_id'] = 79;
+            }
             $data_site['support_hotline'] = $content_id;
             $data_site["node_id"] = $user['user_node_id'];
             $site->create($data_site);
