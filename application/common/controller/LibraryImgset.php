@@ -16,7 +16,7 @@ use think\Validate;
 use app\common\traits\Obtrait;
 use app\common\traits\Osstrait;
 
-class LibraryImgset extends Common
+class LibraryImgset extends CommonLogin
 {
     use Obtrait;
     use Osstrait;
