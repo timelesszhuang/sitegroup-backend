@@ -34,9 +34,15 @@ class LibraryArticle extends Model
 
     /**
      * 获取所有
-     * @return false|\PDOStatement|string|\think\Collection
+     * @param $limit
+     * @param $rows
+     * @param int $where
+     * @return array
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function getArticle($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
@@ -53,7 +59,6 @@ class LibraryArticle extends Model
      * @param $value
      * @param $key
      */
-    //TODO oldfunction
     public function formatter_date(&$value,$key)
     {
         if($value['addtime']){
@@ -65,13 +70,11 @@ class LibraryArticle extends Model
      * 获取单篇文章
      * @param $id
      * @return null|static
+     * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function getOne($id)
     {
         $key=self::get($id);
         return $key;
     }
-
-
 }

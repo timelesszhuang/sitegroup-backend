@@ -87,4 +87,16 @@ class LibraryImgset extends Model
         }
         return $src_list;
     }
+
+    /**
+     * 获取单篇文章
+     * @param $id
+     * @return null|static
+     * @throws \think\exception\DbException
+     */
+    public function getOne($id)
+    {
+        $key=self::get($id);
+        return $key;
+    }
 }

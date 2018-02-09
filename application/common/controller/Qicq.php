@@ -1,15 +1,15 @@
 <?php
 
-namespace app\admin\controller;
+namespace app\common\controller;
 
-use app\common\controller\CommonLogin;
+use app\common\model\QicqArticle;
 
-class QicqArticle extends CommonLogin
+class Qicq extends CommonLogin
 {
     public function __construct()
     {
         parent::__construct();
-        $this->model = new \app\common\model\QicqArticle();
+        $this->model = new QicqArticle();
     }
 
     /**
@@ -38,24 +38,35 @@ class QicqArticle extends CommonLogin
     }
 
 
-
-
     /**
      * 获取某个文章
      * @param $id
      * @return array
+     * @throws \think\exception\DbException
      */
     public function read($id)
     {
-        return $this->resultArray($this->model->getOne($id));
+        return $this->resultArray($this->model->getOne($id)->toArray());
     }
 
     /**
      * 获取所有分类
      * @return array
      */
+    /**
+     * 通过id获取分类
+     * @return mixed|string
+     */
     public function getTypes()
     {
-        return $this->resultArray($this->model->allTypes());
+        $arr = [
+            ["id" => 1, "text" => "科技类"],
+            ["id" => 2, "text" => "教育类"],
+            ["id" => 3, "text" => "财经类"],
+            ["id" => 4, "text" => "美食类"],
+            ["id" => 5, "text" => "社会类"],
+            ["id" => 6, "text" => "文化类"]
+        ];
+        return $this->resultArray($arr);
     }
 }

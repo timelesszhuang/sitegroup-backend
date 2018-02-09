@@ -37,10 +37,8 @@ class Hotnews extends Model
     /**
      * 格式化日期
      * @param $value
-     * @param $key
      */
-    //TODO oldfunction
-    public function formatter_date(&$value, $key)
+    public function formatter_date(&$value)
     {
         if ($value['create_time']) {
             $value['create_time'] = date("Y-m-d H:i:s", $value['create_time']);
@@ -49,13 +47,20 @@ class Hotnews extends Model
 
     /**
      * 获取所有关键字分类
-     * @return false|\PDOStatement|string|\think\Collection
+     * @param $limit
+     * @param $rows
+     * @param int $where
+     * @return array
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function getHot($limit, $rows, $where = 0)
     {
         $count = $this->where($where)->count();
         $data = Db::connect($this->connection)->table("sc_hotnews")->field(["base64img","create_time","id","title","summary"])->where($where)->order('id desc')->limit($limit, $rows)->select();
+        /** @var array $data */
         array_walk($data, [$this, 'formatter_date']);
         return [
             "total" => $count,
@@ -68,15 +73,21 @@ class Hotnews extends Model
      * 获取一条数据
      * @param $id
      * @return null|static
+     * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function getOne($id)
     {
         $key = self::get($id);
         return $key;
     }
 
-    //TODO oldfunction
+    /**
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function getKeyTypeList()
     {
         return Db::connect($this->connection)->table("sc_weixin_keyword_type")->field("id,name as text")->select();

@@ -10,13 +10,13 @@ namespace app\common\controller;
 
 
 use app\common\exception\ProcessException;
-use app\common\model\LibraryImgset as this_model;
+use app\common\model\LibraryImgset as Library;
 use think\Request;
 use think\Validate;
 use app\common\traits\Obtrait;
 use app\common\traits\Osstrait;
 
-class LibraryImgset extends CommonLogin
+class LibraryImgset extends Common
 {
     use Obtrait;
     use Osstrait;
@@ -24,7 +24,7 @@ class LibraryImgset extends CommonLogin
     public function __construct()
     {
         parent::__construct();
-        $this->model = new this_model();
+        $this->model = new Library();
     }
 
     /**
@@ -51,20 +51,21 @@ class LibraryImgset extends CommonLogin
         $where["node_id"] = $user["node_id"];
         $count = $this->model->where($where)->count();
         $data = $this->model->limit($request["limit"], $request["rows"])->where($where)->field('id,imgsrc,comefrom,tags,alt,create_time')->order('id desc')->select();
-        return $this->resultArray(["total" => $count, "rows" => $data]);
+        return $this->resultArray([
+            "total" => $count,
+            "rows" => $data
+        ]);
     }
 
     /**
      * 获取某个文章
      * @param $id
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
     public function read($id)
     {
-        return $this->resultArray($this->getread($this->model, $id));
+        return $this->resultArray($this->model->getOne($id)->toArray());
     }
 
     /**
@@ -79,6 +80,7 @@ class LibraryImgset extends CommonLogin
 
     /**
      * 保存新建的资源
+     *
      * @param  \think\Request $request
      * @return array
      * @throws \think\db\exception\DataNotFoundException
@@ -97,11 +99,12 @@ class LibraryImgset extends CommonLogin
             if (!$validate->check($data)) {
                 Common::processException($validate->getError());
             }
+
             $library_img_set = $this->model;
             $library_img_set->batche_add([$data['imgsrc']], $data['tags'], $data['alt'], 'selfadd');
             return $this->resultArray("添加成功");
         } catch (ProcessException $e) {
-        return $this->resultArray('failed', $e->getMessage());
+            return $this->resultArray('failed', $e->getMessage());
         }
     }
 }

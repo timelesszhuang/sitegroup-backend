@@ -47,6 +47,7 @@ class QicqArticle extends Model
     {
         $count = $this->where($where)->count();
         $data=Db::connect($this->connection)->table($this->table)->where($where)->order('id desc')->field('content',true)->limit($limit, $rows)->select();
+        /** @var array $data */
         array_walk($data,[$this,'formatter_date']);
         return [
             "total" => $count,
@@ -57,9 +58,8 @@ class QicqArticle extends Model
     /**
      * 格式化日期
      * @param $value
-     * @param $key
      */
-    public function formatter_date(&$value,$key)
+    public function formatter_date(&$value)
     {
         if($value['create_time']){
             $value['create_time']=date("Y-m-d H:i:s",$value['create_time']);
@@ -70,6 +70,7 @@ class QicqArticle extends Model
      * 获取单篇文章
      * @param $id
      * @return null|static
+     * @throws \think\exception\DbException
      */
     public function getOne($id)
     {
@@ -82,7 +83,10 @@ class QicqArticle extends Model
      * @param $id
      * @param $title
      * @param $content
+     * @param string $source
      * @return int|string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function editKeyword($id,$title,$content,$source='')
     {
@@ -99,6 +103,9 @@ class QicqArticle extends Model
     /**
      * 删除文章
      * @param $id
+     * @return int
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
      */
     public function deleteOne($id)
     {

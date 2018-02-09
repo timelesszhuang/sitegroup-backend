@@ -213,18 +213,6 @@ class Product extends CommonLogin
     }
 
     /**
-     * 删除指定资源
-     *
-     * @param  int $id
-     * @return void
-     */
-    public function delete($id)
-    {
-        //
-    }
-
-
-    /**
      * 获取产品多图状态下的图片src
      * @access public
      * @param $id
@@ -258,87 +246,90 @@ class Product extends CommonLogin
      */
     public function uploadImgSer()
     {
-        $id = \request()->post('id');
-        $index = \request()->post('index');
-        //产品的其他图片
-        $dest_dir = 'product/imgser/';
-        $endpoint = Config::get('oss.endpoint');
-        $bucket = Config::get('oss.bucket');
-        if ($index == NULL) {
-            $file = request()->file('addimg');
-            $imgtype = 'add';
-        } else {
-            $file = request()->file('updateimg');
-            $imgtype = 'edit';
-        }
-        $localfile_path = ROOT_PATH . 'public/upload/';
-        $fileInfo = $file->move($localfile_path);
-        $localfile = $localfile_path . $fileInfo->getSaveName();
-        $object = $dest_dir . $fileInfo->getSaveName();
-        $put_info = $this->ossPutObject($object, $localfile);
-        unlink($localfile);
-        $status = false;
-        $msg = '上传失败';
-        $imgser = [];
-        if ($put_info['status']) {
-            //上传成功之后需要删除掉之前的存储的对象
-            $msg = '上传成功';
-            $status = true;
-            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
-            //分析文件后缀
-            $type = $this->analyseUrlFileType($url);
-            if ($type) {
-                $img_name = $this->formUniqueString() . ".{$type}";
+        try {
+            $id = \request()->post('id');
+            $index = \request()->post('index');
+            //产品的其他图片
+            $dest_dir = 'product/imgser/';
+            $endpoint = Config::get('oss.endpoint');
+            $bucket = Config::get('oss.bucket');
+            if ($index == NULL) {
+                $file = request()->file('addimg');
+                $imgtype = 'add';
             } else {
-                //不带后缀的情况
-                $img_name = $this->formUniqueString();
+                $file = request()->file('updateimg');
+                $imgtype = 'edit';
             }
-            $data = $this->model->where(["id" => $id])->field("id,imgser")->find();
-            /** @var string $deleteobject */
-            $deleteobject = '';
-            $dest = [
-                'imgname' => $img_name,
-                'osssrc' => $url,
-            ];
-            if (!empty($data->imgser)) {
-                if ($data->imgser) {
-                    $imgser = unserialize($data->imgser);
-                    if ($imgtype == 'edit') {
-                        foreach ($imgser as $k => $v) {
-                            if ($k == $index) {
-                                $imgser[$k] = $dest;
-                                $deleteobject = $v['osssrc'];
-                                break;
+            $localfile_path = ROOT_PATH . 'public/upload/';
+            $fileInfo = $file->move($localfile_path);
+            $localfile = $localfile_path . $fileInfo->getSaveName();
+            $object = $dest_dir . $fileInfo->getSaveName();
+            $put_info = $this->ossPutObject($object, $localfile);
+            unlink($localfile);
+            $imgser = [];
+            if ($put_info['status']) {
+                //上传成功之后需要删除掉之前的存储的对象
+                $msg = '上传成功';
+                $status = true;
+                $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+                //分析文件后缀
+                $type = $this->analyseUrlFileType($url);
+                if ($type) {
+                    $img_name = $this->formUniqueString() . ".{$type}";
+                } else {
+                    //不带后缀的情况
+                    $img_name = $this->formUniqueString();
+                }
+                $data = $this->model->where(["id" => $id])->field("id,imgser")->find();
+                /** @var string $deleteobject */
+                $deleteobject = '';
+                $dest = [
+                    'imgname' => $img_name,
+                    'osssrc' => $url,
+                ];
+                if (!empty($data->imgser)) {
+                    if ($data->imgser) {
+                        $imgser = unserialize($data->imgser);
+                        if ($imgtype == 'edit') {
+                            foreach ($imgser as $k => $v) {
+                                if ($k == $index) {
+                                    $imgser[$k] = $dest;
+                                    $deleteobject = $v['osssrc'];
+                                    break;
+                                }
+                            }
+                        } else {
+                            //是添加的情况
+                            if ($index !== 0 && !$index) {
+                                array_push($imgser, $dest);
                             }
                         }
                     } else {
-                        //是添加的情况
-                        if ($index !== 0 && !$index) {
-                            array_push($imgser, $dest);
-                        }
+                        //表示第一次是空的
+                        $imgser[] = $dest;
                     }
-                } else {
-                    //表示第一次是空的
-                    $imgser[] = $dest;
                 }
+                $data->imgser = serialize($imgser);
+                $data->save();
+                //需要去服务器上删除已经被替换的对象
+                if ($deleteobject) {
+                    //需要截取掉之前的路径
+                    //$this->ossDeleteObject($deleteobject);
+                }
+            } else {
+                Common::processException('上传失败');
             }
-            $data->imgser = serialize($imgser);
-            $data->save();
-            //需要去服务器上删除已经被替换的对象
-            if ($deleteobject) {
-                //需要截取掉之前的路径
-                $this->ossDeleteObject($deleteobject);
+            $imglist = [];
+            foreach ($imgser as $v) {
+                $imglist[] = $v['osssrc'];
             }
-        }
-        $imglist = [];
-        foreach ($imgser as $v) {
-            $imglist[] = $v['osssrc'];
-        }
 
-        $library_img_set = new LibraryImgset();
-        $library_img_set->batche_add($imglist, [], '', 'product');
-
-        return $this->resultArray($status, $msg, $imglist);
+            $library_img_set = new LibraryImgset();
+            $library_img_set->batche_add($imglist, [], '', 'product');
+            return $this->resultArray('success', '上传成功', $imglist);
+        } catch (ProcessException $e) {
+            return $this->resultArray('failed', '上传失败');
+        }
     }
 
     /**
@@ -373,7 +364,7 @@ class Product extends CommonLogin
         //需要去服务器上删除已经被替换的对象
         if ($deleteobject) {
             //需要截取掉之前的路径
-            $this->ossDeleteObject($deleteobject);
+            //         $this->ossDeleteObject($deleteobject);
         }
         return $this->resultArray('success', '删除产品图片完成', $imglist);
     }
@@ -381,54 +372,50 @@ class Product extends CommonLogin
     /***
      * 获取某个网站对应的产品
      * @param $type_id
-     * @return array
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws ProcessException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
     private function getProductSite($type_id)
     {
-        try {
-            $where['flag'] = 5;
-            $model_menu = (new Menu());
-            $menu = $model_menu->where(function ($query) use ($where) {
-                /** @var Model $query */
-                $query->where($where);
-            })->where(function ($query) use ($type_id) {
-                /** @var Model $query */
-                $query->where('type_id', ['=', $type_id], ['like', "%,$type_id,%"], 'or');
-            })->select();
-            if (!$menu) {
-                Common::processException('产品分类没有菜单选中页面，暂时不能预览。');
-            }
-            //一个菜单有可能被多个站点选择 site表中只会存储第一级别的菜单 需要找出当前的pid=0的父级菜单
-            $pid = [];
-            foreach ($menu as $k => $v) {
-                $path = $v['path'];
-                //该菜单的跟
-                if ($path) {
-                    //获取第一级别的菜单
-                    $pid[] = array_values(array_filter(explode(',', $path)))[0];
-                } else {
-                    $pid[] = $v['id'];
-                }
-            }
-            $pid = array_unique($pid);
-            //查询选择当前菜单的站点相关信息
-            $map = '';
-            foreach ($pid as $k => $v) {
-                $permap = " menu like ',%$v%,' ";
-                if ($k == 0) {
-                    $map = $permap;
-                    continue;
-                }
-                $map .= ' or ' . $permap;
-            }
-            $sitedata = (new Site())->where($map)->field('id,site_name,url')->select();
-            return $this->resultArray($sitedata);
-        } catch (ProcessException $e) {
-            return $this->resultArray('failed', $e->getMessage());
+        $where['flag'] = 5;
+        $model_menu = (new Menu());
+        $menu = $model_menu->where(function ($query) use ($where) {
+            /** @var Model $query */
+            $query->where($where);
+        })->where(function ($query) use ($type_id) {
+            /** @var Model $query */
+            $query->where('type_id', ['=', $type_id], ['like', "%,$type_id,%"], 'or');
+        })->select();
+        if (!$menu) {
+            Common::processException('产品分类没有菜单选中页面，暂时不能预览。');
         }
+        //一个菜单有可能被多个站点选择 site表中只会存储第一级别的菜单 需要找出当前的pid=0的父级菜单
+        $pid = [];
+        foreach ($menu as $k => $v) {
+            $path = $v['path'];
+            //该菜单的跟
+            if ($path) {
+                //获取第一级别的菜单
+                $pid[] = array_values(array_filter(explode(',', $path)))[0];
+            } else {
+                $pid[] = $v['id'];
+            }
+        }
+        $pid = array_unique($pid);
+        //查询选择当前菜单的站点相关信息
+        $map = '';
+        foreach ($pid as $k => $v) {
+            $permap = " menu like ',%$v%,' ";
+            if ($k == 0) {
+                $map = $permap;
+                continue;
+            }
+            $map .= ' or ' . $permap;
+        }
+        return (new Site())->where($map)->field('id,site_name,url')->select();
     }
 
     /**
@@ -440,21 +427,22 @@ class Product extends CommonLogin
      */
     public function productShowHtml()
     {
-        $data = $this->request->post();
-        $sitedata = $this->getProductSite($data['type_id']);
-        if (array_key_exists('status', $sitedata)) {
-            return $sitedata;
-        }
-        foreach ($sitedata as $kk => $vv) {
-            $showhtml[] = [
-                'url' => $vv['url'] . '/preview/product/' . $data['id'] . '.html',
-                'site_name' => $vv['site_name'],
-            ];
-        }
-        if (!empty($showhtml)) {
-            return $this->resultArray('', '', $showhtml);
-        } else {
-            return $this->resultArray('当前文章对应的菜单页面没有站点选择，暂时不能预览。', 'failed');
+        try {
+            $data = $this->request->post();
+            $sitedata = $this->getProductSite($data['type_id']);
+            foreach ($sitedata as $kk => $vv) {
+                $showhtml[] = [
+                    'url' => $vv['url'] . '/preview/product/' . $data['id'] . '.html',
+                    'site_name' => $vv['site_name'],
+                ];
+            }
+            if (empty($showhtml)) {
+                Common::processException('当前文章对应的菜单页面没有站点选择，暂时不能预览。');
+            }
+            /** @var array $showhtml */
+            return $this->resultArray($showhtml);
+        } catch (ProcessException $exception) {
+            return $this->resultArray('failed', $exception->getMessage());
         }
     }
 }

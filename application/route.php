@@ -13,24 +13,26 @@ use think\Route;
 /***
  * 公共api
  */
+Route::get('get_session', 'common/Login/getSession');//获取当前用户数据
+Route::get('clear_session', 'common/Login/clearSession');//清楚当前用户登录session信息
+//测试接口
+Route::get('test',"admin/Oschina/test");
 //登录
-Route::post('login', 'common/Login/login');
-Route::get('clear_session', 'common/Login/clearSession');
-Route::get('get_session', 'common/Login/getSession');
+Route::post('login', 'common/Login/login');//用户登录
 //自动登录
-Route::post('auto_login', 'common/Login/autoLogin');
+Route::post('auto_login', 'common/Login/autoLogin');//自动登录
 //获取验证码
-//Route::get('captcha');
+//Route::get('captcha');//获取一个新的验证码
 //更新密码
-Route::post('change_password', 'common/AccountOperation/changePassword');
+Route::post('change_password', 'common/AccountOperation/changePassword');//用户修改密码
 //退出登录
-Route::get('logout','common/Login/logout');
+Route::get('logout','common/Login/logout');//退出登录
 //分类标签
 Route::resource('type_tag', 'common/TypeTag');
 //登陆后获取站点列表
-Route::get('get_site_list','common/Login/siteList');
+Route::get('get_site_list','common/Login/siteList');//登陆后获取站点列表
 //登陆后设置站点信息
-Route::post('set_site_info','common/Login/setSiteInfo');
+Route::post('set_site_info','common/Login/setSiteInfo');//登陆后设置站点信息
 /***
  * 内容管理
  */
@@ -46,15 +48,17 @@ Route::resource('question','common/Question');
 Route::post('question_show_html','common/Question/questionShowHtml');
 //产品相关
 Route::resource('product','admin/Product');
-Route::post('product_show_html','admin/Product/questionShowHtml');
+Route::post('product_show_html','admin/Product/productShowHtml');
+Route::post('upload_product_ser_img', 'admin/Product/uploadImgSer');
+Route::get('get_product_img_list/:id', 'admin/Product/getImgSer');
+Route::get('delete_product_img/:id/:index', 'admin/Product/deleteImgser');
 //图集
 Route::resource('imglist', 'admin/ImgList');
 Route::get('change_imglist_status/:id/:status', 'admin/ImgList/changeStatus');
-Route::resource('imglist_change_status', 'admin/ImgList');
 Route::get('get_imgser/:id', 'admin/ImgList/getImgSer');
 Route::post('upload_img_list_imgser', 'admin/ImgList/uploadImgSer');
 Route::get('delete_imgser/:id/:index', 'admin/ImgList/deleteImgser');
-Route::post('save_info', 'admin/ImgList/saveInfo');
+Route::post('save_imglist_info', 'admin/ImgList/saveInfo');
 //图片上传
 Route::post('image_upload',function(){
     Request::instance()->module('common');
@@ -92,7 +96,30 @@ Route::get('get_tags', 'common/Tags/getTagList');
 Route::resource('tags', 'common/Tags');
 //公共图片资源路由
 Route::resource('library_imgset',"common/LibraryImgset");
-Route::get('test',"admin/Oschina/test");
+/**资源聚合*/
+//搜狐新闻
+Route::resource('souhu',"common/Souhu");
+//搜狐分类列表
+Route::get('souhu_type_list',"common/Souhu/getTypes");
+//腾讯新闻
+Route::resource('qicq',"common/Qicq");
+//腾讯分类列表
+Route::get('qicq_type_list',"common/Qicq/getTypes");
+//网易新闻
+Route::resource('wangyi',"common/Wangyi");
+//网易分类列表
+Route::get('wangyi_type_list',"common/Wangyi/getTypes");
+//热点新闻
+Route::resource('hot_news',"common/Hotnews");
+/**素材库*/
+Route::resource('public_article',"common/LibraryArticle");
+Route::resource('public_image',"common/LibraryImgset");
+/**关键词*/
+Route::resource('keyword',"admin/Keyword");
+
+
+
+
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

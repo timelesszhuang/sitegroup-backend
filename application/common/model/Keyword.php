@@ -16,37 +16,37 @@ class Keyword extends Model
 {
     //只读字段
     protected $readonly=["node_id"];
+
     /**
      * 根据tag获取数据
-     * @param $tag
+     * @param int $id
      * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    //TODO oldfunction
-    public function getKeyword($tag="",$id=0)
+    public function getKeyword($id=0)
     {
         $where=[];
-        if(!empty($tag)){
-            $where["tag"]=$tag;
-        }
-        if(!empty($id)){
-            $where["parent_id"]=$id;
-        }
-        $user=(new Common)->getSessionUser();
-        $where["node_id"]=$user["user_node_id"];
-        $data=$this->where($where)->field("id,name as label,tag")->select();
+        $where["parent_id"]=$id;
+        $user=(new Common)->getSessionUserInfo();
+        $where["node_id"]=$user["node_id"];
+        $data=$this->where($where)->field("id,name,tag")->select();
         return $data;
     }
 
     /**
      * 获取A类关键词
      * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function keyword(){
         $where=[];
         $where['tag']="A";
-        $user=(new Common)->getSessionUser();
-        $where["node_id"]=$user["user_node_id"];
+        $user=(new Common)->getSessionUserInfo();
+        $where["node_id"]=$user["node_id"];
         $data = $this->where($where)->field('id,name as text')->select();
         return $data;
 

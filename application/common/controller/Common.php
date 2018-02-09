@@ -72,7 +72,12 @@ class Common extends Controller
                 if($old_msg ==''){
                     $status='success';
                 }else{
-                    $status=$old_msg;
+                    if(is_array($old_msg)){
+                        $data=$old_msg;
+                        $status = 'success';
+                    }else{
+                        $status=$old_msg;
+                    }
                 }
             }
         }

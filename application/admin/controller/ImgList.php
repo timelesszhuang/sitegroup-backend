@@ -5,6 +5,7 @@ namespace app\admin\controller;
 use app\common\controller\Common;
 use app\common\controller\CommonLogin;
 use app\common\exception\ProcessException;
+use app\common\model\LibraryImgset;
 use app\common\traits\Osstrait;
 use think\Config;
 use think\Validate;
@@ -24,13 +25,12 @@ class ImgList extends CommonLogin
     }
 
     /**
-     * @param Request $request
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function index(Request $request)
+    public function index()
     {
         $request = $this->getLimit();
         $name = $this->request->get('name');
@@ -41,18 +41,6 @@ class ImgList extends CommonLogin
         $where["node_id"] = $user["node_id"];
         $data = $this->model->getImgList($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
-    }
-
-    /**
-     * @param $id
-     * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function read($id)
-    {
-        return $this->getread($this->model, $id);
     }
 
     /**
@@ -116,15 +104,20 @@ class ImgList extends CommonLogin
     /**
      * 删除指定资源
      * @param  int $id
+     * @param $status
      * @return array
      */
     public function changeStatus($id, $status)
     {
         $data['status'] = $status;
-        if (!$this->model->save($data, ["id" => $id])) {
-            return $this->resultArray('failed', '禁用失败');
+        $msg = '禁用';
+        if($status == 10){
+            $msg = '启用';
         }
-        return $this->resultArray("禁用成功");
+        if (!$this->model->save($data, ["id" => $id])) {
+            return $this->resultArray('failed', $msg.'失败');
+        }
+        return $this->resultArray($msg."成功");
     }
 
     /**
@@ -185,8 +178,6 @@ class ImgList extends CommonLogin
             $imgser = [];
             if ($put_info['status']) {
                 //上传成功之后需要删除掉之前的存储的对象
-                $msg = '上传成功';
-                $status = true;
                 $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
                 //分析文件后缀
                 $type = $this->analyseUrlFileType($url);
@@ -229,14 +220,18 @@ class ImgList extends CommonLogin
                 //需要去服务器上删除已经被替换的对象
                 if ($deleteobject) {
                     //需要截取掉之前的路径
-                    $this->ossDeleteObject($deleteobject);
+                    //$this->ossDeleteObject($deleteobject);
                 }
             }
             $imglist = [];
             foreach ($imgser as $v) {
                 $imglist[] = $v['osssrc'];
             }
-            return $this->resultArray('上传成功');
+
+            $library_img_set = new LibraryImgset();
+            $library_img_set->batche_add($imglist, [], '', 'product');
+
+            return $this->resultArray('success','上传成功',$imgser);
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());
         }
@@ -268,7 +263,7 @@ class ImgList extends CommonLogin
         //需要去服务器上删除已经被替换的对象
         if ($deleteobject) {
             //需要截取掉之前的路径
-            $result = $this->ossDeleteObject($deleteobject);
+            //$result = $this->ossDeleteObject($deleteobject);
         }
         return $this->resultArray('success', '删除完成', $imgser);
     }
@@ -299,15 +294,17 @@ class ImgList extends CommonLogin
             $link = \request()->post('link');
             $data = $this->model->where(["id" => $id])->field("id,imgser")->find();
             $imgser = [];
-            if ($data->imgser) {
-                $imgser = unserialize($data->imgser);
-                $imgser[$index]['title'] = $title;
-                $imgser[$index]['link'] = $link;
-                $imgser = array_values($imgser);
+            if (!empty($data->imgser)) {
+                if ($data->imgser) {
+                    $imgser = unserialize($data->imgser);
+                    $imgser[$index]['title'] = $title;
+                    $imgser[$index]['link'] = $link;
+                    $imgser = array_values($imgser);
+                }
             }
             $data->imgser = serialize($imgser);
             $data->save();
-            return $this->resultArray('修改成功');
+            return $this->resultArray('修改成功',$imgser);
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());
         }
