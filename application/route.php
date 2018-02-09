@@ -118,6 +118,7 @@ Route::resource('public_image',"common/LibraryImgset");
 /**关键词*/
 Route::resource('keyword',"admin/Keyword");
 Route::post('keyword_file',"admin/Keyword/getKeywordByFile");
+Route::delete('delete_keywords',"admin/Keyword/deleteAll");
 
 
 

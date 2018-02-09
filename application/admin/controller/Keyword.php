@@ -52,34 +52,6 @@ class Keyword extends CommonLogin
     }
 
     /**
-     * 删除指定资源
-     * @param  int $id
-     * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function delete($id)
-    {
-        try {
-            $keyword = $this->model;
-            $user = $this->getSessionUserInfo();
-            $where["parent_id"] = $id;
-            $where["node_id"] = $user["node_id"];
-            $key = $keyword->where($where)->select();
-            if (!empty($key)) {
-                Common::processException('此节点有子节点，无法删除');
-            }
-            if ($keyword->where(["id" => $id, "node_id" => $user["node_id"]])->delete() == false) {
-                Common::processException('节点删除失败');
-            }
-            return $this->resultArray('删除成功');
-        } catch (ProcessException $e) {
-            return $this->resultArray('failed', $e->getMessage());
-        }
-    }
-
-    /**
      * 上传关键词文件文件
      * @return array
      */
@@ -207,6 +179,9 @@ class Keyword extends CommonLogin
                 $path = '';
             } else {
                 $parent = $this->model->find(['id' => $id]);
+                if (!$parent) {
+                    Common::processException('错误的父级关键词');
+                }
                 if ($parent['tag'] == 'C') {
                     Common::processException('此分类无法再添加子集关键词');
                 }
@@ -261,10 +236,10 @@ class Keyword extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-//TODO oldfunction
+    //TODO oldfunction
     public function keywordCount()
     {
-        $user = $this->getSessionUser();
+        $user = $this->getSessionUserInfo();
         $where = [
             'node_id' => $user["user_node_id"],
         ];
@@ -275,8 +250,27 @@ class Keyword extends CommonLogin
             $te[] = $v['tagCount'];
             $ar[] = $v['tag'];
         }
+        /** @var string $ar */
         $temp = ["count" => $te, "name" => $ar];
-        return $this->resultArray('', '', $temp);
+        return $this->resultArray($temp);
+    }
+
+    /**
+     * 删除指定资源
+     * @param  int $id
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function delete($id)
+    {
+        try {
+            $this->delete_array([$id]);
+            return $this->resultArray('删除成功');
+        } catch (ProcessException $e) {
+            return $this->resultArray('failed', $e->getMessage());
+        }
     }
 
     /**
@@ -290,30 +284,42 @@ class Keyword extends CommonLogin
     {
         try {
             $rule = [
-                ["id", "require", "请传入id"]
+                ["ids", "require|array", "请选择要删除的关键词|非法请求"]
             ];
             $validate = new Validate($rule);
             $data = $this->request->post();
             if (!$validate->check($data)) {
                 Common::processException($validate->getError());
             }
-            $child_where = [];
-            $user = $this->getSessionUserInfo();
-            $child_where['parent_id'] = ['in', $data['id']];
-            $child_where['node_id'] = $user["node_id"];
-            $has_chinld = $this->model->where($child_where)->select();
-            if ($has_chinld) {
-                Common::processException('无法删除有子节点的节点');
-            }
-            $delect_where = [];
-            $child_where['id'] = ['in', $data['id']];
-            $child_where['node_id'] = $user["node_id"];
-            if ($this->model->where($delect_where)->delete() == false) {
-                Common::processException('节点删除失败');
-            }
+            $this->delete_array($data['ids']);
             return $this->resultArray('删除成功');
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());
+        }
+    }
+
+    /**
+     * @param array $ids
+     * @throws ProcessException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function delete_array(array $ids)
+    {
+        $child_where = [];
+        $user = $this->getSessionUserInfo();
+        $child_where['parent_id'] = ['in', $ids];
+        $child_where['node_id'] = $user["node_id"];
+        $has_chinld = $this->model->where($child_where)->select();
+        if ($has_chinld) {
+            Common::processException('无法删除非空节点');
+        }
+        $delect_where = [];
+        $delect_where['id'] = ['in', $ids];
+        $delect_where['node_id'] = $user["node_id"];
+        if ($this->model->where($delect_where)->delete() == false) {
+            Common::processException('节点删除失败');
         }
     }
 

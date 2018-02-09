@@ -83,6 +83,8 @@ return [
     'admin/Keyword/read'=>[2],
     'admin/Keyword/update'=>[2],
     'admin/Keyword/save'=>[2],
+    'admin/Keyword/delete'=>[2],
+    'admin/Keyword/deleteAll'=>[2],
     'admin/Keyword/getKeywordByFile'=>[2],
 
 
