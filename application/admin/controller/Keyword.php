@@ -148,6 +148,34 @@ class Keyword extends CommonLogin
         return $this->resultArray("添加成功");
     }
 
+    public function getKeywordByFile()
+    {
+        try {
+            $file = request()->file('file');
+            if (!$file) {
+                Common::processException('请上传文件');
+            }
+            $datas = [];
+            //编码格式
+            $encoding = "";
+            while ($data = $file->fgetcsv()) {
+                if ($encoding === "") {
+                    $encoding = mb_detect_encoding($data[0], array("ASCII", 'UTF-8', "GB2312", "GBK", 'BIG5'));
+                }
+                if ($encoding !== "" && $encoding)
+                    foreach ($data as $key => $value) {
+                        $data[$key] = iconv($encoding, 'UTF-8//TRANSLIT//IGNORE', $value);
+                    }
+                $datas = array_merge($datas, $data);
+            }
+            $datas = array_filter($datas);
+            return $this->resultArray($datas);
+        } catch (ProcessException $e) {
+            return $this->resultArray('failed', $e->getMessage());
+        }
+
+    }
+
     /**
      * 添加A类关键词
      * @return array
@@ -161,7 +189,7 @@ class Keyword extends CommonLogin
         try {
             $id = $this->request->param('id', 0);
             $rule = [
-                ["name", "require", "请填写A类关键词"],
+                ["name", "require", "请填写关键词"],
             ];
             $validate = new Validate($rule);
             $data = $this->request->post();
@@ -188,8 +216,17 @@ class Keyword extends CommonLogin
                 $tag = chr(ord($parent['tag']) + 1);
             }
             $save_array = [];
+            $where_old_data = [];
+            $where_old_data['node_id'] = $node_id;
+            $where_old_data['parent_id'] = $id;
+            $where_old_data['name'] = ['in', $keyArr];
+            $old_data = $this->model->where(['node_id' => $node_id, 'parent_id' => $id])->select();
+            $isset = [];
+            foreach ($old_data as $old_item) {
+                $isset[] = $old_item['name'];
+            }
             foreach ($keyArr as $item) {
-                if (empty(trim($item))) {
+                if (empty(trim($item)) || in_array($item, $isset)) {
                     continue;
                 }
                 $save_array[] = [
@@ -200,9 +237,17 @@ class Keyword extends CommonLogin
                     "tag" => $tag,
                 ];
             }
-            $id_array = $this->model->saveAll($save_array);
-            $new_array = $this->model->field('id,name,tag')->where(['id' => ['in', $id_array]])->select();
-            return $this->resultArray("添加成功!", $new_array);
+            $add_array = $this->model->saveAll($save_array);
+            foreach ($add_array as $key => $item) {
+                $add_array[$key]['label'] = $add_array[$key]['name'];
+                unset($add_array[$key]['create_time']);
+                unset($add_array[$key]['update_time']);
+                unset($add_array[$key]['path']);
+                unset($add_array[$key]['parent_id']);
+                unset($add_array[$key]['node_id']);
+                unset($add_array[$key]['name']);
+            }
+            return $this->resultArray("添加成功!", $add_array);
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());
         }

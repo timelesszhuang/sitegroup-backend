@@ -79,6 +79,11 @@ return [
     'common/Souhu/getTypes'=>[2],
     'common/Qicq/getTypes'=>[2],
     'common/Wangyi/getTypes'=>[2],
+    'admin/Keyword/index'=>[2],
+    'admin/Keyword/read'=>[2],
+    'admin/Keyword/update'=>[2],
+    'admin/Keyword/save'=>[2],
+    'admin/Keyword/getKeywordByFile'=>[2],
 
 
 ];
