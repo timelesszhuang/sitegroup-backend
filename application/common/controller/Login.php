@@ -217,7 +217,18 @@ class Login extends Common
         $log['ip'] = $ip;
         $log['node_id'] = $user_info['node_id'];
         $log['name'] = $user_info['name'];
-        $log['type_name'] = $user_info['type_name'];
+        $log['type'] = $user_info['type'];
+        switch ($log['type']){
+            case 1:
+                $log['type_name'] = '系统管理员';
+                break;
+            case 2:
+                $log['type_name'] = '节点管理员';
+                break;
+            case 3:
+                $log['type_name'] = '站点后台';
+                break;
+        }
         $log['location'] = $location_info;
         LoginLog::create($log);
     }

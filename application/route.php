@@ -33,7 +33,7 @@ Route::resource('type_tag', 'common/TypeTag');
 Route::get('get_site_list','common/Login/siteList');//登陆后获取站点列表
 //登陆后设置站点信息
 Route::post('set_site_info','common/Login/setSiteInfo');//登陆后设置站点信息
-Route::post('home_info','common/Login/setSiteInfo');//登陆后获取首页信息
+Route::get('home_info','common/AccountOperation/getLanderInfo');//登陆后获取首页信息
 /***
  * 内容管理
  */
@@ -112,13 +112,14 @@ Route::resource('wangyi',"common/Wangyi");
 Route::get('wangyi_type_list',"common/Wangyi/getTypes");
 //热点新闻
 Route::resource('hot_news',"common/Hotnews");
-/**素材库*/
+/** 素材库*/
 Route::resource('public_article',"common/LibraryArticle");
 Route::resource('public_image',"common/LibraryImgset");
-/**关键词*/
+/** 关键词*/
 Route::resource('keyword',"admin/Keyword");
 Route::post('keyword_file',"admin/Keyword/getKeywordByFile");
-Route::delete('delete_keywords',"admin/Keyword/deleteAll");
+Route::post('delete_keywords',"admin/Keyword/deleteAll");
+/** 栏目管理*/
 
 
 

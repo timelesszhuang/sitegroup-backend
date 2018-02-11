@@ -159,6 +159,7 @@ class Keyword extends CommonLogin
     public function save()
     {
         try {
+            $one_class_num = 20;
             $id = $this->request->param('id', 0);
             $rule = [
                 ["name", "require", "请填写关键词"],
@@ -196,13 +197,23 @@ class Keyword extends CommonLogin
             $where_old_data['parent_id'] = $id;
             $where_old_data['name'] = ['in', $keyArr];
             $old_data = $this->model->where(['node_id' => $node_id, 'parent_id' => $id])->select();
+            $count = $this->model->where(["parent_id" => $id,'node_id'=>$node_id])->count();
+            if ($count > $one_class_num) {
+                Common::processException("当前分类下面关键词超过 $one_class_num 个");
+            }
+            $num = $count;
             $isset = [];
             foreach ($old_data as $old_item) {
                 $isset[] = $old_item['name'];
             }
+            $msg = "添加成功";
             foreach ($keyArr as $item) {
                 if (empty(trim($item)) || in_array($item, $isset)) {
                     continue;
+                }
+                $num++;
+                if ($num > $one_class_num) {
+                    $msg = "当前分类下面关键词不能超过 $one_class_num 个,新导入" . ($num - $count - 1) . "个关键词,满 $one_class_num 个";
                 }
                 $save_array[] = [
                     "name" => $item,
@@ -222,7 +233,7 @@ class Keyword extends CommonLogin
                 unset($add_array[$key]['node_id']);
                 unset($add_array[$key]['name']);
             }
-            return $this->resultArray("添加成功!", $add_array);
+            return $this->resultArray($msg, $add_array);
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());
         }
@@ -332,7 +343,14 @@ class Keyword extends CommonLogin
     public function update($id)
     {
         try {
-            $post = $this->request->post();
+            $post = $this->request->put();
+            $rule = [
+                ["name", "require", "请传入新的关键词"],
+            ];
+            $validate = new Validate($rule);
+            if (!$validate->check($post)) {
+                return $this->resultArray($validate->getError(), 'failed');
+            }
             $keyword = $this->model->get($id);
             $keyword->name = $post['name'];
             if (!$keyword->save()) {

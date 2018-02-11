@@ -86,6 +86,11 @@ return [
     'admin/Keyword/delete'=>[2],
     'admin/Keyword/deleteAll'=>[2],
     'admin/Keyword/getKeywordByFile'=>[2],
-
-
+    'common/AccountOperation/getLanderInfo'=>[1,2,3],
+    'common/LibraryArticle/index'=>[2],
+    'common/LibraryArticle/read'=>[2],
+    'common/LibraryArticle/update'=>[2],
+    'common/LibraryImgset/index'=>[2],
+    'common/LibraryImgset/read'=>[2],
+    'common/LibraryImgset/update'=>[2],
 ];
