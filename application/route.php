@@ -10,9 +10,7 @@
 // +----------------------------------------------------------------------
 use think\Request;
 use think\Route;
-/***
- * 公共api
- */
+/** 公共api*/
 Route::get('get_session', 'common/Login/getSession');//获取当前用户数据
 Route::get('clear_session', 'common/Login/clearSession');//清楚当前用户登录session信息
 //测试接口
@@ -34,9 +32,7 @@ Route::get('get_site_list','common/Login/siteList');//登陆后获取站点列�
 //登陆后设置站点信息
 Route::post('set_site_info','common/Login/setSiteInfo');//登陆后设置站点信息
 Route::get('home_info','common/AccountOperation/getLanderInfo');//登陆后获取首页信息
-/***
- * 内容管理
- */
+/** 内容管理*/
 //获取分类列表
 Route::get('get_type_list','common/Types/getType');
 Route::resource('type','common/Types');
@@ -97,7 +93,7 @@ Route::get('get_tags', 'common/Tags/getTagList');
 Route::resource('tags', 'common/Tags');
 //公共图片资源路由
 Route::resource('library_imgset',"common/LibraryImgset");
-/**资源聚合*/
+/** 资源聚合*/
 //搜狐新闻
 Route::resource('souhu',"common/Souhu");
 //搜狐分类列表
