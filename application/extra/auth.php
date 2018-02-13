@@ -104,5 +104,8 @@ return [
     'common/CaseCenter/delete' =>[1],
     'common/Industry/getIndustry'=>[2,1],
     'common/Home/RootCountDatas'=>[2,1],
+    'common/Home/en'=>[2,1],
+    'common/Home/show'=>[2,1],
+    'admin/Keyword/keywordCount'=>[2,1],
 
 ];

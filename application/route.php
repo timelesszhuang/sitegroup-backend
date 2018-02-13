@@ -15,6 +15,7 @@ Route::get('get_session', 'common/Login/getSession');//获取当前用户数据
 Route::get('clear_session', 'common/Login/clearSession');//清楚当前用户登录session信息
 //测试接口
 Route::get('test',"admin/Oschina/test");
+Route::get('test1',"common/Common/test");
 //登录
 Route::post('login', 'common/Login/login');//用户登录
 //自动登录
@@ -36,6 +37,7 @@ Route::get('home_info','common/Home/getLanderInfo');//登陆后获取首页信�
 Route::get('home_count','common/Home/countDatas');
 Route::get('root_count','common/Home/RootCountDatas');
 Route::get('home_four', 'common/Home/getFour');//获取前4条 营销图片和id
+Route::get('home_en', 'common/Home/en');//获取前4条 营销图片和id
 Route::get('pv_show', 'common/Home/show');//获取前4条 营销图片和id
 /** 内容管理*/
 //获取分类列表
@@ -120,6 +122,7 @@ Route::resource('public_image',"common/LibraryImgset");
 Route::resource('keyword',"admin/Keyword");
 Route::post('keyword_file',"admin/Keyword/getKeywordByFile");
 Route::post('delete_keywords',"admin/Keyword/deleteAll");
+Route::get('keyword_count',"admin/Keyword/keywordCount");
 /** 行业*/
 Route::resource('industry',"common/Industry");
 Route::get('industries',"common/Industry/getIndustry");

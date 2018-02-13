@@ -240,22 +240,21 @@ class Count extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-//TODO oldfunction
     public function en()
     {
         $param = $this->request->get();
-        $user = $this->getSessionUser();
+        $user = $this->getSessionUserInfo();
         $where = [
-            'node_id' => $user["user_node_id"],
+            'node_id' => $user["node_id"],
         ];
         //判断前台是否传递参数
         if (isset($param["time"])) {
             list($start_time, $stop_time) = $param['time'];
-            $starttime = (!empty(intval($start_time))) ? strtotime($start_time) : time() - 86400 * 9;
+            $starttime = (!empty(intval($start_time))) ? strtotime($start_time) : time() - 86400 * 14;
             $stoptime = (!empty(intval($stop_time))) ? strtotime($stop_time) : time();
         } //没传参数默认10天
         else {
-            $starttime = time() - 86400 * 9;
+            $starttime = time() - 86400 * 14;
             $stoptime = time();
         }
         $where["create_time"] = ['between', [$starttime, $stoptime]];
@@ -311,7 +310,7 @@ class Count extends Common
             }
         }
         $temp = ["time" => $date_diff, "type" => $this->all_count];
-        return $this->resultArray('查询成功', '', $temp);
+        return $this->resultArray($temp);
     }
 
 
@@ -456,10 +455,10 @@ class Count extends Common
         //判断前台是否传递参数
         if (isset($param["time"])) {
             list($start_time, $stop_time) = $param['time'];
-            $starttime = (!empty(intval($start_time))) ? strtotime($start_time) : time() - 86400 * 9;
+            $starttime = (!empty(intval($start_time))) ? strtotime($start_time) : time() - 86400 * 14;
             $stoptime = (!empty(intval($stop_time))) ? strtotime($stop_time) : time();
         } else {
-            $starttime = time() - 86400 * 9;
+            $starttime = time() - 86400 * 14;
             $stoptime = time();
 
         }

@@ -123,7 +123,7 @@ class Common extends Controller
 
     /**
      * 调用resultArray方法
-     * 返回json auth——name验证
+     * 返回json auth??name验证
      * 检测 1 有验证
      * @author jingzheng
      */
@@ -344,10 +344,10 @@ class Common extends Controller
     public function formatter_data($v, $k)
     {
         if (isset($v["node_id"]) && ($v["node_id"] == 0)) {
-            $v["text"] = $v["text"] . "—" . $v["industry_name"] . "—公共模板";
+            $v["text"] = $v["text"] . "?" . $v["industry_name"] . "?公共模板";
         } else {
             if (isset($v["industry_name"]) && isset($v["text"])) {
-                $v["text"] = $v["text"] . "—专属";
+                $v["text"] = $v["text"] . "?专属";
             }
         }
     }
@@ -401,6 +401,13 @@ class Common extends Controller
         }
         //把数组元素组合为string
         return join($new_str);
+    }
+
+
+
+    public function test(){
+        $str = "aaaa\n中";
+        echo strlen($str);
     }
 
 }

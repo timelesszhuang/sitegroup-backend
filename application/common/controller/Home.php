@@ -121,6 +121,15 @@ class Home extends CommonLogin
      * @throws \think\exception\DbException
      */
     public function show(){
-        (new Count)->show();
+        return (new Count)->show();
+    }
+
+    /**
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function en(){
+        return (new Count)->en();
     }
 }
