@@ -79,49 +79,4 @@ class AccountOperation extends CommonLogin
             return $this->resultArray("failed", $exception->getMessage());
         }
     }
-
-    /***
-     * @return array
-     * @throws \think\exception\DbException
-     */
-    public function getLanderInfo()
-    {
-        try {
-            $user = $this->getSessionUserInfo();
-            $return = [];
-            $return['user_id'] = $user['user_id'];
-            $return['user_type_name'] = $user['user_type_name'];
-            $return['user_name'] = $user['user_id'];
-            if ($user['user_type_name'] == 'node') {
-                $model = (new User());
-                $node_model = (new Node());
-                $company_model = (new Company());
-                $user_info = $model->get($user['user_id']);
-                $node_info = $node_model->get($user_info['node_id']);
-                $company_info = $company_model->get($node_info['com_id']);
-                $return['user_name'] = $user_info['name'];
-                $return['com_id'] = $company_info['id'];
-                $return['com_name'] = $company_info['name'];
-                $return['info_status'] = $company_info['is_checked'];
-            } elseif ($user['user_type_name'] == 'site') {
-                $model = (new SiteUser());
-                $user_info = $model->get($user['user_id']);
-                $return['user_name'] = $user_info['name'];
-            } else {
-                Common::processException('未知错误');
-            }
-            $last_login_info = (new LoginLog())->lastLoginInfo();
-            $return['last_login_ip']='无';
-            $return['last_login_time']='无';
-            $return['last_login_address']='无';
-            if($last_login_info){
-                $return['last_login_ip']=$last_login_info['ip'];
-                $return['last_login_time']=$last_login_info['create_time'];
-                $return['last_login_address']=$last_login_info['location'];
-            }
-            return $this->resultArray('获取成功',$return);
-        } catch (ProcessException $e) {
-            return $this->resultArray('failed', $e->getMessage());
-        }
-    }
 }

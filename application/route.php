@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 use think\Request;
 use think\Route;
-/** 公共api*/
+/** 登录相关*/
 Route::get('get_session', 'common/Login/getSession');//获取当前用户数据
 Route::get('clear_session', 'common/Login/clearSession');//清楚当前用户登录session信息
 //测试接口
@@ -31,7 +31,12 @@ Route::resource('type_tag', 'common/TypeTag');
 Route::get('get_site_list','common/Login/siteList');//登陆后获取站点列表
 //登陆后设置站点信息
 Route::post('set_site_info','common/Login/setSiteInfo');//登陆后设置站点信息
-Route::get('home_info','common/AccountOperation/getLanderInfo');//登陆后获取首页信息
+/** 获取主页信息*/
+Route::get('home_info','common/Home/getLanderInfo');//登陆后获取首页信息
+Route::get('home_count','common/Home/countDatas');
+Route::get('root_count','common/Home/RootCountDatas');
+Route::get('home_four', 'common/Home/getFour');//获取前4条 营销图片和id
+Route::get('pv_show', 'common/Home/show');//获取前4条 营销图片和id
 /** 内容管理*/
 //获取分类列表
 Route::get('get_type_list','common/Types/getType');
@@ -115,7 +120,13 @@ Route::resource('public_image',"common/LibraryImgset");
 Route::resource('keyword',"admin/Keyword");
 Route::post('keyword_file',"admin/Keyword/getKeywordByFile");
 Route::post('delete_keywords',"admin/Keyword/deleteAll");
-/** 栏目管理*/
+/** 行业*/
+Route::resource('industry',"common/Industry");
+Route::get('industries',"common/Industry/getIndustry");
+/** 营销模式*/
+Route::resource('marketing_mode',"common/Marketingmode");
+/** 案例中心*/
+Route::resource('case_center',"common/CaseCenter");
 
 
 

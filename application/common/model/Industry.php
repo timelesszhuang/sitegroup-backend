@@ -14,10 +14,13 @@ class Industry extends Model{
      * 分页
      * @param $limit
      * @param $rows
+     * @param int $where
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author jingzheng
      */
-    //TODO oldfunction
     public function getIndustry($limit, $rows,$where=0)
     {
         $count=$this->where($where)->count();
@@ -28,7 +31,12 @@ class Industry extends Model{
         ];
     }
 
-    //TODO oldfunction
+    /**
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function getSort()
     {
         $data = $this->order("sort", "desc")->field("id,name")->select();

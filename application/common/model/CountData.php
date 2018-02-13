@@ -13,10 +13,32 @@ class CountData extends Model
     /**
      * 统计浏览量
      */
-    //TODO oldfunction
-    public function countPv($node_id,$ttime)
+    public function countPv($node_id, $ttime)
     {
-        return Pv::where(["node_id"=>$node_id,"create_time"=>["egt",$ttime]])->count();
+        return (new Pv)->where(["node_id" => $node_id, "create_time" => ["egt", $ttime]])->count();
+    }
+
+    /**
+     * 统计浏览量
+     * @param int $node_id
+     * @return int|string
+     */
+    public function countSite($node_id = 0)
+    {
+        $where = [];
+        if ($node_id != 0) {
+            $where['node_id'] = $node_id;
+        }
+        return (new Site())->where($where)->count();
+    }
+
+    /**
+     * 统计客户数
+     * @return int|string
+     */
+    public function countCustomer()
+    {
+        return (new Node())->count();
     }
 
     /**
@@ -25,10 +47,9 @@ class CountData extends Model
      * @param $ttime
      * @return int|string
      */
-    //TODO oldfunction
-    public function countUseragent($node_id,$ttime)
+    public function countUseragent($node_id, $ttime)
     {
-        return Useragent::where(["node_id"=>$node_id,"create_time"=>["egt",$ttime]])->count();
+        return (new Useragent)->where(["node_id" => $node_id, "create_time" => ["egt", $ttime]])->count();
     }
 
     /**
@@ -37,10 +58,16 @@ class CountData extends Model
      * @param $ttime
      * @return int|string
      */
-    //TODO oldfunction
-    public function countArticle($node_id,$ttime)
+    public function countArticle($node_id = 0, $ttime = 0)
     {
-        return Article::where(["node_id"=>$node_id,"create_time"=>["egt",$ttime]])->count();
+        $where = [];
+        if ($node_id != 0) {
+            $where['node_id'] = $node_id;
+        }
+        if ($ttime != 0) {
+            $where['create_time'] = ["egt", $ttime];
+        }
+        return (new Article)->where($where)->count();
     }
 
     /**
@@ -49,10 +76,9 @@ class CountData extends Model
      * @param $ttime
      * @return int|string
      */
-    //TODO oldfunction
-    public function countShuaidan($node_id,$ttime)
+    public function countShuaidan($node_id, $ttime)
     {
-        return Rejection::where(["node_id"=>$node_id,"create_time"=>["egt",$ttime]])->count();
+        return (new Rejection)->where(["node_id" => $node_id, "create_time" => ["egt", $ttime]])->count();
     }
 
     /**
@@ -60,10 +86,13 @@ class CountData extends Model
      * @param $node_id
      * @return float|int
      */
-    //TODO oldfunction
-    public function countInclude($node_id)
+    public function countInclude($node_id = 0)
     {
-        $count=ArticleSearchengineInclude::where(["node_id"=>$node_id])->sum("count");
+        $where = [];
+        if ($node_id != 0) {
+            $where['node_id'] = $node_id;
+        }
+        $count = (new ArticleSearchengineInclude)->where(["node_id" => $node_id])->sum("count");
         return $count;
     }
 }

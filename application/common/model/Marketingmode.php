@@ -10,10 +10,13 @@ class Marketingmode extends Model
      * 分页
      * @param $limit
      * @param $rows
+     * @param int $where
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author jingzheng
      */
-    //TODO oldfunction
     public function getList($limit, $rows,$where=0)
     {
         $count=$this->where($where)->count();
@@ -29,7 +32,6 @@ class Marketingmode extends Model
      * @param $key
      * @return false|string
      */
-    //TODO oldfunction
     public function getCreateTimeAttr($key)
     {
         if(!empty($key)){
