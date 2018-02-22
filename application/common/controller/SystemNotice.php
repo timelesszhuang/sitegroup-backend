@@ -17,11 +17,13 @@ class SystemNotice extends CommonLogin
     {
         $request = $this->getLimit();
         $where = [];
-//        $user_info = $this->getSessionUserInfo();
-//        if ($user_info['user_type_name'] == 'node') {
-//            $node = ','.$user_info["node_id"].',';
-//            $where["node_ids"] = ["like", "%$node%"];
-//        }
+        $user_info = $this->getSessionUserInfo();
+        if ($user_info['user_type_name'] == 'node') {
+            $node = ','.$user_info["node_id"].',';
+            $where["node_ids"] = ["like", "%$node%"];
+        }else{
+            $where = [];
+        }
         $data = (new Sys())->getList($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
