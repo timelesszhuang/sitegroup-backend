@@ -90,7 +90,6 @@ class Article extends CommonLogin
                 ["title", "require", "请输入标题"],
                 ["content", "require", "请输入内容"],
                 ["articletype_id", "require", "请选择文章分类"],
-//            ["tag_id", "require", "请选择标签"],
             ];
             $validate = new Validate($rule);
             $data = $request->post();

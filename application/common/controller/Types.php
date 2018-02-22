@@ -30,6 +30,7 @@ class Types extends CommonLogin
         if ($module == 'article') {
             $this->model = new Articletype();
             $this->model_name = 'articletype';
+
             $this->menu_flag = 3;
         } elseif ($module == 'product') {
             $this->model = new Producttype();

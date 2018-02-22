@@ -59,24 +59,24 @@ class Common extends Controller
      * @return array
      * @author guozhen
      */
-    public function resultArray($status = 'success', $msg = '',$data = [], $detail = '')
+    public function resultArray($status = 'success', $msg = '', $data = [], $detail = '')
     {
-        if(is_array($status)){
-            $data=$status;
+        if (is_array($status)) {
+            $data = $status;
             $status = 'success';
             $msg = '';
-        }else{
-            if(($status!='success')&&($status!='failed')&&($status!='logout')&&($status!='noauth')){
+        } else {
+            if (($status != 'success') && ($status != 'failed') && ($status != 'logout') && ($status != 'noauth')) {
                 $old_msg = $msg;
-                $msg=$status;
-                if($old_msg ==''){
-                    $status='success';
-                }else{
-                    if(is_array($old_msg)){
-                        $data=$old_msg;
+                $msg = $status;
+                if ($old_msg == '') {
+                    $status = 'success';
+                } else {
+                    if (is_array($old_msg)) {
+                        $data = $old_msg;
                         $status = 'success';
-                    }else{
-                        $status=$old_msg;
+                    } else {
+                        $status = $old_msg;
                     }
                 }
             }
@@ -89,15 +89,24 @@ class Common extends Controller
         ];
     }
 
-    public function getSessionUserInfo(){
-        $user_info_array['user_id'] = Session::get('login_id','login');
-        $user_info_array['user_type'] = Session::get('login_type','login');
-        $user_info_array['user_type_name'] = Session::get('login_type_name','login');
-        $user_info_array['node_id'] = Session::get('login_node_id','login');
-        if($user_info_array['user_type_name'] == 'site'){
-            $user_info_array['site_id'] = Session::get('site_id','login_site');
-            $user_info_array['menu'] = Session::get('menu','login_site');
-            $user_info_array['site_name'] = Session::get('site_name','login_site');
+    /**
+     * 获取用户相关的session信息
+     * user_id 表示用户的id 也就是site_user表 或 user表的主键
+     * user_type 表示用户的类型 1 表示 root 也就是公司管理员 2 表示node 相关管理员 3 表示user 小节点的管理员
+     * user_type_name site站点 或 node节点
+     * node_id 表示node_id
+     * @return mixed
+     */
+    public function getSessionUserInfo()
+    {
+        $user_info_array['user_id'] = Session::get('login_id', 'login');
+        $user_info_array['user_type'] = Session::get('login_type', 'login');
+        $user_info_array['user_type_name'] = Session::get('login_type_name', 'login');
+        $user_info_array['node_id'] = Session::get('login_node_id', 'login');
+        if ($user_info_array['user_type_name'] == 'site') {
+            $user_info_array['site_id'] = Session::get('site_id', 'login_site');
+            $user_info_array['menu'] = Session::get('menu', 'login_site');
+            $user_info_array['site_name'] = Session::get('site_name', 'login_site');
         }
         return $user_info_array;
     }
@@ -182,10 +191,11 @@ class Common extends Controller
      */
     public function checkLogin()
     {
-        if (!Session::has('login_id','login')&&!Session::has('login_type','login')){
-            exit(json_encode($this->resultArray('logout','没有登录')));
+        if (!Session::has('login_id', 'login') && !Session::has('login_type', 'login')) {
+            exit(json_encode($this->resultArray('logout', '没有登录')));
         }
     }
+
     /**
      * 检查登录状态
      * @return void
@@ -193,12 +203,12 @@ class Common extends Controller
     public function checkAuth()
     {
         $request = Request::instance();
-        $this_function = $request->module().'/'.$request->controller().'/'.$request->action();
+        $this_function = $request->module() . '/' . $request->controller() . '/' . $request->action();
         $auth_config = Config::get("auth");
         $user = $this->getSessionUserInfo();
-        if(!(isset($auth_config[$this_function])&&in_array($user['user_type'],$auth_config[$this_function]))){
+        if (!(isset($auth_config[$this_function]) && in_array($user['user_type'], $auth_config[$this_function]))) {
             header('HTTP/1.1 403 Forbidden');
-            exit(json_encode($this->resultArray('noauth','没有权限'.$this_function.'aaa')));
+            exit(json_encode($this->resultArray('noauth', '没有权限' . $this_function . 'aaa')));
         }
     }
 
@@ -209,8 +219,9 @@ class Common extends Controller
      * @param int $code
      * @throws ProcessException
      */
-    static public function processException($error,$code=0){
-        throw new ProcessException($error,$code);
+    static public function processException($error, $code = 0)
+    {
+        throw new ProcessException($error, $code);
     }
 
     /**
@@ -261,7 +272,7 @@ class Common extends Controller
             "node_id" => $user["node_id"]
         ];
         if (!$model->where($where)->delete()) {
-            return $this->resultArray('failed','删除失败');
+            return $this->resultArray('failed', '删除失败');
         }
         return $this->resultArray('删除成功');
     }
@@ -286,7 +297,7 @@ class Common extends Controller
             unset($data["id"]);
         }
         if (!$controller->where($where)->update($data)) {
-            return $this->resultArray('failed','修改失败');
+            return $this->resultArray('failed', '修改失败');
         }
         return $this->resultArray('修改成功');
     }
