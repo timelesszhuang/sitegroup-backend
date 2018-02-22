@@ -45,7 +45,9 @@ class SystemNotice extends Common
         $datas['deldata'] = [];
         $datas['unreaddata'] = [];
         foreach ($data as $k=>$v){
+            $v['time'] = $v['update_time']*1000;
             if($v['status'] == 10 ){
+
             $datas['unreaddata'][] = $v;
             }elseif ($v['status'] == 20 ||$v['status'] == null ){
                 $datas['readdata'][] = $v;
