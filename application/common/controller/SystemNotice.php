@@ -17,7 +17,13 @@ class SystemNotice extends CommonLogin
     {
         $request = $this->getLimit();
         $where = [];
-
+        $user_info = $this->getSessionUserInfo();
+        if ($user_info['user_type_name'] == 'node' && $user_info['user_type']==2) {
+            $node = ','.$user_info["node_id"].',';
+            $where["node_ids"] = ["like", "%$node%"];
+        }elseif ($user_info['user_type'] == 1){
+            $where = [];
+        }
         $data = (new Sys())->getList($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
