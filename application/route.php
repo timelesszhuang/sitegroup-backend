@@ -133,6 +133,10 @@ Route::resource('case_center',"common/CaseCenter");
 //系统推送
 Route::resource('system_notice',"common/SystemNotice");
 Route::get('getNodelist',"common/SystemNotice/nodeList");
+//递加阅读
+Route::get('readcount/:id',"common/SystemNotice/readcount");
+//节点数据
+Route::get('nodenotice',"common/SystemNotice/nodenotice");
 
 
 

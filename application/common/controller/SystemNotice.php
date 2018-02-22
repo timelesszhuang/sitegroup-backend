@@ -6,7 +6,7 @@ use think\Request;
 use app\common\model\SystemNotice as Sys;
 use think\Validate;
 
-class SystemNotice extends CommonLogin
+class SystemNotice extends Common
 {
     /**
      * 显示资源列表
@@ -28,6 +28,20 @@ class SystemNotice extends CommonLogin
         return $this->resultArray('', '', $data);
     }
 
+    /**
+     * 节点数据
+     *
+     */
+    public function nodenotice(){
+        $where = [];
+        $user_info = $this->getSessionUserInfo();
+        if ($user_info['user_type_name'] == 'node' && $user_info['user_type']==2) {
+            $node = ','.$user_info["node_id"].',';
+            $where["node_ids"] = ["like", "%$node%"];
+        }
+        $data = (new Sys())->where($where)->field("update_time,readcount,node_ids,content",true)->select();
+        return $data;
+    }
 
     /**
      * 显示创建资源表单页.
@@ -158,5 +172,20 @@ class SystemNotice extends CommonLogin
     {
         $data=\app\common\model\Node::where(1)->field(["id,name"])->select();
         return $this->resultArray('','',$data);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return array
+     * 阅读递加1
+     */
+    public function readcount(Request $request, $id){
+        $Sys = Sys::get($id);
+        $data['readcount']= $Sys['readcount']+1;
+        if (!(new Sys)->save($data, ["id" => $id])) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+
     }
 }
