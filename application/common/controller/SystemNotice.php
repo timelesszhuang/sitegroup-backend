@@ -62,7 +62,15 @@ class SystemNotice extends Common
      * 状态改变
      */
     public function readstatus(Request $request){
+        $rule = [
+            ["id", "require", "请传入id"],
+            ["status", "require", "请输入状态"],
+        ];
+        $validate = new Validate($rule);
         $statusdata = $request->post();
+        if (!$validate->check($statusdata)) {
+            return $this->resultArray($validate->getError(), "failed");
+        }
         $id = $statusdata['id'];
         $status =  $statusdata['status'];
         $user_info = $this->getSessionUserInfo();
