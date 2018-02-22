@@ -2,6 +2,7 @@
 
 namespace app\common\controller;
 
+use think\Db;
 use think\Request;
 use app\common\model\SystemNotice as Sys;
 use think\Validate;
@@ -39,8 +40,20 @@ class SystemNotice extends Common
             $node = ','.$user_info["node_id"].',';
             $where["node_ids"] = ["like", "%$node%"];
         }
-        $data = (new Sys())->where($where)->field("update_time,readcount,node_ids,content",true)->select();
-        return $data;
+        $data = Db::table('sg_system_notice_read')->alias('a')->join('sg_system_notice c','c.id = a.notice_id')->where($where)->select();
+        $datas['readdata'] = [];
+        $datas['deldata'] = [];
+        $datas['unreaddata'] = [];
+        foreach ($data as $k=>$v){
+            if($v['status'] == 10 ){
+            $datas['unreaddata'][] = $v;
+            }elseif ($v['status'] == 20){
+                $datas['readdata'][] = $v;
+                }elseif ($v['status'] == 30){
+                $datas['deldata'][]  = $v;
+            }
+        }
+        return $datas;
     }
 
     /**
