@@ -40,7 +40,6 @@ class SystemNotice extends Common
             $node = ','.$user_info["node_id"].',';
             $where=" node_ids like  '%$node%' ";
         }
-//        $query = 'select * from sg_system_notice LEFT JOIN sg_system_notice_read ON sg_system_notice '
         $data = Db::table('sg_system_notice')->alias('a')->field('a.*,c.status')->join('sg_system_notice_read c','a.id = c.notice_id','left')->where($where)->select();
         $datas['readdata'] = [];
         $datas['deldata'] = [];
@@ -54,7 +53,7 @@ class SystemNotice extends Common
                 $datas['deldata'][]  = $v;
             }
         }
-        return $datas;
+        return $this->resultArray('','',$datas);
 
     }
 
