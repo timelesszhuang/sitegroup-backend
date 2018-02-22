@@ -108,7 +108,7 @@ class Home extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function getFour()
+    public function getmarketmode()
     {
         $data['marketingmode'] = (new Marketingmode())->limit(4)->order("id", "desc")->field("id,img,title,create_time")->select();
         $data['case_center'] = (new CaseCenter())->limit(4)->order("id", "desc")->field("id,title,create_time")->select();

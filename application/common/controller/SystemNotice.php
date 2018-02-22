@@ -17,6 +17,24 @@ class SystemNotice extends CommonLogin
     {
         $request = $this->getLimit();
         $where = [];
+        $user_info = $this->getSessionUserInfo();
+        if ($user_info['user_type_name'] == 'node') {
+            $node = ','.$user_info["node_id"].',';
+            $where["node_ids"] = ["like", "%$node%"];
+        }
+        $data = (new Sys())->getList($request["limit"], $request["rows"], $where);
+        return $this->resultArray('', '', $data);
+    }
+
+    /**
+     * 显示资源列表
+     *
+     * @return \think\Response
+     */
+    public function node_systemnotice()
+    {
+        $request = $this->getLimit();
+
         $data = (new Sys())->getList($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }

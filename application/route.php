@@ -36,7 +36,7 @@ Route::post('set_site_info','common/Login/setSiteInfo');//登陆后设置站点�
 Route::get('home_info','common/Home/getLanderInfo');//登陆后获取首页信息
 Route::get('home_count','common/Home/countDatas');
 Route::get('root_count','common/Home/RootCountDatas');
-Route::get('home_four', 'common/Home/getFour');//获取前4条 营销图片和id
+Route::get('home_marketmode', 'common/Home/getmarketmode');//获取前4条 营销图片和id
 Route::get('home_en', 'common/Home/en');//获取前4条 营销图片和id
 Route::get('pv_show', 'common/Home/show');//获取前4条 营销图片和id
 /** 内容管理*/
