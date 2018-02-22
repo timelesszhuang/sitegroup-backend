@@ -132,6 +132,7 @@ Route::resource('marketing_mode',"common/Marketingmode");
 Route::resource('case_center',"common/CaseCenter");
 //系统推送
 Route::resource('system_notice',"common/SystemNotice");
+Route::get('getNodelist',"common/SystemNotice/nodeList");
 
 
 

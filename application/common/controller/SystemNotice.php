@@ -143,4 +143,9 @@ class SystemNotice extends CommonLogin
         }
         return $this->resultArray('删除成功');
     }
+    public function nodeList()
+    {
+        $data=\app\common\model\Node::where(1)->field(["id,name"])->select();
+        return $this->resultArray('','',$data);
+    }
 }

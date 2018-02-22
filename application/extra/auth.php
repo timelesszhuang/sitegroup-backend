@@ -112,5 +112,6 @@ return [
     'common/Home/en'=>[2,1],
     'common/Home/show'=>[2,1],
     'admin/Keyword/keywordCount'=>[2,1],
+    'common/SystemNotice/nodeList'=>[2,1],
 
 ];
