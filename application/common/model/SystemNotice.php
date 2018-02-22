@@ -13,7 +13,6 @@ class SystemNotice extends Model
      * @return array
      * @author jingzheng
      */
-    //TODO oldfunction
     public function getList($limit, $rows,$where=0)
     {
         $count=$this->where($where)->count();

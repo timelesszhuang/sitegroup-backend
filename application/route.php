@@ -130,6 +130,7 @@ Route::get('industries',"common/Industry/getIndustry");
 Route::resource('marketing_mode',"common/Marketingmode");
 /** 案例中心*/
 Route::resource('case_center',"common/CaseCenter");
+Route::resource('system_notice',"common/SystemNotice");
 
 
 
