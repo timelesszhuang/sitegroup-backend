@@ -26,18 +26,6 @@ class SystemNotice extends CommonLogin
         return $this->resultArray('', '', $data);
     }
 
-    /**
-     * 显示资源列表
-     *
-     * @return \think\Response
-     */
-    public function node_systemnotice()
-    {
-        $request = $this->getLimit();
-
-        $data = (new Sys())->getList($request["limit"], $request["rows"], $where);
-        return $this->resultArray('', '', $data);
-    }
 
     /**
      * 显示创建资源表单页.
