@@ -14,7 +14,7 @@ class WeixinKeyword extends Common
     /**
      * 初始化操作
      */
-//TODO oldfunction
+    //TODO oldfunction
     public function _initialize()
     {
         $this->conn = new Scrapy();
@@ -25,7 +25,7 @@ class WeixinKeyword extends Common
      *
      * @return \think\Response
      */
-//TODO oldfunction
+    //TODO oldfunction
     public function index()
     {
         $request = $this->getLimit();
