@@ -137,6 +137,7 @@ Route::get('getNodelist',"common/SystemNotice/nodeList");
 Route::get('readcount/:id',"common/SystemNotice/readcount");
 //节点数据
 Route::get('nodenotice',"common/SystemNotice/nodenotice");
+Route::get('readstatus',"common/SystemNotice/readstatus");
 
 
 
