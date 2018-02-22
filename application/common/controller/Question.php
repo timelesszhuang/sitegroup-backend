@@ -189,10 +189,11 @@ class Question extends CommonLogin
     /**
      * 获取 问题对应的站点
      * @param $type_id
-     * @return array
+     * @return false|\PDOStatement|string|\think\Collection
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * @throws ProcessException
      */
     private function getQuestionSite($type_id)
     {
@@ -207,7 +208,7 @@ class Question extends CommonLogin
             $query->where('type_id', ['=', $type_id], ['like', "%,$type_id,%"], 'or');
         })->select();
         if (!$menu) {
-            return $this->resultArray('问答分类没有菜单选中页面，暂时不能预览。', 'failed');
+            Common::processException('问答分类没有菜单选中页面，暂时不能预览。');
         }
         //一个菜单有可能被多个站点选择 site表中只会存储第一级别的菜单 需要找出当前的pid=0的父级菜单
         $pid = [];
@@ -232,7 +233,7 @@ class Question extends CommonLogin
             }
             $map .= ' or ' . $permap;
         }
-        $sitedata = (new Site())->where($map)->field('id,site_name,url')->select()->toArray();
+        $sitedata = (new Site())->where($map)->field('id,site_name,url')->select();
         return $sitedata;
     }
 
@@ -246,21 +247,23 @@ class Question extends CommonLogin
      */
     public function questionShowHtml()
     {
-        $data = $this->request->post();
-        $sitedata = $this->getQuestionSite($data['type_id']);
-        if (array_key_exists('status', $sitedata)) {
-            return $sitedata;
+        try {
+            $data = $this->request->post();
+            $sitedata = $this->getQuestionSite($data['type_id']);
+            foreach ($sitedata as $kk => $vv) {
+                $showhtml[] = [
+                    'url' => $vv['url'] . '/preview/question/' . $data['id'] . '.html',
+                    'site_name' => $vv['site_name'],
+                ];
+            }
+            if (!empty($showhtml)) {
+                return $this->resultArray($showhtml);
+            } else {
+                Common::processException('当前文章对应的菜单页面没有站点选择，暂时不能预览。');
+            }
+        } catch (ProcessException $e) {
+            return $this->resultArray('failed', $e->getMessage());
         }
-        foreach ($sitedata as $kk => $vv) {
-            $showhtml[] = [
-                'url' => $vv['url'] . '/preview/question/' . $data['id'] . '.html',
-                'site_name' => $vv['site_name'],
-            ];
-        }
-        if (!empty($showhtml)) {
-            return $this->resultArray($showhtml);
-        } else {
-            return $this->resultArray('failed', '当前文章对应的菜单页面没有站点选择，暂时不能预览。');
-        }
+
     }
 }

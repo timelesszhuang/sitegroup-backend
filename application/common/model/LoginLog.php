@@ -39,9 +39,6 @@ class LoginLog extends Model
         $where=[];
         $where['node_id'] = $user['node_id'];
         $where['type'] = $user['user_type'];
-        if(isset($user['site_id'])){
-            $where['site_id'] = $user['site_id'];
-        }
         return $this->where($where)->order('id desc')->find();
     }
 

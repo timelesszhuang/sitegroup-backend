@@ -9,6 +9,8 @@ namespace app\common\controller;
 
 
 
+use app\common\model\CountData;
+
 class CommonLogin extends Common
 {
     public function __construct()

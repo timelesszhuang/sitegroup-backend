@@ -10,13 +10,12 @@
 // +----------------------------------------------------------------------
 use think\Request;
 use think\Route;
-/***
- * 公共api
- */
+/** 登录相关*/
 Route::get('get_session', 'common/Login/getSession');//获取当前用户数据
 Route::get('clear_session', 'common/Login/clearSession');//清楚当前用户登录session信息
 //测试接口
 Route::get('test',"admin/Oschina/test");
+Route::get('test1',"common/Common/test");
 //登录
 Route::post('login', 'common/Login/login');//用户登录
 //自动登录
@@ -33,10 +32,14 @@ Route::resource('type_tag', 'common/TypeTag');
 Route::get('get_site_list','common/Login/siteList');//登陆后获取站点列表
 //登陆后设置站点信息
 Route::post('set_site_info','common/Login/setSiteInfo');//登陆后设置站点信息
-Route::get('home_info','common/AccountOperation/getLanderInfo');//登陆后获取首页信息
-/***
- * 内容管理
- */
+/** 获取主页信息*/
+Route::get('home_info','common/Home/getLanderInfo');//登陆后获取首页信息
+Route::get('home_count','common/Home/countDatas');
+Route::get('root_count','common/Home/RootCountDatas');
+Route::get('home_marketmode', 'common/Home/getmarketmode');//获取前4条 营销图片和id
+Route::get('home_en', 'common/Home/en');//获取前4条 营销图片和id
+Route::get('pv_show', 'common/Home/show');//获取前4条 营销图片和id
+/** 内容管理*/
 //获取分类列表
 Route::get('get_type_list','common/Types/getType');
 Route::resource('type','common/Types');
@@ -97,7 +100,7 @@ Route::get('get_tags', 'common/Tags/getTagList');
 Route::resource('tags', 'common/Tags');
 //公共图片资源路由
 Route::resource('library_imgset',"common/LibraryImgset");
-/**资源聚合*/
+/** 资源聚合*/
 //搜狐新闻
 Route::resource('souhu',"common/Souhu");
 //搜狐分类列表
@@ -119,7 +122,17 @@ Route::resource('public_image',"common/LibraryImgset");
 Route::resource('keyword',"admin/Keyword");
 Route::post('keyword_file',"admin/Keyword/getKeywordByFile");
 Route::post('delete_keywords',"admin/Keyword/deleteAll");
-/** 栏目管理*/
+Route::get('keyword_count',"admin/Keyword/keywordCount");
+/** 行业*/
+Route::resource('industry',"common/Industry");
+Route::get('industries',"common/Industry/getIndustry");
+/** 营销模式*/
+Route::resource('marketing_mode',"common/Marketingmode");
+/** 案例中心*/
+Route::resource('case_center',"common/CaseCenter");
+//系统推送
+Route::resource('system_notice',"common/SystemNotice");
+Route::get('getNodelist',"common/SystemNotice/nodeList");
 
 
 

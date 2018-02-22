@@ -247,12 +247,11 @@ class Keyword extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    //TODO oldfunction
     public function keywordCount()
     {
         $user = $this->getSessionUserInfo();
         $where = [
-            'node_id' => $user["user_node_id"],
+            'node_id' => $user["node_id"],
         ];
         $keyword = $this->model;
         $arr = $keyword->field('tag,count(id) as tagCount')->where($where)->group('tag')->order("tagCount", "desc")->select();
