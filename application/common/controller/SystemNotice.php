@@ -61,13 +61,23 @@ class SystemNotice extends Common
     /**
      * 状态改变
      */
-    public function readstatus(Request $request, $id,$status){
+    public function readstatus(Request $request){
+        $statusdata = $request->post();
+        $id = $statusdata['id'];
+        $status =  $statusdata['status'];
         $user_info = $this->getSessionUserInfo();
         $where['node_id'] = $user_info["node_id"];
         $where['notice_id'] = $id;
         $readdata = (new SystemNoticeRead())->where($where)->find();
         if($status == 'read'){
-            $data['status'] = 10;
+            if(empty($readdata)){
+                $Noticedata['notice_id'] = $id;
+                $Noticedata['status'] = 20;
+                $Noticedata['node_id'] =$user_info["node_id"];
+                SystemNoticeRead::create($Noticedata);
+                $data['status']=10;
+            }else{
+            $data['status'] = 10;}
         }elseif ($status == 'del'){
             $data['status'] = 30;
         }
