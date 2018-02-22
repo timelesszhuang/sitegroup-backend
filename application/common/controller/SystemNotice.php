@@ -34,14 +34,14 @@ class SystemNotice extends Common
      *
      */
     public function nodenotice(){
-//        $where = '';
+        $where = '';
         $user_info = $this->getSessionUserInfo();
         if ($user_info['user_type_name'] == 'node' && $user_info['user_type']==2) {
             $node = ','.$user_info["node_id"].',';
             $where=" node_ids like  '%$node%' ";
         }
 //        $query = 'select * from sg_system_notice LEFT JOIN sg_system_notice_read ON sg_system_notice '
-        $data = Db::table('sg_system_notice')->alias('a')->join('sg_system_notice_read c','a.id = c.notice_id','left')->where($where)->select();
+        $data = Db::table('sg_system_notice')->alias('a')->field('a.*,c.status')->join('sg_system_notice_read c','a.id = c.notice_id','left')->where($where)->select();
         $datas['readdata'] = [];
         $datas['deldata'] = [];
         $datas['unreaddata'] = [];
