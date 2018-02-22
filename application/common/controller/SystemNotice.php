@@ -2,6 +2,7 @@
 
 namespace app\common\controller;
 
+use app\common\model\SystemNoticeRead;
 use think\Db;
 use think\Request;
 use app\common\model\SystemNotice as Sys;
@@ -55,6 +56,25 @@ class SystemNotice extends Common
             }
         }
         return $this->resultArray('','',$datas);
+
+    }
+    /**
+     * 状态改变
+     */
+    public function readstatus(Request $request, $id,$status){
+        $user_info = $this->getSessionUserInfo();
+        $where['node_id'] = $user_info["node_id"];
+        $where['notice_id'] = $id;
+        $readdata = (new SystemNoticeRead())->where($where)->find();
+        if($status == 'read'){
+            $data['status'] = 10;
+        }elseif ($status == 'del'){
+            $data['status'] = 30;
+        }
+        if (!(new SystemNoticeRead)->save($data, ["id" => $readdata['id']])) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
 
     }
 
