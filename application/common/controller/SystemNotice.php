@@ -34,26 +34,28 @@ class SystemNotice extends Common
      *
      */
     public function nodenotice(){
-        $where = [];
+//        $where = '';
         $user_info = $this->getSessionUserInfo();
         if ($user_info['user_type_name'] == 'node' && $user_info['user_type']==2) {
             $node = ','.$user_info["node_id"].',';
-            $where["node_ids"] = ["like", "%$node%"];
+            $where=" node_ids like  '%$node%' ";
         }
-        $data = Db::table('sg_system_notice_read')->alias('a')->join('sg_system_notice c','c.id = a.notice_id')->where($where)->select();
+//        $query = 'select * from sg_system_notice LEFT JOIN sg_system_notice_read ON sg_system_notice '
+        $data = Db::table('sg_system_notice')->alias('a')->join('sg_system_notice_read c','a.id = c.notice_id','left')->where($where)->select();
         $datas['readdata'] = [];
         $datas['deldata'] = [];
         $datas['unreaddata'] = [];
         foreach ($data as $k=>$v){
             if($v['status'] == 10 ){
             $datas['unreaddata'][] = $v;
-            }elseif ($v['status'] == 20){
+            }elseif ($v['status'] == 20 ||$v['status'] == null ){
                 $datas['readdata'][] = $v;
                 }elseif ($v['status'] == 30){
                 $datas['deldata'][]  = $v;
             }
         }
         return $datas;
+
     }
 
     /**
