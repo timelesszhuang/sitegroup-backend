@@ -160,6 +160,10 @@ Route::resource('user', 'common/User');
 Route::resource('node', 'common/Node');
 //节点状态
 Route::rule('node/status', 'common/Node/status');
+//模板相关操作
+Route::resource('template', 'common/template');
+//上传模板zip
+Route::post('uploadTemplate', 'common/template/uploadTemplate');
 
 
 

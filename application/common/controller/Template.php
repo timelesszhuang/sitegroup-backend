@@ -59,38 +59,45 @@ class Template extends Common
      */
     public function update(Request $request, $id)
     {
-        $rule = [
-            ['name', "require", "请填写模板名"],
-            ['detail', 'require', "请填写模板信息"],
-        ];
-        $validate = new Validate($rule);
-        $data = $this->request->put();
-        if (!$validate->check($data)) {
-            return $this->resultArray( 'failed',$validate->getError());
+        try {
+            $rule = [
+                ['name', "require", "请填写模板名"],
+                ['detail', 'require', "请填写模板信息"],
+            ];
+            $validate = new Validate($rule);
+            $data = $this->request->put();
+            if (!$validate->check($data)) {
+                Common::processException($validate->getError());
+            }
+            $model = new \app\common\model\Template();
+            if (!$model->save($data, ["id" => $id])) {
+                Common::processException('修改失败');
+            }
+            return $this->resultArray('修改成功');
+        } catch (ProcessException $e) {
+            return $this->resultArray('failed', $e->getMessage());
         }
-
-        return $this->publicUpdate((new \app\common\model\Template()), $data, $id);
     }
 
-    /**
-     * 删除指定资源 模板暂时不支持删除操作
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function delete($id)
-    {
-        $template = new \app\common\model\Template();
-        $user_info = $this->getSessionUserInfo();
-        $where["parent_id"] = $id;
-        $where["node_id"] = $user_info["node_id"];
-        if ($template->where(["id" => $id, "node_id" => $user_info["node_id"]])->delete()) {
-            return $this->resultArray('failed','删除成功' );
-        }
-        return $this->resultArray('','删除成功');
-    }
+//    /**
+//     * 删除指定资源 模板暂时不支持删除操作
+//     * @param  int $id
+//     * @return \think\Response
+//     */
+//    public function delete($id)
+//    {
+//        $template = new \app\common\model\Template();
+//        $user_info = $this->getSessionUserInfo();
+//        $where["parent_id"] = $id;
+//        $where["node_id"] = $user_info["node_id"];
+//        if ($template->where(["id" => $id, "node_id" => $user_info["node_id"]])->delete()) {
+//            return $this->resultArray('failed','删除成功' );
+//        }
+//        return $this->resultArray('','删除成功');
+//    }
 
     /**
-     * 上传关键词文件文件
+     * 上传模板
      * @return array
      */
     public function uploadTemplate()
@@ -101,9 +108,6 @@ class Template extends Common
         }else{
             return $this->resultArray('上传失败', 'failed');
         }
-
-
-
     }
 
     /**
@@ -112,7 +116,7 @@ class Template extends Common
      * @return array
      * @author guozhen
      */
-    public function addTemplate(Request $request)
+    public function save(Request $request)
     {
         $post = $request->post();
         $rule = [
@@ -189,24 +193,24 @@ class Template extends Common
      * @param  \think\Request $request
      * @return \think\Response
      */
-    public function save($site_id, $name)
-    {
-        $request = Request::instance();
-        $content = $request->post("content");
-        $url = "templateupdate";
-        $site = \app\common\model\Site::get($site_id);
-        if ($site) {
-            $send = [
-                "site_id" => $site_id,
-                "filename" => $name,
-                "content" => $content
-            ];
-            $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
-            $data = json_decode($siteData, true);
-            return $this->resultArray($data["status"],$data['msg'] );
-        }
-        return $this->resultArray( 'failed','当前网站未获取到!');
-    }
+//    public function save($site_id, $name)
+//    {
+//        $request = Request::instance();
+//        $content = $request->post("content");
+//        $url = "templateupdate";
+//        $site = \app\common\model\Site::get($site_id);
+//        if ($site) {
+//            $send = [
+//                "site_id" => $site_id,
+//                "filename" => $name,
+//                "content" => $content
+//            ];
+//            $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
+//            $data = json_decode($siteData, true);
+//            return $this->resultArray($data["status"],$data['msg'] );
+//        }
+//        return $this->resultArray( 'failed','当前网站未获取到!');
+//    }
 
     /**
      * 显示指定的资源
