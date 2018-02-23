@@ -17,13 +17,28 @@ class CaseCenter extends Model
      * @throws \think\exception\DbException
      * @author jingzheng
      */
-    public function getList($limit, $rows,$where=0)
+    public function getList($limit, $rows, $where = 0)
     {
-        $count=$this->where($where)->count();
-        $data = $this->limit($limit, $rows)->order("id", "desc")->field("update_time",true)->where($where)->select();
+        $count = $this->where($where)->count();
+        $data = $this->limit($limit, $rows)->order("id", "desc")->field("update_time", true)->where($where)->select();
         return [
             "total" => $count,
             "rows" => $data
         ];
+    }
+
+    /**
+     * 格式化时间
+     * @param $key
+     * @return false|string
+     */
+    public function getCreateTimeAttr($val)
+    {
+        if (!empty($val)) {
+            if ($val) {
+                return date("Y-m-d", $val);
+            }
+            return '';
+        }
     }
 }

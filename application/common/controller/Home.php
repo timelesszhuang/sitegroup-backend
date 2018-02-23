@@ -102,25 +102,39 @@ class Home extends CommonLogin
 
 
     /**
-     * 获取前4条数据给前台
+     * 获取几条数据给前台  营销模式 相关数据
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function getmarketmode()
+    public function getMarketMode()
     {
-        $data['marketingmode'] = (new Marketingmode())->limit(6)->order("id", "desc")->field("id,img,title,create_time")->select();
-        $data['case_center'] = (new CaseCenter())->limit(6)->order("id", "desc")->field("id,title,create_time")->select();
+        $data = (new Marketingmode())->limit(6)->order("id", "desc")->field("id,img,title,create_time")->select();
         return $this->resultArray($data);
     }
+
+    /***
+     * 获取用户案例相关的数据
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getCaseCenter()
+    {
+        $data = (new CaseCenter())->limit(6)->order("id", "desc")->field("id,title,create_time")->select();
+        return $this->resultArray($data);
+    }
+
 
     /**
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function show(){
+    public function show()
+    {
         return (new Count)->show();
     }
 
@@ -129,7 +143,8 @@ class Home extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function en(){
+    public function en()
+    {
         return (new Count)->en();
     }
 }
