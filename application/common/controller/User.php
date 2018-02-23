@@ -63,7 +63,7 @@ class User extends Common
         if (!\app\common\model\User::create($data)) {
             return $this->resultArray('failed','添加失败');
         }
-        return $this->resultArray('','添加成功');
+        return $this->resultArray('添加成功');
     }
 
     /**
