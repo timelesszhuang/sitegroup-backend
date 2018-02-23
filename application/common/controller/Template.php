@@ -104,7 +104,7 @@ class Template extends Common
     {
         $data = $this->uploadImg("template/");
         if($data['status']){
-            return $this->resultArray('上传成功',$data['status'],$data['url']);
+            return $this->resultArray($data['status'],'上传成功',$data['url']);
         }else{
             return $this->resultArray('上传失败', 'failed');
         }
