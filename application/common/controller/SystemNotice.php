@@ -164,7 +164,7 @@ class SystemNotice extends CommonLogin
         if (!(new SiteErrorInfo())->save($data, ["id" =>$id])) {
             return $this->resultArray( 'failed','修改失败');
         }
-        return $this->resultArray('','修改成功');
+        return $this->resultArray('success','修改成功');
 
     }
 
