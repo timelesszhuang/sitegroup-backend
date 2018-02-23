@@ -121,7 +121,7 @@ return [
     'common/SystemNotice/unreadnum' => [2],
     'common/SystemNotice/getErrorInfo' => [2],
     'common/SystemNotice/error_status' => [2,3],
-    'common/SystemNotice/getErrorInfoStatus' => [2],
+    'common/SystemNotice/getErrorStatus' => [2],
     'common/VoiceCdr/index' => [1,2],
     'common/User/index' => [1],
     'common/User/read' => [1],
@@ -133,5 +133,4 @@ return [
     'common/Node/save' => [1],
     'common/Node/update' => [1],
     'common/Node/delete' => [1],
-
 ];
