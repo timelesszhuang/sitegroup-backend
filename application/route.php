@@ -135,7 +135,7 @@ Route::resource('case_center',"common/CaseCenter");
 //系统推送
 Route::resource('system_notice',"common/SystemNotice");
 //获取节点下拉
-Route::get('getNodelist',"common/SystemNotice/nodeList");
+Route::get('getNodelist',"common/Node/nodeList");
 //递加阅读
 Route::get('readcount/:id',"common/SystemNotice/readcount");
 //节点数据
