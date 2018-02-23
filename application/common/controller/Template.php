@@ -184,7 +184,7 @@ class Template extends Common
 //            $data=json_decode($siteData,true);
             return $this->resultArray( '',$data['msg'], ["content" => $data["content"], "filename" => $data["filename"]]);
         }
-        return $this->resultArray('当前网站未获取到!', 'failed');
+        return $this->resultArray('failed','当前网站未获取到!' );
     }
 
     /**
@@ -193,7 +193,7 @@ class Template extends Common
      * @param  \think\Request $request
      * @return \think\Response
      */
-//    public function save($site_id, $name)
+//    public function addTemplate($site_id, $name)
 //    {
 //        $request = Request::instance();
 //        $content = $request->post("content");

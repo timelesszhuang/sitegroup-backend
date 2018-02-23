@@ -134,4 +134,9 @@ return [
     'common/Node/save' => [1],
     'common/Node/update' => [1],
     'common/Node/delete' => [1],
+    'common/Template/index' => [1,2],
+    'common/Template/read' => [1,2],
+    'common/Template/save' => [2],
+    'common/Template/update' => [2],
+    'common/Template/delete' => [2],
 ];
