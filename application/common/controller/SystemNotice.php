@@ -2,6 +2,7 @@
 
 namespace app\common\controller;
 
+use app\common\model\SystemNoticeRead;
 use think\Db;
 use think\Request;
 use app\common\model\SystemNotice as Sys;
@@ -40,21 +41,58 @@ class SystemNotice extends Common
             $node = ','.$user_info["node_id"].',';
             $where=" node_ids like  '%$node%' ";
         }
-//        $query = 'select * from sg_system_notice LEFT JOIN sg_system_notice_read ON sg_system_notice '
         $data = Db::table('sg_system_notice')->alias('a')->field('a.*,c.status')->join('sg_system_notice_read c','a.id = c.notice_id','left')->where($where)->select();
         $datas['readdata'] = [];
         $datas['deldata'] = [];
         $datas['unreaddata'] = [];
         foreach ($data as $k=>$v){
+            $v['time'] = $v['update_time']*1000;
             if($v['status'] == 10 ){
-            $datas['unreaddata'][] = $v;
-            }elseif ($v['status'] == 20 ||$v['status'] == null ){
                 $datas['readdata'][] = $v;
+            }elseif ($v['status'] == 20 ||$v['status'] == null ){
+                $datas['unreaddata'][] = $v;
                 }elseif ($v['status'] == 30){
                 $datas['deldata'][]  = $v;
             }
         }
-        return $datas;
+        return $this->resultArray('','',$datas);
+
+    }
+    /**
+     * 状态改变
+     */
+    public function readstatus(Request $request){
+        $rule = [
+            ["id", "require", "请传入id"],
+            ["status", "require", "请输入状态"],
+        ];
+        $validate = new Validate($rule);
+        $statusdata = $request->post();
+        if (!$validate->check($statusdata)) {
+            return $this->resultArray($validate->getError(), "failed");
+        }
+        $id = $statusdata['id'];
+        $status =  $statusdata['status'];
+        $user_info = $this->getSessionUserInfo();
+        $where['node_id'] = $user_info["node_id"];
+        $where['notice_id'] = $id;
+        $readdata = (new SystemNoticeRead())->where($where)->find();
+        if($status == 'read'){
+            if(empty($readdata)){
+                $Noticedata['notice_id'] = $id;
+                $Noticedata['status'] = 20;
+                $Noticedata['node_id'] =$user_info["node_id"];
+                SystemNoticeRead::create($Noticedata);
+                $data['status']=10;
+            }else{
+            $data['status'] = 10;}
+        }elseif ($status == 'del'){
+            $data['status'] = 30;
+        }
+        if (!(new SystemNoticeRead)->save($data, ["id" => $readdata['id']])) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
 
     }
 
