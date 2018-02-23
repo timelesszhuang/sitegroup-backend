@@ -126,7 +126,7 @@ class SystemNotice extends CommonLogin
         $datas['deldata'] = [];
         $datas['unreaddata'] = [];
         foreach ($data as $k=>$v ){
-            $v['time'] = $v['update_time']*1000;
+            $v['time'] = strtotime($v['update_time'])*1000;
             $v['title'] = $v['msg'];
             unset($v['msg']);
             unset($v['update_time']);
