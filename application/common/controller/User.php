@@ -125,7 +125,7 @@ class User extends Common
         if (!\app\common\model\User::update($data)) {
             return $this->resultArray('failed','修改失败');
         }
-        return $this->resultArray('','修改成功');
+        return $this->resultArray('修改成功');
     }
 
     /**
@@ -149,7 +149,7 @@ class User extends Common
         if (!$user->delete()) {
             return $this->resultArray('failed','删除失败，请稍后重试。' );
         }
-        return $this->resultArray('','删除成功');
+        return $this->resultArray('删除成功');
     }
 
     /**

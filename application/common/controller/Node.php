@@ -54,7 +54,7 @@ class Node extends CommonLogin
             $node->rollback();
         }
         $node->commit();
-        return $this->resultArray('',"添加成功");
+        return $this->resultArray("添加成功");
     }
 
     public function create(){
@@ -97,7 +97,7 @@ class Node extends CommonLogin
         if (!\app\common\model\Node::update($data)) {
             return $this->resultArray( 'failed','修改失败');
         }
-        return $this->resultArray('','修改成功');
+        return $this->resultArray('修改成功');
     }
 
     /**
@@ -112,7 +112,7 @@ class Node extends CommonLogin
         if (!$Industry->delete()) {
             return $this->resultArray( 'failed','删除失败');
         }
-        return $this->resultArray('','删除成功');
+        return $this->resultArray('删除成功');
     }
     public function status()
     {
