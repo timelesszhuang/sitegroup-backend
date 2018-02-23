@@ -132,13 +132,24 @@ Route::resource('marketing_mode',"common/Marketingmode");
 Route::resource('case_center',"common/CaseCenter");
 //系统推送
 Route::resource('system_notice',"common/SystemNotice");
+//获取节点下拉
 Route::get('getNodelist',"common/SystemNotice/nodeList");
 //递加阅读
 Route::get('readcount/:id',"common/SystemNotice/readcount");
 //节点数据
 Route::get('nodenotice',"common/SystemNotice/nodenotice");
+//阅读状态修改
 Route::post('readstatus',"common/SystemNotice/readstatus");
-
+//首页未读信息数量
+Route::get('unreadnum',"common/SystemNotice/unreadnum");
+//获取错误信息
+Route::get('getErrorInfo',"common/SystemNotice/getErrorInfo");
+//获取错误信息数量
+Route::get('getErrorStatus',"common/SystemNotice/getErrorStatus");
+//录音
+Route::resource('voice_cdr', 'common/VoiceCdr');
+//用户
+Route::resource('user', 'common/User');
 
 
 

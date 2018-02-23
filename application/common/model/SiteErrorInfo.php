@@ -25,18 +25,4 @@ class SiteErrorInfo extends Model
         ];
     }
 
-    /**
-     * 设置已读 未读
-     * @param $status
-     * @return string
-     */
-    //TODO oldfunction
-    public function getStatusAttr($status)
-    {
-        if($status==10){
-            return "已读";
-        }else if($status==20){
-            return "未读";
-        }
-    }
 }
