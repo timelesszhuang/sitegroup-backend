@@ -299,7 +299,7 @@ class Common extends Controller
         if (!$controller->where($where)->update($data)) {
             return $this->resultArray('failed', '修改失败');
         }
-        return $this->resultArray('修改成功');
+        return $this->resultArray('','修改成功');
     }
 
 

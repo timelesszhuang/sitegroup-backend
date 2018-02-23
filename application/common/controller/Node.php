@@ -54,7 +54,7 @@ class Node extends CommonLogin
             $node->rollback();
         }
         $node->commit();
-        return $this->resultArray("添加成功");
+        return $this->resultArray('',"添加成功");
     }
 
     public function create(){
@@ -92,12 +92,12 @@ class Node extends CommonLogin
         $data = $this->request->put();
         $validate = new Validate($rule);
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'failed');
+            return $this->resultArray('failed',$validate->getError());
         }
         if (!\app\common\model\Node::update($data)) {
-            return $this->resultArray('修改失败', 'failed');
+            return $this->resultArray( 'failed','修改失败');
         }
-        return $this->resultArray('修改成功');
+        return $this->resultArray('','修改成功');
     }
 
     /**
@@ -110,9 +110,9 @@ class Node extends CommonLogin
     {
         $Industry = \app\common\model\Node::get($id);
         if (!$Industry->delete()) {
-            return $this->resultArray('删除失败', 'failed');
+            return $this->resultArray( 'failed','删除失败');
         }
-        return $this->resultArray('删除成功');
+        return $this->resultArray('','删除成功');
     }
     public function status()
     {
@@ -121,7 +121,7 @@ class Node extends CommonLogin
         $Node = new \app\common\model\Node();
         if($Node->where('id', $id)
             ->update(['status' => $status,'status_time' => $this->request->time()])){
-            return $this->resultArray('修改成功');
+            return $this->resultArray('','修改成功');
         }
     }
 

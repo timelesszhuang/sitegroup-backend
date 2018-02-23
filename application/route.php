@@ -146,12 +146,18 @@ Route::post('readstatus',"common/SystemNotice/readstatus");
 Route::get('unreadnum',"common/SystemNotice/unreadnum");
 //获取错误信息
 Route::get('getErrorInfo',"common/SystemNotice/getErrorInfo");
+//错误信息状态修改
+Route::post('errorStatus',"common/SystemNotice/error_status");
 //获取错误信息数量
 Route::get('getErrorStatus',"common/SystemNotice/getErrorStatus");
 //录音
 Route::resource('voice_cdr', 'common/VoiceCdr');
 //用户
 Route::resource('user', 'common/User');
+//节点
+Route::resource('node', 'common/Node');
+//节点状态
+Route::rule('node/status', 'common/Node/status');
 
 
 

@@ -2,6 +2,7 @@
 
 namespace app\common\controller;
 
+use app\common\model\SiteErrorInfo;
 use app\common\model\SystemNoticeRead;
 use think\Db;
 use think\Request;
@@ -134,6 +135,33 @@ class SystemNotice extends CommonLogin
             }
         }
         return $this->resultArray('', '', $datas);
+    }
+
+    /**
+     * 状态改变
+     */
+    public function error_status(Request $request){
+        $rule = [
+            ["id", "require", "请传入id"],
+            ["status", "require", "请输入状态"],
+        ];
+        $validate = new Validate($rule);
+        $statusdata = $request->post();
+        if (!$validate->check($statusdata)) {
+            return $this->resultArray($validate->getError(), "failed");
+        }
+        $id = $statusdata['id'];
+        $status =  $statusdata['status'];
+        if($status == 'read'){
+            $data['status'] = 10;
+        }elseif ($status == 'del'){
+            $data['status'] = 30;
+        }
+        if (!(new SiteErrorInfo())->save($data, ["id" =>$id])) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('','修改成功');
+
     }
 
     /**
