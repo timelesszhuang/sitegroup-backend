@@ -164,7 +164,11 @@ Route::rule('node/status', 'common/Node/status');
 Route::resource('template', 'common/template');
 //上传模板zip
 Route::post('uploadTemplate', 'common/template/uploadTemplate');
-
+//站点用户
+Route::resource('siteuser', 'common/Siteuser');
+//启用禁用状态改变
+Route::put('siteuserEnable', 'common/Siteuser/enable');
+Route::get('sitegetUsers', 'common/Siteuser/getUsers');
 
 
 
