@@ -8,7 +8,7 @@ use think\Request;
 use app\common\model\SystemNotice as Sys;
 use think\Validate;
 
-class SystemNotice extends Common
+class SystemNotice extends CommonLogin
 {
     /**
      * 显示资源列表
