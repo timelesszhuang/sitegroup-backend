@@ -150,6 +150,8 @@ Route::get('getErrorInfo',"common/SystemNotice/getErrorInfo");
 Route::post('errorStatus',"common/SystemNotice/error_status");
 //获取错误信息数量
 Route::get('getErrorStatus',"common/SystemNotice/getErrorStatus");
+//读取当前错误信息
+Route::get('readError/:id',"common/SystemNotice/readerror");
 //录音
 Route::resource('voice_cdr', 'common/VoiceCdr');
 //用户

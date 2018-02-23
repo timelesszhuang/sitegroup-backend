@@ -162,7 +162,7 @@ class SystemNotice extends CommonLogin
             $data['status'] = 30;
         }
         if (!(new SiteErrorInfo())->save($data, ["id" =>$id])) {
-            return $this->resultArray('修改失败', 'failed');
+            return $this->resultArray( 'failed','修改失败');
         }
         return $this->resultArray('','修改成功');
 
@@ -250,6 +250,19 @@ class SystemNotice extends CommonLogin
         if(!empty($find["node_ids"])){
             $find["node_ids"]=trim($find["node_ids"],",");
         }
+        return $this->resultArray("","",$find);
+    }
+
+
+    /**
+     * 显示指定的资源
+     *
+     * @param  int  $id
+     * @return \think\Response
+     */
+    public function readerror($id)
+    {
+        $find=(new SiteErrorInfo)->where(["id"=>$id])->field("create_time,update_time", true)->find();
         return $this->resultArray("","",$find);
     }
 
