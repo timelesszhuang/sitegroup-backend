@@ -112,7 +112,7 @@ return [
     'common/Home/en' => [2, 1],
     'common/Home/show' => [2, 1],
     'admin/Keyword/keywordCount' => [2, 1],
-    'common/SystemNotice/nodeList' => [2, 1],
+    'common/Node/nodeList' => [2, 1],
     'common/Home/getMarketMode' => [2, 3],
     'common/Home/getCaseCenter' => [2, 3],
     'common/SystemNotice/readcount' => [2],

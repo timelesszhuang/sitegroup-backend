@@ -282,15 +282,15 @@ class SystemNotice extends CommonLogin
         return $this->resultArray('删除成功');
     }
 
-    /**
-     * 获取node节点
-     * @return array
-     */
-    public function nodeList()
-    {
-        $data=\app\common\model\Node::where(1)->field(["id,name"])->select();
-        return $this->resultArray('','',$data);
-    }
+//    /**
+//     * 获取node节点
+//     * @return array
+//     */
+//    public function nodeList()
+//    {
+//        $data=\app\common\model\Node::where(1)->field(["id,name"])->select();
+//        return $this->resultArray('','',$data);
+//    }
 
     /**
      * @param Request $request
