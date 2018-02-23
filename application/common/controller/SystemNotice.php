@@ -121,11 +121,15 @@ class SystemNotice extends CommonLogin
                 "node_id" => $user_info["node_id"],
             ];
         }
-        $data = (new \app\common\model\SiteErrorInfo())->where($where)->select();
+        $data = (new \app\common\model\SiteErrorInfo())->where($where)->field('site_id,node_id,create_time', true)->select();
         $datas['readdata'] = [];
         $datas['deldata'] = [];
         $datas['unreaddata'] = [];
         foreach ($data as $k=>$v ){
+            $v['time'] = $v['update_time']*1000;
+            $v['title'] = $v['msg'];
+            unset($v['msg']);
+            unset($v['update_time']);
             if($v['status'] == '20'){
                 $datas['unreaddata'][] = $v;
             }elseif ($v['status'] == '10'){

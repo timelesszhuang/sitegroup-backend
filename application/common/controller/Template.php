@@ -194,7 +194,7 @@ class Template extends Common
         $request = Request::instance();
         $content = $request->post("content");
         $url = "templateupdate";
-        $site = \app\admin\model\Site::get($site_id);
+        $site = \app\common\model\Site::get($site_id);
         if ($site) {
             $send = [
                 "site_id" => $site_id,
@@ -203,9 +203,9 @@ class Template extends Common
             ];
             $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
             $data = json_decode($siteData, true);
-            return $this->resultArray($data['msg'], $data["status"]);
+            return $this->resultArray($data["status"],$data['msg'] );
         }
-        return $this->resultArray('当前网站未获取到!', 'failed');
+        return $this->resultArray( 'failed','当前网站未获取到!');
     }
 
     /**
@@ -218,7 +218,7 @@ class Template extends Common
         $request = Request::instance();
         $content = $request->post("content");
         $url = "templateadd";
-        $site = \app\admin\model\Site::get($site_id);
+        $site = \app\common\model\Site::get($site_id);
         if ($site) {
             $send = [
                 "site_id" => $site_id,
@@ -227,8 +227,8 @@ class Template extends Common
             ];
             $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
             $data = json_decode($siteData, true);
-            return $this->resultArray($data['msg'], $data["status"]);
+            return $this->resultArray( $data["status"],$data['msg']);
         }
-        return $this->resultArray('当前网站未获取到!', 'failed');
+        return $this->resultArray( 'failed','当前网站未获取到!');
     }
 }
