@@ -114,5 +114,18 @@ return [
     'admin/Keyword/keywordCount' => [2, 1],
     'common/SystemNotice/nodeList' => [2, 1],
     'common/Home/getMarketMode' => [2, 3],
-    'common/Home/getCaseCenter' => [2, 3]
+    'common/Home/getCaseCenter' => [2, 3],
+    'common/SystemNotice/readcount' => [2],
+    'common/SystemNotice/nodenotice' => [2],
+    'common/SystemNotice/readstatus' => [2],
+    'common/SystemNotice/unreadnum' => [2],
+    'common/SystemNotice/getErrorInfo' => [2],
+    'common/SystemNotice/getErrorInfoStatus' => [2],
+    'common/VoiceCdr/index' => [1,2],
+    'common/User/index' => [ 1],
+    'common/User/read' => [ 1],
+    'common/User/save' => [ 1],
+    'common/User/update' => [1],
+    'common/User/delete' => [1],
+
 ];
