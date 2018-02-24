@@ -171,6 +171,9 @@ Route::resource('siteuser', 'common/Siteuser');
 Route::put('siteuserEnable', 'common/Siteuser/enable');
 //获取站点
 Route::get('sitegetUsers', 'common/Siteuser/getUsers');
+//公司
+Route::resource('company', 'common/Company');
+Route::rule('getCompany', 'common/Company/getAll');
 
 
 

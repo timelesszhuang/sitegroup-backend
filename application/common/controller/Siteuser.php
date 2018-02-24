@@ -59,7 +59,8 @@ class Siteuser extends Common
             return $this->resultArray('failed','两次输入的密码不同' );
         }
         unset($data["confirmPwd"]);
-        $data["node_id"] = $this->getSessionUser()['user_node_id'];
+        $user_info = $this->getSessionUserInfo();
+        $data["node_id"] = $user_info["node_id"];
         if (!\app\common\model\SiteUser::create($data)) {
             return $this->resultArray( 'failed','添加失败');
         }
@@ -107,10 +108,10 @@ class Siteuser extends Common
         if (!$validate->check($data)) {
             return $this->resultArray( 'failed',$validate->getError());
         }
-        $user=$this->getSessionUser();
+        $user_info = $this->getSessionUserInfo();
         $where=[
             "id"=>$id,
-            "node_id"=>$user["user_node_id"]
+            "node_id"=>$user_info["node_id"]
         ];
 
         //前台可能会提交id过来,为了防止错误,所以将其删除掉
@@ -134,10 +135,10 @@ class Siteuser extends Common
         if(empty($is_on)){
             return $this->resultArray('failed','请传递参数');
         }
-        $user=$this->getSessionUser();
+        $user_info = $this->getSessionUserInfo();
         $where=[
             "id"=>$id,
-            "node_id"=>$user["user_node_id"]
+            "node_id"=>$user_info["node_id"]
         ];
         $user=(new \app\common\model\SiteUser)->where($where)->update([
             "is_on"=>$is_on
