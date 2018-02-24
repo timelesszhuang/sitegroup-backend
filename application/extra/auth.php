@@ -155,4 +155,5 @@ return [
     'common/Template/oldTemplate' => [2,1],
     'common/Template/uploadOldtemplate' => [2,1],
     'common/Template/uploadTemplate' => [2,1],
+    'common/AccountOperation/changePassword' => [3,2,1],
 ];
