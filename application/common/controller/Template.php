@@ -235,4 +235,146 @@ class Template extends Common
         }
         return $this->resultArray( 'failed','当前网站未获取到!');
     }
+
+
+    /**
+     * 保存新建的资源
+     *
+     * @param  \think\Request $request
+     * @return \think\Response
+     */
+    public function addTemp(Request $request)
+    {
+        $rule = [
+            ["name", "require", "请先填写模板名"],
+            ["thumbnails", "require", "请先上传缩略图"],
+            ["show_path", "require", "请先上传未替换的模板"],
+            ["industry_name", "require", "请上传行业名称"],
+            ["industry_id", "require", "请上传行业id"]
+        ];
+        $validate = new Validate($rule);
+        $post = $request->post();
+        if (!$validate->check($post)) {
+            return $this->resultArray("failed",$validate->getError());
+        }
+        $tem = new \app\common\model\Template();
+        if ($tem->allowField(true)->save($post)) {
+            return $this->resultArray("failed","添加失败" );
+        }
+        return $this->resultArray("添加成功!!");
+    }
+
+    /**
+     * 显示编辑资源表单页.
+     *
+     * @param  int $id
+     * @return \think\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * 保存更新的资源
+     *
+     * @param  \think\Request $request
+     * @param  int $id
+     * @return \think\Response
+     */
+    public function oldTemplate(Request $request, $id)
+    {
+        $rule = [
+            ["name", "require", "请先填写模板名"],
+            ["thumbnails", "require", "请先上传缩略图"],
+            ["show_path", "require", "请先上传未替换的模板"],
+            ["industry_name", "require", "请上传行业名称"],
+            ["industry_id", "require", "请上传行业id"]
+        ];
+        $validate = new Validate($rule);
+        $put = $request->put();
+        if (!$validate->check($put)) {
+            return $this->resultArray("failed",$validate->getError());
+        }
+        if (!\app\common\model\Template::update($put, ["id" => $id])) {
+            return $this->resultArray("failed","修改失败!" );
+        }
+        return $this->resultArray("修改成功!!");
+    }
+
+    /**
+     * 删除指定资源
+     *
+     * @param  int $id
+     * @return \think\Response
+     */
+    public function delete($id)
+    {
+        //
+    }
+
+    /**
+     * 上传嵌套后的模板文件
+     * @return array
+     */
+    public function uploadPHPTemplate()
+    {
+        $data = $this->uploadImg("template/");
+        if ($data['status']) {
+            return $this->resultArray( $data['status'],'上传成功', $data['url']);
+        } else {
+            return $this->resultArray('failed','上传失败');
+        }
+    }
+
+    /**
+     * 上传原始模板
+     * @return array
+     * @param $src 原始zip目录
+     * @param $obj 解压缩后的目录
+     * @param $uploadpath 解压的目录
+     */
+    public function uploadOldtemplate()
+    {
+        $request = Request::instance();
+        $template = $request->file("file");
+        $path = "/upload/srctemplate/";
+        $info = $template->move(ROOT_PATH . "public" . $path);
+        if ($info) {
+            $uploadpath = "/upload/zipsrctemplate/";
+            $src = ROOT_PATH . "public" . $path . $info->getSaveName();
+            $obj = ROOT_PATH . 'public' . $uploadpath;
+            $url = $this->ZipArchive($src, $obj, $uploadpath);
+            $data = $this->uploadObj("template/" . $info->getSaveName(), $src);
+            if ($data['status']) {
+                $dataurl = [
+                    'url' =>$data['url'],
+                    'data' =>$url
+                ];
+                return $this->resultArray('上传成功', '', $dataurl);
+            } else {
+                return $this->resultArray('上传失败', 'failed');
+            }
+
+        }
+        return $this->resultArray("上传失败", "failed");
+
+    }
+
+//    /**
+//     * 上传缩略图
+//     * @return array
+//     */
+//    public function uploadThumbnails()
+//    {
+//        $data = $this->uploadImg("template/");
+//        if ($data['status']) {
+//            return $this->resultArray('上传成功', $data['status'], $data['url']);
+//        } else {
+//            return $this->resultArray('上传失败', 'failed');
+//        }
+//    }
+
+
+
 }

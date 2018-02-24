@@ -161,8 +161,17 @@ Route::rule('getUser', 'common/User/getAll');
 Route::resource('node', 'common/Node');
 //节点状态
 Route::rule('node/status', 'common/Node/status');
-//模板相关操作
+//模板相关操作(index公用,添加为node添加修改)
 Route::resource('template', 'common/template');
+//总后台模板上传
+Route::post('addTemp',"common/template/addTemp");
+//总后台模板修改
+Route::put('oldTemplate',"common/template/oldTemplate");
+//php模板上传
+Route::post('uploadPhptemplate', "common/Template/uploadPHPTemplate");
+//原始模板
+Route::post('uploadOldtemplate', "sysadmin/Template/uploadOldtemplate");
+
 //上传模板zip
 Route::post('uploadTemplate', 'common/template/uploadTemplate');
 //站点用户
