@@ -169,7 +169,7 @@ Route::post('addTemp',"common/Template/addTemp");
 Route::put('oldTemplate',"common/Template/oldTemplate");
 //原始模板上传
 Route::post('uploadOldtemplate', "common/Template/uploadOldtemplate");
-//上传模板
+//上传模板[
 Route::post('uploadTemplate', 'common/Template/uploadTemplate');
 //站点用户
 Route::resource('siteuser', 'common/Siteuser');
