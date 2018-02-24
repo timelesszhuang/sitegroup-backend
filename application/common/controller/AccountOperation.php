@@ -73,8 +73,9 @@ class AccountOperation extends CommonLogin
             }
             /** @var \stdClass $obj */
             $obj->pwd = $data['new_password'];
-            $obj->save();
-            return $this->resultArray();
+            if(!$obj->save()){
+                Common::processException('修改失败');
+            };
         } catch (ProcessException $exception) {
             return $this->resultArray("failed", $exception->getMessage());
         }

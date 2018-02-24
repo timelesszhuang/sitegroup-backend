@@ -162,5 +162,10 @@ return [
     'common/Menu/getMenu' => [2],
     'common/Menu/sort' => [2],
     'common/Menu/getUpMenu' => [2],
+    'common/UserDefinedForm/index' => [1,2],
+    'common/UserDefinedForm/read' => [1,2],
+    'common/UserDefinedForm/save' => [1,2],
+    'common/UserDefinedForm/update' => [1,2],
+    'common/UserDefinedForm/getFormCode' => [1,2],
 
 ];
