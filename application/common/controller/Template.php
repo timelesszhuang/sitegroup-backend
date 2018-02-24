@@ -8,7 +8,7 @@ use think\Validate;
 use app\common\traits\Obtrait;
 use app\common\traits\Osstrait;
 
-class Template extends Common
+class Template extends CommonLogin
 {
 
     use Osstrait;
@@ -193,24 +193,24 @@ class Template extends Common
      * @param  \think\Request $request
      * @return \think\Response
      */
-//    public function addTemplate($site_id, $name)
-//    {
-//        $request = Request::instance();
-//        $content = $request->post("content");
-//        $url = "templateupdate";
-//        $site = \app\common\model\Site::get($site_id);
-//        if ($site) {
-//            $send = [
-//                "site_id" => $site_id,
-//                "filename" => $name,
-//                "content" => $content
-//            ];
-//            $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
-//            $data = json_decode($siteData, true);
-//            return $this->resultArray($data["status"],$data['msg'] );
-//        }
-//        return $this->resultArray( 'failed','当前网站未获取到!');
-//    }
+    public function addTemplate($site_id, $name)
+    {
+        $request = Request::instance();
+        $content = $request->post("content");
+        $url = "templateupdate";
+        $site = \app\common\model\Site::get($site_id);
+        if ($site) {
+            $send = [
+                "site_id" => $site_id,
+                "filename" => $name,
+                "content" => $content
+            ];
+            $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
+            $data = json_decode($siteData, true);
+            return $this->resultArray($data["status"],$data['msg'] );
+        }
+        return $this->resultArray( 'failed','当前网站未获取到!');
+    }
 
     /**
      * 显示指定的资源

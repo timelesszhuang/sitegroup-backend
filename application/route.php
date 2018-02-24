@@ -163,17 +163,14 @@ Route::resource('node', 'common/Node');
 Route::rule('node/status', 'common/Node/status');
 //模板相关操作(index公用,添加为node添加修改)
 Route::resource('template', 'common/template');
-//总后台模板上传
-Route::post('addTemp',"common/template/addTemp");
+//总后台模板添加
+Route::post('addTemp',"common/Template/addTemp");
 //总后台模板修改
-Route::put('oldTemplate',"common/template/oldTemplate");
-//php模板上传
-Route::post('uploadPhptemplate', "common/Template/uploadPHPTemplate");
-//原始模板
-Route::post('uploadOldtemplate', "sysadmin/Template/uploadOldtemplate");
-
-//上传模板zip
-Route::post('uploadTemplate', 'common/template/uploadTemplate');
+Route::put('oldTemplate',"common/Template/oldTemplate");
+//原始模板上传
+Route::post('uploadOldtemplate', "common/Template/uploadOldtemplate");
+//上传模板
+Route::post('uploadTemplate', 'common/Template/uploadTemplate');
 //站点用户
 Route::resource('siteuser', 'common/Siteuser');
 //启用禁用状态改变
