@@ -129,6 +129,7 @@ return [
     'common/User/save' => [1],
     'common/User/update' => [1],
     'common/User/delete' => [1],
+    'common/User/getAll'=>[1],
     'common/Node/index' => [1],
     'common/Node/read' => [1],
     'common/Node/save' => [1],
