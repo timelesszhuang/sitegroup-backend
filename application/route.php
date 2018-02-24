@@ -156,6 +156,7 @@ Route::get('readError/:id',"common/SystemNotice/readerror");
 Route::resource('voice_cdr', 'common/VoiceCdr');
 //用户
 Route::resource('user', 'common/User');
+Route::rule('getUser', 'common/User/getAll');
 //节点
 Route::resource('node', 'common/Node');
 //节点状态
@@ -168,6 +169,7 @@ Route::post('uploadTemplate', 'common/template/uploadTemplate');
 Route::resource('siteuser', 'common/Siteuser');
 //启用禁用状态改变
 Route::put('siteuserEnable', 'common/Siteuser/enable');
+//获取站点
 Route::get('sitegetUsers', 'common/Siteuser/getUsers');
 
 

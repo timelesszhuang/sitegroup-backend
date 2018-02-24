@@ -339,8 +339,8 @@ class Common extends Controller
     //TODO oldfunction
     public function getList($model, $field)
     {
-        $user = $this->getSessionUser();
-        $where["node_id"] = [["=", $user["user_node_id"]], ["=", 0], "or"];
+        $user_info = $this->getSessionUserInfo();
+        $where["node_id"] = [["=",$user_info["node_id"]], ["=", 0], "or"];
         $data = $model->field($field)->where($where)->select();
         array_walk($data, [$this, "formatter_data"]);
         return $this->resultArray('', '', $data);
