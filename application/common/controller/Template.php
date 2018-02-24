@@ -7,6 +7,7 @@ use think\Request;
 use think\Validate;
 use app\common\traits\Obtrait;
 use app\common\traits\Osstrait;
+use app\common\exception\ProcessException;
 
 class Template extends CommonLogin
 {
@@ -102,11 +103,11 @@ class Template extends CommonLogin
      */
     public function uploadTemplate()
     {
-        $data = $this->uploadImg("template/");
-        if($data['status']){
-            return $this->resultArray($data['status'],'上传成功',$data['url']);
-        }else{
-            return $this->resultArray('上传失败', 'failed');
+        try {
+            $url = $this->uploadImg( 'template/');
+            return $this->resultArray(['url' => $url], '上传成功');
+        } catch (ProcessException $exception) {
+            return $this->resultArray('failed', '上传失败');
         }
     }
 
