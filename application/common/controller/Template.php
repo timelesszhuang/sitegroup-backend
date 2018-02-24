@@ -361,20 +361,4 @@ class Template extends CommonLogin
 
     }
 
-//    /**
-//     * 上传缩略图
-//     * @return array
-//     */
-//    public function uploadThumbnails()
-//    {
-//        $data = $this->uploadImg("template/");
-//        if ($data['status']) {
-//            return $this->resultArray('上传成功', $data['status'], $data['url']);
-//        } else {
-//            return $this->resultArray('上传失败', 'failed');
-//        }
-//    }
-
-
-
 }

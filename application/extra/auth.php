@@ -150,4 +150,12 @@ return [
     'common/Template/oldTemplate' => [2,1],
     'common/Template/uploadOldtemplate' => [2,1],
     'common/Template/uploadTemplate' => [2,1],
+    'common/Menu/index' => [2],
+    'common/Menu/read' => [2],
+    'common/Menu/save' => [2],
+    'common/Menu/update' => [2],
+    'common/Menu/getMenu' => [2],
+    'common/Menu/sort' => [2],
+    'common/Menu/getUpMenu' => [2],
+
 ];

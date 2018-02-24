@@ -181,6 +181,12 @@ Route::get('sitegetUsers', 'common/Siteuser/getUsers');
 Route::resource('company', 'common/Company');
 //获取公司下拉
 Route::rule('getCompany', 'common/Company/getAll');
+//栏目
+Route::resource('menu', 'common/Menu');
+Route::get('getMenu', 'common/Menu/getMenu');
+Route::put('menuSort/:id','common/Menu/sort');
+//获取上级菜单
+Route::get('upMenu/:flag/:id','common/Menu/getUpMenu');
 
 
 
