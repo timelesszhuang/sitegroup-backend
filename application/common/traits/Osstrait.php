@@ -202,6 +202,25 @@ trait Osstrait
         return $url;
     }
 
+    public function uploadTempObj($dest_dir, $filepath)
+    {
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        $object = $dest_dir;
+        $put_info = $this->ossPutObject($object, $filepath);
+        unlink($filepath);
+        $url = '';
+        $status = false;
+        if ($put_info['status']) {
+            $status = true;
+            $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        }
+        return [
+            "url" => $url,
+            'status' => $status
+        ];
+    }
+
 
 
 

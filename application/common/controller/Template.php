@@ -346,7 +346,7 @@ class Template extends CommonLogin
             $src = ROOT_PATH . "public" . $path . $info->getSaveName();
             $obj = ROOT_PATH . 'public' . $uploadpath;
             $url = $this->ZipArchive($src, $obj, $uploadpath);
-            $data = $this->uploadObj("template/" . $info->getSaveName(), $src);
+            $data = $this->uploadTempObj("template/" . $info->getSaveName(), $src);
             if ($data['status']) {
                 $dataurl = [
                     'url' =>$data['url'],
@@ -356,7 +356,6 @@ class Template extends CommonLogin
             } else {
                 return $this->resultArray('上传失败', 'failed');
             }
-
         }
         return $this->resultArray("上传失败", "failed");
 
