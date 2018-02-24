@@ -1,6 +1,6 @@
 <?php
 
-namespace app\sysadmin\controller;
+namespace app\common\controller;
 
 use app\common\controller\Common;
 use app\common\controller\CommonLogin;
