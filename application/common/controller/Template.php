@@ -259,7 +259,7 @@ class Template extends CommonLogin
             return $this->resultArray("failed",$validate->getError());
         }
         $tem = new \app\common\model\Template();
-        if ($tem->save($post)) {
+        if (!$tem->allowField(true)->save($post)) {
             return $this->resultArray("failed","添加失败" );
         }
         return $this->resultArray("添加成功!!");
