@@ -173,6 +173,7 @@ Route::put('siteuserEnable', 'common/Siteuser/enable');
 Route::get('sitegetUsers', 'common/Siteuser/getUsers');
 //公司
 Route::resource('company', 'common/Company');
+//获取公司下拉
 Route::rule('getCompany', 'common/Company/getAll');
 
 
