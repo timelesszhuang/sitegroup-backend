@@ -146,4 +146,6 @@ return [
     'common/Template/save' => [2],
     'common/Template/update' => [2],
     'common/Template/delete' => [2],
+    'common/Template/uploadOldtemplate' => [1,2],
+    'common/Template/uploadTemplate' => [1,2],
 ];
