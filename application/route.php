@@ -181,7 +181,16 @@ Route::get('sitegetUsers', 'common/Siteuser/getUsers');
 Route::resource('company', 'common/Company');
 //获取公司下拉
 Route::rule('getCompany', 'common/Company/getAll');
-
+//栏目
+Route::resource('menu', 'common/Menu');
+Route::get('getMenu', 'common/Menu/getMenu');
+Route::put('menuSort/:id','common/Menu/sort');
+//获取上级菜单
+Route::get('upMenu/:flag/:id','common/Menu/getUpMenu');
+//自定义表单设置
+Route::resource('userdefinedform', 'common/UserDefinedForm');
+//获取自定义表单代码
+Route::get('userdefinedformcode/:id', 'common/UserDefinedForm/getFormCode');
 
 
 /*//用户电话记录数据管理

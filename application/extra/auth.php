@@ -156,4 +156,17 @@ return [
     'common/Template/uploadOldtemplate' => [2,1],
     'common/Template/uploadTemplate' => [2,1],
     'common/AccountOperation/changePassword' => [3,2,1],
+    'common/Menu/index' => [2],
+    'common/Menu/read' => [2],
+    'common/Menu/save' => [2],
+    'common/Menu/update' => [2],
+    'common/Menu/getMenu' => [2],
+    'common/Menu/sort' => [2],
+    'common/Menu/getUpMenu' => [2],
+    'common/UserDefinedForm/index' => [1,2],
+    'common/UserDefinedForm/read' => [1,2],
+    'common/UserDefinedForm/save' => [1,2],
+    'common/UserDefinedForm/update' => [1,2],
+    'common/UserDefinedForm/getFormCode' => [1,2],
+
 ];
