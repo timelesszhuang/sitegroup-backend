@@ -185,6 +185,10 @@ Route::rule('getCompany', 'common/Company/getAll');
 Route::resource('menu', 'common/Menu');
 Route::get('getMenu', 'common/Menu/getMenu');
 Route::put('menuSort/:id','common/Menu/sort');
+//栏目分类
+Route::resource('menuTag', 'common/Menutag');
+//获取分类列表
+Route::get('menutagList', 'common/Menutag/getTags');
 //获取上级菜单
 Route::get('upMenu/:flag/:id','common/Menu/getUpMenu');
 //自定义表单设置
@@ -205,6 +209,18 @@ Route::resource('code', 'common/Code');
 //联系方式
 Route::resource('contactway', 'common/Contactway');
 Route::get('getContactway', 'common/Contactway/getContactway');
+//站点logo
+Route::resource('admin/siteLogo','admin/SiteLogo');
+//站点logo 图片上传
+Route::post('admin/sitelogoup','admin/SiteLogo/uploadLoginImg');
+//站点logo列表
+Route::get('admin/getsitelogolist',"admin/SiteLogo/logoList");
+//站点ico
+Route::resource('admin/siteIco','admin/SiteIco');
+//站点ico 图片上传
+Route::post('admin/siteicoup','admin/SiteIco/uploadIcoImg');
+//站点ico列表
+Route::get('admin/getsiteicolist',"admin/SiteIco/icoList");
 
 
 
