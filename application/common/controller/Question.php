@@ -31,7 +31,7 @@ class Question extends CommonLogin
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
-     * @author guozhen
+     * @author jingzheng
      */
     public function index(Request $request)
     {
@@ -63,7 +63,7 @@ class Question extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
-     * @author guozhen
+     * @author jingzheng
      */
     public function save()
     {
@@ -111,7 +111,7 @@ class Question extends CommonLogin
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
-     * @author guozhen
+     * @author jingzheng
      */
     public function read($id)
     {
@@ -128,7 +128,7 @@ class Question extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
-     * @author guozhen
+     * @author jingzheng
      */
     public function update($id)
     {
@@ -178,7 +178,7 @@ class Question extends CommonLogin
      *
      * @param  int $id
      * @return array
-     * @author guozhen
+     * @author jingzheng
      */
     public function delete($id)
     {

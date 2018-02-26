@@ -172,7 +172,7 @@ class Menu extends CommonLogin
      * @param  \think\Request $request
      * @param  int $id
      * @return \think\Response
-     * @author guozhen
+     * @author jingzheng
      */
     public function update(Request $request, $id)
     {
@@ -223,7 +223,7 @@ class Menu extends CommonLogin
      * 删除指定资源
      * @param  int $id
      * @return array
-     * @author guozhen
+     * @author jingzheng
      */
     public function delete($id)
     {

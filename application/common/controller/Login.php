@@ -248,7 +248,7 @@ class Login extends Common
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
-     * @author guozhen
+     * @author jingzheng
      */
     public function autoLogin()
     {

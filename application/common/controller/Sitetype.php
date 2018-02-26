@@ -4,14 +4,14 @@ namespace app\common\controller;
 
 use think\Controller;
 use think\Request;
-use think\Validate;
 use app\common\controller\Common;
+use think\Validate;
 
-class Code extends CommonLogin
+class Sitetype extends Common
 {
     /**
      * 显示资源列表
-     * @author jingzheng
+     *
      * @return \think\Response
      */
     public function index()
@@ -20,11 +20,11 @@ class Code extends CommonLogin
         $name = $this->request->get('name');
         $where = [];
         if (!empty($name)) {
-            $where['name'] = ["like", "%$name%"];
+            $where['name'] = ["like","%$name%"];
         }
         $user_info = $this->getSessionUserInfo();
-        $where["node_id"] =$user_info["node_id"];
-        return $this->resultArray('', '', (new \app\common\model\Code())->getAll($limits['limit'], $limits['rows'], $where));
+        $where["node_id"] = $user_info["node_id"];
+        return $this->resultArray('', '', (new \app\common\model\SiteType())->getAll($limits['limit'], $limits['rows'], $where));
     }
 
     /**
@@ -46,8 +46,9 @@ class Code extends CommonLogin
     public function save(Request $request)
     {
         $rule = [
-            ['name', 'require', "请填用途"],
-            ["code", "require", "请填代码"],
+            ['name','require','请填写站点分类名'],
+            ['detail', 'require', "请填写描述"],
+            ['chain_type','require','请填写链轮类型'],
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -55,8 +56,8 @@ class Code extends CommonLogin
             return $this->resultArray('failed',$validate->getError());
         }
         $user_info = $this->getSessionUserInfo();
-        $data["node_id"] =$user_info["node_id"];
-        if (!\app\common\model\Code::create($data)) {
+        $data["node_id"] = $user_info["node_id"];
+        if (!\app\common\model\SiteType::create($data)) {
             return $this->resultArray( 'failed','添加失败');
         }
         return $this->resultArray('添加成功');
@@ -70,7 +71,7 @@ class Code extends CommonLogin
      */
     public function read($id)
     {
-        return $this->getread((new \app\common\model\Code), $id);
+        return $this->getread((new \app\common\model\SiteType),$id);
     }
 
     /**
@@ -94,15 +95,16 @@ class Code extends CommonLogin
     public function update(Request $request, $id)
     {
         $rule = [
-            ['name', 'require', "请填用途"],
-            ["code", "require", "请填代码"]
+            ['name','require','请填写站点分类名'],
+            ['detail', 'require', "请填写描述"],
+            ['chain_type','require','请填写链轮类型'],
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
         if (!$validate->check($data)) {
             return $this->resultArray('failed',$validate->getError());
         }
-        return $this->publicUpdate((new \app\common\model\Code),$data,$id);
+        return $this->publicUpdate((new \app\common\model\SiteType),$data,$id);
     }
 
     /**
@@ -113,16 +115,19 @@ class Code extends CommonLogin
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new \app\common\model\Code),$id);
+        //
     }
 
     /**
-     * 获取所有code
+     * 获取所有网站类型
      * @return array
      */
-    public function getCodes()
+    public function getSiteType()
     {
         $field="id,name as text";
-        return $this->getList((new \app\common\model\Code),$field);
+        return $this->getList((new \app\common\model\SiteType),$field);
     }
+
+
+
 }

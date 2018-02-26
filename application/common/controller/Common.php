@@ -57,7 +57,7 @@ class Common extends Controller
      * @param string $msg
      * @param string $detail
      * @return array
-     * @author guozhen
+     * @author jingzheng
      */
     public function resultArray($status = 'success', $msg = '', $data = [], $detail = '')
     {
@@ -227,7 +227,7 @@ class Common extends Controller
     /**
      * 获取limit
      * @return array
-     * @author guozhen
+     * @author jingzheng
      */
     public function getLimit()
     {
@@ -261,7 +261,7 @@ class Common extends Controller
      * 统一删除接口
      * @param $model
      * @param $id
-     * @author guozhen
+     * @author jingzheng
      * @return array
      */
     public function deleteRecord(Model $model, $id)
@@ -282,7 +282,7 @@ class Common extends Controller
      * @param Model $controller
      * @param $data
      * @param $id
-     * @author guozhen
+     * @author jingzheng
      * @return array
      */
     public function publicUpdate($controller, $data, $id)
@@ -410,7 +410,7 @@ class Common extends Controller
                 $str = substr($str, 1);
             }
         }
-        //把数组元素组合为string
+        //把数组元素组合为string4 - 5 - 6
         return join($new_str);
     }
 

@@ -194,16 +194,16 @@ Route::resource('menuTag', 'common/Menutag');
 Route::get('menutagList', 'common/Menutag/getTags');
 
 //自定义表单设置
-Route::resource('userdeFinedform', 'common/UserDefinedForm');
+Route::resource('userDefinedform', 'common/UserDefinedForm');
 //获取自定义表单代码
-Route::get('userdeFinedformcode/:id', 'common/UserDefinedForm/getFormCode');
+Route::get('userDefinedformcode/:id', 'common/UserDefinedForm/getFormCode');
 //友情链接
 Route::resource('links', 'common/Links');
 Route::get('getLinks', 'common/Links/getLinks');
 //域名管理
 Route::resource('domain', 'common/Domain');
-Route::get('getDomain', 'common/domain/getDomain');
-Route::get('getOffice', 'common/domain/getOffice');
+Route::get('getDomain', 'common/Domain/getDomain');
+Route::get('getOffice', 'common/Domain/getOffice');
 //公共代码管理
 Route::resource('code', 'common/Code');
 //Route::get('getCode', 'common/Code/getCodes');
@@ -219,6 +219,13 @@ Route::get('getsitelogolist',"common/SiteLogo/logoList");
 Route::resource('siteIco','common/SiteIco');
 //站点ico列表
 Route::get('getsiteIcolist',"common/SiteIco/icoList");
+//站点water_image
+Route::resource('siteWaterImage','common/SiteWaterImage');
+//站点water_image 列表
+Route::get('getsitewaterimagelist',"common/SiteWaterImage/waterimageList");
+//站点分类
+Route::resource('siteType', 'common/Sitetype');
+Route::get('getSiteType', 'common/Sitetype/getSiteType');
 
 
 
@@ -515,7 +522,7 @@ Route::post('wechat/addArticle', 'admin/WeixinArticle/create');
 Route::get('wechat/getOneArticle/:id', 'admin/WeixinArticle/read');
 //网易采集文章列表
 Route::get('wangyi/article', 'admin/WangyiArticle/index');
-//网易采集文章添加到文章库
+//网易采集文章添加到文章库-
 Route::post('wangyi/addArticle', 'admin/WangyiArticle/create');
 //网易采集文章获取一篇采集文章
 Route::get('wangyi/getOneArticle/:id', 'admin/WangyiArticle/read');
@@ -661,12 +668,7 @@ Route::resource('admin/siteIco','admin/SiteIco');
 Route::post('admin/siteicoup','admin/SiteIco/uploadIcoImg');
 //站点ico列表
 Route::get('admin/getsiteicolist',"admin/SiteIco/icoList");
-//站点water_image
-Route::resource('admin/siteWaterImage','admin/SiteWaterImage');
-//站点water_image 图片上传
-Route::post('admin/sitewaterimageup','admin/SiteWaterImage/uploadWaterImageImg');
-//站点water_image 列表
-Route::get('admin/getsitewaterimagelist',"admin/SiteWaterImage/waterimageList");
+-
 //搜狐新闻
 Route::resource('admin/souhu',"admin/Souhu");
 //搜狐分类列表

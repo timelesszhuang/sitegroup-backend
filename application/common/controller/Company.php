@@ -11,7 +11,7 @@ class Company extends CommonLogin
 {
     /**
      * 显示资源列表
-     * @author guozhen
+     * @author jingzheng
      * @return \think\Response
      */
     public function index()
@@ -31,7 +31,7 @@ class Company extends CommonLogin
 
     /**
      * 显示创建资源表单页.
-     * @author guozhen
+     * @author jingzheng
      * @return \think\Response
      */
     public function create()
@@ -41,7 +41,7 @@ class Company extends CommonLogin
 
     /**
      * 保存新建的资源
-     * @author guozhen
+     * @author jingzheng
      * @param  \think\Request $request
      * @return \think\Response
      */
