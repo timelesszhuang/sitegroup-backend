@@ -202,6 +202,12 @@ Route::get('getOffice', 'common/domain/getOffice');
 Route::resource('code', 'common/Code');
 //Route::get('getCode', 'common/Code/getCodes');
 
+//联系方式
+Route::resource('contactway', 'common/Contactway');
+Route::get('getContactway', 'common/Contactway/getContactway');
+
+
+
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

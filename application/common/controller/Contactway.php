@@ -2,11 +2,12 @@
 
 namespace app\common\controller;
 
+use think\Controller;
 use think\Request;
-use think\Validate;
 use app\common\controller\Common;
+use think\Validate;
 
-class Domain extends Common
+class Contactway extends CommonLogin
 {
     /**
      * 显示资源列表
@@ -16,14 +17,14 @@ class Domain extends Common
     public function index()
     {
         $limits = $this->getLimit();
-        $domain = $this->request->get('domain');
+        $detail = $this->request->get('detail');
         $where = [];
-        if (!empty($domain)) {
-            $where['domain'] = ["like", "%$domain%"];
+        if (!empty($detail)) {
+            $where['detail'] = $detail;
         }
         $user_info = $this->getSessionUserInfo();
         $where["node_id"] =$user_info["node_id"];
-        return $this->resultArray('', '', (new \app\common\model\Domain())->getAll($limits['limit'], $limits['rows'], $where));
+        return $this->resultArray('', '', (new \app\common\model\Contactway())->getAll($limits['limit'], $limits['rows'], $where));
     }
 
     /**
@@ -45,20 +46,19 @@ class Domain extends Common
     public function save(Request $request)
     {
         $rule = [
-//            ['registrant_user', "require", "请填写注册人"],
-//            ['registrant_tel', 'require', "请填写手机号"],
-//            ["registrant_email","require","请填写邮箱"],
-            ["domain","require","请填写域名"]
+            ['detail','require','请填写描述'],
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
+        $data['html'] = serialize($data['html']);
+        //dump($data);die;
         if (!$validate->check($data)) {
-            return $this->resultArray('failed',$validate->getError());
+            return $this->resultArray('failed',$validate->getError() );
         }
         $user_info = $this->getSessionUserInfo();
         $data["node_id"] = $user_info["node_id"];
-        if (!\app\common\model\Domain::create($data)) {
-            return $this->resultArray('failed','添加失败' );
+        if (!\app\common\model\Contactway::create($data)) {
+            return $this->resultArray( 'failed','添加失败');
         }
         return $this->resultArray('添加成功');
     }
@@ -71,7 +71,9 @@ class Domain extends Common
      */
     public function read($id)
     {
-        return $this->getread((new \app\common\model\Domain),$id);
+        $data = (new \app\common\model\Contactway)->where(["id" => $id])->field("create_time,update_time", true)->find();
+        $data['html'] = unserialize($data['html']);
+        return $this->resultArray('', '', $data);
     }
 
     /**
@@ -95,14 +97,15 @@ class Domain extends Common
     public function update(Request $request, $id)
     {
         $rule = [
-            ["domain","require","请填写域名"]
+            ['detail','require','请填写描述'],
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
+        $data['html'] = serialize($data['html']);
         if (!$validate->check($data)) {
             return $this->resultArray('failed',$validate->getError());
         }
-        return $this->publicUpdate((new \app\common\model\Domain),$data,$id);
+        return $this->publicUpdate((new \app\common\model\Contactway),$data,$id);
     }
 
     /**
@@ -113,31 +116,16 @@ class Domain extends Common
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new \app\common\model\Domain),$id);
+        return $this->deleteRecord((new \app\common\model\Contactway),$id);
     }
 
     /**
-     * 获取所有域名
+     * 获取所有联系方式
      * @return array
      */
-    public function getDomain()
+    public function getContactway()
     {
-        $field="id,domain as text";
-        return $this->getList((new \app\common\model\Domain),$field);
-    }
-
-    /**
-     * 获取办公地点
-     * @return array
-     */
-    public function getOffice()
-    {
-        $office=[
-            ["id"=>1,"text"=>"阿里云"],
-            ["id"=>2,"text"=>"新网互联"],
-            ["id"=>3,"text"=>"百度"],
-            ["id"=>4,"text"=>"蜂巢"]
-        ];
-        return $this->resultArray('','',$office);
+        $field="id,name as text";
+        return $this->getList((new \app\common\model\Contactway),$field);
     }
 }

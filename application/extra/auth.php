@@ -178,6 +178,19 @@ return [
     'common/Code/save' => [2],
     'common/Code/update' => [2],
     'common/Code/delete' => [2],
+    'common/Domain/index' => [2],
+    'common/Domain/read' => [2],
+    'common/Domain/save' => [2],
+    'common/Domain/update' => [2],
+    'common/Domain/delete' => [2],
+    'common/Domain/getOffice'=>[2],
+    'common/Contactway/index' => [2],
+    'common/Contactway/read' => [2],
+    'common/Contactway/save' => [2],
+    'common/Contactway/update' => [2],
+    'common/Contactway/delete' => [2],
+    'common/Contactway/getContactway' => [2],
+
 
 
 ];
