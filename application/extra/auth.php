@@ -168,5 +168,11 @@ return [
     'common/UserDefinedForm/save' => [1,2],
     'common/UserDefinedForm/update' => [1,2],
     'common/UserDefinedForm/getFormCode' => [1,2],
+    'common/Links/index' => [2],
+    'common/Links/read' => [2],
+    'common/Links/save' => [2],
+    'common/Links/update' => [2],
+    'common/Links/getLinks'=>[2],
+
 
 ];

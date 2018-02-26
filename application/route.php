@@ -191,6 +191,9 @@ Route::get('upMenu/:flag/:id','common/Menu/getUpMenu');
 Route::resource('userdeFinedform', 'common/UserDefinedForm');
 //获取自定义表单代码
 Route::get('userdeFinedformcode/:id', 'common/UserDefinedForm/getFormCode');
+//友情链接
+Route::resource('links', 'common/Links');
+Route::get('getLinks', 'common/Links/getLinks');
 
 
 /*//用户电话记录数据管理
