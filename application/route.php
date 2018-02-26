@@ -226,7 +226,8 @@ Route::get('getsitewaterimagelist',"common/SiteWaterImage/waterimageList");
 //站点分类
 Route::resource('siteType', 'common/Sitetype');
 Route::get('getSiteType', 'common/Sitetype/getSiteType');
-
+//获取活动模板信息
+Route::get('getActivily/:id', 'common/Site/getActivily');
 
 
 

@@ -133,7 +133,7 @@ class Template extends CommonLogin
         $model = new \app\common\model\Template();
         $model->save($post);
         if ($model->id) {
-            return $this->resultArray('',"添加成功");
+            return $this->resultArray("添加成功");
         }
         return $this->resultArray('failed','添加失败' );
     }
