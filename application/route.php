@@ -194,6 +194,13 @@ Route::get('userdeFinedformcode/:id', 'common/UserDefinedForm/getFormCode');
 //友情链接
 Route::resource('links', 'common/Links');
 Route::get('getLinks', 'common/Links/getLinks');
+//域名管理
+Route::resource('domain', 'common/domain');
+Route::get('getDomain', 'common/domain/getDomain');
+Route::get('getOffice', 'common/domain/getOffice');
+//公共代码管理
+Route::resource('code', 'common/Code');
+//Route::get('getCode', 'common/Code/getCodes');
 
 
 /*//用户电话记录数据管理

@@ -2,13 +2,11 @@
 
 namespace app\common\controller;
 
-use app\common\controller\CommonLogin;
-use think\Controller;
 use think\Request;
-use app\common\controller\Common;
 use think\Validate;
+use app\common\controller\Common;
 
-class Links extends CommonLogin
+class Domain extends Common
 {
     /**
      * 显示资源列表
@@ -25,7 +23,7 @@ class Links extends CommonLogin
         }
         $user_info = $this->getSessionUserInfo();
         $where["node_id"] =$user_info["node_id"];
-        return $this->resultArray('', '', (new \app\common\model\Links)->getAll($limits['limit'], $limits['rows'], $where));
+        return $this->resultArray('', '', (new \app\common\model\Domain())->getAll($limits['limit'], $limits['rows'], $where));
     }
 
     /**
@@ -47,20 +45,19 @@ class Links extends CommonLogin
     public function save(Request $request)
     {
         $rule = [
-            ['name', "require", "请填写站点名称"],
-            ['domain', 'require', "请填写域名"],
+//            ['registrant_user', "require", "请填写注册人"],
+//            ['registrant_tel', 'require', "请填写手机号"],
+//            ["registrant_email","require","请填写邮箱"],
+            ["domain","require","请填写域名"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
-        $data['domain']=  "http://".$data['domain'];
         if (!$validate->check($data)) {
-            return $this->resultArray( 'failed',$validate->getError());
+            return $this->resultArray($validate->getError(), 'faile');
         }
-
-        $user_info = $this->getSessionUserInfo();
-        $data["node_id"] =$user_info["node_id"];
-        if (!\app\common\model\Links::create($data)) {
-            return $this->resultArray( 'failed','添加失败');
+        $data["node_id"] = $this->getSessionUser()['user_node_id'];
+        if (!\app\admin\model\Domain::create($data)) {
+            return $this->resultArray('添加失败', 'failed');
         }
         return $this->resultArray('添加成功');
     }
@@ -73,7 +70,7 @@ class Links extends CommonLogin
      */
     public function read($id)
     {
-        return $this->getread((new \app\common\model\Links),$id);
+        return $this->getread((new \app\admin\model\Domain),$id);
     }
 
     /**
@@ -84,7 +81,7 @@ class Links extends CommonLogin
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -97,15 +94,14 @@ class Links extends CommonLogin
     public function update(Request $request, $id)
     {
         $rule = [
-            ['name', "require", "请填写站点名称"],
-            ['domain', 'require', "请填写域名"],
+            ["domain","require","请填写域名"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
         if (!$validate->check($data)) {
-            return $this->resultArray( 'failed',$validate->getError());
+            return $this->resultArray($validate->getError(), 'failed');
         }
-        return $this->publicUpdate((new \app\common\model\Links),$data,$id);
+        return $this->publicUpdate((new \app\admin\model\Domain),$data,$id);
     }
 
     /**
@@ -116,20 +112,31 @@ class Links extends CommonLogin
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new \app\common\model\Links),$id);
+        return $this->deleteRecord((new \app\admin\model\Domain),$id);
     }
 
     /**
-     * 获取所有链接
+     * 获取所有域名
      * @return array
      */
-    public function getLinks()
+    public function getDomain()
     {
-        $user_info = $this->getSessionUserInfo();
-        $where=[
-            "node_id"=>$user_info["node_id"],
+        $field="id,domain as text";
+        return $this->getList((new \app\admin\model\Domain),$field);
+    }
+
+    /**
+     * 获取办公地点
+     * @return array
+     */
+    public function getOffice()
+    {
+        $office=[
+            ["id"=>1,"text"=>"阿里云"],
+            ["id"=>2,"text"=>"新网互联"],
+            ["id"=>3,"text"=>"百度"],
+            ["id"=>4,"text"=>"蜂巢"]
         ];
-        $data=(new \app\common\model\Links)->where($where)->field("id,name as text")->select();
-        return $this->resultArray('','',$data);
+        return $this->resultArray('','',$office);
     }
 }

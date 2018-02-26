@@ -2,13 +2,12 @@
 
 namespace app\common\controller;
 
-use app\common\controller\CommonLogin;
 use think\Controller;
 use think\Request;
-use app\common\controller\Common;
 use think\Validate;
+use app\common\controller\Common;
 
-class Links extends CommonLogin
+class Code extends CommonLogin
 {
     /**
      * 显示资源列表
@@ -18,14 +17,14 @@ class Links extends CommonLogin
     public function index()
     {
         $limits = $this->getLimit();
-        $domain = $this->request->get('domain');
+        $name = $this->request->get('name');
         $where = [];
-        if (!empty($domain)) {
-            $where['domain'] = ["like", "%$domain%"];
+        if (!empty($name)) {
+            $where['name'] = ["like", "%$name%"];
         }
         $user_info = $this->getSessionUserInfo();
         $where["node_id"] =$user_info["node_id"];
-        return $this->resultArray('', '', (new \app\common\model\Links)->getAll($limits['limit'], $limits['rows'], $where));
+        return $this->resultArray('', '', (new \app\common\model\Code())->getAll($limits['limit'], $limits['rows'], $where));
     }
 
     /**
@@ -47,19 +46,17 @@ class Links extends CommonLogin
     public function save(Request $request)
     {
         $rule = [
-            ['name', "require", "请填写站点名称"],
-            ['domain', 'require', "请填写域名"],
+            ['name', 'require', "请填用途"],
+            ["code", "require", "请填代码"],
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
-        $data['domain']=  "http://".$data['domain'];
         if (!$validate->check($data)) {
-            return $this->resultArray( 'failed',$validate->getError());
+            return $this->resultArray('failed',$validate->getError());
         }
-
         $user_info = $this->getSessionUserInfo();
         $data["node_id"] =$user_info["node_id"];
-        if (!\app\common\model\Links::create($data)) {
+        if (!\app\common\model\Code::create($data)) {
             return $this->resultArray( 'failed','添加失败');
         }
         return $this->resultArray('添加成功');
@@ -73,7 +70,7 @@ class Links extends CommonLogin
      */
     public function read($id)
     {
-        return $this->getread((new \app\common\model\Links),$id);
+        return $this->getread((new \app\common\model\Code), $id);
     }
 
     /**
@@ -97,15 +94,15 @@ class Links extends CommonLogin
     public function update(Request $request, $id)
     {
         $rule = [
-            ['name', "require", "请填写站点名称"],
-            ['domain', 'require', "请填写域名"],
+            ['name', 'require', "请填用途"],
+            ["code", "require", "请填代码"]
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
         if (!$validate->check($data)) {
-            return $this->resultArray( 'failed',$validate->getError());
+            return $this->resultArray('failed',$validate->getError());
         }
-        return $this->publicUpdate((new \app\common\model\Links),$data,$id);
+        return $this->publicUpdate((new \app\common\model\Code),$data,$id);
     }
 
     /**
@@ -116,20 +113,16 @@ class Links extends CommonLogin
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new \app\common\model\Links),$id);
+        return $this->deleteRecord((new \app\common\model\Code),$id);
     }
 
     /**
-     * 获取所有链接
+     * 获取所有code
      * @return array
      */
-    public function getLinks()
+    public function getCodes()
     {
-        $user_info = $this->getSessionUserInfo();
-        $where=[
-            "node_id"=>$user_info["node_id"],
-        ];
-        $data=(new \app\common\model\Links)->where($where)->field("id,name as text")->select();
-        return $this->resultArray('','',$data);
+        $field="id,name as text";
+        return $this->getList((new \app\common\model\Code),$field);
     }
 }

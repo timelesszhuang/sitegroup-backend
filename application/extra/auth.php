@@ -173,6 +173,11 @@ return [
     'common/Links/save' => [2],
     'common/Links/update' => [2],
     'common/Links/getLinks'=>[2],
+    'common/Code/index' => [2],
+    'common/Code/read' => [2],
+    'common/Code/save' => [2],
+    'common/Code/update' => [2],
+    'common/Code/delete' => [2],
 
 
 ];
