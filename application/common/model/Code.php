@@ -19,7 +19,7 @@ class Code extends Model
     public function getAll($limit,$rows,$where)
     {
         $count = $this->where($where)->count();
-        $data = $this->limit($limit, $rows)->where($where)->field("create_time,update_time",true)->select();
+        $data = $this->limit($limit, $rows)->where($where)->order('id desc')->field("create_time,update_time",true)->select();
         return [
             "total" => $count,
             "rows" => $data

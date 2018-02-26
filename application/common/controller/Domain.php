@@ -6,7 +6,7 @@ use think\Request;
 use think\Validate;
 use app\common\controller\Common;
 
-class Domain extends Common
+class Domain extends CommonLogin
 {
     /**
      * 显示资源列表

@@ -195,6 +195,16 @@ return [
     'common/Contactway/update' => [2],
     'common/Contactway/delete' => [2],
     'common/Contactway/getContactway' => [2],
+    'common/siteLogo/index' => [2],
+    'common/siteLogo/read' => [2],
+    'common/siteLogo/save' => [2],
+    'common/siteLogo/update' => [2],
+    'common/SiteLogo/logoList'=>[2],
+    'common/SiteIco/index' => [2],
+    'common/SiteIco/read' => [2],
+    'common/SiteIco/save' => [2],
+    'common/SiteIco/update' => [2],
+    'common/SiteIco/icoList'=>[2],
 
 
 

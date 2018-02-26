@@ -54,6 +54,7 @@ Route::resource('question','common/Question');
 Route::post('question_show_html','common/Question/questionShowHtml');
 //产品相关
 Route::resource('product','admin/Product');
+
 Route::post('product_show_html','admin/Product/productShowHtml');
 Route::post('upload_product_ser_img', 'admin/Product/uploadImgSer');
 Route::get('get_product_img_list/:id', 'admin/Product/getImgSer');
@@ -185,12 +186,13 @@ Route::rule('getCompany', 'common/Company/getAll');
 Route::resource('menu', 'common/Menu');
 Route::get('getMenu', 'common/Menu/getMenu');
 Route::put('menuSort/:id','common/Menu/sort');
+//获取上级菜单
+Route::get('upMenu/:flag/:id','common/Menu/getUpMenu');
 //栏目分类
 Route::resource('menuTag', 'common/Menutag');
 //获取分类列表
 Route::get('menutagList', 'common/Menutag/getTags');
-//获取上级菜单
-Route::get('upMenu/:flag/:id','common/Menu/getUpMenu');
+
 //自定义表单设置
 Route::resource('userdeFinedform', 'common/UserDefinedForm');
 //获取自定义表单代码
@@ -199,7 +201,7 @@ Route::get('userdeFinedformcode/:id', 'common/UserDefinedForm/getFormCode');
 Route::resource('links', 'common/Links');
 Route::get('getLinks', 'common/Links/getLinks');
 //域名管理
-Route::resource('domain', 'common/domain');
+Route::resource('domain', 'common/Domain');
 Route::get('getDomain', 'common/domain/getDomain');
 Route::get('getOffice', 'common/domain/getOffice');
 //公共代码管理
@@ -210,17 +212,13 @@ Route::resource('code', 'common/Code');
 Route::resource('contactway', 'common/Contactway');
 Route::get('getContactway', 'common/Contactway/getContactway');
 //站点logo
-Route::resource('admin/siteLogo','admin/SiteLogo');
-//站点logo 图片上传
-Route::post('admin/sitelogoup','admin/SiteLogo/uploadLoginImg');
+Route::resource('siteLogo','common/SiteLogo');
 //站点logo列表
-Route::get('admin/getsitelogolist',"admin/SiteLogo/logoList");
+Route::get('getsitelogolist',"common/SiteLogo/logoList");
 //站点ico
-Route::resource('admin/siteIco','admin/SiteIco');
-//站点ico 图片上传
-Route::post('admin/siteicoup','admin/SiteIco/uploadIcoImg');
+Route::resource('siteIco','common/SiteIco');
 //站点ico列表
-Route::get('admin/getsiteicolist',"admin/SiteIco/icoList");
+Route::get('getsiteIcolist',"common/SiteIco/icoList");
 
 
 
