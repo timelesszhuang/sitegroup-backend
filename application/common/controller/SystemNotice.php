@@ -78,12 +78,15 @@ class SystemNotice extends CommonLogin
         $where['node_id'] = $user_info["node_id"];
         $where['notice_id'] = $id;
         $readdata = (new SystemNoticeRead())->where($where)->find();
+//        dump($readdata);die;
         if($status == 'read'){
             if(empty($readdata)){
                 $Noticedata['notice_id'] = $id;
                 $Noticedata['status'] = 20;
                 $Noticedata['node_id'] =$user_info["node_id"];
-                SystemNoticeRead::create($Noticedata);
+            if( !SystemNoticeRead::create($Noticedata)){
+                return $this->resultArray('修改失败', 'failed');
+            } ;
                 $data['status']=10;
             }else{
             $data['status'] = 10;}

@@ -221,7 +221,7 @@ code;
             });
             </script>
 code;
-        return $this->resultArray( '','获取自定义表单代码成功', $form);
+        return $this->resultArray( 'success','获取自定义表单代码成功', $form);
     }
 
 }
