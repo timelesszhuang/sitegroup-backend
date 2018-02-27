@@ -265,10 +265,11 @@ Route::get("getTdkOne/:id", 'common/Tdk/read');
 //获取tdk中的a类关键词
 Route::get('getAkeywordA/:id', 'common/Tdk/getAkeyword');
 //修改a类关键词pageinfo
-Route::post('admin/editpageinfo', 'common/Tdk/editpageinfo');
+Route::post('editpageinfo', 'common/Tdk/editpageinfo');
 //站点静态化配置
 Route::resource('staticConfig', 'common/Staticconfig');
-
+// 模板管理 修改模板
+Route::post("templateSave/:site_id/:name", "common/template/savetemplate");
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');
