@@ -262,6 +262,10 @@ Route::put("tdk/:id", 'common/Tdk/save');
 Route::get("getTdk/:id", 'common/Tdk/search');
 //大站点获取小站点的一条记录
 Route::get("getTdkOne/:id", 'common/Tdk/read');
+//获取tdk中的a类关键词
+Route::get('getAkeywordA/:id', 'common/Tdk/getAkeyword');
+//修改a类关键词pageinfo
+Route::post('admin/editpageinfo', 'common/Tdk/editpageinfo');
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\admin\controller;
+namespace app\common\controller;
 
 use app\common\controller\PageInfo;
 use app\common\model\SitePageinfo;
