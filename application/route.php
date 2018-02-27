@@ -197,6 +197,7 @@ Route::get('menutagList', 'common/Menutag/getTags');
 Route::resource('userDefinedform', 'common/UserDefinedForm');
 //获取自定义表单代码
 Route::get('userDefinedformcode/:id', 'common/UserDefinedForm/getFormCode');
+
 //友情链接
 Route::resource('links', 'common/Links');
 Route::get('getLinks', 'common/Links/getLinks');
@@ -271,7 +272,19 @@ Route::resource('staticConfig', 'common/Staticconfig');
 // 模板管理 修改模板
 Route::post("templateSave/:site_id/:name", "common/template/savetemplate");
 //content_get
-Route::resource('content_get', 'admin/ContentGet');
+Route::resource('content_get', 'common/ContentGet');
+//推荐关键词首页数据
+Route::get('mainkeywords', 'common/MainkeywordKeywords/index');
+//主关键词排名
+Route::get('searchKeywords', 'common/MainkeywordSearch/index');
+//追踪关键词
+Route::resource('trackKeyword', 'common/TrackKeyword');
+//下拉追踪关键词
+Route::get('getTrack', 'common/TrackKeyword/getTrack');
+//甩单
+Route::resource('Rejection', 'common/Rejection');
+//配置下拉
+Route::get('userdefine', 'common/Rejection/getUserDefind');
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

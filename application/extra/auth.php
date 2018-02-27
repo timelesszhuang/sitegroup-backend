@@ -248,8 +248,16 @@ return [
     'common/Tdk/read' => [2],
     'common/Tdk/getAkeyword' => [2],
     'common/Tdk/editpageinfo' => [2],
-
-
-
+    'common/MainkeywordKeywords/index'=>[2],
+    'common/TrackKeyword/index' => [2],
+    'common/TrackKeyword/read' => [2],
+    'common/TrackKeyword/save' => [2],
+    'common/TrackKeyword/update' => [2],
+    'common/TrackKeyword/delete' => [2],
+    'common/TrackKeyword/getTrack'=>[2],
+    'common/MainkeywordSearch/index'=>[2],
+    'common/MainkeywordSearch/mainkeyword'=>[2],
+    'common/Rejection/index'=>[2],
+    'common/Rejection/getUserDefind'=>[2],
 
 ];
