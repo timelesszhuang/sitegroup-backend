@@ -19,7 +19,7 @@ use Closure;
  * 站点 最小的节点相关操作
  * @author jingzheng
  */
-class Site extends CommonLogin
+class Site extends Common
 {
     use Obtrait;
     public $all_count = [];
@@ -541,7 +541,7 @@ class Site extends CommonLogin
             'hotline' => $contactwaydata['data'],
             'domainlist' => $domaindata['data'],
             'userlist' => $usertypedata['data'],
-            'keyword' => $keyworddata['data'],
+            'keyword' => $keyworddata,
             'link' => $linkdata['data'],
             'mobileSite' => $mobilesitedata['data'],
             'code' => $codedata['data'],

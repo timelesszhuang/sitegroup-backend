@@ -256,7 +256,12 @@ Route::get("templateList/:site_id", "common/template/filelist");
 Route::get("templateRead/:site_id/:name", "common/template/templateRead");
 //模板管理添加文件
 Route::post("templateAdd/:site_id/:name", "common/template/readFile");
-
+//大站点可以统一修改小站点的tdk
+Route::put("tdk/:id", 'common/Tdk/save');
+//大站点统一查询小站点
+Route::get("getTdk/:id", 'common/Tdk/search');
+//大站点获取小站点的一条记录
+Route::get("getTdkOne/:id", 'common/Tdk/read');
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');
