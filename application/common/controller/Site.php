@@ -19,7 +19,7 @@ use Closure;
  * 站点 最小的节点相关操作
  * @author jingzheng
  */
-class Site extends Common
+class Site extends CommonLogin
 {
     use Obtrait;
     public $all_count = [];
@@ -240,7 +240,7 @@ class Site extends Common
         ];
         $data = $this->request->put();
         if (!\app\common\model\Site::where($where)->update($data)) {
-            return $this->resultArray('修改失败', 'failed');
+            return $this->resultArray('failed','修改失败');
         }
         return $this->resultArray('修改成功');
     }
@@ -254,7 +254,7 @@ class Site extends Common
     {
         $main_site = $this->request->post("main_site");
         if (empty($main_site)) {
-            return $this->resultArray( 'failed','请选择是否是主站');
+            return $this->resultArray( '请选择是否是主站','failed');
         }
         if ($main_site != 10) {
             Db::name('site')
@@ -304,7 +304,7 @@ class Site extends Common
             case "activity":
                 $sdata = (new \app\common\model\Site)->get($site_id);
                 if (empty($sdata)) {
-                    return $this->resultArray( "failed","数据不存在");
+                    return $this->resultArray( "数据不存在","failed");
                 }
                 if (empty($sdata->sync_id)) {
                     $sdata->sync_id = "," . $template_id . ",";
@@ -317,7 +317,7 @@ class Site extends Common
                 if ($sdata->save()) {
                     return $this->resultArray("活动创意同步成功");
                 }
-                return $this->resultArray( "failed","活动创意同步失败");
+                return $this->resultArray( "活动创意同步失败","failed");
                 break;
             case "template":
                 $template = \app\common\model\Template::get($site["template_id"]);
@@ -370,7 +370,7 @@ class Site extends Common
             ];
             $site = \app\common\model\Site::where($where)->find();
             if (is_null($site)) {
-                return $this->resultArray( 'failed','发送失败,无此记录!');
+                return $this->resultArray( '发送失败,无此记录!','failed');
             }
             return $site->url;
         };

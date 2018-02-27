@@ -163,7 +163,7 @@ class Template extends Common
             $result = trim($siteData, "\xEF\xBB\xBF");
             $data = json_decode($result, true);
 //            dump($data);die;
-            return $this->resultArray($data['msg'], '', $data["filelist"]);
+            return $this->resultArray( 'success',$data['msg'], $data["filelist"]);
         }
         return $this->resultArray('failed','当前网站未获取到!');
     }
@@ -182,7 +182,7 @@ class Template extends Common
             $result = trim($siteData, "\xEF\xBB\xBF");
             $data = json_decode($result, true);
 //            $data=json_decode($siteData,true);
-            return $this->resultArray( '',$data['msg'], ["content" => $data["content"], "filename" => $data["filename"]]);
+            return $this->resultArray( 'success',$data['msg'], ["content" => $data["content"], "filename" => $data["filename"]]);
         }
         return $this->resultArray('failed','当前网站未获取到!' );
     }
