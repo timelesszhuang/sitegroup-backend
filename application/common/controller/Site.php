@@ -2,6 +2,7 @@
 
 namespace app\common\controller;
 
+use app\common\model\Keyword;
 use app\common\model\Useragent;
 use app\common\controller\Common;
 use app\common\model\BrowseRecord;
@@ -93,7 +94,7 @@ class Site extends Common
         $validate = new Validate($rule);
         $data = $this->request->post();
         if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'failed');
+            return $this->resultArray('failed',$validate->getError() );
         }
         if (!$this->searchHttp($data["url"])) {
             $data["url"] = "http://" . $data["url"];
@@ -109,14 +110,14 @@ class Site extends Common
         if (empty($errorKey)) {
             $data["keyword_ids"] = "," . implode(",", $data["keyword_ids"]) . ",";
         } else {
-            return $this->resultArray($errorKey . " 缺少B、C类关键词", 'failed');
+            return $this->resultArray('failed',$errorKey . " 缺少B、C类关键词");
         }
         //公共代码
         if (!empty($data["public_code"])) {
             $data["public_code"] = implode(",", $data["public_code"]);
         }
         if (!\app\common\model\Site::create($data)) {
-            return $this->resultArray('添加失败', 'failed');
+            return $this->resultArray( 'failed','添加失败');
         }
         return $this->resultArray('添加成功');
     }
@@ -184,10 +185,13 @@ class Site extends Common
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();
-        $user = $this->getSessionUser();
+        if (!$validate->check($data)) {
+            return $this->resultArray('failed',$validate->getError());
+        }
+        $user_info = $this->getSessionUserInfo();
         $where = [
             "id" => $id,
-            "node_id" => $user["user_node_id"]
+            "node_id" => $user_info["node_id"],
         ];
         if (!empty($data["link_id"])) {
             $data["link_id"] = "," . implode(",", $data["link_id"]) . ",";
@@ -204,10 +208,10 @@ class Site extends Common
         $ids = "," . $getSite->keyword_ids . ",";
         // compare 对比删除
         if ($ids != $data["keyword_ids"]) {
-            (new SitePageinfo)->where(["node_id" => $user["user_node_id"], "site_id" => $id])->delete();
+            (new SitePageinfo)->where(["node_id" => $user_info["node_id"], "site_id" => $id])->delete();
         }
         if (!(new \app\common\model\Site)->save($data, $where)) {
-            return $this->resultArray('修改失败', 'failed');
+            return $this->resultArray('failed','修改失败' );
         }
         return $this->resultArray('修改成功');
     }
@@ -232,7 +236,7 @@ class Site extends Common
     {
         $main_site = $this->request->post("main_site");
         if (empty($main_site)) {
-            return $this->resultArray('请选择是否是主站', 'failed');
+            return $this->resultArray( 'failed','请选择是否是主站');
         }
         if ($main_site != 10) {
             Db::name('site')
@@ -254,10 +258,10 @@ class Site extends Common
      */
     public function mobileSite()
     {
-        $user = $this->getSessionUser();
+        $user_info = $this->getSessionUserInfo();
         $where = [
             "is_mobile" => 20,
-            "node_id" => $user["user_node_id"],
+            "node_id" =>$user_info["node_id"],
         ];
         $data = (new \app\common\model\Site)->where($where)->field("id,site_name as text")->select();
         return $this->resultArray('', '', $data);
@@ -271,8 +275,8 @@ class Site extends Common
      */
     public function ignoreFrontend($template_id, $site_id, $type)
     {
-        $user = $this->getSessionUser();
-        $nid = $user["user_node_id"];
+        $user_info = $this->getSessionUserInfo();
+        $nid = $user_info["node_id"];
         $where = [
             "id" => $site_id,
             "node_id" => $nid
@@ -282,7 +286,7 @@ class Site extends Common
             case "activity":
                 $sdata = (new \app\common\model\Site)->get($site_id);
                 if (empty($sdata)) {
-                    return $this->resultArray("数据不存在", "failed");
+                    return $this->resultArray( "failed","数据不存在");
                 }
                 if (empty($sdata->sync_id)) {
                     $sdata->sync_id = "," . $template_id . ",";
@@ -295,7 +299,7 @@ class Site extends Common
                 if ($sdata->save()) {
                     return $this->resultArray("活动创意同步成功");
                 }
-                return $this->resultArray("活动创意同步失败", "failed");
+                return $this->resultArray( "failed","活动创意同步失败");
                 break;
             case "template":
                 $template = \app\common\model\Template::get($site["template_id"]);
@@ -340,15 +344,15 @@ class Site extends Common
     public function siteGetCurl($id, $name)
     {
         $func = function () use ($id) {
-            $user = $this->getSessionUser();
-            $nid = $user["user_node_id"];
+            $user_info = $this->getSessionUserInfo();
+            $nid = $user_info["node_id"];
             $where = [
                 "id" => $id,
                 "node_id" => $nid
             ];
             $site = \app\common\model\Site::where($where)->find();
             if (is_null($site)) {
-                return $this->resultArray('发送失败,无此记录!', 'failed');
+                return $this->resultArray( 'failed','发送失败,无此记录!');
             }
             return $site->url;
         };
@@ -436,18 +440,7 @@ class Site extends Common
         $activily = \app\common\model\CreativeActivity::where($where)->field("id,oss_img_src,title,create_time")->order('id desc')->select();
         $site = \app\common\model\Site::get($id);
         foreach ($activily as $item) {
-           // yield $this->foreachActivily($item, $site->sync_id);
-            $arr = ["id" => $item->id, "name" => $item->title, 'oss_img_src' => "<img src='{$item->oss_img_src}' style='width:100%'>", 'date' => $item->create_time];
-            if (!empty($site->sync_id)) {
-                if (strpos($site->sync_id, "," . $item->id . ",") !== false) {
-                    $arr['issync'] = '10';
-                    $arr['sync'] = '重新同步';
-                    return $arr;
-                }
-            }
-            $arr['issync'] = '20';
-            $arr['sync'] = '同步';
-            return $arr;
+            yield $this->foreachActivily($item, $site->sync_id);
         }
     }
 
@@ -477,11 +470,11 @@ class Site extends Common
      */
     public function SiteCount()
     {
-        $user = $this->getSessionUser();
+        $user_info = $this->getSessionUserInfo();
         $where = [
-            'node_id' => $user["user_node_id"],
+            'node_id' => $user_info["node_id"],
         ];
-        $site = new \app\admin\model\Site();
+        $site = new \app\common\model\Site();
         $arr = $site->field('site_type_name,count(id) as nameCount')->where($where)->group('site_type_name')->order("nameCount", "desc")->select();
 //        $arrcount = $site->where($where)->count();
         $temp = [];
@@ -496,110 +489,7 @@ class Site extends Common
     }
 
 
-    /**
-     * 统计搜索引擎相关
-     */
-    public function enginecount()
-    {
-        $user = $this->getSessionUser();
-        $starttime = time() - 86400 * 9;
-        $stoptime = time();
-        $where = [];
-        $where['node_id'] = $user["user_node_id"];
-        $where['create_time'] = ['between', [$starttime, $stoptime]];
-        $userAgent = Db::name("useragent")->where($where)->field("engine,create_time")->select();
-        $Agent = [];
-        $Engine = [];
-        foreach ($userAgent as $v) {
-            $engine = $v['engine'];
-            if (!in_array($engine, $Engine)) {
-                array_push($Engine, $engine);
-            }
-            $date = date('m-d', $v['create_time']);
-            if (!array_key_exists($engine, $Agent)) {
-                $Agent[$engine] = [];
-            }
-            if (array_key_exists($date, $Agent[$engine])) {
-                $Agent[$engine][$date] += 1;
-            } else {
-                $Agent[$engine][$date] = 1;
-            }
-        }
-        $date_diff = $this->get_date_diff($starttime, $stoptime);
-        foreach ($Engine as $engine) {
-            foreach ($date_diff as $date) {
-                ksort($Agent[$engine]);
-                if (!array_key_exists($date, $Agent[$engine])) {
-                    $Agent[$engine][$date] = 0;
-                }
-            }
-        }
-        array_walk($Agent, [$this, "formatter"]);
-        if (empty($userAgent)) {
-            $this->all_count[0] = [
-                "name" => "sougou",
-                "data" => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                "type" => "line",
-                "stack" => '总量',
-            ];
-            $this->all_count[1] = [
-                "name" => "baidu",
-                "data" => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                "type" => "line",
-                "stack" => '总量',
-            ];
-        }
-        $engine_alias = Config::get('engine.spider_aliasname');
-        foreach ($this->all_count as $k => $v) {
-            if (array_key_exists($v['name'], $engine_alias)) {
-                $v['name'] = $engine_alias[$v['name']];
-                $this->all_count[$k] = $v;
-            }
-        }
-        $temp = ["time" => $date_diff, "type" => $this->all_count];
-        return $this->resultArray('', '', $temp);
-    }
 
-    /**
-     *获取某段时间内的时间显示
-     * @param $stime
-     * @param $etime
-     * @return array
-     */
-    public function get_date_diff($stime, $etime)
-    {
-        //将起始时间转换成 2014-05 年月的格式
-        $st = strtotime(date("Y-m-d", $stime));
-        $et = strtotime(date("Y-m-d", $etime));
-        $no_time = false;
-        if ($et > time()) {
-            $et = time();
-            $no_time = true;
-        }
-        $arr = array();
-        while ($st) {
-            array_push($arr, date("m-d", $st));
-            $st = strtotime("+1 day", $st);
-            if ($st >= $et) {
-                break;
-            }
-        }
-        if (!$no_time) {
-            array_push($arr, date("m-d", $st));
-        }
-        //返回格式 array("2014-01","2014-02",.....)的时间戳形式
-        return $arr;
-    }
-
-    public function formatter($value, $key)
-    {
-        $this->all_count[] = [
-            "name" => $key,
-            "data" => array_values($value),
-            "type" => "line",
-            "stack" => '总量',
-        ];
-    }
 
     /**
      * 获取站点相关公共元素 比如下拉之类
@@ -619,7 +509,7 @@ class Site extends Common
         $usertype = new Siteuser();
         $usertypedata = $usertype->getUsers();
         $keyword = new Keyword();
-        $keyworddata = $keyword->index();
+        $keyworddata = $keyword->keyword();
         $link = new Links();
         $linkdata = $link->getLinks();
         $mobilesite = new Site();
@@ -650,9 +540,9 @@ class Site extends Common
     {
         //只需要把 article_sync_count 表重置就可以
         if (Db::name('ArticleSyncCount')->where(['site_id' => $id])->delete()) {
-            return $this->resultArray('站点重置成功', '', []);
+            return $this->resultArray( '站点重置成功');
         }
-        return $this->resultArray('站点重置失败', 'failed', []);
+        return $this->resultArray( 'failed','站点重置失败', []);
     }
 
 }

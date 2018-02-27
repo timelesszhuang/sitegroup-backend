@@ -229,7 +229,23 @@ Route::get('getSiteType', 'common/Sitetype/getSiteType');
 //获取活动模板信息
 Route::get('getActivily/:id', 'common/Site/getActivily');
 
+//站点管理
+Route::resource('Site', 'common/Site');
 
+Route::post('setMainSite', 'common/Site/setMainSite');
+//Route::get('mobileSite', 'common/Site/mobileSite');
+//发送模板
+Route::get('ignoreFrontend/:template_id/:site_id/:type', 'common/Site/ignoreFrontend');
+//获取站点列表
+Route::get('getSites', 'common/Site/getSites');
+//一键生成 生成文章 清除缓存 生成栏目 生成首页
+Route::get('siteGetCurl/:id/:name', 'common/Site/siteGetCurl');
+//获取活动模板信息
+Route::get('getActivily/:id', 'common/Site/getActivily');
+//重置站点
+Route::get('resetSite/:id', 'common/Site/resetSite');
+
+Route::get('commonType', 'common/Site/commontype');
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');
