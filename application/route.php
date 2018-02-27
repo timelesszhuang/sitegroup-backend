@@ -231,7 +231,7 @@ Route::get('getActivily/:id', 'common/Site/getActivily');
 
 //站点管理
 Route::resource('Site', 'common/Site');
-
+//设为主战
 Route::post('setMainSite', 'common/Site/setMainSite');
 //Route::get('mobileSite', 'common/Site/mobileSite');
 //发送模板
@@ -244,8 +244,19 @@ Route::get('siteGetCurl/:id/:name', 'common/Site/siteGetCurl');
 Route::get('getActivily/:id', 'common/Site/getActivily');
 //重置站点
 Route::get('resetSite/:id', 'common/Site/resetSite');
-
+//获取各种站点下拉
 Route::get('commonType', 'common/Site/commontype');
+//修改Cdn 主動推送
+Route::put('saveCdn/:id', 'common/Site/saveCdn');
+//获取所有模板下拉
+Route::get('getTemplate', 'common/Template/getTemplate');
+//模板管理 获取对应site_id的信息
+Route::get("templateList/:site_id", "common/template/filelist");
+// 模板管理 读取模板
+Route::get("templateRead/:site_id/:name", "common/template/templateRead");
+//模板管理添加文件
+Route::post("templateAdd/:site_id/:name", "common/template/readFile");
+
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

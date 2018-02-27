@@ -9,7 +9,7 @@ use app\common\traits\Obtrait;
 use app\common\traits\Osstrait;
 use app\common\exception\ProcessException;
 
-class Template extends CommonLogin
+class Template extends Common
 {
 
     use Osstrait;
@@ -169,8 +169,7 @@ class Template extends CommonLogin
     }
 
     /**
-     * 显示创建资源表单页.
-     *
+     * 模板管理 读取模板
      * @return \think\Response
      */
     public function templateRead($site_id, $name)

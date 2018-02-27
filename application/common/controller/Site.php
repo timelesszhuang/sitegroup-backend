@@ -226,6 +226,24 @@ class Site extends Common
 
     }
 
+    /**
+     * 修改ftp信息
+     * @param $id
+     * @return array
+     */
+    public function saveCdn($id)
+    {
+        $user_info = $this->getSessionUserInfo();
+        $where = [
+            "id" => $id,
+            "node_id" => $user_info["node_id"],
+        ];
+        $data = $this->request->put();
+        if (!\app\common\model\Site::where($where)->update($data)) {
+            return $this->resultArray('修改失败', 'failed');
+        }
+        return $this->resultArray('修改成功');
+    }
 
     /**
      * 修改为主站
