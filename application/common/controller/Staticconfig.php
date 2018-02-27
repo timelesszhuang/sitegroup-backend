@@ -6,7 +6,7 @@ use think\Session;
 use think\Validate;
 use think\Request;
 
-class Staticconfig extends Common
+class Staticconfig extends CommonLogin
 {
     /**
      *@return array

@@ -2,7 +2,7 @@
 
 namespace app\common\controller;
 
-use app\common\controller\Common;
+
 use think\Db;
 use think\Validate;
 use think\Request;

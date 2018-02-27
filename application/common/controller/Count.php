@@ -6,9 +6,7 @@ use app\common\model\BrowseRecord;
 use think\Config;
 use think\Db;
 use think\Request;
-use app\common\controller\Common;
-use think\Session;
-use think\Validate;
+
 
 class Count extends Common
 {

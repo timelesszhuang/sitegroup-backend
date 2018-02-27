@@ -270,6 +270,8 @@ Route::post('editpageinfo', 'common/Tdk/editpageinfo');
 Route::resource('staticConfig', 'common/Staticconfig');
 // 模板管理 修改模板
 Route::post("templateSave/:site_id/:name", "common/template/savetemplate");
+//content_get
+Route::resource('content_get', 'admin/ContentGet');
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

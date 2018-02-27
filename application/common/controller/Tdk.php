@@ -8,11 +8,11 @@ use think\Request;
 use app\common\controller\Common;
 use think\Validate;
 
-class Tdk extends Common
+class Tdk extends CommonLogin
 {
     /**
      * 大后台统一修改站点tdk操作
-     * @author guozhen
+     * @author jingzheng
      * @param $id
      * @return \think\Response
      */

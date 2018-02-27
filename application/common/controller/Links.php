@@ -2,10 +2,7 @@
 
 namespace app\common\controller;
 
-use app\common\controller\CommonLogin;
-use think\Controller;
 use think\Request;
-use app\common\controller\Common;
 use think\Validate;
 
 class Links extends CommonLogin

@@ -17,7 +17,7 @@ use app\common\model\Marketingmode;
 use app\common\model\Node;
 use app\common\model\SiteUser;
 use app\common\model\User;
-use app\common\controller\Count;
+
 
 class Home extends CommonLogin
 {

@@ -4,7 +4,7 @@ namespace app\common\controller;
 
 use think\Request;
 use think\Validate;
-use app\common\controller\Common;
+
 
 class Domain extends CommonLogin
 {

@@ -232,6 +232,23 @@ return [
     'common/template/filelist'=>[2],
     'common/template/templateRead'=>[2],
     'common/template/readFile'=>[2],
+    'common/template/savetemplate'=>[2],
+    'common/ContentGet/index' => [2],
+    'common/ContentGet/read' => [2],
+    'common/ContentGet/save' => [2],
+    'common/ContentGet/update' => [2],
+    'common/ContentGet/delete' => [2],
+    'common/Staticconfig/index' => [2],
+    'common/Staticconfig/read' => [2],
+    'common/Staticconfig/save' => [2],
+    'common/Staticconfig/update' => [2],
+    'common/Staticconfig/delete' => [2],
+    'common/Tdk/save' => [2],
+    'common/Tdk/search' => [2],
+    'common/Tdk/read' => [2],
+    'common/Tdk/getAkeyword' => [2],
+    'common/Tdk/editpageinfo' => [2],
+
 
 
 

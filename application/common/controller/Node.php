@@ -2,8 +2,6 @@
 namespace app\common\controller;
 
 
-use app\common\model\User;
-use think\Controller;
 use think\Request;
 use think\Validate;
 

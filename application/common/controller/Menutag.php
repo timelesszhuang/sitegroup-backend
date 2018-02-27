@@ -2,7 +2,6 @@
 
 namespace app\common\controller;
 
-use app\common\controller\Common;
 use think\Request;
 use think\Validate;
 use app\common\model\Menutag as mtag;

@@ -14,7 +14,7 @@ use app\common\model\SiteUser;
 use app\common\model\User;
 use app\common\traits\Obtrait;
 use app\common\traits\Osstrait;
-use think\Config;
+
 use think\Request;
 use think\Session;
 use think\Validate;

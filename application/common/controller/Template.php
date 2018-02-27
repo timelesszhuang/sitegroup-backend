@@ -9,7 +9,7 @@ use app\common\traits\Obtrait;
 use app\common\traits\Osstrait;
 use app\common\exception\ProcessException;
 
-class Template extends Common
+class Template extends CommonLogin
 {
 
     use Osstrait;
