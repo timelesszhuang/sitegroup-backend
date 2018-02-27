@@ -76,6 +76,7 @@ class AccountOperation extends CommonLogin
             if(!$obj->save()){
                 Common::processException('修改失败');
             };
+            return $this->resultArray();
         } catch (ProcessException $exception) {
             return $this->resultArray("failed", $exception->getMessage());
         }
