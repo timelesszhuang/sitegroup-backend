@@ -360,4 +360,30 @@ class Template extends Common
 
     }
 
+
+    /**
+     * 保存新建的资源
+     *
+     * @param  \think\Request $request
+     * @return \think\Response
+     */
+    public function savetemplate($site_id, $name)
+    {
+        $request = Request::instance();
+        $content = $request->post("content");
+        $url = "templateupdate";
+        $site = \app\common\model\Site::get($site_id);
+        if ($site) {
+            $send = [
+                "site_id" => $site_id,
+                "filename" => $name,
+                "content" => $content
+            ];
+            $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
+            $data = json_decode($siteData, true);
+            return $this->resultArray($data["status"],$data['msg'] );
+        }
+        return $this->resultArray('failed','当前网站未获取到!' );
+    }
+
 }

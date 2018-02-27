@@ -2,7 +2,6 @@
 
 namespace app\common\controller;
 
-use app\common\controller\Common;
 use think\Session;
 use think\Validate;
 use think\Request;
