@@ -414,7 +414,7 @@ class Count extends Common
         //array_walk() 数组的键名和键值是参数。
         array_walk($Pv, [$this, "for1"]);
         $temp = ["time" => $date_diff, "type" => $this->count];
-        return $this->resultArray( '','查询成功', $temp);
+        return $this->resultArray($temp);
     }
 
     /**
