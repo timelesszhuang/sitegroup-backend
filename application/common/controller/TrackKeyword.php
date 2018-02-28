@@ -28,16 +28,6 @@ class TrackKeyword extends CommonLogin
     }
 
     /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * 保存新建的资源
      *
      * @param  \think\Request  $request

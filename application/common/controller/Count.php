@@ -5,7 +5,7 @@ namespace app\common\controller;
 use app\common\model\BrowseRecord;
 use think\Config;
 use think\Db;
-
+use think\Request;
 
 
 class Count extends Common
@@ -25,11 +25,12 @@ class Count extends Common
     public function index()
     {
         $param = $this->request->get();
-        $user_info = $this->getSessionUserInfo();
+        $user = $this->getSessionUserInfo();
+
         $starttime = 0;
         $stoptime = time();
         $where = [
-            'node_id'=>$user_info["node_id"],
+        'node_id' => $user["node_id"],
         ];
         //判断前台是否传递参数
         if (isset($param["time"])) {
@@ -65,9 +66,9 @@ class Count extends Common
     public function enginecount()
     {
         $param = $this->request->get();
-        $user = $this->getSessionUser();
+        $user = $this->getSessionUserInfo();
         $where = [
-            'node_id' => $user["user_node_id"],
+            'node_id' => $user["node_id"],
         ];
         //判断前台是否传递参数
         if (isset($param["time"])) {
@@ -133,9 +134,9 @@ class Count extends Common
         //重组数组返给前台
         $temp = ["time" => $date_diff, "type" => $this->all_count];
         if (empty($userAgent)) {
-            return $this->resultArray('没有查询到数据', 'failed', $temp);
+            return $this->resultArray( 'failed','没有查询到数据', $temp);
         } else {
-            return $this->resultArray('查询成功', '', $temp);
+            return $this->resultArray( '','查询成功', $temp);
         }
     }
 
@@ -276,12 +277,12 @@ class Count extends Common
      * @throws \think\exception\DbException
      */
 //TODO oldfunction
-    public function pv()
+    public function pvStatistic()
     {
         $param = $this->request->get();
-        $user = $this->getSessionUser();
+        $user = $this->getSessionUserInfo();
         $where = [
-            'node_id' => $user["user_node_id"],
+            'node_id' => $user["node_id"],
         ];
         //判断前台是否传递参数
         if (isset($param["time"])) {
@@ -338,9 +339,9 @@ class Count extends Common
         array_walk($Pv, [$this, "for1"]);
         $temp = ["time" => $date_diff, "type" => $this->count];
         if (empty($userpv)) {
-            return $this->resultArray('没有查询到数据', 'failed', $temp);
+            return $this->resultArray('failed','没有查询到数据',  $temp);
         } else {
-            return $this->resultArray('查询成功', '', $temp);
+            return $this->resultArray( '','查询成功', $temp);
         }
     }
 
@@ -413,7 +414,7 @@ class Count extends Common
         //array_walk() 数组的键名和键值是参数。
         array_walk($Pv, [$this, "for1"]);
         $temp = ["time" => $date_diff, "type" => $this->count];
-        return $this->resultArray('查询成功', '', $temp);
+        return $this->resultArray( '','查询成功', $temp);
     }
 
     /**
@@ -449,11 +450,11 @@ class Count extends Common
 //TODO oldfunction
     public function countArticle()
     {
-        $user = $this->getSessionUser();
+        $user = $this->getSessionUserInfo();
         $where = [
-            'node_id' => $user["user_node_id"],
+            'node_id' => $user["node_id"],
         ];
-        $articleTypes = \app\admin\model\Articletype::all($where);
+        $articleTypes = \app\common\model\Articletype::all($where);
         foreach ($articleTypes as $item) {
             yield $this->foreachArticle($item);
         }
@@ -464,7 +465,7 @@ class Count extends Common
 //TODO oldfunction
     public function foreachArticle($articleType)
     {
-        $count = \app\admin\model\ScatteredTitle::where(["articletype_id" => $articleType->id])->count();
+        $count = \app\common\model\ScatteredTitle::where(["articletype_id" => $articleType->id])->count();
         return ["count" => $count, "name" => $articleType->name];
 
     }

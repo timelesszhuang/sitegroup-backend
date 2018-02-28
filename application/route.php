@@ -285,15 +285,14 @@ Route::get('getTrack', 'common/TrackKeyword/getTrack');
 Route::resource('Rejection', 'common/Rejection');
 //配置下拉
 Route::get('userdefine', 'common/Rejection/getUserDefind');
-//浏览量
+//浏览量展示
 Route::resource('pv', 'common/Pv');
 //节点统计
-Route::resource("count", 'admin/Count');
+Route::resource("count", 'common/Count');
 Route::get("countkeyword", 'common/Pv/countkeyword');
-Route::get("count/enginecount", 'common/Count/enginecount');
-Route::get("count/en", 'common/Count/en');
-Route::get("count/pv", 'common/Count/pv');
-Route::get("count/show", 'common/Count/show');
+Route::get("engineCount", 'common/Count/enginecount');
+//浏览量统计
+Route::get("pvStatistic", 'common/Count/pv');
 Route::get("count/articlecount", 'common/Count/ArticleCount');
 
 /*//用户电话记录数据管理
