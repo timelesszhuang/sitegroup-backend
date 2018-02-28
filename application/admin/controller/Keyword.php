@@ -256,6 +256,7 @@ class Keyword extends CommonLogin
         $keyword = $this->model;
         $arr = $keyword->field('tag,count(id) as tagCount')->where($where)->group('tag')->order("tagCount", "desc")->select();
         $te = [];
+        $ar = [];
         foreach ($arr as $k => $v) {
             $te[] = $v['tagCount'];
             $ar[] = $v['tag'];
