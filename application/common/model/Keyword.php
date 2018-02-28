@@ -47,7 +47,7 @@ class Keyword extends Model
         $where['tag']="A";
         $user=(new Common)->getSessionUserInfo();
         $where["node_id"]=$user["node_id"];
-        $data = $this->where($where)->field('id,name as text')->select();
+        $data = $this->where($where)->field('id,name as label')->select();
         return $data;
 
     }
