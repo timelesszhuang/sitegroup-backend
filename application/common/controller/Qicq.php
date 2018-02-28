@@ -60,13 +60,10 @@ class Qicq extends CommonLogin
     public function getTypes()
     {
         $arr = [
-            ["id" => 1, "text" => "科技类"],
-            ["id" => 2, "text" => "教育类"],
-            ["id" => 3, "text" => "财经类"],
-            ["id" => 4, "text" => "美食类"],
-            ["id" => 5, "text" => "社会类"],
-            ["id" => 6, "text" => "文化类"]
-        ];
+        ["id" => 1, "text" => "科技"],
+        ["id" => 2, "text" => "教育"],
+        ["id" => 3, 'text' => "财经"]
+         ];
         return $this->resultArray($arr);
     }
 }
