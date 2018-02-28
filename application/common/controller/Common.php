@@ -115,7 +115,7 @@ class Common extends Controller
      * 获取配置列表
      * 重组数组
      * @author jingzheng
-     * */
+     */
 
     //TODO oldfunction
     public function getDataList($auth)
@@ -340,7 +340,7 @@ class Common extends Controller
     public function getList($model, $field)
     {
         $user_info = $this->getSessionUserInfo();
-        $where["node_id"] = [["=",$user_info["node_id"]], ["=", 0], "or"];
+        $where["node_id"] = [["=", $user_info["node_id"]], ["=", 0], "or"];
         $data = $model->field($field)->where($where)->select();
         array_walk($data, [$this, "formatter_data"]);
         return $this->resultArray('', '', $data);
@@ -415,8 +415,8 @@ class Common extends Controller
     }
 
 
-
-    public function test(){
+    public function test()
+    {
         $str = "aaaa\n中";
         echo strlen($str);
     }

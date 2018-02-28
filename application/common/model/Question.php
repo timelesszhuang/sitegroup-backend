@@ -34,7 +34,6 @@ class Question extends Model
     {
         $count = $this->where('type_id', 'in', $wheretype_id)->count();
         $questiondata = $this->limit($limit, $rows)->where('type_id', 'in', $wheretype_id)->where($w)->field('id,question,create_time')->order('id desc')->select();
-
         return [
             "total" => $count,
             "rows" => $questiondata

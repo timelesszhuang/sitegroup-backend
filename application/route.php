@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 use think\Request;
 use think\Route;
+
 /** 登录相关*/
 Route::get('get_session', 'common/Login/getSession');//获取当前用户数据
 Route::get('clear_session', 'common/Login/clearSession');//清楚当前用户登录session信息
@@ -295,6 +296,12 @@ Route::get("count/en", 'common/Count/en');
 Route::get("count/pv", 'common/Count/pv');
 Route::get("count/show", 'common/Count/show');
 Route::get("count/articlecount", 'common/Count/ArticleCount');
+
+//获取站点相关的信息
+Route::get('getUserInfo', "common/UserInfo/getUserInfo");
+//获取用户登陆信息
+Route::get('userLoginLog', "common/UserInfo/getUserLoginList");
+
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');
@@ -588,7 +595,7 @@ Route::post('wechat/addArticle', 'admin/WeixinArticle/create');
 Route::get('wechat/getOneArticle/:id', 'admin/WeixinArticle/read');
 //网易采集文章列表
 Route::get('wangyi/article', 'admin/WangyiArticle/index');
-//网易采集文章添加到文章库-
+//网易采集文章添加到文章库
 Route::post('wangyi/addArticle', 'admin/WangyiArticle/create');
 //网易采集文章获取一篇采集文章
 Route::get('wangyi/getOneArticle/:id', 'admin/WangyiArticle/read');
@@ -734,7 +741,12 @@ Route::resource('admin/siteIco','admin/SiteIco');
 Route::post('admin/siteicoup','admin/SiteIco/uploadIcoImg');
 //站点ico列表
 Route::get('admin/getsiteicolist',"admin/SiteIco/icoList");
--
+//站点water_image
+Route::resource('admin/siteWaterImage','admin/SiteWaterImage');
+//站点water_image 图片上传
+Route::post('admin/sitewaterimageup','admin/SiteWaterImage/uploadWaterImageImg');
+//站点water_image 列表
+Route::get('admin/getsitewaterimagelist',"admin/SiteWaterImage/waterimageList");
 //搜狐新闻
 Route::resource('admin/souhu',"admin/Souhu");
 //搜狐分类列表

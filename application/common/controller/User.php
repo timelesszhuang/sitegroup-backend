@@ -96,7 +96,7 @@ class User extends Common
      * @param  \think\Request  $request
      * @param  int  $id
      * @return \think\Response
-     * @author jingzheng
+     * @author guozhen
      */
     public function update(Request $request, $id)
     {
@@ -133,7 +133,7 @@ class User extends Common
      *
      * @param  int  $id
      * @return \think\Response
-     * @author jingzheng
+     * @author guozhen
      */
     public function delete($id)
     {
