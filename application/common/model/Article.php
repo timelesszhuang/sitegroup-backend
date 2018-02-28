@@ -123,8 +123,13 @@ class Article extends Model
      * 获取所有 文章
      * @param $limit
      * @param $rows
-     * @param int $where
+     * @param string $w
+     * @param string $wheresite
+     * @param string $wheretype_id
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public
     //TODO oldfunction

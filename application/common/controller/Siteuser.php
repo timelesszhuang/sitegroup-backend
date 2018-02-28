@@ -10,7 +10,7 @@ class Siteuser extends Common
     /**
      * 显示资源列表
      *
-     * @return \think\Response
+     * @return array
      */
     public function index()
     {
@@ -38,8 +38,8 @@ class Siteuser extends Common
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
-     * @return \think\Response
+     * @param  \think\Request $request
+     * @return array
      */
     public function save(Request $request)
     {
@@ -70,8 +70,11 @@ class Siteuser extends Common
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
-     * @return \think\Response
+     * @param  int $id
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function read($id)
     {
@@ -126,8 +129,8 @@ class Siteuser extends Common
 
     /**
      * 是否启用
-     * @param  int  $id
-     * @return \think\Response
+     * @param  int $id
+     * @return array
      */
     public function enable($id)
     {
