@@ -259,5 +259,7 @@ return [
     'common/MainkeywordSearch/mainkeyword'=>[2],
     'common/Rejection/index'=>[2],
     'common/Rejection/getUserDefind'=>[2],
+    'common/Pv/index'=>[2],
+
 
 ];

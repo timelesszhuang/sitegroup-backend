@@ -2,10 +2,8 @@
 
 namespace app\common\controller;
 
-use app\common\controller\Common;
-use think\Request;
 use \app\common\model\MainkeywordSearchengineorder as Search;
-use think\Validate;
+
 class MainkeywordSearch extends CommonLogin
 {
     protected $conn='';

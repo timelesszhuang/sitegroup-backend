@@ -126,6 +126,6 @@ class TrackKeyword extends CommonLogin
     public function getTrack()
     {
         $field="id,keyword as text";
-        return $this->getList((new \app\admin\model\TrackKeyword()),$field);
+        return $this->getList((new \app\common\model\TrackKeyword()),$field);
     }
 }

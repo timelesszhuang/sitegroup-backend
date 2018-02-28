@@ -7,7 +7,7 @@ use think\Request;
 use think\Validate;
 use app\common\controller\Common;
 
-class Rejection extends Common
+class Rejection extends CommonLogin
 {
     /**
      * 显示资源列表

@@ -5,7 +5,7 @@ namespace app\common\controller;
 use app\common\model\BrowseRecord;
 use think\Config;
 use think\Db;
-use think\Request;
+
 
 
 class Count extends Common
@@ -25,11 +25,11 @@ class Count extends Common
     public function index()
     {
         $param = $this->request->get();
-        $user = $this->getSessionUser();
+        $user_info = $this->getSessionUserInfo();
         $starttime = 0;
         $stoptime = time();
         $where = [
-            'node_id' => $user["user_node_id"],
+            'node_id'=>$user_info["node_id"],
         ];
         //判断前台是否传递参数
         if (isset($param["time"])) {
@@ -53,97 +53,6 @@ class Count extends Common
         return $this->resultArray('', '', $temp);
     }
 
-    /**
-     * 显示创建资源表单页.
-     *
-     * @return void
-     */
-//TODO oldfunction
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request $request
-     * @return void
-     */
-//TODO oldfunction
-    public function save(Request $request)
-    {
-        //
-    }
-
-    /**
-     * 显示指定的资源
-     *
-     * @param  int $id
-     * @return void
-     */
-//TODO oldfunction
-    public function read($id)
-    {
-        //
-    }
-
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int $id
-     * @return void
-     */
-//TODO oldfunction
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request $request
-     * @param  int $id
-     * @return void
-     */
-//TODO oldfunction
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * 删除指定资源
-     *
-     * @param  int $id
-     * @return void
-     */
-//TODO oldfunction
-    public function delete($id)
-    {
-        //
-    }
-
-    /**
-     * 小网站用户存储站点信息
-     * @return void
-     */
-//TODO oldfunction
-    public function siteInfo()
-    {
-
-    }
-
-    /**
-     * 设置session 全部都放进去 以后有用
-     * @param $site_info
-     */
-//TODO oldfunction
-    public function setSession($site_info)
-    {
-
-    }
 
     /**
      * @return array
