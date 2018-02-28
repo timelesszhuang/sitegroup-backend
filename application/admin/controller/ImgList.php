@@ -267,6 +267,15 @@ class ImgList extends CommonLogin
         }
         return $this->resultArray('success', '删除完成', $imgser);
     }
+    /**
+     * @param $id
+     * @return array
+     */
+    public function read($id)
+    {
+        return $this->getread((new \app\common\model\Imglist()), $id);
+    }
+
 
     /**
      * @return array

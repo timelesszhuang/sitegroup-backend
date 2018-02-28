@@ -44,7 +44,7 @@ class Contactway extends CommonLogin
     public function save(Request $request)
     {
         $rule = [
-            ['detail','require','请填写描述'],
+
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -95,7 +95,7 @@ class Contactway extends CommonLogin
     public function update(Request $request, $id)
     {
         $rule = [
-            ['detail','require','请填写描述'],
+
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();

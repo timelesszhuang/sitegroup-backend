@@ -75,7 +75,7 @@ class Product extends CommonLogin
             $rule = [
                 ["name", "require", "请输入产品名称"],
                 ["summary", "require", "请输入摘要"],
-                ["detail", "require", "请输入详情"],
+
                 ["image", 'require', "请上传产品缩略图"],
                 ["type_id", 'require', "请上传分类"],
                 ['type_name', 'require', "请上传分类名称"]
@@ -149,7 +149,7 @@ class Product extends CommonLogin
             $rule = [
                 ["name", "require", "请输入产品名称"],
                 ["summary", "require", "请输入摘要"],
-                ["detail", "require", "请输入详情"],
+
                 ["type_id", 'require', "请上传分类"],
                 ['type_name', 'require', "请上传分类名称"]
             ];

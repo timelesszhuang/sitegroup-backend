@@ -52,7 +52,7 @@ class WeixinKeyword extends Common
     {
         $rule = [
             ['name', 'require', "请填写关键词名字"],
-            ["detail", "require", "请输入关键词描述"],
+
             ['type_name', 'require', '请填写分类名']
         ];
         $validate = new Validate($rule);
@@ -78,7 +78,7 @@ class WeixinKeyword extends Common
     {
         $rule = [
             ['name', 'require', "请填写关键词名字"],
-            ["detail", "require", "请输入关键词描述"],
+
             ['type_name', 'require', '请填写分类名']
         ];
         $validate = new Validate($rule);

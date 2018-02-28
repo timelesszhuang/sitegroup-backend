@@ -63,7 +63,6 @@ class Template extends CommonLogin
         try {
             $rule = [
                 ['name', "require", "请填写模板名"],
-                ['detail', 'require', "请填写模板信息"],
             ];
             $validate = new Validate($rule);
             $data = $this->request->put();
@@ -122,7 +121,6 @@ class Template extends CommonLogin
         $post = $request->post();
         $rule = [
             ["name", "require", "请传入模板名"],
-            ["detail", "require", "请传入模板详情"],
         ];
         $validate = new Validate($rule);
         if (!$validate->check($post)) {

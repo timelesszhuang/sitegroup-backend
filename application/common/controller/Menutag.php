@@ -46,7 +46,7 @@ class Menutag extends CommonLogin
     {
         $rule = [
             ['name', "require", "请填写分类名"],
-            ['detail', 'require', "请填写描述"],
+
         ];
         $validate = new Validate($rule);
         $data = $this->request->post();
@@ -94,7 +94,7 @@ class Menutag extends CommonLogin
     {
         $rule = [
             ['name', "require", "请填写分类名"],
-            ['detail', 'require', "请填写描述"],
+
         ];
         $validate = new Validate($rule);
         $data = $this->request->put();

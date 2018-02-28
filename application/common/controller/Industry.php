@@ -71,7 +71,7 @@ class Industry extends CommonLogin
 
         $rule = [
             ["name", "require|unique:Industry", "请输入行业名|行业名重复"],
-            ['detail', 'require', '详细必须'],
+
         ];
         $data = $this->request->post();
         $validate = new Validate($rule);
@@ -94,7 +94,7 @@ class Industry extends CommonLogin
     {
         $rule = [
             ["name", "require|unique:Industry", "请输入行业名|行业名重复"],
-            ['detail', 'require', '详细必须'],
+
         ];
         $data = $this->request->put();
         $validate = new Validate($rule);

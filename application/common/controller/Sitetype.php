@@ -47,7 +47,6 @@ class Sitetype extends Common
     {
         $rule = [
             ['name','require','请填写站点分类名'],
-            ['detail', 'require', "请填写描述"],
             ['chain_type','require','请填写链轮类型'],
         ];
         $validate = new Validate($rule);
@@ -96,7 +95,7 @@ class Sitetype extends Common
     {
         $rule = [
             ['name','require','请填写站点分类名'],
-            ['detail', 'require', "请填写描述"],
+
             ['chain_type','require','请填写链轮类型'],
         ];
         $validate = new Validate($rule);
