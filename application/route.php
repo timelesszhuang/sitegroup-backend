@@ -290,11 +290,11 @@ Route::resource('pv', 'common/Pv');
 //节点统计
 Route::resource("count", 'admin/Count');
 Route::get("countkeyword", 'common/Pv/countkeyword');
-Route::get("count/enginecount", 'admin/Count/enginecount');
-Route::get("count/en", 'admin/Count/en');
-Route::get("count/pv", 'admin/Count/pv');
-Route::get("count/show", 'admin/Count/show');
-Route::get("count/articlecount", 'admin/Count/ArticleCount');
+Route::get("count/enginecount", 'common/Count/enginecount');
+Route::get("count/en", 'common/Count/en');
+Route::get("count/pv", 'common/Count/pv');
+Route::get("count/show", 'common/Count/show');
+Route::get("count/articlecount", 'common/Count/ArticleCount');
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

@@ -79,22 +79,30 @@ class SystemNotice extends CommonLogin
         $where['notice_id'] = $id;
         $readdata = (new SystemNoticeRead())->where($where)->find();
 //        dump($readdata);die;
-        if($status == 'read'){
-            if(empty($readdata)){
-                $Noticedata['notice_id'] = $id;
-                $Noticedata['status'] = 20;
-                $Noticedata['node_id'] =$user_info["node_id"];
-            if( !SystemNoticeRead::create($Noticedata)){
+        Db::startTrans();
+        try{
+            if($status == 'read'){
+                if(empty($readdata)){
+                    $Noticedata['notice_id'] = $id;
+                    $Noticedata['status'] = 20;
+                    $Noticedata['node_id'] =$user_info["node_id"];
+                    if( !SystemNoticeRead::create($Noticedata)){
+                        return $this->resultArray('修改失败', 'failed');
+                    } ;
+                    $data['status']=10;
+                }else{
+                    $data['status'] = 10;}
+            }elseif ($status == 'del'){
+                $data['status'] = 30;
+            }
+            if (!(new SystemNoticeRead)->save($data, ["id" => $readdata['id']])) {
                 return $this->resultArray('修改失败', 'failed');
-            } ;
-                $data['status']=10;
-            }else{
-            $data['status'] = 10;}
-        }elseif ($status == 'del'){
-            $data['status'] = 30;
-        }
-        if (!(new SystemNoticeRead)->save($data, ["id" => $readdata['id']])) {
-            return $this->resultArray('修改失败', 'failed');
+            }
+            Db::commit();
+        } catch (\Exception $e) {
+            // 回滚事务
+            return $this->resultArray($e->getMessage(), "failed");
+            Db::rollback();
         }
         return $this->resultArray('修改成功');
 
