@@ -253,11 +253,11 @@ Route::put('saveCdn/:id', 'common/Site/saveCdn');
 //获取所有模板下拉
 Route::get('getTemplate', 'common/Template/getTemplate');
 //模板管理 获取对应site_id的信息
-Route::get("templateList/:site_id", "common/template/filelist");
+Route::get("templateList/:site_id", "common/Template/filelist");
 // 模板管理 读取模板
-Route::get("templateRead/:site_id/:name", "common/template/templateRead");
+Route::get("templateRead/:site_id/:name", "common/Template/templateRead");
 //模板管理添加文件
-Route::post("templateAdd/:site_id/:name", "common/template/readFile");
+Route::post("templateAdd/:site_id/:name", "common/Template/readFile");
 //大站点可以统一修改小站点的tdk
 Route::put("tdk/:id", 'common/Tdk/save');
 //大站点统一查询小站点
@@ -300,7 +300,22 @@ Route::get("count/articlecount", 'common/Count/ArticleCount');
 Route::get('getUserInfo', "common/UserInfo/getUserInfo");
 //获取用户登陆信息
 Route::get('userLoginLog', "common/UserInfo/getUserLoginList");
-
+//活动缩略图
+Route::post('uploadactivity', 'common/CreativeActivity/imageUpload');
+//外站活动添加
+Route::post('storyOut', 'common/CreativeActivity/storyOut');
+//外部活动修改
+Route::post('saveOut/:id', 'common/CreativeActivity/saveOut');
+//活动相关
+Route::resource('activityabout', 'common/CreativeActivity');
+//活动 修改/添加 图片
+Route::post('uploadactivitySerImg', 'common/CreativeActivity/uploadImgSer');
+// 活动轮播获取
+Route::get('getImgSer/:id', 'common/CreativeActivity/getImgSer');
+//活动删除轮播
+Route::get('delImgSer/:id/:index', 'common/CreativeActivity/deleteImgser');
+//修改活动状态
+Route::get('changeactivityStatus/:id/:status', 'common/CreativeActivity/changeStatus');
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');
