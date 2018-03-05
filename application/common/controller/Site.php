@@ -387,7 +387,7 @@ class Site extends Common
             $NewUrl = '';
             $msg = '';
             switch ($name) {
-                case "aKeyGeneration":
+                case "oneKeyGenerate":
                     $msg = "正在一键生成...";
                     $NewUrl = $url . "/allstatic";
                     break;
