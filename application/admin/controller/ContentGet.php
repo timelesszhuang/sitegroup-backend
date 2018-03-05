@@ -57,7 +57,7 @@ class ContentGet extends Common
     {
         $rule = [
             ["name", "require", "请输入名称"],
-            ["en_name", "require|alphaNum|unique:imglist,en_name^node_id", "请输入英文名称|英文名格式只支持字母与数字|英文名重复"],
+            ["en_name", "require|alphaNum|unique:content_get,en_name^node_id", "请输入英文名称|英文名格式只支持字母与数字|英文名重复"],
             ["href", "url", "链接格式不正确"],
         ];
         $validate = new Validate($rule);
@@ -84,7 +84,7 @@ class ContentGet extends Common
     {
         $rule = [
             ["name", "require", "请输入名称"],
-            ["en_name", "require|alphaNum|unique:imglist,en_name^node_id", "请输入英文名称|英文名格式只支持字母与数字|英文名重复"],
+            ["en_name", "require|alphaNum|unique:content_get,en_name^node_id", "请输入英文名称|英文名格式只支持字母与数字|英文名重复"],
             ["href", "url", "链接格式不正确"],
         ];
         $data = $request->put();
