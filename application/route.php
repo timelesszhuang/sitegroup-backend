@@ -320,6 +320,10 @@ Route::get('delImgSer/:id/:index', 'common/CreativeActivity/deleteImgser');
 Route::get('changeactivityStatus/:id/:status', 'common/CreativeActivity/changeStatus');
 //小站点插入href
 Route::resource('ArticleInsertA', 'common/ArticleInsertA');
+//关键词替换指定的链接
+Route::resource('articleReplaceKeyword', 'common/ArticleReplaceKeyword');
+//小站点替换关键词
+Route::resource('Substitution', 'common/Substitution');
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

@@ -4,11 +4,10 @@ namespace app\common\controller;
 
 
 use think\Request;
-use app\common\controller\Common;
-use think\Session;
+
 use think\Validate;
 
-class ArticleInsertA extends CommonLogin
+class Substitution extends CommonLogin
 {
     /**
      * 显示资源列表
@@ -17,18 +16,19 @@ class ArticleInsertA extends CommonLogin
      */
     public function index()
     {
-        $href = $this->request->get('href');
+        $substitution = $this->request->get('front_substitution');
         $request = $this->getLimit();
+        $where = [];
+        if (!empty($substitution)) {
+            $where["front_substitution"] = ["like", "%$substitution%"];
+        }
         $user_info = $this->getSessionUserInfo();
         $where["node_id"] =$user_info["node_id"];
         if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
             $where["site_id"] = $user_info["site_id"];
         }
-        if (!empty($href)) {
-            $where["href"] = ["like", "%$href%"];
-        }
-        $data = (new \app\common\model\ArticleInsertA())->getAll($request["limit"], $request["rows"], $where);
-        return $this->resultArray($data);
+        $data = (new \app\common\model\ArticlekeywordSubstitution())->getAll($request["limit"], $request["rows"], $where);
+        return $this->resultArray('','',$data);
     }
 
     /**
@@ -50,23 +50,18 @@ class ArticleInsertA extends CommonLogin
     public function save(Request $request)
     {
         $rule = [
-            ["title", "require", "请输入title"],
-            ["content", "require", "请输入内容"],
-            ["href", "require", "请输入链接"],
+            ["front_substitution", "require", "请输入替换前的关键词"],
+            ["substitution", "require", "请输入替换为的关键词"],
         ];
         $validate = new Validate($rule);
         $data = $request->post();
-        $url = strstr($data['href'], "http://");
-        if (empty($url)) {
-            return $this->resultArray( "failed",'请输入http://');
-        }
         $user_info = $this->getSessionUserInfo();
         $data['node_id'] = $user_info["node_id"];
         $data["site_id"] = $user_info["site_id"];
         if (!$validate->check($data)) {
-            return $this->resultArray("failed",$validate->getError() );
+            return $this->resultArray( "failed",$validate->getError());
         }
-        if (!\app\common\model\ArticleInsertA::create($data)) {
+        if (!\app\common\model\ArticlekeywordSubstitution::create($data)) {
             return $this->resultArray( "failed","添加失败");
         }
         return $this->resultArray("添加成功");
@@ -80,7 +75,7 @@ class ArticleInsertA extends CommonLogin
      */
     public function read($id)
     {
-        return $this->getread((new \app\common\model\ArticleInsertA()), $id);
+        return $this->getread((new \app\common\model\ArticlekeywordSubstitution()), $id);
     }
 
     /**
@@ -104,20 +99,16 @@ class ArticleInsertA extends CommonLogin
     public function update(Request $request, $id)
     {
         $rule = [
-            ["title", "require", "请输入title"],
-            ["content", "require", "请输入内容"],
-            ["href", "require", "请输入链接"],
+            ["front_substitution", "require", "请输入替换前的关键词"],
+            ["substitution", "require", "请输入替换为的关键词"],
         ];
         $validate = new Validate($rule);
         $data = $request->post();
-        $user_info = $this->getSessionUserInfo();
-        $data['node_id'] = $user_info["node_id"];
-        $data["site_id"] = $user_info["site_id"];
         if (!$validate->check($data)) {
-            return $this->resultArray("failed",$validate->getError());
+            return $this->resultArray( "failed",$validate->getError());
         }
-        if (!(new \app\common\model\ArticleInsertA())->save($data, ["id" => $id])) {
-            return $this->resultArray( 'failed','修改失败');
+        if (!(new \app\common\model\ArticlekeywordSubstitution())->save($data, ["id" => $id])) {
+            return $this->resultArray('failed','修改失败');
         }
         return $this->resultArray('修改成功');
     }
@@ -130,7 +121,10 @@ class ArticleInsertA extends CommonLogin
      */
     public function delete($id)
     {
-        return $this->deleteRecord((new \app\common\model\ArticleInsertA()), $id);
+        return $this->deleteRecord((new \app\common\model\ArticlekeywordSubstitution()), $id);
     }
+
+
+
 
 }

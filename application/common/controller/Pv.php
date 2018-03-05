@@ -6,7 +6,7 @@ use app\common\model\CountData;
 use app\common\model\BrowseRecord;
 use think\Request;
 
-class Pv extends Common
+class Pv extends CommonLogin
 {
     /**
      * 显示资源列表

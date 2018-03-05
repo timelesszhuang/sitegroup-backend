@@ -8,7 +8,7 @@ use think\Db;
 use think\Request;
 
 
-class Count extends Common
+class Count extends CommonLogin
 {
 
     public $all_count = [];
