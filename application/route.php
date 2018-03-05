@@ -324,8 +324,8 @@ Route::resource('ArticleInsertA', 'common/ArticleInsertA');
 Route::resource('articleReplaceKeyword', 'common/ArticleReplaceKeyword');
 //小站点替换关键词
 Route::resource('Substitution', 'common/Substitution');
-////获取tdk中的a类关键词
-//Route::get('getAkeyword', 'user/PageInfo/getAkeyword');
+////获取站点tdk中的a类关键词
+Route::get('siteAkeyword', 'common/PageInfo/getAkeyword');
 //文章tdk修改
 Route::get('articletdk', 'common/PageInfo/articletdk');
 Route::get('articletdksave', 'common/PageInfo/articletdksave');

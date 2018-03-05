@@ -67,6 +67,10 @@ class Staticconfig extends CommonLogin
         if (!$validate->check($data)) {
             return $this->resultArray( "failed",$validate->getError());
         }
+        $user_info = $this->getSessionUserInfo();
+        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
+            $data["site_id"] = $user_info["site_id"];
+        }
         $where = [];
         $where['site_id'] = $data['site_id'];
         $where['type']=$data['type'];
@@ -76,10 +80,7 @@ class Staticconfig extends CommonLogin
                 return $this->resultArray( "failed","当前时间段已有相关配置,请查证后再试");
             }
         }
-        $user_info = $this->getSessionUserInfo();
-        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
-            $data["site_id"] = $user_info["site_id"];
-        }
+
         if (!\app\common\model\SiteStaticconfig::create($data)) {
             return $this->resultArray( "failed","添加失败");
         }
@@ -118,6 +119,10 @@ class Staticconfig extends CommonLogin
             return $this->resultArray( 'failed',$validate->getError());
         }
         $where = [];
+        $user_info = $this->getSessionUserInfo();
+        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
+            $data["site_id"] = $user_info["site_id"];
+        }
         $where['site_id'] = $data['site_id'];
         $where['type']=$data['type'];
         $Staticdata = (new \app\common\model\SiteStaticconfig())->where($where)->select();
@@ -129,10 +134,7 @@ class Staticconfig extends CommonLogin
                 return $this->resultArray( "failed","当前时间段已有相关配置,请查证后再试");
             }
         }
-        $user_info = $this->getSessionUserInfo();
-        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
-            $data["site_id"] = $user_info["site_id"];
-        }
+
         if (!(new \app\common\model\SiteStaticconfig)->save($data, ["id" => $id])) {
             return $this->resultArray( 'failed','修改失败');
         }
