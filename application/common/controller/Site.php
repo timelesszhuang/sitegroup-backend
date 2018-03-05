@@ -359,6 +359,10 @@ class Site extends Common
      */
     public function siteGetCurl($id, $name)
     {
+        $user_info = $this->getSessionUserInfo();
+        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
+           $id = $user_info["site_id"];
+        }
         $func = function () use ($id) {
             $user_info = $this->getSessionUserInfo();
             $nid = $user_info["node_id"];
@@ -559,6 +563,48 @@ class Site extends Common
             return $this->resultArray( '站点重置成功');
         }
         return $this->resultArray( 'failed','站点重置失败', []);
+    }
+
+
+    /**
+     * 显示资源列表
+     *
+     * @return \think\Response
+     */
+    public function siteResource()
+    {
+        $user_info = $this->getSessionUserInfo();
+        $site_id=$user_info["site_id"];
+        if(empty($site_id)){
+            return $this->resultArray("获取站点错误","failed");
+        }
+        $site=\app\common\model\Site::get($site_id);
+        if(empty($site)){
+            return $this->resultArray("获取站点错误","failed");
+        }
+        return $this->resultArray("","",$site);
+    }
+
+
+
+    /**
+     * 保存新建的资源
+     * @param  \think\Request  $request
+     * @return \think\Response
+     */
+    public function editResource(Request $request)
+    {
+        $user_info = $this->getSessionUserInfo();
+        $site_id=$user_info["site_id"];
+        if(empty($site_id)){
+            return $this->resultArray("获取站点错误","failed");
+        }
+        $data = \request()->post();
+        unset($data['id']);
+        if(!\app\common\model\Site::update($data,["id"=>$site_id])){
+            return $this->resultArray("修改站点失败!!","failed");
+        }
+        return $this->resultArray("修改成功!!");
     }
 
 }

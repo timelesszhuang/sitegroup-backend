@@ -324,6 +324,26 @@ Route::resource('ArticleInsertA', 'common/ArticleInsertA');
 Route::resource('articleReplaceKeyword', 'common/ArticleReplaceKeyword');
 //小站点替换关键词
 Route::resource('Substitution', 'common/Substitution');
+////获取tdk中的a类关键词
+//Route::get('getAkeyword', 'user/PageInfo/getAkeyword');
+//文章tdk修改
+Route::get('articletdk', 'common/PageInfo/articletdk');
+Route::get('articletdksave', 'common/PageInfo/articletdksave');
+Route::post('articletdkedit', 'common/PageInfo/articletdkedit');
+//问答tdk修改
+Route::get('questiontdk', 'common/PageInfo/questiontdk');
+Route::get('questiontdksave', 'common/PageInfo/questiontdksave');
+Route::post('questiontdkedit', 'common/PageInfo/questiontdkedit');
+//产品tdk修改
+Route::get('producttdk', 'common/PageInfo/producttdk');
+Route::get('producttdksave', 'common/PageInfo/producttdksave');
+Route::post('producttdkedit', 'common/PageInfo/producttdkedit');
+//修改a类关键词pageinfo
+Route::post('editpageinfo', 'common/PageInfo/editpageinfo');
+//获取站点联系方式
+Route::get('siteResource','common/Site/siteResource');
+Route::post('siteResource','common/Site/editResource');
+
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');

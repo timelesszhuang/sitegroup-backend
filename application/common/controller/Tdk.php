@@ -42,6 +42,10 @@ class Tdk extends CommonLogin
         $user_info = $this->getSessionUserInfo();
         $where["node_id"] = $user_info["node_id"];
         $where["site_id"] = $id;
+        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
+            $where["site_id"] = $user_info["site_id"];
+        }
+
         $data = (new SitePageinfo)->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }

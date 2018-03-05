@@ -21,6 +21,9 @@ class Staticconfig extends CommonLogin
         }
         $user_info = $this->getSessionUserInfo();
         $where["node_id"] = $user_info["node_id"];
+        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
+            $where["site_id"] = $user_info["site_id"];
+        }
         $data = (new \app\common\model\SiteStaticconfig())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
@@ -56,7 +59,6 @@ class Staticconfig extends CommonLogin
             ["starttime", "require", "请输入开始时间"],
             ["stoptime", "require", "请输入结束时间"],
             ["staticcount", "require", "请输入生成的文章数量"],
-            ["site_id", "require", "请选择站点"],
         ];
         $validate = new Validate($rule);
         $data = $request->post();
@@ -73,6 +75,10 @@ class Staticconfig extends CommonLogin
             if (!(strtotime($data['stoptime']) < strtotime($v['starttime']) || strtotime($data['starttime']) > strtotime($v['stoptime']))) {
                 return $this->resultArray( "failed","当前时间段已有相关配置,请查证后再试");
             }
+        }
+        $user_info = $this->getSessionUserInfo();
+        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
+            $data["site_id"] = $user_info["site_id"];
         }
         if (!\app\common\model\SiteStaticconfig::create($data)) {
             return $this->resultArray( "failed","添加失败");
@@ -105,7 +111,6 @@ class Staticconfig extends CommonLogin
             ["starttime", "require", "请输入开始时间"],
             ["stoptime", "require", "请输入结束时间"],
             ["staticcount", "require", "请输入生成的文章数量"],
-            ["site_id", "require", "请选择站点"],
         ];
         $data = $request->put();
         $validate = new Validate($rule);
@@ -123,6 +128,10 @@ class Staticconfig extends CommonLogin
             if (!(strtotime($data['stoptime']) < strtotime($v['starttime']) || strtotime($data['starttime']) > strtotime($v['stoptime']))) {
                 return $this->resultArray( "failed","当前时间段已有相关配置,请查证后再试");
             }
+        }
+        $user_info = $this->getSessionUserInfo();
+        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
+            $data["site_id"] = $user_info["site_id"];
         }
         if (!(new \app\common\model\SiteStaticconfig)->save($data, ["id" => $id])) {
             return $this->resultArray( 'failed','修改失败');
