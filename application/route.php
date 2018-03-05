@@ -298,7 +298,6 @@ Route::get("articlecount", 'common/Count/ArticleCount');
 Route::get("questionCount", 'common/Count/QuestionCount');
 //站点搜索引擎
 Route::get("searchBrowse", 'common/Count/searchBrowse');
-
 //获取站点相关的信息
 Route::get('getUserInfo', "common/UserInfo/getUserInfo");
 //获取用户登陆信息
@@ -319,6 +318,8 @@ Route::get('getImgSer/:id', 'common/CreativeActivity/getImgSer');
 Route::get('delImgSer/:id/:index', 'common/CreativeActivity/deleteImgser');
 //修改活动状态
 Route::get('changeactivityStatus/:id/:status', 'common/CreativeActivity/changeStatus');
+//小站点插入href
+Route::resource('ArticleInsertA', 'common/ArticleInsertA');
 
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');
