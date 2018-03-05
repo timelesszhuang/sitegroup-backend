@@ -295,6 +295,9 @@ Route::get("engineCount", 'common/Count/enginecount');
 //浏览量统计
 Route::get("pvStatistic", 'common/Count/pvStatistic');
 Route::get("articlecount", 'common/Count/ArticleCount');
+Route::get("questionCount", 'common/Count/QuestionCount');
+//站点搜索引擎
+Route::get("searchBrowse", 'common/Count/searchBrowse');
 
 //获取站点相关的信息
 Route::get('getUserInfo', "common/UserInfo/getUserInfo");

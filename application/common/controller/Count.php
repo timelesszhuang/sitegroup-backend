@@ -70,6 +70,9 @@ class Count extends Common
         $where = [
             'node_id' => $user["node_id"],
         ];
+        if ($user['user_type_name'] == 'site' && $user['user_type'] == '3') {
+            $where["site_id"] = $user["site_id"];
+        }
         //判断前台是否传递参数
         if (isset($param["time"])) {
             list($start_time, $stop_time) = $param['time'];
@@ -284,6 +287,9 @@ class Count extends Common
         $where = [
             'node_id' => $user["node_id"],
         ];
+        if ($user['user_type_name'] == 'site' && $user['user_type'] == '3') {
+            $where["site_id"] = $user["site_id"];
+        }
         //判断前台是否传递参数
         if (isset($param["time"])) {
             list($start_time, $stop_time) = $param['time'];
@@ -434,7 +440,10 @@ class Count extends Common
      * 统计文章
      * @return array
      */
-//TODO oldfunction
+    /**
+     * 统计文章
+     * @return array
+     */
     public function ArticleCount()
     {
         $count = [];
@@ -447,13 +456,10 @@ class Count extends Common
         return $this->resultArray('', '', $arr);
     }
 
-//TODO oldfunction
     public function countArticle()
     {
-        $user = $this->getSessionUserInfo();
-        $where = [
-            'node_id' => $user["node_id"],
-        ];
+        $user_info = $this->getSessionUserInfo();
+        $where["node_id"] =$user_info["node_id"];
         $articleTypes = \app\common\model\Articletype::all($where);
         foreach ($articleTypes as $item) {
             yield $this->foreachArticle($item);
@@ -462,11 +468,73 @@ class Count extends Common
 
     }
 
-//TODO oldfunction
     public function foreachArticle($articleType)
     {
-        $count = \app\common\model\ScatteredTitle::where(["articletype_id" => $articleType->id])->count();
+        $count = \app\common\model\Article::where(["articletype_id" => $articleType->id])->count();
         return ["count" => $count, "name" => $articleType->name];
 
     }
+
+    /**
+     *统计问答
+     */
+    public function QuestionCount()
+    {
+        $count = [];
+        $name = [];
+        foreach ($this->countQuestion() as $item) {
+            $count[] = $item["count"];
+            $name[] = $item["name"];
+        }
+        $arr = ["count" => $count, "name" => $name];
+        return $this->resultArray('', '', $arr);
+    }
+
+    public function countQuestion()
+    {
+        $user_info = $this->getSessionUserInfo();
+        $where["node_id"] =$user_info["node_id"];
+        $articleTypes = \app\common\model\QuestionType::all($where);
+        foreach ($articleTypes as $item) {
+            yield $this->foreachQuestion($item);
+        }
+    }
+
+    public function foreachQuestion($questionType)
+    {
+        $count = \app\common\model\Question::where(["type_id" => $questionType->id])->count();
+        return ["count" => $count, "name" => $questionType->name];
+    }
+
+    public function searchBrowse()
+    {
+        $user_info = $this->getSessionUserInfo();
+        $where = [
+            'node_id'=>$user_info["node_id"],
+        ];
+        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
+            $where["site_id"] = $user_info["site_id"];
+        }
+        $param=$this->request->get();
+        $starttime = 0;
+        $stoptime = time();
+        if (isset($param["time"])) {
+            list($start_time, $stop_time) = $param['time'];
+            $starttime = (!empty(intval($start_time))) ? strtotime($start_time) : $starttime;
+            $stoptime = (!empty(intval($stop_time))) ? strtotime($stop_time) : $stoptime;
+        }
+        $where["create_time"] = ['between', [$starttime, $stoptime]];
+        $browse=new BrowseRecord();
+        $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->order("keyCount","desc")->select();
+        foreach ($arr as $k => $v) {
+            $te[] = $v['keyCount'];
+            $ar[] = $v['engine'];
+        }
+        /** @var string $ar */
+        $temp = ["count" => $te, "name" => $ar];
+        return $this->resultArray($temp);
+
+    }
+
+
 }

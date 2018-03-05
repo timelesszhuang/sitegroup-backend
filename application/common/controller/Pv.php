@@ -23,6 +23,9 @@ class Pv extends Common
         }
         $user_info = $this->getSessionUserInfo();
         $where["node_id"] =$user_info["node_id"];
+        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
+            $where["site_id"] = $user_info["site_id"];
+        }
         return $this->resultArray('', '', (new \app\common\model\Pv())->getAll($limits['limit'], $limits['rows'], $where));
     }
     
@@ -39,6 +42,9 @@ class Pv extends Common
         $where = [
             'node_id'=>$user_info["node_id"],
         ];
+        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
+            $where["site_id"] = $user_info["site_id"];
+        }
         //判断前台是否传递参数
         if(isset($param["time"])){
             list($start_time,$stop_time)=$param['time'];
