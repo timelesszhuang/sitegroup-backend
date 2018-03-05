@@ -54,11 +54,15 @@ class Pv extends Common
         $arr = $browse->field('keyword,count(id) as keyCount')->where($where)->group('keyword')->order("keyCount","desc")->select();
         $arrcount = $browse->where($where)->count();
         $temp=[];
-        foreach ($arr as $k=>$v){
-            //数据组织成百分比的形式
-            $temp[]=["value"=>round($v['keyCount']/$arrcount*100,2),"name"=>$v['keyword']];
+
+        foreach ($arr as $k => $v) {
+            $te[] = $v['keyCount'];
+            $ar[] = $v['keyword'];
         }
-        return $this->resultArray('','',$temp);
+        /** @var string $ar */
+        $temp = ["count" => $te, "name" => $ar];
+        return $this->resultArray($temp);
+
     }
 
 

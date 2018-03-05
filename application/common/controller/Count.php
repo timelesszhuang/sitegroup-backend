@@ -136,7 +136,7 @@ class Count extends Common
         if (empty($userAgent)) {
             return $this->resultArray( 'failed','没有查询到数据', $temp);
         } else {
-            return $this->resultArray( '','查询成功', $temp);
+            return $this->resultArray( 'success','查询成功', $temp);
         }
     }
 
@@ -341,7 +341,7 @@ class Count extends Common
         if (empty($userpv)) {
             return $this->resultArray('failed','没有查询到数据',  $temp);
         } else {
-            return $this->resultArray( '','查询成功', $temp);
+            return $this->resultArray( 'success','查询成功', $temp);
         }
     }
 
