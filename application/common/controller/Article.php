@@ -66,6 +66,7 @@ class Article extends CommonLogin
     {
         $data = $this->getread((new this_model), $id);
         $data['data']['tags'] = implode(',', array_filter(explode(',', $data['data']['tags'])));
+        $data['data']['flag'] = implode(',', array_filter(explode(',', $data['data']['flag'])));
         return $data;
     }
 
@@ -100,6 +101,11 @@ class Article extends CommonLogin
                 $data['tags'] = ',' . implode(',', $data['tag_id']) . ',';
             } else {
                 $data['tags'] = "";
+            }
+            if(!empty($data['flag'])){
+                $data['flag'] = ',' . implode(',', $data['flag']) . ',';
+            }else{
+                $data['flag'] = '';
             }
             unset($data['tag_id']);
             if (!$this->model->create($data)) {
