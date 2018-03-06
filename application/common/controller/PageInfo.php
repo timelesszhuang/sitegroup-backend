@@ -11,7 +11,7 @@ use think\Validate;
 use app\common\controller\Common;
 use app\common\traits\Obtrait;
 
-class PageInfo extends Common
+class PageInfo extends CommonLogin
 {
     use  Obtrait;
 
@@ -26,22 +26,12 @@ class PageInfo extends Common
         $user_info = $this->getSessionUserInfo();
         $where = [];
         $where["node_id"] = $user_info["node_id"];
-        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
-            $where["site_id"] = $user_info["site_id"];
-        }
+        $where["site_id"] = $user_info["site_id"];
         $data = (new SitePageinfo)->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
-    /**
-     * 显示创建资源表单页.
-     *
-     * @return \think\Response
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * 保存新建的资源
@@ -56,9 +46,11 @@ class PageInfo extends Common
         ];
         $validate = new Validate($rule);
         $data = $request->post();
-        $data['node_id'] = $this->getSiteSession('login_site')["node_id"];
-        $data["site_id"] = $this->getSiteSession('website')["id"];
-        $data["site_name"] = $this->getSiteSession('website')["site_name"];
+        $user_info = $this->getSessionUserInfo();
+        $where = [];
+        $where["node_id"] = $user_info["node_id"];
+        $where["site_id"] = $user_info["site_id"];
+        $data["site_name"] = $user_info["site_name"];
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
@@ -79,16 +71,7 @@ class PageInfo extends Common
         return $this->getread((new SitePageinfo), $id);
     }
 
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+
 
     /**
      * 保存更新的资源
@@ -130,14 +113,15 @@ class PageInfo extends Common
     public function getAkeyword()
     {
 
-        $site_id = $this->getSiteSession('website')["id"];
+        $user_info = $this->getSessionUserInfo();
+        $site_id = $user_info["site_id"];
         $wh['id'] = $site_id;
         $Site = new Site();
         $keyword_id = $Site->where($wh)->field('keyword_ids')->find()->keyword_ids;
 //        dump($keyword_ids);die;
         $keyword_ids = explode(',', $keyword_id);
         $where['id'] = $keyword_ids;
-        $keyword = new \app\admin\model\Keyword();
+        $keyword = new \app\common\model\Keyword();
         $data = $keyword->where('id', 'in', $keyword_ids)->field('id,name as text')->select();
         return $this->resultArray('', '', $data);
     }
@@ -165,31 +149,14 @@ class PageInfo extends Common
     public function articletdk()
     {
         $request = $this->getLimit();
-        $site_id = $this->getSiteSession('website')["id"];
-        $where['id'] = $site_id;
-        $Site = new \app\common\model\Site();
-        $menuid = $Site->where($where)->field('menu')->find()->menu;
-        $Menuid = explode(',', $menuid);
-//        dump($Menuid);
-        $menu = new \app\common\model\Menu();
-        $wh['flag'] = 3;
-        $dat = $menu->where('id', 'in', $Menuid)->where($wh)->field('type_id')->select();
-        if ($dat) {
-            foreach ($dat as $k => $v) {
-                $typeid[$k] = $v['type_id'];
-            }
-        } else {
-            return $this->resultArray('没有数据', 'failed');
-        }
-        $wheresite['site_id'] = $site_id;
-        $w['node_id'] = Session::get('login_site')["node_id"];
-        $w['is_sync'] = 20;
-        $wheretype_id = $typeid;
+        $user_info = $this->getSessionUserInfo();
+        $type_ids = (new \app\common\model\Menu())->getSiteTypeIds($user_info['menu'], 3);
+        $where['articletype_id'] = ['in', $type_ids];
         $name = $this->request->get('title');
         if (!empty($name)) {
-            $w['title'] = ["like", "%$name%"];
+            $where['title'] = ["like", "%$name%"];
         }
-        $data = (new \app\common\model\Article())->getArticletdk($request["limit"], $request["rows"], $w, $wheresite, $wheretype_id);
+        $data =   (new \app\common\model\Article())->getArticle($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
@@ -200,14 +167,15 @@ class PageInfo extends Common
     public function articletdksave()
     {
         $edit = $this->request->get('edit');
-        $site_id = $this->getSiteSession('website')["id"];
+        $user_info = $this->getSessionUserInfo();
+        //dump($user_info);die;
+        $site_id =  $user_info["site_id"];
         $where['id'] = $site_id;
         $site = (new Site())->where($where)->select();
         foreach ($site as $k => $v) {
             $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/article/" . $edit);
             $data = json_decode($sitedata, true);
         }
-//        dump($sitedata);die;
         if ($data['status'] == "success") {
             $data['status'] = '';
         }
@@ -215,7 +183,7 @@ class PageInfo extends Common
             $data['data'] = '';
         }
 //        dump($data);die;
-        return $this->resultArray($data["msg"], $data["status"], $data['data']);
+        return $this->resultArray( $data["status"],$data["msg"], $data['data']);
 
     }
 
@@ -227,7 +195,8 @@ class PageInfo extends Common
         $this->open_start('正在修改中');
         $content = $this->request->post('content');
         $filename = $this->request->post('filename');
-        $site_id = $this->getSiteSession('website')["id"];
+        $user_info = $this->getSessionUserInfo();
+        $site_id =  $user_info["site_id"];
         $where['id'] = $site_id;
         $site = (new Site())->where($where)->select();
         foreach ($site as $k => $v) {
@@ -245,28 +214,14 @@ class PageInfo extends Common
     public function questiontdk()
     {
         $request = $this->getLimit();
-        $site_id = $this->getSiteSession('website')["id"];
-        $where['id'] = $site_id;
-        $Site = new \app\common\model\Site();
-        $menuid = $Site->where($where)->field('menu')->find()->menu;
-        $Menuid = explode(',', $menuid);
-        $menu = new \app\common\model\Menu();
-        $wh['flag'] = 2;
-        $dat = $menu->where('id', 'in', $Menuid)->where($wh)->field('type_id')->select();
-        if ($dat) {
-            foreach ($dat as $k => $v) {
-                $typeid[$k] = $v['type_id'];
-            }
-        } else {
-            return $this->resultArray('没有数据', 'failed');
-        }
-        $w['node_id'] = Session::get('login_site')["node_id"];
-        $wheretype_id = $typeid;
+        $user_info = $this->getSessionUserInfo();
+        $type_ids = (new \app\common\model\Menu())->getSiteTypeIds($user_info['menu'], 2);
+        $where['type_id'] = ['in', $type_ids];
         $name = $this->request->get('question');
         if (!empty($name)) {
             $w['question'] = ["like", "%$name%"];
         }
-        $data = (new \app\common\model\Question())->getQuestiontdk($request["limit"], $request["rows"], $w, $wheretype_id);
+        $data = (new \app\common\model\Question())->getAll($request['limit'], $request['rows'], $where);
         return $this->resultArray('', '', $data);
     }
 
@@ -278,7 +233,8 @@ class PageInfo extends Common
     public function questiontdksave()
     {
         $edit = $this->request->get('edit');
-        $site_id = $this->getSiteSession('website')["id"];
+        $user_info = $this->getSessionUserInfo();
+        $site_id =  $user_info["site_id"];
         $where['id'] = $site_id;
         $site = (new Site())->where($where)->select();
         foreach ($site as $k => $v) {
@@ -303,7 +259,8 @@ class PageInfo extends Common
         $this->open_start('正在修改中');
         $content = $this->request->post('content');
         $filename = $this->request->post('filename');
-        $site_id = $this->getSiteSession('website')["id"];
+        $user_info = $this->getSessionUserInfo();
+        $site_id =  $user_info["site_id"];
         $where['id'] = $site_id;
         $site = (new Site())->where($where)->select();
         foreach ($site as $k => $v) {
@@ -322,29 +279,16 @@ class PageInfo extends Common
     public function producttdk()
     {
         $request = $this->getLimit();
-        $site_id = $this->getSiteSession('website')["id"];
+        $user_info = $this->getSessionUserInfo();
+        $site_id =  $user_info["site_id"];
         $where['id'] = $site_id;
-        $Site = new \app\common\model\Site();
-        $menuid = $Site->where($where)->field('menu')->find()->menu;
-        $Menuid = explode(',', $menuid);
-//        dump($Menuid);
-        $menu = new \app\common\model\Menu();
-        $wh['flag'] = 5;
-        $dat = $menu->where('id', 'in', $Menuid)->where($wh)->field('type_id')->select();
-        if ($dat) {
-            foreach ($dat as $k => $v) {
-                $typeid[$k] = $v['type_id'];
-            }
-        } else {
-            return $this->resultArray('没有数据', 'failed');
-        }
-        $w['node_id'] = Session::get('login_site')["node_id"];
-        $wheretype_id = $typeid;
+        $type_ids = (new \app\common\model\Menu())->getSiteTypeIds($user_info['menu'], 5);
+        $where['type_id'] = ['in', $type_ids];
         $name = $this->request->get('name');
         if (!empty($name)) {
             $w['name'] = ["like", "%$name%"];
         }
-        $data = (new \app\common\model\Product())->getProducttdk($request["limit"], $request["rows"], $w, $wheretype_id);
+        $data = (new \app\common\model\Product())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
@@ -355,7 +299,8 @@ class PageInfo extends Common
     public function producttdksave()
     {
         $edit = $this->request->get('edit');
-        $site_id = $this->getSiteSession('website')["id"];
+        $user_info = $this->getSessionUserInfo();
+        $site_id =  $user_info["site_id"];
         $where['id'] = $site_id;
         $site = (new Site())->where($where)->select();
         foreach ($site as $k => $v) {
@@ -377,7 +322,6 @@ class PageInfo extends Common
         $this->open_start('正在修改中');
         $content = $this->request->post('content');
         $filename = $this->request->post('filename');
-//        dump($this->request->post());die;
         $site_id = $this->getSiteSession('website')["id"];
         $where['id'] = $site_id;
         $site = (new Site())->where($where)->select();
@@ -386,7 +330,6 @@ class PageInfo extends Common
                 "content" => $content
             ];
             $this->curl_post($v['url'] . "/index.php/generateOne/product/" . $filename, $send);
-//            dump($v['url'] . "/index.php/generateOne/question/" . $filename);
         }
     }
 

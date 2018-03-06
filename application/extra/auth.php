@@ -295,6 +295,22 @@ return [
     'common/Count/ArticleCount'=>[2],
     'common/Count/QuestionCount'=>[2],
     'common/Count/searchBrowse'=>[3],
-
+    'common/PageInfo/getAkeyword'=>[3],
+    'common/PageInfo/index'=> [3],
+    'common/PageInfo/read' => [3],
+    'common/PageInfo/save'=> [3],
+    'common/PageInfo/update'=> [3],
+    'common/PageInfo/articletdk'=> [3],
+    'common/PageInfo/articletdksave'=> [3],
+    'common/PageInfo/articletdkedit'=> [3],
+    'common/PageInfo/questiontdk'=> [3],
+    'common/PageInfo/questiontdksave'=> [3],
+    'common/PageInfo/questiontdkedit'=> [3],
+    'common/PageInfo/producttdk'=> [3],
+    'common/PageInfo/producttdksave'=> [3],
+    'common/PageInfo/producttdkedit'=> [3],
+    'common/PageInfo/editpageinfo'=> [3],
+    'common/Site/siteResource'=> [3],
+    'common/Site/editResource'=> [3],
 
 ];

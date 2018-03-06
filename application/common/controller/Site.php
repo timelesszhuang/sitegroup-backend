@@ -359,10 +359,6 @@ class Site extends Common
      */
     public function siteGetCurl($id, $name)
     {
-        $user_info = $this->getSessionUserInfo();
-        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
-           $id = $user_info["site_id"];
-        }
         $func = function () use ($id) {
             $user_info = $this->getSessionUserInfo();
             $nid = $user_info["node_id"];
@@ -391,7 +387,7 @@ class Site extends Common
             $NewUrl = '';
             $msg = '';
             switch ($name) {
-                case "oneKeyGenerate":
+                case "aKeyGeneration":
                     $msg = "正在一键生成...";
                     $NewUrl = $url . "/allstatic";
                     break;
