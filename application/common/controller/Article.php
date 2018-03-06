@@ -180,6 +180,11 @@ class Article extends CommonLogin
             } else {
                 $data['tags'] = "";
             }
+            if(!empty($data['flag'])){
+                $data['flag'] = ',' . implode(',', $data['flag']) . ',';
+            }else{
+                $data['flag'] = '';
+            }
             unset($data['tag_id']);
             if (!$this->model->save($data, ["id" => $id])) {
                 Common::processException('修改失败');

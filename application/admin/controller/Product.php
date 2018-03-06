@@ -99,6 +99,11 @@ class Product extends CommonLogin
             } else {
                 $post['tags'] = "";
             }
+            if(!empty($data['flag'])){
+                $data['flag'] = ',' . implode(',', $data['flag']) . ',';
+            }else{
+                $data['flag'] = '';
+            }
             unset($post['tag_id']);
             $library_img_set = new LibraryImgset();
             $src_list = $library_img_set->getList($post['detail']);
@@ -128,6 +133,7 @@ class Product extends CommonLogin
     {
         $data = $this->model->where(["id" => $id])->field("create_time,update_time,imgser", true)->find();
         $data['tags'] = implode(',', array_filter(explode(',', $data['tags'])));
+        $data['flag'] = implode(',', array_filter(explode(',', $data['flag'])));
         return $this->resultArray('', '', $data);
     }
 
@@ -179,6 +185,11 @@ class Product extends CommonLogin
                 $post['tags'] = ',' . implode(',', $post['tag_id']) . ',';
             } else {
                 $post['tags'] = "";
+            }
+            if(!empty($data['flag'])){
+                $data['flag'] = ',' . implode(',', $data['flag']) . ',';
+            }else{
+                $data['flag'] = '';
             }
             unset($post['tag_id']);
             if (!$this->model->save($post, ["id" => $id])) {
