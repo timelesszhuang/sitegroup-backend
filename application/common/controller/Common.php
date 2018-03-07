@@ -151,9 +151,21 @@ class Common extends Controller
      */
     static public function getRememberStr($id, $salt)
     {
-        $private = Config::get("crypt.cookiePrivate");
+        $private = self::getCrypt();
         return md5($id . $salt . $private);
     }
+    /***
+     * @return string
+     * 获取SYSTEM_CRYPT
+     */
+    static public function getCrypt(){
+        $SystemConfig = new \app\common\model\SystemConfig();
+        $auth_data = $SystemConfig->where(["name" => 'SYSTEM_CRYPT'])->select();
+        return $auth_data['value'];
+    }
+
+
+
 
     /***
      * @param $id
