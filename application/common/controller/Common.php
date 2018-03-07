@@ -160,7 +160,7 @@ class Common extends Controller
      */
     static public function getCrypt(){
         $SystemConfig = new \app\common\model\SystemConfig();
-        $auth_data = $SystemConfig->where(["name" => 'SYSTEM_CRYPT'])->select();
+        $auth_data = $SystemConfig->where(["name" => 'SYSTEM_CRYPT'])->find();
         return $auth_data['value'];
     }
 
