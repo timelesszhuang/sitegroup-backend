@@ -8,6 +8,11 @@
 
 namespace app\common\traits;
 
+use app\common\controller\Common;
+use app\common\model\SiteUser;
+use app\common\model\User;
+use think\Db;
+
 trait Obtrait
 {
     /**
@@ -61,8 +66,30 @@ trait Obtrait
      * @return mixed
      */
     //TODO oldfunction
-    public function curl_get($url)
+    public function curl_get($oldurl)
     {
+        $user_info = $this->getSessionUserInfo();
+        //dump($user_info);die;
+        if ($user_info['user_type_name'] == 'node') {
+            $id = $user_info["user_id"];
+            $type = 'node';
+            $salt = Db::name('user')->where(['id'=>$id])->find()['salt'];
+        } else if($user_info['user_type_name'] == 'site') {
+            $id = $user_info["user_id"];
+            $type = 'site';
+            $salt = (new SiteUser())->where(['id'=>$id])->field('salt')->find()['salt'];
+        };
+        $rememberstr =  Common::getRememberStr($id,$salt);
+        $check = strpos($oldurl, '?');
+        if($check !== false)
+        {
+            $url = $oldurl.'&token='.$rememberstr.'&type='.$type;
+        }
+         //如果不存在 ?
+        else
+        {
+            $url = $oldurl.'?token='.$rememberstr.'&type='.$type;
+        }
         //初始化
         $curl = curl_init();
         //设置抓取的url

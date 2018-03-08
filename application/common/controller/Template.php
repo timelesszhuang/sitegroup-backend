@@ -9,7 +9,7 @@ use app\common\traits\Obtrait;
 use app\common\traits\Osstrait;
 use app\common\exception\ProcessException;
 
-class Template extends CommonLogin
+class Template extends Common
 {
 
     use Osstrait;
@@ -30,9 +30,9 @@ class Template extends CommonLogin
             $where["name"] = ["like", "%$name%"];
         }
         $user_info = $this->getSessionUserInfo();
-        if ($user_info['user_type_name'] == 'node' &&  $user_info['user_type']==2) {
-            $where["node_id"] = [["=",$user_info["node_id"]], ["=", 0], "or"];
-        }else{
+        if ($user_info['user_type_name'] == 'node' && $user_info['user_type'] == 2) {
+            $where["node_id"] = [["=", $user_info["node_id"]], ["=", 0], "or"];
+        } else {
             $where["node_id"] = ["lt", 1];
         }
         $data = (new \app\common\model\Template())->getTemplate($request["limit"], $request["rows"], $where);
@@ -103,7 +103,7 @@ class Template extends CommonLogin
     public function uploadTemplate()
     {
         try {
-            $url = $this->uploadImg( 'template/');
+            $url = $this->uploadImg('template/');
             return $this->resultArray(['url' => $url], '上传成功');
         } catch (ProcessException $exception) {
             return $this->resultArray('failed', '上传失败');
@@ -133,7 +133,7 @@ class Template extends CommonLogin
         if ($model->id) {
             return $this->resultArray("添加成功");
         }
-        return $this->resultArray('failed','添加失败' );
+        return $this->resultArray('failed', '添加失败');
     }
 
     /**
@@ -151,19 +151,47 @@ class Template extends CommonLogin
      * @param $site_id
      * @return array
      */
-    public function filelist($site_id)
+    public function filelist($site_id, $type)
     {
         $url = "templatelist";
         $site = \app\common\model\Site::get($site_id);
-//        dump($site->url."/index.php/$url?site_id=".$site_id);die;
-        if ($site) {
-            $siteData = $this->curl_get($site->url . "/index.php/$url?site_id=" . $site_id);
-            $result = trim($siteData, "\xEF\xBB\xBF");
-            $data = json_decode($result, true);
-//            dump($data);die;
-            return $this->resultArray( 'success',$data['msg'], $data["filelist"]);
+        if ($type == 'html') {
+            if ($site) {
+                $siteData = $this->curl_get($site->url . "/index.php/$url?list=html");
+                //dump($siteData);die;
+                $result = trim($siteData, "\xEF\xBB\xBF");
+                $data = json_decode($result, true);
+                if ($data['status'] == 'success') {
+                    return $this->resultArray($data['status'], $data['msg'], $data["filelist"]);
+                }
+                return $this->resultArray($data['status'], $data['msg']);
+            }
+        } else if ($type == 'static') {
+            if ($site) {
+                $siteData = $this->curl_get($site->url . "/index.php/$url?list=static");
+                $result = trim($siteData, "\xEF\xBB\xBF");
+                $data = json_decode($result, true);
+                if ($data['status'] == 'success') {
+                    return $this->resultArray($data['status'], $data['msg'], $data["filelist"]);
+                }
+                return $this->resultArray($data['status'], $data['msg']);
+            }
         }
-        return $this->resultArray('failed','当前网站未获取到!');
+//        dump($site->url."/index.php/$url?site_id=".$site_id);die;
+        return $this->resultArray('failed', '当前网站未获取到!');
+    }
+
+    /**
+     * 上传静态文件
+     */
+    public function uploadtemplatestatic()
+    {
+        try {
+            $url = $this->uploadTem('templatestatic/');
+            return $this->resultArray(['url' => $url], '上传成功');
+        } catch (ProcessException $exception) {
+            return $this->resultArray('failed', '上传失败');
+        }
     }
 
     /**
@@ -180,9 +208,9 @@ class Template extends CommonLogin
             $result = trim($siteData, "\xEF\xBB\xBF");
             $data = json_decode($result, true);
 //            $data=json_decode($siteData,true);
-            return $this->resultArray( 'success',$data['msg'], ["content" => $data["content"], "filename" => $data["filename"]]);
+            return $this->resultArray('success', $data['msg'], ["content" => $data["content"], "filename" => $data["filename"]]);
         }
-        return $this->resultArray('failed','当前网站未获取到!' );
+        return $this->resultArray('failed', '当前网站未获取到!');
     }
 
     /**
@@ -205,9 +233,12 @@ class Template extends CommonLogin
             ];
             $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
             $data = json_decode($siteData, true);
-            return $this->resultArray($data["status"],$data['msg'] );
+            if (empty($data["status"])) {
+                $data["status"] = 'success';
+            }
+            return $this->resultArray($data["status"], $data['msg']);
         }
-        return $this->resultArray( 'failed','当前网站未获取到!');
+        return $this->resultArray('failed', '当前网站未获取到!');
     }
 
     /**
@@ -229,9 +260,12 @@ class Template extends CommonLogin
             ];
             $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
             $data = json_decode($siteData, true);
-            return $this->resultArray( $data["status"],$data['msg']);
+            if (empty($data["status"])) {
+                $data["status"] = 'success';
+            }
+            return $this->resultArray($data["status"], $data['msg']);
         }
-        return $this->resultArray( 'failed','当前网站未获取到!');
+        return $this->resultArray('failed', '当前网站未获取到!');
     }
 
 
@@ -253,11 +287,11 @@ class Template extends CommonLogin
         $validate = new Validate($rule);
         $post = $request->post();
         if (!$validate->check($post)) {
-            return $this->resultArray("failed",$validate->getError());
+            return $this->resultArray("failed", $validate->getError());
         }
         $tem = new \app\common\model\Template();
         if (!$tem->allowField(true)->save($post)) {
-            return $this->resultArray("failed","添加失败" );
+            return $this->resultArray("failed", "添加失败");
         }
         return $this->resultArray("添加成功!!");
     }
@@ -292,10 +326,10 @@ class Template extends CommonLogin
         $validate = new Validate($rule);
         $put = $request->put();
         if (!$validate->check($put)) {
-            return $this->resultArray("failed",$validate->getError());
+            return $this->resultArray("failed", $validate->getError());
         }
         if (!\app\common\model\Template::update($put, ["id" => $id])) {
-            return $this->resultArray("failed","修改失败!" );
+            return $this->resultArray("failed", "修改失败!");
         }
         return $this->resultArray("修改成功!");
     }
@@ -319,9 +353,9 @@ class Template extends CommonLogin
     {
         $data = $this->uploadImg("template/");
         if ($data['status']) {
-            return $this->resultArray( $data['status'],'上传成功', $data['url']);
+            return $this->resultArray($data['status'], '上传成功', $data['url']);
         } else {
-            return $this->resultArray('failed','上传失败');
+            return $this->resultArray('failed', '上传失败');
         }
     }
 
@@ -346,8 +380,8 @@ class Template extends CommonLogin
             $data = $this->uploadTempObj("template/" . $info->getSaveName(), $src);
             if ($data['status']) {
                 $dataurl = [
-                    'url' =>$data['url'],
-                    'data' =>$url
+                    'url' => $data['url'],
+                    'data' => $url
                 ];
                 return $this->resultArray('上传成功', '', $dataurl);
             } else {
@@ -379,9 +413,12 @@ class Template extends CommonLogin
             ];
             $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
             $data = json_decode($siteData, true);
-            return $this->resultArray($data["status"],$data['msg'] );
+            if (empty($data["status"])) {
+                $data["status"] = 'success';
+            }
+            return $this->resultArray($data["status"], $data['msg']);
         }
-        return $this->resultArray('failed','当前网站未获取到!' );
+        return $this->resultArray('failed', '当前网站未获取到!');
     }
 
 }

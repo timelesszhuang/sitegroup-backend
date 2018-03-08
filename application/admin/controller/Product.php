@@ -99,10 +99,10 @@ class Product extends CommonLogin
             } else {
                 $post['tags'] = "";
             }
-            if(!empty($data['flag'])){
-                $data['flag'] = ',' . implode(',', $data['flag']) . ',';
+            if(!empty($post['flag'])){
+                $post['flag'] = ',' . implode(',', $post['flag']) . ',';
             }else{
-                $data['flag'] = '';
+                $post['flag'] = '';
             }
             unset($post['tag_id']);
             $library_img_set = new LibraryImgset();
@@ -186,10 +186,10 @@ class Product extends CommonLogin
             } else {
                 $post['tags'] = "";
             }
-            if(!empty($data['flag'])){
-                $data['flag'] = ',' . implode(',', $data['flag']) . ',';
+            if(!empty($post['flag'])){
+                $post['flag'] = ',' . implode(',', $post['flag']) . ',';
             }else{
-                $data['flag'] = '';
+                $post['flag'] = '';
             }
             unset($post['tag_id']);
             if (!$this->model->save($post, ["id" => $id])) {
@@ -217,7 +217,6 @@ class Product extends CommonLogin
                 ];
                 $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
             }
-            return $this->resultArray();
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());
         }

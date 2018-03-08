@@ -52,6 +52,43 @@ trait Osstrait
         }
         return ['status' => $status, 'msg' => $msg];
     }
+    public function putnewsObject($object, $filepath)
+    {
+        $accessKeyId = Config::get('oss.accessKeyId');
+        $accessKeySecret = Config::get("oss.accessKeySecret");
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        $status = true;
+        try {
+            $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
+            $ossClient->uploadFile($bucket, $object, $filepath);
+            $msg = '上传成功';
+        } catch (OssException $e) {
+            $msg = $e->getMessage();
+            $status = false;
+        }
+        return ['status' => $status, 'msg' => $msg];
+    }
+
+
+    function putObject($object)
+    {
+        $accessKeyId = Config::get('oss.accessKeyId');
+        $accessKeySecret = Config::get("oss.accessKeySecret");
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        $status = true;
+        $content = 'ceshi15151515154154154154154154';
+        try{
+            $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
+            $ossClient->putObject($bucket, $object, $content);
+            $msg = '上传成功';
+        } catch(OssException $e) {
+            $msg = $e->getMessage();
+            $status = false;
+        }
+        return ['status' => $status, 'msg' => $msg];
+    }
 
 
     /**
@@ -168,7 +205,6 @@ trait Osstrait
         $fileInfo = $file->move($localpath);
         $object = $dest_dir . $fileInfo->getSaveName();
         $localfilepath = $localpath . $fileInfo->getSaveName();
-
         /** @var string $object */
         /** @var string $localfilepath */
         $put_info = $this->ossPutObject($object, $localfilepath);
@@ -179,6 +215,36 @@ trait Osstrait
         $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
         return $url;
     }
+    /**
+     * oss图片上传
+     * @param $dest_dir
+     * @param string $uname
+     * @return array
+     * @throws \app\common\exception\ProcessException
+     */
+    public function uploadTem($dest_dir,$uname="file")
+    {
+        $endpoint = Config::get('oss.endpoint');
+        $bucket = Config::get('oss.bucket');
+        $request = Request::instance();
+        $file = $request->file($uname);
+        $localpath = ROOT_PATH . "public/upload/";
+        $fileInfo = $file->move($localpath);
+        $object = $dest_dir . $fileInfo->getSaveName();
+        $localfilepath = $localpath . $fileInfo->getSaveName();
+        /** @var string $object */
+        /** @var string $localfilepath */
+        $put_info = $this->putObject($object);
+        unlink($localfilepath);
+        if (!$put_info['status']) {
+            Common::processException('上传失败');
+        }
+        $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
+        return $url;
+    }
+
+
+
 
     /**
      * oss模板上传
