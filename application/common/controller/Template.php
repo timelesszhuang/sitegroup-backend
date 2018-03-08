@@ -157,6 +157,7 @@ class Template extends Common
         $site = \app\common\model\Site::get($site_id);
             if ($site) {
                 $siteData = $this->curl_get($site->url . "/index.php/$url?list=".$type);
+
                 $result = trim($siteData, "\xEF\xBB\xBF");
                 $data = json_decode($result, true);
                 if ($data['status'] == 'success') {
@@ -173,8 +174,21 @@ class Template extends Common
     public function uploadtemplatestatic()
     {
         try {
-            $url = $this->uploadTem('templatestatic/');
-            return $this->resultArray(['url' => $url], '上传成功');
+            $site_id = 63;
+            $url = $this->uploadImg('templatestatic/');
+            $this->open_start('上传成功');
+            $site = \app\common\model\Site::get($site_id);
+            if ($site) {
+                $siteData = $this->curl_get($site->url . "/index.php/$url?url=".$url."&");
+                $result = trim($siteData, "\xEF\xBB\xBF");
+                $data = json_decode($result, true);
+                if ($data['status'] == 'success') {
+                    return $this->resultArray($data['status'], $data['msg'], $data["filelist"]);
+                }
+                return $this->resultArray($data['status'], $data['msg']);
+            }
+
+            //return $this->resultArray(['url' => $url], '上传成功');
         } catch (ProcessException $exception) {
             return $this->resultArray('failed', '上传失败');
         }
