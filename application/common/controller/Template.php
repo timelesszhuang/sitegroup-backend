@@ -157,7 +157,6 @@ class Template extends Common
         $site = \app\common\model\Site::get($site_id);
             if ($site) {
                 $siteData = $this->curl_get($site->url . "/index.php/$url?list=".$type);
-
                 $result = trim($siteData, "\xEF\xBB\xBF");
                 $data = json_decode($result, true);
                 if ($data['status'] == 'success') {
@@ -173,26 +172,50 @@ class Template extends Common
      */
     public function uploadtemplatestatic()
     {
-        try {
-            $site_id = 63;
+            $siteurl = 'manageTempalteFile';
+            $site_id = \request()->post('site_id');
+            $flag = \request()->post('flag');
             $url = $this->uploadImg('templatestatic/');
             $this->open_start('上传成功');
             $site = \app\common\model\Site::get($site_id);
             if ($site) {
-                $siteData = $this->curl_get($site->url . "/index.php/$url?url=".$url."&");
-                $result = trim($siteData, "\xEF\xBB\xBF");
-                $data = json_decode($result, true);
-                if ($data['status'] == 'success') {
-                    return $this->resultArray($data['status'], $data['msg'], $data["filelist"]);
-                }
-                return $this->resultArray($data['status'], $data['msg']);
+              $this->curl_get($site->url . "/index.php/$siteurl?url=".$url."&flag=".$flag);
             }
-
-            //return $this->resultArray(['url' => $url], '上传成功');
-        } catch (ProcessException $exception) {
-            return $this->resultArray('failed', '上传失败');
-        }
     }
+
+
+    /**
+     *修改静态文件
+     */
+
+    public function updatestatic()
+    {
+        $request = Request::instance();
+        $content = $request->post("content");
+//        try {
+//            $siteurl = 'manageTempalteFile';
+//            $site_id = \request()->post('id');
+//            $flag = \request()->post('flag');
+//            $url = $this->uploadImg('templatestatic/');
+//            $this->open_start('上传成功');
+//            $site = \app\common\model\Site::get($site_id);
+//            if ($site) {
+//                $siteData = $this->curl_get($site->url . "/index.php/$siteurl?url=".$url."&flag=".$flag);
+//                $result = trim($siteData, "\xEF\xBB\xBF");
+//                $data = json_decode($result, true);
+//                if ($data['status'] == 'success') {
+//                    return $this->resultArray($data['status'], $data['msg'], $data["filelist"]);
+//                }
+//                return $this->resultArray($data['status'], $data['msg']);
+//            }
+//            return $this->resultArray(['url' => $url], '上传成功');
+//        } catch (ProcessException $exception) {
+//            return $this->resultArray('failed', '上传失败');
+//        }
+    }
+
+
+
 
     /**
      * 模板管理 读取模板
@@ -246,9 +269,11 @@ class Template extends Common
      * @param  int $id
      * @return \think\Response
      */
-    public function readFile($site_id, $name)
+    public function readFile()
     {
         $request = Request::instance();
+        $site_id =  $request->post("site_id");
+        $name =  $request->post("filename");
         $content = $request->post("content");
         $url = "templateadd";
         $site = \app\common\model\Site::get($site_id);
