@@ -90,7 +90,7 @@ trait Obtrait
         {
             $url = $oldurl.'?token='.$rememberstr.'&type='.$type;
         }
-        print_r($url);die;
+       // print_r($url);die;
         //初始化
         $curl = curl_init();
         //设置抓取的url
