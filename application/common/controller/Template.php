@@ -222,11 +222,12 @@ class Template extends Common
     {
         $request = Request::instance();
         $site_id = $request->post("site_id");
+        $list = $request->post("file_type");
         $name = $request->post("name");
-        $url = "templateread";
+        $url = 'templateFileRead';
         $site = \app\common\model\Site::get($site_id);
         if ($site) {
-            $siteData = $this->curl_get($site->url . "/index.php/$url?site_id=" . $site_id . "&filename=" . $name);
+            $siteData = $this->curl_get($site->url . "/index.php/$url?filename=" . $name."&list=".$list);
             $result = trim($siteData, "\xEF\xBB\xBF");
             $data = json_decode($result, true);
             return $this->resultArray('success', $data['msg'], ["content" => $data["content"], "filename" => $data["filename"]]);
@@ -236,7 +237,6 @@ class Template extends Common
 
     /**
      * 保存新建的资源
-     *
      * @param  \think\Request $request
      * @return \think\Response
      */

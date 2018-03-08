@@ -258,8 +258,10 @@ Route::get("templateList/:site_id/:type", "common/Template/filelist");
 Route::post("templateRead", "common/Template/templateRead");
 //模板管理添加文件
 Route::post("templateAdd", "common/Template/readFile");
-//模板静态文件
+//模板静态文件上传
 Route::post("uploadtemplatestatic", "common/Template/uploadtemplatestatic");
+//模板静态文件统一修改
+Route::post("updatestatic", "common/Template/updatestatic");
 //大站点可以统一修改小站点的tdk
 Route::put("tdk/:id", 'common/Tdk/save');
 //大站点统一查询小站点
