@@ -200,6 +200,7 @@ trait Osstrait
         $bucket = Config::get('oss.bucket');
         $request = Request::instance();
         $file = $request->file($uname);
+
         $localpath = ROOT_PATH . "public/upload/";
         $fileInfo = $file->move($localpath);
         $object = $dest_dir . $fileInfo->getSaveName();
@@ -221,7 +222,7 @@ trait Osstrait
      * @return array
      * @throws \app\common\exception\ProcessException
      */
-    public function uploadTem($dest_dir,$uname="file",$content)
+    public function uploadTstatic($dest_dir,$uname="file",$content)
     {
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');

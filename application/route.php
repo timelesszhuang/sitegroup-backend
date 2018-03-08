@@ -255,9 +255,9 @@ Route::get('getTemplate', 'common/Template/getTemplate');
 //模板管理 获取对应site_id的信息
 Route::get("templateList/:site_id/:type", "common/Template/filelist");
 // 模板管理 读取模板
-Route::get("templateRead/:site_id/:name", "common/Template/templateRead");
+Route::post("templateRead", "common/Template/templateRead");
 //模板管理添加文件
-Route::post("templateAdd/:site_id/:name", "common/Template/readFile");
+Route::post("templateAdd", "common/Template/readFile");
 //模板静态文件
 Route::post("uploadtemplatestatic", "common/Template/uploadtemplatestatic");
 //大站点可以统一修改小站点的tdk
