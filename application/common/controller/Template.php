@@ -205,7 +205,7 @@ class Template extends Common
         $list = \request()->post('file_type');
         $url = $this->uploadTstatic('templatestatic/','file',$content);
         if ($site) {
-            $this->curl_get($site->url . "/index.php/$siteurl?osspath=".$siteurl."&flag=".$flag."&filename=".$filename."&list=".$list);
+            $this->curl_get($site->url . "/index.php/$siteurl?osspath=".$url."&flag=".$flag."&filename=".$filename."&list=".$list);
         }
     }
 
