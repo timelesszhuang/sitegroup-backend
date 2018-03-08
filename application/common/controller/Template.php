@@ -155,37 +155,40 @@ class Template extends Common
     {
         $url = "templatelist";
         $site = \app\common\model\Site::get($site_id);
-            if ($site) {
-                $siteData = $this->curl_get($site->url . "/index.php/$url?list=".$type);
-                $result = trim($siteData, "\xEF\xBB\xBF");
-                $data = json_decode($result, true);
-                if ($data['status'] == 'success') {
-                    return $this->resultArray($data['status'], $data['msg'], $data["filelist"]);
-                }
-                return $this->resultArray($data['status'], $data['msg']);
+        if ($site) {
+            $siteData = $this->curl_get($site->url . "/index.php/$url?list=" . $type);
+            $result = trim($siteData, "\xEF\xBB\xBF");
+            $data = json_decode($result, true);
+            if ($data['status'] == 'success') {
+                return $this->resultArray($data['status'], $data['msg'], $data["filelist"]);
             }
+            return $this->resultArray($data['status'], $data['msg']);
+        }
         return $this->resultArray('failed', '当前网站未获取到!');
     }
 
     /**
      * 上传静态文件
+     * $flag add update
+     * $list html static
+     * $filename 文件名
      */
     public function uploadtemplatestatic()
     {
-            $siteurl = 'manageTempalteFile';
-            $site_id = \request()->post('site_id');
-            $flag = \request()->post('flag');
-            $filename = \request()->post('filename');
-            $list = \request()->post('file_type');
-            if(empty($filename)){
-                $filename = \request()->file('file')->getInfo()['name'];
-            }
-            $url = $this->uploadImg('templatestatic/');
-            //$this->open_start('上传成功');
-            $site = \app\common\model\Site::get($site_id);
-            if ($site) {
-               $this->curl_get($site->url . "/index.php/$siteurl?osspath=".$url."&flag=".$flag."&filename=".$filename."&list=".$list);
-            }
+        $siteurl = 'manageTempalteFile';
+        $site_id = \request()->post('site_id');
+        $flag = \request()->post('flag');
+        $filename = \request()->post('filename');
+        $list = \request()->post('file_type');
+        if (empty($filename)) {
+            $filename = \request()->file('file')->getInfo()['name'];
+        }
+        $url = $this->uploadImg('templatestatic/');
+        $this->open_start('上传成功');
+        $site = \app\common\model\Site::get($site_id);
+        if ($site) {
+            $this->curl_get($site->url . "/index.php/$siteurl?osspath=" . $url . "&flag=" . $flag . "&filename=" . $filename . "&list=" . $list);
+        }
     }
 
 
@@ -196,16 +199,17 @@ class Template extends Common
     public function updatestatic()
     {
         $request = Request::instance();
-        $site_id =  $request->post("site_id");
-        $filename =  $request->post("filename");
+        $site_id = $request->post("site_id");
+        $filename = $request->post("filename");
         $content = $request->post("content");
         $flag = \request()->post('flag');
         $siteurl = "manageTempalteFile";
         $site = \app\common\model\Site::get($site_id);
         $list = \request()->post('file_type');
-        $url = $this->uploadTstatic('templatestatic/','file',$content);
+        $url = $this->uploadTstatic('templatestatic/', 'file', $content);
+        $this->open_start('修改成功');
         if ($site) {
-            $this->curl_get($site->url . "/index.php/$siteurl?osspath=".$url."&flag=".$flag."&filename=".$filename."&list=".$list);
+            $this->curl_get($site->url . "/index.php/$siteurl?osspath=" . $url . "&flag=" . $flag . "&filename=" . $filename . "&list=" . $list);
         }
     }
 
@@ -217,16 +221,14 @@ class Template extends Common
     public function templateRead()
     {
         $request = Request::instance();
-        $site_id =  $request->post("site_id");
-        $name =  $request->post("name");
+        $site_id = $request->post("site_id");
+        $name = $request->post("name");
         $url = "templateread";
         $site = \app\common\model\Site::get($site_id);
         if ($site) {
             $siteData = $this->curl_get($site->url . "/index.php/$url?site_id=" . $site_id . "&filename=" . $name);
-//            dump($site->url."/index.php/$url?site_id=".$site_id."&filename=".$name);die;
             $result = trim($siteData, "\xEF\xBB\xBF");
             $data = json_decode($result, true);
-//            $data=json_decode($siteData,true);
             return $this->resultArray('success', $data['msg'], ["content" => $data["content"], "filename" => $data["filename"]]);
         }
         return $this->resultArray('failed', '当前网站未获取到!');
@@ -268,8 +270,8 @@ class Template extends Common
     public function readFile()
     {
         $request = Request::instance();
-        $site_id =  $request->post("site_id");
-        $name =  $request->post("filename");
+        $site_id = $request->post("site_id");
+        $name = $request->post("filename");
         $content = $request->post("content");
         $url = "templateadd";
         $site = \app\common\model\Site::get($site_id);
