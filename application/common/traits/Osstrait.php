@@ -71,14 +71,13 @@ trait Osstrait
     }
 
 
-    function putObject($object)
+    function putObject($object,$content)
     {
         $accessKeyId = Config::get('oss.accessKeyId');
         $accessKeySecret = Config::get("oss.accessKeySecret");
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
         $status = true;
-        $content = 'ceshi15151515154154154154154154';
         try{
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
             $ossClient->putObject($bucket, $object, $content);
@@ -222,7 +221,7 @@ trait Osstrait
      * @return array
      * @throws \app\common\exception\ProcessException
      */
-    public function uploadTem($dest_dir,$uname="file")
+    public function uploadTem($dest_dir,$uname="file",$content)
     {
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
@@ -232,9 +231,7 @@ trait Osstrait
         $fileInfo = $file->move($localpath);
         $object = $dest_dir . $fileInfo->getSaveName();
         $localfilepath = $localpath . $fileInfo->getSaveName();
-        /** @var string $object */
-        /** @var string $localfilepath */
-        $put_info = $this->putObject($object);
+        $put_info = $this->putObject($object,$content);
         unlink($localfilepath);
         if (!$put_info['status']) {
             Common::processException('上传失败');

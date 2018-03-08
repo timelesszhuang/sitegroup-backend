@@ -155,10 +155,8 @@ class Template extends Common
     {
         $url = "templatelist";
         $site = \app\common\model\Site::get($site_id);
-        if ($type == 'html') {
             if ($site) {
-                $siteData = $this->curl_get($site->url . "/index.php/$url?list=html");
-                //dump($siteData);die;
+                $siteData = $this->curl_get($site->url . "/index.php/$url?list=".$type);
                 $result = trim($siteData, "\xEF\xBB\xBF");
                 $data = json_decode($result, true);
                 if ($data['status'] == 'success') {
@@ -166,18 +164,6 @@ class Template extends Common
                 }
                 return $this->resultArray($data['status'], $data['msg']);
             }
-        } else if ($type == 'static') {
-            if ($site) {
-                $siteData = $this->curl_get($site->url . "/index.php/$url?list=static");
-                $result = trim($siteData, "\xEF\xBB\xBF");
-                $data = json_decode($result, true);
-                if ($data['status'] == 'success') {
-                    return $this->resultArray($data['status'], $data['msg'], $data["filelist"]);
-                }
-                return $this->resultArray($data['status'], $data['msg']);
-            }
-        }
-//        dump($site->url."/index.php/$url?site_id=".$site_id);die;
         return $this->resultArray('failed', '当前网站未获取到!');
     }
 
