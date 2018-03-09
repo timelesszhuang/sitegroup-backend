@@ -79,22 +79,6 @@ class Template extends Common
         }
     }
 
-//    /**
-//     * 删除指定资源 模板暂时不支持删除操作
-//     * @param  int $id
-//     * @return \think\Response
-//     */
-//    public function delete($id)
-//    {
-//        $template = new \app\common\model\Template();
-//        $user_info = $this->getSessionUserInfo();
-//        $where["parent_id"] = $id;
-//        $where["node_id"] = $user_info["node_id"];
-//        if ($template->where(["id" => $id, "node_id" => $user_info["node_id"]])->delete()) {
-//            return $this->resultArray('failed','删除成功' );
-//        }
-//        return $this->resultArray('','删除成功');
-//    }
 
     /**
      * 上传模板
@@ -157,6 +141,7 @@ class Template extends Common
         $site = \app\common\model\Site::get($site_id);
         if ($site) {
             $siteData = $this->curl_get($site->url . "/index.php/$url?list=" . $type);
+            //dump($site->url . "/index.php/$url?list=" . $type);die;
             $result = trim($siteData, "\xEF\xBB\xBF");
             $data = json_decode($result, true);
             if ($data['status'] == 'success') {
@@ -175,19 +160,25 @@ class Template extends Common
      */
     public function uploadtemplatestatic()
     {
-        $siteurl = 'manageTempalteFile';
+        $request = Request::instance();
+        $siteurl = 'manageTemplateFile';
         $site_id = \request()->post('site_id');
         $flag = \request()->post('flag');
         $filename = \request()->post('filename');
-        $list = \request()->post('file_type');
         if (empty($filename)) {
             $filename = \request()->file('file')->getInfo()['name'];
         }
+        $list = \request()->post('file_type');
         $url = $this->uploadImg('templatestatic/');
-        $this->open_start('上传成功');
         $site = \app\common\model\Site::get($site_id);
         if ($site) {
-            $this->curl_get($site->url . "/index.php/$siteurl?osspath=" . $url . "&flag=" . $flag . "&filename=" . $filename . "&list=" . $list);
+            $siteData = $this->curl_get($site->url . "/index.php/$siteurl?osspath=" . $url . "&flag=" . $flag . "&filename=" . $filename . "&list=" . $list);
+            $result = trim($siteData, "\xEF\xBB\xBF");
+            $data = json_decode($result, true);
+            if ($data['status'] == 'success') {
+                return $this->resultArray($data['status'], $data['msg']);
+            }
+            return $this->resultArray('failed', '更新失败');
         }
     }
 
@@ -227,7 +218,7 @@ class Template extends Common
         $url = 'templateFileRead';
         $site = \app\common\model\Site::get($site_id);
         if ($site) {
-            $siteData = $this->curl_get($site->url . "/index.php/$url?filename=" . $name."&list=".$list);
+            $siteData = $this->curl_get($site->url . "/index.php/$url?filename=" . $name . "&list=" . $list);
             $result = trim($siteData, "\xEF\xBB\xBF");
             $data = json_decode($result, true);
             return $this->resultArray('success', $data['msg'], ["content" => $data["content"], "filename" => $data["filename"]]);
@@ -235,32 +226,6 @@ class Template extends Common
         return $this->resultArray('failed', '当前网站未获取到!');
     }
 
-    /**
-     * 保存新建的资源
-     * @param  \think\Request $request
-     * @return \think\Response
-     */
-    public function addTemplate($site_id, $name)
-    {
-        $request = Request::instance();
-        $content = $request->post("content");
-        $url = "templateupdate";
-        $site = \app\common\model\Site::get($site_id);
-        if ($site) {
-            $send = [
-                "site_id" => $site_id,
-                "filename" => $name,
-                "content" => $content
-            ];
-            $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
-            $data = json_decode($siteData, true);
-            if (empty($data["status"])) {
-                $data["status"] = 'success';
-            }
-            return $this->resultArray($data["status"], $data['msg']);
-        }
-        return $this->resultArray('failed', '当前网站未获取到!');
-    }
 
     /**
      * 显示指定的资源
@@ -269,32 +234,12 @@ class Template extends Common
      */
     public function readFile()
     {
-        $request = Request::instance();
-        $site_id = $request->post("site_id");
-        $name = $request->post("filename");
-        $content = $request->post("content");
-        $url = "templateadd";
-        $site = \app\common\model\Site::get($site_id);
-        if ($site) {
-            $send = [
-                "site_id" => $site_id,
-                "filename" => $name,
-                "content" => $content
-            ];
-            $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
-            $data = json_decode($siteData, true);
-            if (empty($data["status"])) {
-                $data["status"] = 'success';
-            }
-            return $this->resultArray($data["status"], $data['msg']);
-        }
-        return $this->resultArray('failed', '当前网站未获取到!');
+        return $this->savetemplate();
     }
 
 
     /**
      * 保存新建的资源
-     *
      * @param  \think\Request $request
      * @return \think\Response
      */
@@ -319,16 +264,6 @@ class Template extends Common
         return $this->resultArray("添加成功!!");
     }
 
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * 保存更新的资源
@@ -357,16 +292,6 @@ class Template extends Common
         return $this->resultArray("修改成功!");
     }
 
-    /**
-     * 删除指定资源
-     *
-     * @param  int $id
-     * @return \think\Response
-     */
-    public function delete($id)
-    {
-        //
-    }
 
     /**
      * 上传嵌套后的模板文件
@@ -422,26 +347,24 @@ class Template extends Common
      * @param  \think\Request $request
      * @return \think\Response
      */
-    public function savetemplate($site_id, $name)
+    public function savetemplate()
     {
         $request = Request::instance();
+        $site_id = $request->post("site_id");
+        $filename = $request->post("filename");
+        $info = pathinfo($filename);
         $content = $request->post("content");
-        $url = "templateupdate";
+        $flag = $request->post("flag");
+        $siteurl = "manageTemplateFile";
         $site = \app\common\model\Site::get($site_id);
+        $list = \request()->post('file_type');
+        $url = $this->uploadTstatic($info['extension'], $content);
         if ($site) {
-            $send = [
-                "site_id" => $site_id,
-                "filename" => $name,
-                "content" => $content
-            ];
-            $siteData = $this->curl_post($site->url . "/index.php/" . $url, $send);
-            $data = json_decode($siteData, true);
-            if (empty($data["status"])) {
-                $data["status"] = 'success';
-            }
-            return $this->resultArray($data["status"], $data['msg']);
+            $siteData = $this->curl_get($site->url . "/index.php/$siteurl?osspath=" . $url . "&flag=" . $flag . "&filename=" . $filename . "&list=" . $list);
+            $result = trim($siteData, "\xEF\xBB\xBF");
+            $data = json_decode($result, true);
+            return $this->resultArray($data['status'], $data['msg']);
         }
-        return $this->resultArray('failed', '当前网站未获取到!');
     }
 
 }

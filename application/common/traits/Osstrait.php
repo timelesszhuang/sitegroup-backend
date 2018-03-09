@@ -14,6 +14,7 @@ use OSS\Core\OssException;
 use OSS\OssClient;
 use think\Config;
 use think\Request;
+
 trait Osstrait
 {
 
@@ -52,6 +53,7 @@ trait Osstrait
         }
         return ['status' => $status, 'msg' => $msg];
     }
+
     public function putnewsObject($object, $filepath)
     {
         $accessKeyId = Config::get('oss.accessKeyId');
@@ -71,18 +73,18 @@ trait Osstrait
     }
 
 
-    function putObject($object,$content)
+    function putObject($object, $content)
     {
         $accessKeyId = Config::get('oss.accessKeyId');
         $accessKeySecret = Config::get("oss.accessKeySecret");
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
         $status = true;
-        try{
+        try {
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
             $ossClient->putObject($bucket, $object, $content);
             $msg = '上传成功';
-        } catch(OssException $e) {
+        } catch (OssException $e) {
             $msg = $e->getMessage();
             $status = false;
         }
@@ -133,7 +135,7 @@ trait Osstrait
         $status = true;
         try {
             $ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
-            $this->checkObjectExist($ossClient,$bucket,$object)&&
+            $this->checkObjectExist($ossClient, $bucket, $object) &&
             $ossClient->deleteObject($bucket, $object);
             $msg = '删除成功';
         } catch (OssException $e) {
@@ -157,7 +159,7 @@ trait Osstrait
         try {
             $exist = $ossClient->doesObjectExist($bucket, $object);
         } catch (OssException $e) {
-        //不存在的情况
+            //不存在的情况
         }
         return $exist;
     }
@@ -194,19 +196,16 @@ trait Osstrait
      * @return array
      * @throws \app\common\exception\ProcessException
      */
-    public function uploadImg($dest_dir,$uname="file")
+    public function uploadImg($dest_dir, $uname = "file")
     {
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
         $request = Request::instance();
         $file = $request->file($uname);
-
         $localpath = ROOT_PATH . "public/upload/";
         $fileInfo = $file->move($localpath);
         $object = $dest_dir . $fileInfo->getSaveName();
         $localfilepath = $localpath . $fileInfo->getSaveName();
-        /** @var string $object */
-        /** @var string $localfilepath */
         $put_info = $this->ossPutObject($object, $localfilepath);
         unlink($localfilepath);
         if (!$put_info['status']) {
@@ -215,6 +214,20 @@ trait Osstrait
         $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
         return $url;
     }
+
+    /**
+     * @return bool|string
+     * 随机生成字符串
+     */
+
+    function generate_str()
+    {
+        $str="1234567890qwertyuiopasdfghjklzxcvbnm";
+        str_shuffle($str);
+        $name=substr(str_shuffle($str),1,30);
+        return $name;
+    }
+
     /**
      * oss图片上传
      * @param $dest_dir
@@ -222,26 +235,19 @@ trait Osstrait
      * @return array
      * @throws \app\common\exception\ProcessException
      */
-    public function uploadTstatic($dest_dir,$uname="file",$content)
+    public function uploadTstatic($file,$content)
     {
         $endpoint = Config::get('oss.endpoint');
         $bucket = Config::get('oss.bucket');
-        $request = Request::instance();
-        $file = $request->file($uname);
-        $localpath = ROOT_PATH . "public/upload/";
-        $fileInfo = $file->move($localpath);
-        $object = $dest_dir . $fileInfo->getSaveName();
-        $localfilepath = $localpath . $fileInfo->getSaveName();
-        $put_info = $this->putObject($object,$content);
-        unlink($localfilepath);
+        $str = $this->generate_str();
+        $object = 'templatestatic/'.$str.'.'.$file;
+        $put_info = $this->putObject($object, $content);
         if (!$put_info['status']) {
             Common::processException('上传失败');
         }
         $url = sprintf("https://%s.%s/%s", $bucket, $endpoint, $object);
         return $url;
     }
-
-
 
 
     /**
@@ -284,11 +290,6 @@ trait Osstrait
             'status' => $status
         ];
     }
-
-
-
-
-
 
 
 }

@@ -275,7 +275,7 @@ Route::post('editpageinfo', 'common/Tdk/editpageinfo');
 //站点静态化配置
 Route::resource('staticConfig', 'common/Staticconfig');
 // 模板管理 修改模板
-Route::post("templateSave/:site_id/:name", "common/template/savetemplate");
+Route::post("templateSave", "common/template/savetemplate");
 //content_get
 Route::resource('content_get', 'common/ContentGet');
 //推荐关键词首页数据
