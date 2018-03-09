@@ -260,6 +260,8 @@ Route::post("templateRead", "common/Template/templateRead");
 Route::post("templateAdd", "common/Template/readFile");
 //模板静态文件上传
 Route::post("uploadtemplatestatic", "common/Template/uploadtemplatestatic");
+//模板修改模板
+Route::post("renameTemp", "common/Template/renameTemp");
 //模板静态文件统一修改
 Route::post("updatestatic", "common/Template/updatestatic");
 //大站点可以统一修改小站点的tdk

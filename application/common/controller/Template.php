@@ -239,6 +239,25 @@ class Template extends Common
         return $this->savetemplate();
     }
 
+    public function renameTemp(){
+        $request = Request::instance();
+        $site_id = $request->post("site_id");
+        $list = $request->post("file_type");
+        $oldname = $request->post("name");
+        $newname = $request->post("newfilename");
+        $url = 'templateFileRename';
+        $site = \app\common\model\Site::get($site_id);
+        if ($site) {
+            $siteData = $this->curl_get($site->url . "/index.php/$url?filename=" . $oldname . "&list=" . $list."&newfilename".$newname);
+            //print_r($site->url . "/index.php/$url?filename=" . $name . "&list=" . $list);die;
+            $result = trim($siteData, "\xEF\xBB\xBF");
+            $data = json_decode($result, true);
+            return $this->resultArray($data['status'], $data['msg']);
+        }
+        return $this->resultArray('failed', '当前网站未获取到!');
+
+    }
+
 
     /**
      * 保存新建的资源
