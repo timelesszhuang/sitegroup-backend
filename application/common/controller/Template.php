@@ -219,10 +219,8 @@ class Template extends Common
         $site = \app\common\model\Site::get($site_id);
         if ($site) {
             $siteData = $this->curl_get($site->url . "/index.php/$url?filename=" . $name . "&list=" . $list);
-            //print($site->url . "/index.php/$url?filename=" . $name . "&list=" . $list);die;
             $result = trim($siteData, "\xEF\xBB\xBF");
             $data = json_decode($result, true);
-
             return $this->resultArray('success', $data['msg'], ["content" => $data["content"], "filename" => $data["filename"]]);
         }
         return $this->resultArray('failed', '当前网站未获取到!');
