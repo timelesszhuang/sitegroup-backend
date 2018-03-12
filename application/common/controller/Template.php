@@ -141,6 +141,7 @@ class Template extends Common
         $site = \app\common\model\Site::get($site_id);
         if ($site) {
             $siteData = $this->curl_get($site->url . "/index.php/$url?list=" . $type);
+//            print_r($siteData);die;
             //dump($site->url . "/index.php/$url?list=" . $type);die;
             $result = trim($siteData, "\xEF\xBB\xBF");
             $data = json_decode($result, true);
@@ -239,17 +240,17 @@ class Template extends Common
         return $this->savetemplate();
     }
 
-    public function renameTemp(){
+    public function templateRename(){
         $request = Request::instance();
         $site_id = $request->post("site_id");
         $list = $request->post("file_type");
-        $oldname = $request->post("name");
+        $oldname = $request->post("filename");
         $newname = $request->post("newfilename");
         $url = 'templateFileRename';
         $site = \app\common\model\Site::get($site_id);
         if ($site) {
-            $siteData = $this->curl_get($site->url . "/index.php/$url?filename=" . $oldname . "&list=" . $list."&newfilename".$newname);
-            //print_r($site->url . "/index.php/$url?filename=" . $name . "&list=" . $list);die;
+            $siteData = $this->curl_get($site->url . "/index.php/$url?filename=" . $oldname . "&list=" . $list."&newfilename=".$newname);
+            //print_r($site->url . "/index.php/$url?filename=" . $oldname . "&list=" . $list."&newfilename".$newname);die;
             $result = trim($siteData, "\xEF\xBB\xBF");
             $data = json_decode($result, true);
             return $this->resultArray($data['status'], $data['msg']);

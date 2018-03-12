@@ -268,7 +268,7 @@ class Menu extends CommonLogin
                 $menu['text'] = $menu['text'] . '[' . $menu['tag_name'] . ']';
                 $list[] = $menu;
                 if (isset($data_key[$menu['id']])) foreach ($data_key[$menu['id']] as $item) {
-                    $item['text'] = "|-" . $item['text'] . '[' . $item['tag_name'] . ']';
+                    $item['text'] = "|—" . $item['text'] . '[' . $item['tag_name'] . ']';
                     $list[] = $item;
                 }
             }
