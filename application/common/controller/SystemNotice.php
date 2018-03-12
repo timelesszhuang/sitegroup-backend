@@ -21,10 +21,10 @@ class SystemNotice extends CommonLogin
         $request = $this->getLimit();
         $where = [];
         $user_info = $this->getSessionUserInfo();
-        if ($user_info['user_type_name'] == 'node' && $user_info['user_type']==2) {
-            $node = ','.$user_info["node_id"].',';
+        if ($user_info['user_type_name'] == 'node' && $user_info['user_type'] == 2) {
+            $node = ',' . $user_info["node_id"] . ',';
             $where["node_ids"] = ["like", "%$node%"];
-        }elseif ($user_info['user_type'] == 1){
+        } elseif ($user_info['user_type'] == 1) {
             $where = [];
         }
         $data = (new Sys())->getList($request["limit"], $request["rows"], $where);
@@ -35,34 +35,37 @@ class SystemNotice extends CommonLogin
      * 节点数据
      *
      */
-    public function nodenotice(){
+    public function nodenotice()
+    {
         $where = '';
         $user_info = $this->getSessionUserInfo();
-        if ($user_info['user_type_name'] == 'node' && $user_info['user_type']==2) {
-            $node = ','.$user_info["node_id"].',';
-            $where=" node_ids like  '%$node%' ";
+        if ($user_info['user_type_name'] == 'node' && $user_info['user_type'] == 2) {
+            $node = ',' . $user_info["node_id"] . ',';
+            $where = " node_ids like  '%$node%' ";
         }
-        $data = Db::table('sg_system_notice')->alias('a')->field('a.*,c.status,c.node_id')->join('sg_system_notice_read c','a.id = c.notice_id','left')->where($where)->select();
+        $data = Db::table('sg_system_notice')->alias('a')->field('a.*,c.status,c.node_id')->join('sg_system_notice_read c', 'a.id = c.notice_id', 'left')->where($where)->select();
         $datas['readdata'] = [];
         $datas['deldata'] = [];
         $datas['unreaddata'] = [];
-        foreach ($data as $k=>$v){
-            $v['time'] = $v['update_time']*1000;
-            if($v['status'] == 10 ){
+        foreach ($data as $k => $v) {
+            $v['time'] = $v['update_time'] * 1000;
+            if ($v['status'] == 10) {
                 $datas['readdata'][] = $v;
-            }elseif ($v['status'] == 20 ||$v['status'] == null ){
+            } elseif ($v['status'] == 20 || $v['status'] == null) {
                 $datas['unreaddata'][] = $v;
-                }elseif ($v['status'] == 30){
-                $datas['deldata'][]  = $v;
+            } elseif ($v['status'] == 30) {
+                $datas['deldata'][] = $v;
             }
         }
-        return $this->resultArray('','',$datas);
+        return $this->resultArray('', '', $datas);
 
     }
+
     /**
      * 状态改变
      */
-    public function readstatus(Request $request){
+    public function readstatus(Request $request)
+    {
         $rule = [
             ["id", "require", "请传入id"],
             ["status", "require", "请输入状态"],
@@ -73,30 +76,34 @@ class SystemNotice extends CommonLogin
             return $this->resultArray($validate->getError(), "failed");
         }
         $id = $statusdata['id'];
-        $status =  $statusdata['status'];
+        $status = $statusdata['status'];
         $user_info = $this->getSessionUserInfo();
         $where['node_id'] = $user_info["node_id"];
         $where['notice_id'] = $id;
         $readdata = (new SystemNoticeRead())->where($where)->find();
 //        dump($readdata);die;
         Db::startTrans();
-        try{
-            if($status == 'read'){
-                if(empty($readdata)){
+        try {
+            if ($status == 'read') {
+                if (empty($readdata)) {
                     $Noticedata['notice_id'] = $id;
                     $Noticedata['status'] = 20;
-                    $Noticedata['node_id'] =$user_info["node_id"];
-                    if( !SystemNoticeRead::create($Noticedata)){
+                    $Noticedata['node_id'] = $user_info["node_id"];
+                    if (!SystemNoticeRead::create($Noticedata)) {
                         return $this->resultArray('修改失败', 'failed');
-                    } ;
-                    $data['status']=10;
-                }else{
-                    $data['status'] = 10;}
-            }elseif ($status == 'del'){
+                    };
+                    $data['status'] = 10;
+                } else {
+                    $data['status'] = 10;
+                }
+            } elseif ($status == 'del') {
                 $data['status'] = 30;
             }
-            if (!(new SystemNoticeRead)->save($data, ["id" => $readdata['id']])) {
-                return $this->resultArray('修改失败', 'failed');
+            if ($readdata) {
+                $Sys = (new SystemNoticeRead)->save($data, ["id" => $readdata['id']]);
+                if (!$Sys) {
+                    return $this->resultArray('修改失败', 'failed');
+                }
             }
             Db::commit();
         } catch (\Exception $e) {
@@ -107,14 +114,16 @@ class SystemNotice extends CommonLogin
         return $this->resultArray('修改成功');
 
     }
+
     /**
      *未读数量
      */
-    public function unreadnum(){
+    public function unreadnum()
+    {
 
         $readdata = (new SystemNotice())->nodenotice();
-        $num = count($readdata['data']['unreaddata'] );
-         return $this->resultArray('','',$num);
+        $num = count($readdata['data']['unreaddata']);
+        return $this->resultArray('', '', $num);
 
     }
 
@@ -127,7 +136,7 @@ class SystemNotice extends CommonLogin
     {
         $user_info = $this->getSessionUserInfo();
         $where = [];
-        if ($user_info['user_type_name'] == 'node' && $user_info['user_type']==2) {
+        if ($user_info['user_type_name'] == 'node' && $user_info['user_type'] == 2) {
             $where = [
                 "node_id" => $user_info["node_id"],
             ];
@@ -136,16 +145,16 @@ class SystemNotice extends CommonLogin
         $datas['readdata'] = [];
         $datas['deldata'] = [];
         $datas['unreaddata'] = [];
-        foreach ($data as $k=>$v ){
-            $v['time'] = strtotime($v['update_time'])*1000;
+        foreach ($data as $k => $v) {
+            $v['time'] = strtotime($v['update_time']) * 1000;
             $v['title'] = $v['msg'];
             unset($v['msg']);
             unset($v['update_time']);
-            if($v['status'] == '20'){
+            if ($v['status'] == '20') {
                 $datas['unreaddata'][] = $v;
-            }elseif ($v['status'] == '10'){
+            } elseif ($v['status'] == '10') {
                 $datas['readdata'][] = $v;
-            }elseif ($v['status'] == '30'){
+            } elseif ($v['status'] == '30') {
                 $datas['deldata'][] = $v;
             }
         }
@@ -155,7 +164,8 @@ class SystemNotice extends CommonLogin
     /**
      * 状态改变
      */
-    public function error_status(Request $request){
+    public function error_status(Request $request)
+    {
         $rule = [
             ["id", "require", "请传入id"],
             ["status", "require", "请输入状态"],
@@ -166,16 +176,16 @@ class SystemNotice extends CommonLogin
             return $this->resultArray($validate->getError(), "failed");
         }
         $id = $statusdata['id'];
-        $status =  $statusdata['status'];
-        if($status == 'read'){
+        $status = $statusdata['status'];
+        if ($status == 'read') {
             $data['status'] = 10;
-        }elseif ($status == 'del'){
+        } elseif ($status == 'del') {
             $data['status'] = 30;
         }
-        if (!(new SiteErrorInfo())->save($data, ["id" =>$id])) {
-            return $this->resultArray( 'failed','修改失败');
+        if (!(new SiteErrorInfo())->save($data, ["id" => $id])) {
+            return $this->resultArray('failed', '修改失败');
         }
-        return $this->resultArray('success','修改成功');
+        return $this->resultArray('success', '修改成功');
 
     }
 
@@ -187,7 +197,7 @@ class SystemNotice extends CommonLogin
     {
         $user_info = $this->getSessionUserInfo();
         $where = [];
-        if ($user_info['user_type_name'] == 'node' && $user_info['user_type']==2) {
+        if ($user_info['user_type_name'] == 'node' && $user_info['user_type'] == 2) {
             $where = [
                 "node_id" => $user_info["node_id"],
                 "status" => 20
@@ -199,9 +209,6 @@ class SystemNotice extends CommonLogin
         }
         return $this->resultArray('', '', $count);
     }
-
-
-
 
 
     /**
@@ -217,7 +224,7 @@ class SystemNotice extends CommonLogin
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param  \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
@@ -231,16 +238,16 @@ class SystemNotice extends CommonLogin
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        if(isset($data["node_ids"]) && !empty($data["node_ids"])){
-            $ids=implode(",",$data["node_ids"]);
-            $data["node_ids"]=",".$ids.",";
-        }else{
-            $nodeCollection=\app\common\model\Node::all();
-            if(!empty($nodeCollection)){
-                $nodeArr=collection($nodeCollection)->toArray();
+        if (isset($data["node_ids"]) && !empty($data["node_ids"])) {
+            $ids = implode(",", $data["node_ids"]);
+            $data["node_ids"] = "," . $ids . ",";
+        } else {
+            $nodeCollection = \app\common\model\Node::all();
+            if (!empty($nodeCollection)) {
+                $nodeArr = collection($nodeCollection)->toArray();
 
-                $nodeStr=implode(",",array_column($nodeArr,"id"));
-                $data["node_ids"]=",".$nodeStr.",";
+                $nodeStr = implode(",", array_column($nodeArr, "id"));
+                $data["node_ids"] = "," . $nodeStr . ",";
             }
         }
         if (!Sys::create($data)) {
@@ -252,35 +259,35 @@ class SystemNotice extends CommonLogin
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function read($id)
     {
-        $find=Sys::where(["id"=>$id])->field("create_time,update_time", true)->find();
-        if(!empty($find["node_ids"])){
-            $find["node_ids"]=trim($find["node_ids"],",");
+        $find = Sys::where(["id" => $id])->field("create_time,update_time", true)->find();
+        if (!empty($find["node_ids"])) {
+            $find["node_ids"] = trim($find["node_ids"], ",");
         }
-        return $this->resultArray("","",$find);
+        return $this->resultArray("", "", $find);
     }
 
 
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function readerror($id)
     {
-        $find=(new SiteErrorInfo)->where(["id"=>$id])->field("create_time,update_time", true)->find();
-        return $this->resultArray("","",$find);
+        $find = (new SiteErrorInfo)->where(["id" => $id])->field("create_time,update_time", true)->find();
+        return $this->resultArray("", "", $find);
     }
 
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -291,8 +298,8 @@ class SystemNotice extends CommonLogin
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param  \think\Request $request
+     * @param  int $id
      * @return \think\Response
      */
     public function update(Request $request, $id)
@@ -306,15 +313,15 @@ class SystemNotice extends CommonLogin
         if (!$validate->check($data)) {
             return $this->resultArray($validate->getError(), "failed");
         }
-        if(isset($data["node_ids"]) && !empty($data["node_ids"])){
-            $ids=implode(",",$data["node_ids"]);
-            $data["node_ids"]=",".$ids.",";
-        }else{
-            $nodeCollection=\app\common\model\Node::all();
-            if(!empty($nodeCollection)){
-                $nodeArr=collection($nodeCollection)->toArray();
-                $nodeStr=implode(",",array_column($nodeArr,"id"));
-                $data["node_ids"]=",".$nodeStr.",";
+        if (isset($data["node_ids"]) && !empty($data["node_ids"])) {
+            $ids = implode(",", $data["node_ids"]);
+            $data["node_ids"] = "," . $ids . ",";
+        } else {
+            $nodeCollection = \app\common\model\Node::all();
+            if (!empty($nodeCollection)) {
+                $nodeArr = collection($nodeCollection)->toArray();
+                $nodeStr = implode(",", array_column($nodeArr, "id"));
+                $data["node_ids"] = "," . $nodeStr . ",";
             }
         }
         if (!(new Sys)->save($data, ["id" => $id])) {
@@ -326,7 +333,7 @@ class SystemNotice extends CommonLogin
     /**
      * 删除指定资源
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \think\Response
      */
     public function delete($id)
@@ -354,9 +361,10 @@ class SystemNotice extends CommonLogin
      * @return array
      * 阅读递加1
      */
-    public function readcount(Request $request, $id){
+    public function readcount(Request $request, $id)
+    {
         $Sys = Sys::get($id);
-        $data['readcount']= $Sys['readcount']+1;
+        $data['readcount'] = $Sys['readcount'] + 1;
         if (!(new Sys)->save($data, ["id" => $id])) {
             return $this->resultArray('修改失败', 'failed');
         }

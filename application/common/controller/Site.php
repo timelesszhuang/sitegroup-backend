@@ -386,8 +386,9 @@ class Site extends Common
         $switchUrl = function () use ($url, $name) {
             $NewUrl = '';
             $msg = '';
+            //print_r($name);die;
             switch ($name) {
-                case "aKeyGeneration":
+                case "oneKeyGenerate":
                     $msg = "正在一键生成...";
                     $NewUrl = $url . "/allstatic";
                     break;
