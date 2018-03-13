@@ -117,6 +117,8 @@ class Marketingmode extends CommonLogin
             ];
             $validate = new Validate($rule);
             $data = $request->post();
+            unset($data['create_time']);
+            unset($data['update_time']);
             if (!$validate->check($data)) {
                 Common::processException($validate->getError());
             }
