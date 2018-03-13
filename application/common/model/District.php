@@ -32,7 +32,11 @@ class District extends Model
         $data=$this->where($where)->field("id,name as label,pinyin as value")->select();
         if($data){
             foreach ($data as $k=>$v){
-                $v['loading'] = false;
+                $wheres["parent_id"]=$v['id'];
+                $datas=$this->where($wheres)->field("id,name as label,pinyin as value")->select();
+                if($datas){
+                    $v['loading'] = false;
+                }
                 $v['children'] = [];
             }
         }
