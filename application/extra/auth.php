@@ -92,6 +92,7 @@ return [
     'common/LibraryArticle/update' => [2],
     'common/Home/getLanderInfo' => [1, 2, 3],
     'common/Home/countDatas' => [1, 2, 3],
+    'common/Home/siteCountDatas' => [1, 2, 3],
     'common/Marketingmode/index' => [1, 2, 3],
     'common/Marketingmode/read' => [1, 2, 3],
     'common/Marketingmode/update' => [1],
@@ -114,8 +115,8 @@ return [
     'common/Industry/update' => [1, 2, 3],
     'common/Industry/delete' => [1, 2, 3],
     'common/Home/RootCountDatas' => [2, 1],
-    'common/Home/en' => [2, 1],
-    'common/Home/show' => [2, 1],
+    'common/Home/en' => [2, 1,3],
+    'common/Home/show' => [2, 1,3],
     'admin/Keyword/keywordCount' => [2, 1],
     'common/Node/nodeList' => [2, 1],
     'common/Home/getMarketMode' => [2, 3],
@@ -312,5 +313,6 @@ return [
     'common/PageInfo/editpageinfo'=> [3],
     'common/Site/siteResource'=> [3],
     'common/Site/editResource'=> [3],
+    'common/Pv/acount'=>[3],
 
 ];

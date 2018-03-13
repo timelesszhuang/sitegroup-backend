@@ -158,6 +158,9 @@ class Count extends CommonLogin
         $where = [
             'node_id' => $user["node_id"],
         ];
+        if ($user['user_type_name'] == 'site' && $user['user_type'] == '3') {
+            $where["site_id"] = $user["site_id"];
+        }
         //判断前台是否传递参数
         if (isset($param["time"])) {
             list($start_time, $stop_time) = $param['time'];
@@ -366,6 +369,9 @@ class Count extends CommonLogin
         $where = [
             'node_id' => $user["node_id"],
         ];
+        if ($user['user_type_name'] == 'site' && $user['user_type'] == '3') {
+            $where["site_id"] = $user["site_id"];
+        }
         //判断前台是否传递参数
         if (isset($param["time"])) {
             list($start_time, $stop_time) = $param['time'];

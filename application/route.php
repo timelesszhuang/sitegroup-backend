@@ -37,6 +37,7 @@ Route::post('set_site_info','common/Login/setSiteInfo');//登陆后设置站点�
 Route::get('home_info','common/Home/getLanderInfo');//登陆后获取首页信息
 Route::get('home_count','common/Home/countDatas');
 Route::get('root_count','common/Home/RootCountDatas');
+Route::get('site_count','common/Home/siteCountDatas');
 Route::get('home_marketmode', 'common/Home/getMarketMode');//获取前6条 营销模式图片和id
 Route::get('home_casecenter', 'common/Home/getCaseCenter');//获取前6条 案例中心图片和id
 
@@ -124,6 +125,7 @@ Route::resource('public_article',"common/LibraryArticle");
 Route::resource('public_image',"common/LibraryImgset");
 /** 关键词*/
 Route::resource('keyword',"admin/Keyword");
+Route::resource('district',"admin/District");
 Route::post('keyword_file',"admin/Keyword/getKeywordByFile");
 Route::post('delete_keywords',"admin/Keyword/deleteAll");
 Route::get('keyword_count',"admin/Keyword/keywordCount");
@@ -297,6 +299,7 @@ Route::resource('pv', 'common/Pv');
 //节点统计
 Route::resource("count", 'common/Count');
 Route::get("countkeyword", 'common/Pv/countkeyword');
+Route::get("acount", 'common/Pv/acount');
 Route::get("engineCount", 'common/Count/enginecount');
 //浏览量统计
 Route::get("pvStatistic", 'common/Count/pvStatistic');

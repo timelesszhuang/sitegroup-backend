@@ -95,4 +95,67 @@ class CountData extends Model
         $count = (new ArticleSearchengineInclude)->where(["node_id" => $node_id])->sum("count");
         return $count;
     }
+
+
+    /**
+     * 统计浏览量
+     */
+    public function sitecountPv($siteinfo, $ttime)
+    {
+        $site_id = $siteinfo['id'];
+        $node_id = $siteinfo['node_id'];
+        return Pv::where(["node_id" => $node_id, "site_id" => $site_id, "create_time" => ["egt", $ttime]])->count();
+    }
+
+    /**
+     * 获取爬虫信息
+     * @param $node_id
+     * @param $ttime
+     * @return int|string
+     */
+    public function sitecountUseragent($siteinfo, $ttime)
+    {
+        $site_id = $siteinfo['id'];
+        $node_id = $siteinfo['node_id'];
+        return Useragent::where(["node_id" => $node_id, "site_id" => $site_id, "create_time" => ["egt", $ttime]])->count();
+    }
+
+    /**
+     * 获取文章添加数量
+     * @param $node_id
+     * @param $ttime
+     * @return int|string
+     */
+    public function sitecountArticle($siteinfo, $ttime)
+    {
+        $site_id = $siteinfo['id'];
+        $node_id = $siteinfo['node_id'];
+        return Article::where(["node_id" => $node_id, "site_id" => $site_id, "create_time" => ["egt", $ttime]])->count();
+    }
+
+    /**
+     * 获取甩单数量
+     * @param $node_id
+     * @param $ttime
+     * @return int|string
+     */
+    public function sitecountShuaidan($siteinfo, $ttime)
+    {
+        $site_id = $siteinfo['id'];
+        $node_id = $siteinfo['node_id'];
+        return Rejection::where(["node_id" => $node_id, "site_id" => $site_id, "create_time" => ["egt", $ttime]])->count();
+    }
+
+    /**
+     * 收录数量
+     * @param $node_id
+     * @return float|int
+     */
+    public function sitecountInclude($siteinfo)
+    {
+        $site_id = $siteinfo['id'];
+        $node_id = $siteinfo['node_id'];
+        $count = ArticleSearchengineInclude::where(["node_id" => $node_id, "site_id" => $site_id])->sum("count");
+        return $count;
+    }
 }

@@ -27,6 +27,10 @@ class Home extends CommonLogin
     public function countDatas()
     {
         $user = $this->getSessionUserInfo();
+        if ($user['user_type_name'] == 'site' && $user['user_type'] == 3) {
+           $data =  $this->siteCountDatas();
+           return $data;
+        }
         $ttime = strtotime(date("Y-m-d 00:00:00"));
         $cd = new CountData();
         return $this->resultArray([
@@ -35,6 +39,24 @@ class Home extends CommonLogin
             "article" => intval($cd->countArticle($user["node_id"], $ttime)),
             "shuaidan" => intval($cd->countShuaidan($user["node_id"], $ttime)),
             "shoulu" => intval($cd->countInclude($user["node_id"]))
+        ]);
+    }
+
+    /**
+     * site首页统计
+     */
+    public function siteCountDatas()
+    {
+        $siteinfo['node_id'] = $user = $this->getSessionUserInfo()['node_id'];
+        $siteinfo["id"] = $this->getSessionUserInfo()["site_id"];
+        $ttime = strtotime(date("Y-m-d 00:00:00"));
+        $cd = new CountData();
+        return $this->resultArray('', '', [
+            "pv" => intval($cd->sitecountPv($siteinfo, $ttime)),
+            "useragent" => intval($cd->sitecountUseragent($siteinfo, $ttime)),
+            "article" => intval($cd->sitecountArticle($siteinfo, $ttime)),
+            "shuaidan" => intval($cd->sitecountShuaidan($siteinfo, $ttime)),
+            "shoulu" => intval($cd->sitecountInclude($siteinfo))
         ]);
     }
 

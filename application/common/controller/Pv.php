@@ -71,5 +71,39 @@ class Pv extends CommonLogin
 
     }
 
+    public function acount()
+    {
+        $param=$this->request->get();
+        $starttime = 0;
+        $stoptime = time();
+        $user_info = $this->getSessionUserInfo();
+        $where = [
+            'node_id'=>$user_info["node_id"],
+        ];
+        if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
+            $where["site_id"] = $user_info["site_id"];
+        }
+        if (isset($param["time"])) {
+            list($start_time, $stop_time) = $param['time'];
+            $starttime = (!empty(intval($start_time))) ? strtotime($start_time) : $starttime;
+            $stoptime = (!empty(intval($stop_time))) ? strtotime($stop_time) : $stoptime;
+        }
+        $where["create_time"] = ['between', [$starttime, $stoptime]];
+        $browse=new BrowseRecord();
+        $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->order("keyCount","desc")->select();
+        $arrcount = $browse->where($where)->count();
+        $temp=[];
+
+        foreach ($arr as $k => $v) {
+            $te[] = $v['keyCount'];
+            $ar[] = $v['engine'];
+        }
+        /** @var string $ar */
+        $temp = ["count" => $te, "name" => $ar];
+        return $this->resultArray($temp);
+
+
+    }
+
 
 }
