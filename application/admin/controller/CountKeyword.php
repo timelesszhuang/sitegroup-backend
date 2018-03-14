@@ -2,7 +2,7 @@
 
 namespace app\admin\controller;
 
-use app\common\model\BrowseRecord;
+
 use think\Request;
 use app\common\controller\Common;
 use think\Session;

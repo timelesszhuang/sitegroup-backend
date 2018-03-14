@@ -14,7 +14,6 @@ class Menu extends Common
      */
     public function index()
     {
-        $request = $this->getLimit();
         $name = $this->request->get('name');
         $flag = $this->request->get('flag');
         $tag_id = $this->request->get('tag_id');

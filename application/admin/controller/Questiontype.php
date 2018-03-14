@@ -215,38 +215,7 @@ class Questiontype extends Common
     }
 
 
-    /**
-     *统计问答
-     */
-    public function QuestionCount()
-    {
-        $count = [];
-        $name = [];
-        foreach ($this->countQuestion() as $item) {
-            $count[] = $item["count"];
-            $name[] = $item["name"];
-        }
-        $arr = ["count" => $count, "name" => $name];
-        return $this->resultArray('', '', $arr);
-    }
 
-    public function countQuestion()
-    {
-        $user = $this->getSessionUser();
-        $where = [
-            'node_id' => $user["user_node_id"],
-        ];
-        $articleTypes = \app\admin\model\QuestionType::all($where);
-        foreach ($articleTypes as $item) {
-            yield $this->foreachQuestion($item);
-        }
-    }
-
-    public function foreachQuestion($questionType)
-    {
-        $count = \app\admin\model\Question::where(["type_id" => $questionType->id])->count();
-        return ["count" => $count, "name" => $questionType->name];
-    }
 
 
 }

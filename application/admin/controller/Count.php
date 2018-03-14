@@ -342,77 +342,7 @@ class Count extends Common
         ];
     }
 
-    /**
-     * @return array
-     * 统计pv
-     */
-    public function pv()
-    {
-        $param = $this->request->get();
-        $user = $this->getSessionUser();
-        $where = [
-            'node_id' => $user["user_node_id"],
-        ];
-        //判断前台是否传递参数
-        if (isset($param["time"])) {
-            list($start_time, $stop_time) = $param['time'];
-            $starttime = (!empty(intval($start_time))) ? strtotime($start_time) : time() - 86400 * 9;
-            $stoptime = (!empty(intval($stop_time))) ? strtotime($stop_time) : time();
-        } else {
-            $starttime = time() - 86400 * 9;
-            $stoptime = time();
 
-        }
-        $where["create_time"] = ['between', [$starttime, $stoptime]];
-        //判断前台有没有传递site——id参数
-        if (!empty($param["site_id"])) {
-            $where['site_id'] = $param['site_id'];
-        }
-        $userpv = Db::name("pv")->where($where)->field("node_id,create_time")->select();
-        //循环$userpv 组织成vue前台series所需要的数据
-        //二维数组 名字为键值 里面一层时间为键值 下面时间所拥有的值
-        $Pv = [];
-        $pv = [];
-        foreach ($userpv as $v) {
-            $pvid = $v['node_id'];
-            //in_array判断$pv是否在$Pv,数组递加
-            if (!in_array($pvid, $pv)) {
-                array_push($pv, $pvid);
-            }
-            //格式化时间
-            $date = date('m-d', $v['create_time']);
-            //array_key_exists 判断数组里是否有这个数据 没有的话置为空
-            if (!array_key_exists($pvid, $Pv)) {
-                $Pv[$pvid] = [];
-            }
-            if (array_key_exists($date, $Pv[$pvid])) {
-                $Pv[$pvid][$date] += 1;
-            } else {
-                $Pv[$pvid][$date] = 1;
-            }
-        }
-        //格式化时间
-        $date_diff = $this->get_date_diff($starttime, $stoptime);
-        //当前时间下的数据为空置为0
-        foreach ($pv as $pvid) {
-            foreach ($date_diff as $date) {
-                //对时间排序
-                ksort($Pv[$pvid]);
-                //当前时间下的数据为空置为0
-                if (!array_key_exists($date, $Pv[$pvid])) {
-                    $Pv[$pvid][$date] = 0;
-                }
-            }
-        }
-        //array_walk() 数组的键名和键值是参数。
-        array_walk($Pv, [$this, "for1"]);
-        $temp = ["time" => $date_diff, "type" => $this->count];
-        if (empty($userpv)) {
-            return $this->resultArray('没有查询到数据', 'failed', $temp);
-        } else {
-            return $this->resultArray('查询成功', '', $temp);
-        }
-    }
 
 
     /**
@@ -530,5 +460,40 @@ class Count extends Common
         $count = \app\admin\model\ScatteredTitle::where(["articletype_id" => $articleType->id])->count();
         return ["count" => $count, "name" => $articleType->name];
 
+    }
+
+
+
+    /**
+     *统计问答
+     */
+    public function QuestionCount()
+    {
+        $count = [];
+        $name = [];
+        foreach ($this->countQuestion() as $item) {
+            $count[] = $item["count"];
+            $name[] = $item["name"];
+        }
+        $arr = ["count" => $count, "name" => $name];
+        return $this->resultArray('', '', $arr);
+    }
+
+    public function countQuestion()
+    {
+        $user = $this->getSessionUser();
+        $where = [
+            'node_id' => $user["user_node_id"],
+        ];
+        $articleTypes = \app\admin\model\QuestionType::all($where);
+        foreach ($articleTypes as $item) {
+            yield $this->foreachQuestion($item);
+        }
+    }
+
+    public function foreachQuestion($questionType)
+    {
+        $count = \app\admin\model\Question::where(["type_id" => $questionType->id])->count();
+        return ["count" => $count, "name" => $questionType->name];
     }
 }
