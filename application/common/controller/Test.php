@@ -9,7 +9,7 @@
 namespace app\common\controller;
 use think\Request;
 
-class test
+class Test
 {
     public function test(Request $request){
         $data = $request->param();

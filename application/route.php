@@ -12,7 +12,7 @@
 use think\Route;
 
 //用户电话记录数据管理
-Route::get('test', 'common/test/test');
+Route::get('test', 'common/Test/test');
 Route::resource('voice_cdr', 'admin/VoiceCdr');
 Route::resource('sys/voice_cdr', 'sysadmin/VoiceCdr');
 //用户电话记录数据获取api
