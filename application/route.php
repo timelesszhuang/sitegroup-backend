@@ -354,6 +354,8 @@ Route::post('editpageinfo', 'common/PageInfo/editpageinfo');
 //获取站点联系方式
 Route::get('siteResource','common/Site/siteResource');
 Route::post('siteResource','common/Site/editResource');
+Route::any(
+    'wxlogin','common/Wxapp/login');
 
 
 /*//用户电话记录数据管理
