@@ -115,6 +115,9 @@ class Wxapp extends Common
             //登录信息容器
             $user_info = (new User())->checkUserLogin($data["user_name"], $data["password"]);
             $user_info = (new User())->find($user_info['id']);
+            if(!Session::get('openid', 'wx')){
+                Common::processException('出现错误');
+            }
             $user_info->openid = Session::get('openid', 'wx');
             unset($user_info->pwd);
             if (!$user_info->save()) {
