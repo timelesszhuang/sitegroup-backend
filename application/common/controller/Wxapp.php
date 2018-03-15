@@ -36,15 +36,16 @@ class Wxapp extends Common
             if (!$code) {
                 Common::processException('参数错误');
             }
-            $return = file_get_contents('https://api.weixin.qq.com/sns/jscode2session?appid=wxc9b6fb0ce74a27ce&secret=602b3e81060f03915f3dab1e2b0573a0&js_code='.$code.'&grant_type=authorization_code');
-            $return = json_decode($return,true);
-            if(array_key_exists('errcode',$return)){
-                Common::processException(/*$return['errmsg']*/'参数错误');
+            $return = file_get_contents('https://api.weixin.qq.com/sns/jscode2session?appid=wxc9b6fb0ce74a27ce&secret=602b3e81060f03915f3dab1e2b0573a0&js_code=' . $code . '&grant_type=authorization_code');
+            $return = json_decode($return, true);
+            if (array_key_exists('errcode', $return)) {
+                Common::processException(/*$return['errmsg']*/
+                    '参数错误');
             }
-            Session::set('openid',$return['openid'],'wx');
-            Session::set('session_key',$return['session_key'],'wx');
+            Session::set('openid', $return['openid'], 'wx');
+            Session::set('session_key', $return['session_key'], 'wx');
             $this->loginByOpenId($return['openid']);
-            return $this->resultArray('success','登陆成功');
+            return $this->resultArray('success', '登陆成功');
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());
         }
@@ -57,9 +58,10 @@ class Wxapp extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    static function loginByOpenId($openid){
+    static function loginByOpenId($openid)
+    {
         $user_info = (new User)->where(["openid" => $openid])->find();
-        if(!$user_info){
+        if (!$user_info) {
             Common::processException('not_bind');
         }
         /** @var array $user_info */
@@ -91,7 +93,8 @@ class Wxapp extends Common
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function bindopenid(){
+    public function bindopenid()
+    {
         $data = Request::instance()->post();
         $rule = [
             ["user_name", "require", "请填写用户名"],
@@ -112,12 +115,13 @@ class Wxapp extends Common
             //登录信息容器
             $user_info = (new User())->checkUserLogin($data["user_name"], $data["password"]);
             $user_info = (new User())->find($user_info['id']);
-            $user_info->openid = Session::get('openid','wx');
-            if(!$user_info->save()){
+            $user_info->openid = Session::get('openid', 'wx');
+            unset($user_info->pwd);
+            if (!$user_info->save()) {
                 Common::processException('绑定失败，请重新尝试');
             }
             //如果存在
-            return $this->resultArray('success', '绑定成功');
+            return $this->resultArray('success', '绑定成功', Session::get('openid', 'wx'));
         } catch (ProcessException $exception) {
             return $this->resultArray("failed", $exception->getMessage());
         }
