@@ -53,6 +53,7 @@ Route::post('article_csv_import','common/Article/csvimport');
 Route::post('article_show_html','common/Article/articleShowHtml');
 //问答相关
 Route::resource('question','common/Question');
+Route::resource('wx_question','wx/Question');
 Route::post('question_show_html','common/Question/questionShowHtml');
 //产品相关
 Route::resource('product','admin/Product');

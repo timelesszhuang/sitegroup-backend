@@ -121,7 +121,7 @@ class Wxapp extends Common
             $user_info->openid = Session::get('openid', 'wx');
             unset($user_info->pwd);
             if (!$user_info->save()) {
-                Common::processException('绑定失败，请重新尝试');
+                Common::processException('绑定失败或重复绑定，请重新尝试');
             }
             //如果存在
             return $this->resultArray('success', '绑定成功', Session::get('openid', 'wx'));
