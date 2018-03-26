@@ -239,7 +239,7 @@ class Article extends CommonLogin
                 Common::processException('删除失败');
             }
             $this->open_start('正在修改中');
-            $type_id = $data['type_id'];
+            $type_id = $data['articletype_id'];
             $sitedata = $this->getArticleSite($type_id);
             if (array_key_exists('status', $sitedata)) {
                 return $sitedata;
