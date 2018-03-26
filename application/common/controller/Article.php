@@ -227,7 +227,33 @@ class Article extends CommonLogin
      */
     public function delete($id)
     {
-        return $this->deleteRecord($this->model, $id);
+
+        try {
+            $user = $this->getSessionUserInfo();
+            $where = [
+                "id" => $id,
+                "node_id" => $user["node_id"]
+            ];
+            $data = $this->model->where($where)->find();
+            if (!$this->model->where($where)->delete()) {
+                Common::processException('删除失败');
+            }
+            $this->open_start('正在修改中');
+            $type_id = $data['type_id'];
+            $sitedata = $this->getProductSite($type_id);
+            if (array_key_exists('status', $sitedata)) {
+                return $sitedata;
+            }
+            foreach ($sitedata as $kk => $vv) {
+                $send = [
+                    "id" => $id,
+                    "searchType" => 'article',
+                ];
+                $this->curl_post($vv['url'] . "/index.php/delete", $send);
+            }
+        } catch (ProcessException $e) {
+            return $this->resultArray('failed', $e->getMessage());
+        }
     }
 
     /**
