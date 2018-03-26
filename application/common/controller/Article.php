@@ -247,9 +247,10 @@ class Article extends CommonLogin
             foreach ($sitedata as $kk => $vv) {
                 $send = [
                     "id" => $id,
+                    "type_id" => $type_id,
                     "searchType" => 'article',
                 ];
-                $this->curl_post($vv['url'] . "/index.php/delete", $send);
+                $this->curl_post($vv['url'] . "/index.php/removeHtml", $send);
             }
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());
