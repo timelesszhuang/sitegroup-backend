@@ -80,12 +80,26 @@ class User extends Common
     }
 
     /**
+     * 显示指定的资源
+     *
+     * @param  int  $id
+     * @return \think\Response
+     * @author jingzheng
+     */
+    public function readuser()
+    {
+        $user = new \app\common\model\User;
+        $usernode = $this->getSessionUserInfo();
+        return $this->resultArray('','',$user->where(["node_id" => $usernode['node_id']])->find());
+    }
+
+    /**
      * 显示编辑资源表单页.
      *
      * @param  int  $id
      * @return \think\Response
      */
-    public function edit($id)
+    public function edit($id) 
     {
         //
     }
