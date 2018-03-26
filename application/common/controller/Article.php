@@ -240,7 +240,7 @@ class Article extends CommonLogin
             }
             $this->open_start('正在修改中');
             $type_id = $data['type_id'];
-            $sitedata = $this->getProductSite($type_id);
+            $sitedata = $this->getArticleSite($type_id);
             if (array_key_exists('status', $sitedata)) {
                 return $sitedata;
             }

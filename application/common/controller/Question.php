@@ -204,7 +204,7 @@ class Question extends CommonLogin
             }
             $this->open_start('正在修改中');
             $type_id = $data['type_id'];
-            $sitedata = $this->getProductSite($type_id);
+            $sitedata = $this->getQuestionSite($type_id);
             if (array_key_exists('status', $sitedata)) {
                 return $sitedata;
             }
