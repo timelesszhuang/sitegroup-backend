@@ -51,6 +51,7 @@ return [
     'common/Article/csvimport' => [1, 2, 3],
     'common/Article/articleShowHtml' => [1, 2, 3],
     'common/OssUpload/imageUpload' => [1, 2, 3],
+    'common/OssUpload/csvUpload' => [1, 2, 3],
     // node 节点相关权限管理
     // 产品模块  非公共模块 只有node有该功能
     'admin/Product/index' => [1, 2, 3],
