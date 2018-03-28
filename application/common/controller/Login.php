@@ -159,6 +159,32 @@ class Login extends Common
 
     }
 
+    /***
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function unlock(Request $request)
+    {
+        $this->checkLogin();
+        try {
+            $login_id = Session::get('login_id', 'login');
+            $password = $request->post('password');
+            $login_type_name = Session::get('login_type_name', 'login');
+            if($login_type_name ==='node'){
+                $class = new User();
+            }else{
+                $class = new SiteUser();
+            }
+            $data=$class->where(["id" => $login_id])->find();
+            $class->checkUserLogin($data["user_name"], $password);
+            return $this->resultArray('success', '验证成功');
+        } catch (ProcessException $exception) {
+            return $this->resultArray("failed", $exception->getMessage());
+        }
+
+    }
+
     /**
      * 小网站用户存储站点信息
      * @return array

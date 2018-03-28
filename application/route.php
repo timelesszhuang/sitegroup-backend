@@ -19,6 +19,7 @@ Route::get('test',"admin/Oschina/test");
 Route::get('test1',"common/Common/test");
 //登录
 Route::post('login', 'common/Login/login');//用户登录
+Route::post('unlock', 'common/Login/unlock');//用户解锁
 //自动登录
 Route::post('auto_login', 'common/Login/autoLogin');//自动登录
 //获取验证码
