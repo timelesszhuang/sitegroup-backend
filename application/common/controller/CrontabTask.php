@@ -5,9 +5,7 @@
  * Date: 17-6-14
  * Time: 上午8:58
  */
-namespace app\admin\controller;
-use app\common\controller\Common;
-use app\common\controller\Site;
+namespace app\common\controller;
 
 class CrontabTask extends Common {
 
