@@ -29,7 +29,7 @@ class District extends Model
     {
         $where=[];
         $where["parent_id"]=$id;
-        $data=$this->where($where)->field("id,name as label,pinyin as value")->select();
+        $data=$this->where($where)->field("id,name as label,pinyin as value,level")->select();
         if($data){
             foreach ($data as $k=>$v){
                 $wheres["parent_id"]=$v['id'];
@@ -39,6 +39,9 @@ class District extends Model
                 }
                 $v['children'] = [];
             }
+        }
+        if($id==0){
+            $data = array_merge([['id'=>0,'label'=>'全国','value'=>'quanguo','children'=>[],'level'=>3]],$data);
         }
 
         return $data;
