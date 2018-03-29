@@ -41,7 +41,7 @@ class District extends Model
             }
         }
         if($id==0){
-            $data = array_merge([['id'=>0,'label'=>'全国','value'=>'quanguo','children'=>[],'level'=>3]],$data);
+            $data = array_merge([['id'=>0,'label'=>'全国','value'=>'quanguo','children'=>[],'level'=>1]],$data);
         }
 
         return $data;
