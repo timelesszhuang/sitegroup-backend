@@ -360,6 +360,9 @@ Route::post('siteResource','common/Site/editResource');
 Route::any('wxlogin','common/Wxapp/login');
 Route::any('wxbind','common/Wxapp/bindopenid');
 
+//crontab任务,每天定时执行更新所有网站的静态页面
+Route::get('crontab', 'common/CrontabTask/index');
+
 
 
 /*//用户电话记录数据管理
@@ -620,8 +623,6 @@ Route::resource('pv', 'admin/Pv');
 
 //甩单
 Route::resource('Rejection', 'admin/Rejection');
-//crontab任务,每天定时执行更新所有网站的静态页面
-Route::get('crontab', 'admin/CrontabTask/index');
 //模板管理 获取对应site_id的信息
 Route::get("templateList/:site_id", "admin/template/filelist");
 // 模板管理 读取模板
