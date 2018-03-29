@@ -9,7 +9,7 @@ use think\Request;
 class Staticconfig extends CommonLogin
 {
     /**
-     *@return array
+     * @return array
      */
     public function index()
     {
@@ -65,7 +65,7 @@ class Staticconfig extends CommonLogin
         $user_info = $this->getSessionUserInfo();
         $data["node_id"] = $user_info["node_id"];
         if (!$validate->check($data)) {
-            return $this->resultArray( "failed",$validate->getError());
+            return $this->resultArray("failed", $validate->getError());
         }
         $user_info = $this->getSessionUserInfo();
         if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
@@ -73,16 +73,19 @@ class Staticconfig extends CommonLogin
         }
         $where = [];
         $where['site_id'] = $data['site_id'];
-        $where['type']=$data['type'];
+        $where['type'] = $data['type'];
         $Staticdata = (new \app\common\model\SiteStaticconfig())->where($where)->select();
+        if (strtotime($data['stoptime']) <= strtotime($data['starttime'])) {
+            return $this->resultArray("failed", "请选择正确的时间");
+        }
         foreach ($Staticdata as $k => $v) {
             if (!(strtotime($data['stoptime']) < strtotime($v['starttime']) || strtotime($data['starttime']) > strtotime($v['stoptime']))) {
-                return $this->resultArray( "failed","当前时间段已有相关配置,请查证后再试");
+                return $this->resultArray("failed", "当前时间段已有相关配置,请查证后再试");
             }
         }
 
         if (!\app\common\model\SiteStaticconfig::create($data)) {
-            return $this->resultArray( "failed","添加失败");
+            return $this->resultArray("failed", "添加失败");
         }
         return $this->resultArray("添加成功");
     }
@@ -116,7 +119,7 @@ class Staticconfig extends CommonLogin
         $data = $request->put();
         $validate = new Validate($rule);
         if (!$validate->check($data)) {
-            return $this->resultArray( 'failed',$validate->getError());
+            return $this->resultArray('failed', $validate->getError());
         }
         $where = [];
         $user_info = $this->getSessionUserInfo();
@@ -124,19 +127,19 @@ class Staticconfig extends CommonLogin
             $data["site_id"] = $user_info["site_id"];
         }
         $where['site_id'] = $data['site_id'];
-        $where['type']=$data['type'];
+        $where['type'] = $data['type'];
         $Staticdata = (new \app\common\model\SiteStaticconfig())->where($where)->select();
         foreach ($Staticdata as $k => $v) {
-            if($v['id']==$data['id']){
+            if ($v['id'] == $data['id']) {
                 continue;
             }
             if (!(strtotime($data['stoptime']) < strtotime($v['starttime']) || strtotime($data['starttime']) > strtotime($v['stoptime']))) {
-                return $this->resultArray( "failed","当前时间段已有相关配置,请查证后再试");
+                return $this->resultArray("failed", "当前时间段已有相关配置,请查证后再试");
             }
         }
 
         if (!(new \app\common\model\SiteStaticconfig)->save($data, ["id" => $id])) {
-            return $this->resultArray( 'failed','修改失败');
+            return $this->resultArray('failed', '修改失败');
         }
         return $this->resultArray('修改成功');
     }
