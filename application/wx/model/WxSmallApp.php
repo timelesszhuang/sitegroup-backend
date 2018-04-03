@@ -21,7 +21,7 @@ class WxSmallApp extends Model
         if($app_info){
             $app_id =  $app_info['id'];
         }else{
-            $this->add(['node_id'=>$node_id]);
+            $this->create(['node_id'=>$node_id]);
             $app_id = $this->getLastId();
         }
         return $app_id;
