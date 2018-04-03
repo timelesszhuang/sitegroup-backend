@@ -129,7 +129,9 @@ class WxProduct extends Common
             if (!$validate->check($data)) {
                 Common::processException($validate->getError());
             }
-            $data["app_id"] = $app_id = (new \app\wx\model\WxSmallApp())->getAppId($this->getSessionUserInfo()["node_id"]);
+            if(!$data['app_id']){
+                $data["app_id"] = $app_id = (new \app\wx\model\WxSmallApp())->getAppId($this->getSessionUserInfo()["node_id"]);
+            }
             if (!$this->model->isUpdate(true)->save($data)) {
                 Common::processException('添加失败');
             }
