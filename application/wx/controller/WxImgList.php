@@ -34,11 +34,14 @@ class ImgList extends Common
     {
         $request = $this->getLimit();
         $name = $this->request->get('name');
+        $app_id = $this->request->get('app_id');
         if ($name) {
             $where["name"] = ["like", "%$name%"];
         }
-        $user = $this->getSessionUserInfo();
-        $where["node_id"] = $user["node_id"];
+        if(!$app_id){
+            $app_id = (new \app\wx\model\WxSmallApp())->getAppId($this->getSessionUserInfo()["node_id"]);
+        }
+        $where["app_id"] = $app_id;
         $data = $this->model->getImgList($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
@@ -131,6 +134,24 @@ class ImgList extends Common
     public function getImgSer($id)
     {
         $data = $this->model->where(["id" => $id])->field("id,imgser")->find()->toArray();
+        $imgser = [];
+        if ($data['imgser']) {
+            $imgser = unserialize($data['imgser']);
+            unset($data['imgser']);
+        }
+        $data['imglist'] = $imgser;
+        return $this->resultArray($data);
+    }
+
+    public function getImgSerByEnName($enmane)
+    {
+        $app_id = $this->request->get('app_id');
+        $where = ["en_name" => $enmane];
+        if(!$app_id){
+            $app_id = (new \app\wx\model\WxSmallApp())->getAppId($this->getSessionUserInfo()["node_id"]);
+        }
+        $where["app_id"] = $app_id;
+        $data = $this->model->where(["en_name" => $enmane])->field("id,imgser")->find()->toArray();
         $imgser = [];
         if ($data['imgser']) {
             $imgser = unserialize($data['imgser']);
