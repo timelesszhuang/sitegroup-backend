@@ -365,6 +365,10 @@ Route::get('crontab', 'common/CrontabTask/index');
 
 
 
+Route::resource('wxarticle', 'common/wx/WxArticle');
+
+
+
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');
 Route::resource('sys/voice_cdr', 'sysadmin/VoiceCdr');
