@@ -39,6 +39,7 @@ class WxArticle extends Common
         $limits = $this->getLimit();
         $content = $request->get('title');
         $menu_id = $request->get('menu_id');
+        $app_id = $request->get('app_id');
         $where = [];
         if (!empty($content)) {
             $where['title'] = ["like", "%$content%"];
@@ -46,7 +47,9 @@ class WxArticle extends Common
         if (!empty($menu_id)) {
             $where['menu_id'] = $menu_id;
         }
-        $app_id = (new \app\wx\model\WxSmallApp())->getAppId($this->getSessionUserInfo()["node_id"]);
+        if(!$app_id){
+            $app_id = (new \app\wx\model\WxSmallApp())->getAppId($this->getSessionUserInfo()["node_id"]);
+        }
         $where["app_id"] = $app_id;
         return $this->resultArray($this->model->getAll($limits['limit'], $limits['rows'], $where));
     }
