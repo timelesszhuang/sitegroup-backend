@@ -15,4 +15,14 @@ use think\Model;
 class WxProduct extends Model
 {
     use Osstrait;
+
+    public function getAll($limit,$rows,$where)
+    {
+        $count = $this->where($where)->count();
+        $data = $this->limit($limit, $rows)->where($where)->order('id desc')->select();
+        return [
+            "total" => $count,
+            "rows" => $data
+        ];
+    }
 }
