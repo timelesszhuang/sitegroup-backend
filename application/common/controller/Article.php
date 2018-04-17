@@ -245,12 +245,13 @@ class Article extends CommonLogin
                 return $sitedata;
             }
             foreach ($sitedata as $kk => $vv) {
-                $send = [
-                    "id" => $id,
-                    "type_id" => $type_id,
-                    "searchType" => 'article',
-                ];
-                $this->curl_post($vv['url'] . "/index.php/removeHtml", $send);
+//                $send = [
+//                    "id" => $id,
+//                    "type_id" => $type_id,
+//                    "searchType" => 'article',
+//                ];
+//                $this->curl_post($vv['url'] . "/index.php/removeHtml", $send);
+                $this->curl_get($vv['url']."/clearCache");
             }
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());
