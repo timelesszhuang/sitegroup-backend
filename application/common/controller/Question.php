@@ -86,9 +86,9 @@ class Question extends CommonLogin
             } else {
                 $data['tags'] = "";
             }
-            if(!empty($data['flag'])){
+            if (!empty($data['flag'])) {
                 $data['flag'] = ',' . implode(',', $data['flag']) . ',';
-            }else{
+            } else {
                 $data['flag'] = '';
             }
             unset($data['tag_id']);
@@ -156,9 +156,9 @@ class Question extends CommonLogin
         } else {
             $data['tags'] = "";
         }
-        if(!empty($data['flag'])){
+        if (!empty($data['flag'])) {
             $data['flag'] = ',' . implode(',', $data['flag']) . ',';
-        }else{
+        } else {
             $data['flag'] = '';
         }
         unset($data['tag_id']);
@@ -175,11 +175,12 @@ class Question extends CommonLogin
             return $sitedata;
         }
         foreach ($sitedata as $kk => $vv) {
-            $send = [
-                "id" => $data['id'],
-                "searchType" => 'question',
-            ];
-            $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
+//            $send = [
+//                "id" => $data['id'],
+//                "searchType" => 'question',
+//            ];
+//            $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
+            $this->curl_get($vv['url'] . "/clearCache");
         }
         return '';
     }
@@ -215,7 +216,7 @@ class Question extends CommonLogin
 //                    "searchType" => 'question',
 //                ];
 //                $this->curl_post($vv['url'] . "/index.php/removeHtml", $send);
-                $this->curl_get($vv['url']."/clearCache");
+                $this->curl_get($vv['url'] . "/clearCache");
             }
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());

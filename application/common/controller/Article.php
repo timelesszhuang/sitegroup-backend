@@ -208,11 +208,12 @@ class Article extends CommonLogin
                 return $sitedata;
             }
             foreach ($sitedata as $kk => $vv) {
-                $send = [
+                /*$send = [
                     "id" => $data['id'],
                     "searchType" => 'article',
                 ];
-                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
+                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);*/
+                $this->curl_get($vv['url']."/clearCache");
             }
         } catch (ProcessException $exception) {
             return $this->resultArray("failed", $exception->getMessage());

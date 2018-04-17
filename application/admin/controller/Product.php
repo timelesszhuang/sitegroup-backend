@@ -248,11 +248,12 @@ class Product extends CommonLogin
                 return $sitedata;
             }
             foreach ($sitedata as $kk => $vv) {
-                $send = [
+                /*$send = [
                     "id" => $post['id'],
                     "searchType" => 'product',
                 ];
-                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
+                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);*/
+                $this->curl_get($vv['url']."/clearCache");
             }
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());

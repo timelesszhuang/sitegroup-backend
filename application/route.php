@@ -368,6 +368,7 @@ Route::get('crontab', 'common/CrontabTask/index');
 Route::resource('wxarticle', 'common/wx/WxArticle');
 Route::resource('wxproduct', 'common/wx/WxProduct');
 Route::get('wximglistenname', 'common/wx/WxImgList');
+Route::get('oldtonew', 'common/shell/index1');
 
 
 

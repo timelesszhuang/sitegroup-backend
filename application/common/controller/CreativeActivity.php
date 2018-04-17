@@ -156,7 +156,8 @@ class CreativeActivity extends CommonLogin
         foreach ($site as $k => $v) {
             if ($v['sync_id']) {
                 //print_r($v['url'] . '/regenerateactivity/'.$data['id']);
-                $this->curl_get($v['url'] . '/regenerateactivity/' . $data['id']);
+//                $this->curl_get($v['url'] . '/regenerateactivity/' . $data['id']);
+                $this->curl_get($v['url']."/clearCache");
             }
         }
     }
