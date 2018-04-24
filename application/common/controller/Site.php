@@ -412,18 +412,6 @@ class Site extends Common
                     $msg = "正在一键生成...";
                     $NewUrl = $url . "/allstatic";
                     break;
-                case "generatIndex":
-                    $msg = "正在生成首页...";
-                    $NewUrl = $url . "/indexstatic";
-                    break;
-                case "generatArticle":
-                    $msg = "正在生成文章页...";
-                    $NewUrl = $url . "/articlestatic";
-                    break;
-                case "generatMenu":
-                    $msg = "正在生成栏目...";
-                    $NewUrl = $url . "/menustatic";
-                    break;
                 case "clearCache":
                     $msg = "正在清除...";
                     $NewUrl = $url . "/clearCache";
