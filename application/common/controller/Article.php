@@ -326,7 +326,7 @@ class Article extends CommonLogin
             $sitedata = $this->getArticleSite($articletype_id);
             foreach ($sitedata as $kk => $vv) {
                 $showhtml[] = [
-                    'url' => $vv['url'] . '/preview/article/' . $data['id'] . '.html',
+                    'url' => $vv['url'] . '/article/article' . $data['id'] . '.html',
                     'site_name' => $vv['site_name'],
                 ];
             }

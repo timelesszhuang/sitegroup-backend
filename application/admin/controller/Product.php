@@ -480,7 +480,7 @@ class Product extends CommonLogin
             $sitedata = $this->getProductSite($data['type_id']);
             foreach ($sitedata as $kk => $vv) {
                 $showhtml[] = [
-                    'url' => $vv['url'] . '/preview/product/' . $data['id'] . '.html',
+                    'url' => $vv['url'] . '/product/product' . $data['id'] . '.html',
                     'site_name' => $vv['site_name'],
                 ];
             }

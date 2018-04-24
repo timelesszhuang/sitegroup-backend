@@ -265,7 +265,7 @@ class WxMenu extends Common
             $sitedata = $this->getQuestionSite($data['type_id']);
             foreach ($sitedata as $kk => $vv) {
                 $showhtml[] = [
-                    'url' => $vv['url'] . '/preview/question/' . $data['id'] . '.html',
+                    'url' => $vv['url'] . '/question/question' . $data['id'] . '.html',
                     'site_name' => $vv['site_name'],
                 ];
             }
