@@ -254,6 +254,7 @@ Route::get('resetSite/:id', 'common/Site/resetSite');
 Route::get('commonType', 'common/Site/commontype');
 //修改Cdn 主動推送
 Route::put('saveCdn/:id', 'common/Site/saveCdn');
+Route::put('saveDebug', 'common/Site/saveDebug');
 //获取所有模板下拉
 Route::get('getTemplate', 'common/Template/getTemplate');
 //模板管理 获取对应site_id的信息

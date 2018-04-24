@@ -244,6 +244,26 @@ class Site extends Common
     }
 
     /**
+     * 修改ftp信息
+     * @param $id
+     * @return array
+     */
+    public function saveDebug($id)
+    {
+        $user_info = $this->getSessionUserInfo();
+        $data = $this->request->put();
+        $update['app_debug']=$data['app_debug'];
+        $where = [
+            "id" => $data['id'],
+            "node_id" => $user_info["node_id"],
+        ];
+        if (!\app\common\model\Site::where($where)->update($update)) {
+            return $this->resultArray('failed','修改失败');
+        }
+        return $this->resultArray('修改成功');
+    }
+
+    /**
      * 修改为主站
      * @param $id
      * @return array
