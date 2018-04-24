@@ -4,12 +4,14 @@ namespace app\common\controller;
 
 use app\common\controller\PageInfo;
 use app\common\model\SitePageinfo;
+use app\common\traits\Obtrait;
 use think\Request;
 use app\common\controller\Common;
 use think\Validate;
 
 class Tdk extends CommonLogin
 {
+    use Obtrait;
     /**
      * 大后台统一修改站点tdk操作
      * @author jingzheng
@@ -27,7 +29,10 @@ class Tdk extends CommonLogin
         if (!$validate->check($data)) {
             return $this->resultArray("failed",$validate->getError() );
         }
-        return $this->publicUpdate((new SitePageinfo), $data, $id);
+        $sitedata = (new Site())->where(['id'=>$data['site_id']])->field('id,site_name,url')->select();
+        $save = $this->publicUpdate((new SitePageinfo), $data, $id);
+        $this->curl_get($sitedata['url']."/clearCache");
+        return $save;
 
     }
 
