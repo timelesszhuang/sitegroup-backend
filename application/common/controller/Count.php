@@ -30,7 +30,7 @@ class Count extends CommonLogin
         $starttime = 0;
         $stoptime = time();
         $where = [
-        'node_id' => $user["node_id"],
+            'node_id' => $user["node_id"],
         ];
         //判断前台是否传递参数
         if (isset($param["time"])) {
@@ -137,9 +137,9 @@ class Count extends CommonLogin
         //重组数组返给前台
         $temp = ["time" => $date_diff, "type" => $this->all_count];
         if (empty($userAgent)) {
-            return $this->resultArray( 'failed','没有查询到数据', $temp);
+            return $this->resultArray('failed', '没有查询到数据', $temp);
         } else {
-            return $this->resultArray( 'success','查询成功', $temp);
+            return $this->resultArray('success', '查询成功', $temp);
         }
     }
 
@@ -348,9 +348,9 @@ class Count extends CommonLogin
         array_walk($Pv, [$this, "for1"]);
         $temp = ["time" => $date_diff, "type" => $this->count];
         if (empty($userpv)) {
-            return $this->resultArray('failed','没有查询到数据',  $temp);
+            return $this->resultArray('failed', '没有查询到数据', $temp);
         } else {
-            return $this->resultArray( 'success','查询成功', $temp);
+            return $this->resultArray('success', '查询成功', $temp);
         }
     }
 
@@ -366,13 +366,11 @@ class Count extends CommonLogin
     {
         $param = $this->request->get();
         $user = $this->getSessionUserInfo();
-        if($user['node_id']!=0){
-            $where = [
-                'node_id' => $user["node_id"],
-            ];
-            if ($user['user_type_name'] == 'site' && $user['user_type'] == '3') {
-                $where["site_id"] = $user["site_id"];
-            }
+        $where = [
+            'node_id' => $user["node_id"],
+        ];
+        if ($user['user_type_name'] == 'site' && $user['user_type'] == '3') {
+            $where["site_id"] = $user["site_id"];
         }
         //判断前台是否传递参数
         if (isset($param["time"])) {
@@ -426,11 +424,7 @@ class Count extends CommonLogin
             }
         }
         //array_walk() 数组的键名和键值是参数。
-        if($user['node_id']!=0){
-            array_walk($Pv, [$this, "for1"]);
-        }else{
-            array_walk($Pv, [$this, "for2"]);
-        }
+        array_walk($Pv, [$this, "for1"]);
         $temp = ["time" => $date_diff, "type" => $this->count];
         return $this->resultArray($temp);
     }
@@ -478,13 +472,13 @@ class Count extends CommonLogin
         //格式化时间
         $date_diff = $this->get_date_diff($starttime, $stoptime);
         //当前时间下的数据为空置为0
-            foreach ($date_diff as $date) {
-                //对时间排序
-                ksort($Pv);
-                //当前时间下的数据为空置为0
-                if (!array_key_exists($date, $Pv)) {
-                    $Pv[$date] = 0;
-                }
+        foreach ($date_diff as $date) {
+            //对时间排序
+            ksort($Pv);
+            //当前时间下的数据为空置为0
+            if (!array_key_exists($date, $Pv)) {
+                $Pv[$date] = 0;
+            }
         }
         //array_walk() 数组的键名和键值是参数。
         $temp = ["time" => $date_diff, "type" => [
@@ -513,7 +507,7 @@ class Count extends CommonLogin
     public function for2($value)
     {
         $this->count[] = [
-            "data" =>  [array_sum(array_values($value))],
+            "data" => [array_sum(array_values($value))],
             "type" => "line",
         ];
     }
@@ -541,7 +535,7 @@ class Count extends CommonLogin
     public function countArticle()
     {
         $user_info = $this->getSessionUserInfo();
-        $where["node_id"] =$user_info["node_id"];
+        $where["node_id"] = $user_info["node_id"];
         $articleTypes = \app\common\model\Articletype::all($where);
         foreach ($articleTypes as $item) {
             yield $this->foreachArticle($item);
@@ -575,7 +569,7 @@ class Count extends CommonLogin
     public function countQuestion()
     {
         $user_info = $this->getSessionUserInfo();
-        $where["node_id"] =$user_info["node_id"];
+        $where["node_id"] = $user_info["node_id"];
         $articleTypes = \app\common\model\QuestionType::all($where);
         foreach ($articleTypes as $item) {
             yield $this->foreachQuestion($item);
@@ -592,12 +586,12 @@ class Count extends CommonLogin
     {
         $user_info = $this->getSessionUserInfo();
         $where = [
-            'node_id'=>$user_info["node_id"],
+            'node_id' => $user_info["node_id"],
         ];
         if ($user_info['user_type_name'] == 'site' && $user_info['user_type'] == '3') {
             $where["site_id"] = $user_info["site_id"];
         }
-        $param=$this->request->get();
+        $param = $this->request->get();
         $starttime = 0;
         $stoptime = time();
         if (isset($param["time"])) {
@@ -606,8 +600,8 @@ class Count extends CommonLogin
             $stoptime = (!empty(intval($stop_time))) ? strtotime($stop_time) : $stoptime;
         }
         $where["create_time"] = ['between', [$starttime, $stoptime]];
-        $browse=new BrowseRecord();
-        $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->order("keyCount","desc")->select();
+        $browse = new BrowseRecord();
+        $arr = $browse->field('engine,count(id) as keyCount')->where($where)->group('engine')->order("keyCount", "desc")->select();
         foreach ($arr as $k => $v) {
             $te[] = $v['keyCount'];
             $ar[] = $v['engine'];
