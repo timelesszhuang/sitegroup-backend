@@ -481,10 +481,10 @@ class Count extends CommonLogin
             }
         }
         //array_walk() 数组的键名和键值是参数。
-        $temp = ["time" => $date_diff, "type" => [
+        $temp = ["time" => $date_diff, "type" => [[
             "data" => array_values($Pv),
             "type" => "line",
-        ]];
+        ]]];
         return $this->resultArray($temp);
     }
 
