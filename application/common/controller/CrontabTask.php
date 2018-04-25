@@ -27,7 +27,7 @@ class CrontabTask extends Common
         $Question = (new \app\common\model\Question());
         $site = (new \app\common\model\Site());
         //获取整站所有的网站列表
-        $sites = $site->where(['id' => 83])->field("id,url,menu,site_name,node_id")->select();
+        $sites = $site->where(1)->field("id,url,menu,site_name,node_id")->select();
         $time = time();
         foreach ($sites as $item) {
             /*以下操作针对单一网站*/
