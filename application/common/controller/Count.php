@@ -366,11 +366,13 @@ class Count extends CommonLogin
     {
         $param = $this->request->get();
         $user = $this->getSessionUserInfo();
-        $where = [
-            'node_id' => $user["node_id"],
-        ];
-        if ($user['user_type_name'] == 'site' && $user['user_type'] == '3') {
-            $where["site_id"] = $user["site_id"];
+        if($user['user_type']!="root"){
+            $where = [
+                'node_id' => $user["node_id"],
+            ];
+            if ($user['user_type_name'] == 'site' && $user['user_type'] == '3') {
+                $where["site_id"] = $user["site_id"];
+            }
         }
         //判断前台是否传递参数
         if (isset($param["time"])) {

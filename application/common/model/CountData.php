@@ -71,6 +71,42 @@ class CountData extends Model
     }
 
     /**
+     * 获取文章添加数量
+     * @param $node_id
+     * @param $ttime
+     * @return int|string
+     */
+    public function countProduct($node_id = 0, $ttime = 0)
+    {
+        $where = [];
+        if ($node_id != 0) {
+            $where['node_id'] = $node_id;
+        }
+        if ($ttime != 0) {
+            $where['create_time'] = ["egt", $ttime];
+        }
+        return (new Product())->where($where)->count();
+    }
+
+    /**
+     * 获取文章添加数量
+     * @param $node_id
+     * @param $ttime
+     * @return int|string
+     */
+    public function countQuestion($node_id = 0, $ttime = 0)
+    {
+        $where = [];
+        if ($node_id != 0) {
+            $where['node_id'] = $node_id;
+        }
+        if ($ttime != 0) {
+            $where['create_time'] = ["egt", $ttime];
+        }
+        return (new Question())->where($where)->count();
+    }
+
+    /**
      * 获取甩单数量
      * @param $node_id
      * @param $ttime
@@ -92,8 +128,31 @@ class CountData extends Model
         if ($node_id != 0) {
             $where['node_id'] = $node_id;
         }
-        $count = (new ArticleSearchengineInclude)->where(["node_id" => $node_id])->sum("count");
+        $count = (new ArticleSearchengineInclude)->where($where)->sum("count");
         return $count;
+    }
+
+    /**
+     * @return array
+     * 关键词统计
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function keywordCount()
+    {
+        $keyword = (new Keyword());
+        $arr = $keyword->field('tag,count(id) as tagCount')->group('tag')->order("tagCount", "desc")->select();
+        $te = [];
+        $ar = [];
+        foreach ($arr as $k => $v) {
+            $te[] = $v['tagCount'];
+            $ar[] = $v['tag'];
+        }
+        /** @var string $ar */
+        $temp = ["count" => $te, "name" => $ar];
+        //return $this->resultArray($temp);
+        return $te;
     }
 
 
@@ -105,6 +164,14 @@ class CountData extends Model
         $site_id = $siteinfo['id'];
         $node_id = $siteinfo['node_id'];
         return Pv::where(["node_id" => $node_id, "site_id" => $site_id, "create_time" => ["egt", $ttime]])->count();
+    }
+
+    /**
+     * 统计root浏览量
+     */
+    public function rootcountPv($ttime)
+    {
+        return Pv::where(["create_time" => ["egt", $ttime]])->count();
     }
 
     /**

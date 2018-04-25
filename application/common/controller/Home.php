@@ -12,6 +12,7 @@ use app\common\exception\ProcessException;
 use app\common\model\CaseCenter;
 use app\common\model\Company;
 use app\common\model\CountData;
+use app\common\model\Keyword;
 use app\common\model\LoginLog;
 use app\common\model\Marketingmode;
 use app\common\model\Node;
@@ -70,11 +71,14 @@ class Home extends CommonLogin
         return $this->resultArray([
             "site_num" => intval($cd->countSite()),
             "customer_num" => intval($cd->countCustomer()),
-            "new_article" => intval($cd->countArticle(0, $ttime)),
-            "shoulu" => intval($cd->countInclude())
+            "article" => intval($cd->countArticle(0, 0)),
+            "product" => intval($cd->countArticle(0, 0)),
+            "question" => intval($cd->countArticle(0, 0)),
+            "shoulu" => intval($cd->countInclude()),
+            "keyword"=> intval($cd->keywordCount()),
+            "pv"=> intval($cd->rootcountPv($ttime)),
         ]);
     }
-
     /***
      * @return array
      * @throws \think\db\exception\DataNotFoundException
