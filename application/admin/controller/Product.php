@@ -44,7 +44,7 @@ class Product extends CommonLogin
             $where["name"] = ["like", "%$name%"];
         }
         if (!empty($type_id)) {
-            $where["type_id"] = $type_id;
+            $where["type_id"] = ['in',explode(',',$type_id)];
         }
         $user = $this->getSessionUserInfo();
         if ($user['user_type_name'] == 'node') {

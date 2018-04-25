@@ -42,7 +42,7 @@ class Article extends CommonLogin
             $where["title"] = ["like", "%$title%"];
         }
         if (!empty($article_type)) {
-            $where['articletype_id'] = $article_type;
+            $where['articletype_id'] = ['in',explode(',',$article_type)];
         }
         $user_info = $this->getSessionUserInfo();
         if ($user_info['user_type_name'] == 'node') {
