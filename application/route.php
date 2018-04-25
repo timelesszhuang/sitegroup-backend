@@ -44,6 +44,7 @@ Route::get('home_casecenter', 'common/Home/getCaseCenter');//获取前6条 案�
 
 Route::get('home_en', 'common/Home/en');//获取前4条 营销图片和id
 Route::get('pv_show', 'common/Home/show');//获取前4条 营销图片和id
+Route::get('root_pv_show', 'common/Home/root_pv_show');//获取前4条 营销图片和id
 /** 内容管理*/
 //获取分类列表
 Route::get('get_type_list','common/Types/getType');

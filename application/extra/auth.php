@@ -123,6 +123,7 @@ return [
     'common/Home/RootCountDatas' => [2, 1],
     'common/Home/en' => [2, 1,3],
     'common/Home/show' => [2, 1,3],
+    'common/Home/root_pv_show' => [2, 1,3],
     'admin/Keyword/keywordCount' => [2, 1],
     'common/Node/nodeList' => [2, 1],
     'common/Home/getMarketMode' => [2, 3],

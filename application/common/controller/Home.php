@@ -72,8 +72,8 @@ class Home extends CommonLogin
             "site_num" => intval($cd->countSite()),
             "customer_num" => intval($cd->countCustomer()),
             "article" => intval($cd->countArticle(0, 0)),
-            "product" => intval($cd->countArticle(0, 0)),
-            "question" => intval($cd->countArticle(0, 0)),
+            "product" => intval($cd->countProduct(0, 0)),
+            "question" => intval($cd->countQuestion(0, 0)),
             "shoulu" => intval($cd->countInclude()),
             "keyword"=> intval($cd->keywordCount()),
             "pv"=> intval($cd->rootcountPv($ttime)),
@@ -162,6 +162,15 @@ class Home extends CommonLogin
     public function show()
     {
         return (new Count)->show();
+    }
+    /**
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function root_pv_show()
+    {
+        return (new Count)->root_pv_show();
     }
 
     /**
