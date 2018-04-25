@@ -75,7 +75,7 @@ class Home extends CommonLogin
             "product" => intval($cd->countProduct(0, 0)),
             "question" => intval($cd->countQuestion(0, 0)),
             "shoulu" => intval($cd->countInclude()),
-            "keyword"=> intval($cd->keywordCount()),
+            "keyword"=> array_sum($cd->keywordCount()),
             "pv"=> intval($cd->rootcountPv($ttime)),
         ]);
     }

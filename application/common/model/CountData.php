@@ -152,6 +152,7 @@ class CountData extends Model
         /** @var string $ar */
         $temp = ["count" => $te, "name" => $ar];
         //return $this->resultArray($temp);
+        //return $this->resultArray($te);
         return $te;
     }
 
