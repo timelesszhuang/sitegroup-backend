@@ -428,7 +428,7 @@ class Count extends CommonLogin
         //array_walk() 数组的键名和键值是参数。
         array_walk($Pv, [$this, "for1"]);
         $temp = ["time" => $date_diff, "type" => $this->count];
-        return $this->resultArray($temp);
+        return $this->resultArray($where);
     }
 
     /**
