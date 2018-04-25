@@ -366,7 +366,7 @@ class Count extends CommonLogin
     {
         $param = $this->request->get();
         $user = $this->getSessionUserInfo();
-        if($user['user_type']!="root"){
+        if($user['node_id']!=0){
             $where = [
                 'node_id' => $user["node_id"],
             ];
@@ -428,7 +428,7 @@ class Count extends CommonLogin
         //array_walk() 数组的键名和键值是参数。
         array_walk($Pv, [$this, "for1"]);
         $temp = ["time" => $date_diff, "type" => $this->count];
-        return $this->resultArray($user);
+        return $this->resultArray($temp);
     }
 
     /**
