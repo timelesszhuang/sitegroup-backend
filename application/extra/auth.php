@@ -317,7 +317,7 @@ return [
     'common/PageInfo/producttdk'=> [3],
     'common/PageInfo/producttdksave'=> [3],
     'common/PageInfo/producttdkedit'=> [3],
-    'common/PageInfo/editpageinfo'=> [3],
+    'common/PageInfo/editpageinfo'=> [2,3],
     'common/Site/siteResource'=> [3],
     'common/Site/editResource'=> [3],
     'common/Pv/acount'=>[3],

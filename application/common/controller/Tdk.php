@@ -29,8 +29,9 @@ class Tdk extends CommonLogin
         if (!$validate->check($data)) {
             return $this->resultArray("failed",$validate->getError() );
         }
-        $sitedata = (new Site())->where(['id'=>$data['site_id']])->field('id,site_name,url')->select();
-        $save = $this->publicUpdate((new SitePageinfo), $data, $id);
+        $sitedata = (new \app\common\model\Site())->where(['id'=>$data['site_id']])->field('id,site_name,url')->find();
+      // dump($sitedata);die;
+        $save = $this->publicUpdate((new SitePageinfo()), $data, $id);
         $this->curl_get($sitedata['url']."/clearCache");
         return $save;
 
