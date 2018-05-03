@@ -343,7 +343,7 @@ Route::get('siteAkeyword', 'common/PageInfo/getAkeyword');
 Route::resource('pageInfo', 'common/PageInfo');
 //文章tdk修改
 Route::get('articletdk', 'common/PageInfo/articletdk');
-Route::get('articletdksave', 'common/PageInfo/articletdksave');
+Route::get('articletdksave/:id', 'common/PageInfo/articletdksave');
 Route::post('articletdkedit', 'common/PageInfo/articletdkedit');
 //问答tdk修改
 Route::get('questiontdk', 'common/PageInfo/questiontdk');

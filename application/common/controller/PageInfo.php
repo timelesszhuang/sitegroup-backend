@@ -3,6 +3,7 @@
 namespace app\common\controller;
 
 use app\common\model\Site;
+use app\common\model\SiteDetailPageinfo;
 use app\common\model\SitePageinfo;
 use think\Controller;
 use think\Request;
@@ -150,13 +151,15 @@ class PageInfo extends CommonLogin
     {
         $request = $this->getLimit();
         $user_info = $this->getSessionUserInfo();
-        $type_ids = (new \app\common\model\Menu())->getSiteTypeIds($user_info['menu'], 3);
-        $where['articletype_id'] = ['in', $type_ids];
-        $name = $this->request->get('title');
-        if (!empty($name)) {
-            $where['title'] = ["like", "%$name%"];
+        $title= $this->request->get('title');
+        $where = [];
+        if (!empty($title)) {
+            $where['title'] = ["like", "%$title%"];
         }
-        $data =   (new \app\common\model\Article())->getArticle($request["limit"], $request["rows"], $where);
+        $where["node_id"] = $user_info["node_id"];
+        $where["site_id"] = $user_info["site_id"];
+        $where['type'] = 'article';
+        $data = (new SiteDetailPageinfo())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
@@ -164,47 +167,30 @@ class PageInfo extends CommonLogin
      * @return array
      * 文章详情页获取当前的tdk
      */
-    public function articletdksave()
+    public function articletdksave($id)
     {
-        $edit = $this->request->get('edit');
-        $user_info = $this->getSessionUserInfo();
-        //dump($user_info);die;
-        $site_id =  $user_info["site_id"];
-        $where['id'] = $site_id;
-        $site = (new Site())->where($where)->select();
-        foreach ($site as $k => $v) {
-            $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/article/" . $edit);
-            $data = json_decode($sitedata, true);
-        }
-        if ($data['status'] == "success") {
-            $data['status'] = '';
-        }
-        if(!isset($data['data'])){
-            $data['data'] = '';
-        }
-//        dump($data);die;
-        return $this->resultArray( $data["status"],$data["msg"], $data['data']);
+        return $this->getread((new SiteDetailPageinfo()), $id);
 
     }
 
     /**
      * 文章详情页修改当前的tdk
      */
-    public function articletdkedit()
+    public function articletdkedit(Request $request, $id)
     {
-        $this->open_start('正在修改中');
-        $content = $this->request->post('content');
-        $filename = $this->request->post('filename');
-        $user_info = $this->getSessionUserInfo();
-        $site_id =  $user_info["site_id"];
-        $where['id'] = $site_id;
-        $site = (new Site())->where($where)->select();
-        foreach ($site as $k => $v) {
-            $send = [
-                "content" => $content
-            ];
-            $this->curl_post($v['url'] . "/index.php/generateOne/article/" . $filename, $send);
+        $rule = [
+            ['title', 'require', "请填title"],
+            ["keyword", "require", "请填keyword"],
+            ["description", "require", "请填description"],
+        ];
+        $data = $this->request->post();
+        $validate = new Validate($rule);
+        if (!$validate->check($data)) {
+            return $this->resultArray('failed',$validate->getError());
         }
+        return $this->publicUpdate((new SiteDetailPageinfo()),$data,$id);
+
+
     }
 
     /**
@@ -215,62 +201,18 @@ class PageInfo extends CommonLogin
     {
         $request = $this->getLimit();
         $user_info = $this->getSessionUserInfo();
-        $type_ids = (new \app\common\model\Menu())->getSiteTypeIds($user_info['menu'], 2);
-        $where['type_id'] = ['in', $type_ids];
-        $name = $this->request->get('question');
-        if (!empty($name)) {
-            $w['question'] = ["like", "%$name%"];
+        $title= $this->request->get('title');
+        $where = [];
+        if (!empty($title)) {
+            $where['title'] = ["like", "%$title%"];
         }
-        $data = (new \app\common\model\Question())->getAll($request['limit'], $request['rows'], $where);
+        $where["node_id"] = $user_info["node_id"];
+        $where["site_id"] = $user_info["site_id"];
+        $where['type'] = 'question';
+        $data = (new SiteDetailPageinfo())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
 
-
-    /**
-     * @return array
-     * 问答页面tdk单条数据
-     */
-    public function questiontdksave()
-    {
-        $edit = $this->request->get('edit');
-        $user_info = $this->getSessionUserInfo();
-        $site_id =  $user_info["site_id"];
-        $where['id'] = $site_id;
-        $site = (new Site())->where($where)->select();
-        foreach ($site as $k => $v) {
-            $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/question/" . $edit);
-            $data = json_decode($sitedata, true);
-        }
-        if ($data['status'] == "success") {
-            $data['status'] = '';
-        }
-        if(!isset($data['data'])){
-            $data['data'] = '';
-        }
-        return $this->resultArray($data["msg"], $data["status"], $data["data"]);
-
-    }
-
-    /**
-     * 问答页面tdk修改
-     */
-    public function questiontdkedit()
-    {
-        $this->open_start('正在修改中');
-        $content = $this->request->post('content');
-        $filename = $this->request->post('filename');
-        $user_info = $this->getSessionUserInfo();
-        $site_id =  $user_info["site_id"];
-        $where['id'] = $site_id;
-        $site = (new Site())->where($where)->select();
-        foreach ($site as $k => $v) {
-            $send = [
-                "content" => $content
-            ];
-            $this->curl_post($v['url'] . "/index.php/generateOne/question/" . $filename, $send);
-//            dump($v['url'] . "/index.php/generateOne/question/" . $filename);
-        }
-    }
 
     /**
      * @return array
@@ -280,58 +222,20 @@ class PageInfo extends CommonLogin
     {
         $request = $this->getLimit();
         $user_info = $this->getSessionUserInfo();
-        $site_id =  $user_info["site_id"];
-        $where['id'] = $site_id;
-        $type_ids = (new \app\common\model\Menu())->getSiteTypeIds($user_info['menu'], 5);
-        $where['type_id'] = ['in', $type_ids];
-        $name = $this->request->get('name');
-        if (!empty($name)) {
-            $w['name'] = ["like", "%$name%"];
+        $title= $this->request->get('title');
+        $where = [];
+        if (!empty($title)) {
+            $where['title'] = ["like", "%$title%"];
         }
-        $data = (new \app\common\model\Product())->getAll($request["limit"], $request["rows"], $where);
+        $where["node_id"] = $user_info["node_id"];
+        $where["site_id"] = $user_info["site_id"];
+        $where['type'] = 'product';
+        $data = (new SiteDetailPageinfo())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
-    }
-
-    /**
-     * @return array
-     * 产品tdk单条数据
-     */
-    public function producttdksave()
-    {
-        $edit = $this->request->get('edit');
-        $user_info = $this->getSessionUserInfo();
-        $site_id =  $user_info["site_id"];
-        $where['id'] = $site_id;
-        $site = (new Site())->where($where)->select();
-        foreach ($site as $k => $v) {
-            $sitedata = $this->curl_get($v['url'] . "/index.php/getStaticOne/product/" . $edit);
-            $data = json_decode($sitedata, true);
-        }
-        if ($data['status'] == "success") {
-            $data['status'] = '';
-        }
-        return $this->resultArray($data["msg"], $data["status"], $data["data"]);
 
     }
 
-    /**
-     * 问答页面tdk修改
-     */
-    public function producttdkedit()
-    {
-        $this->open_start('正在修改中');
-        $content = $this->request->post('content');
-        $filename = $this->request->post('filename');
-        $site_id = $this->getSiteSession('website')["id"];
-        $where['id'] = $site_id;
-        $site = (new Site())->where($where)->select();
-        foreach ($site as $k => $v) {
-            $send = [
-                "content" => $content
-            ];
-            $this->curl_post($v['url'] . "/index.php/generateOne/product/" . $filename, $send);
-        }
-    }
+
 
 
 }
