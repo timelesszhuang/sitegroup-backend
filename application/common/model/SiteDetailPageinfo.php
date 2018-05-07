@@ -4,8 +4,9 @@ namespace app\common\model;
 
 use think\Model;
 
-class SitePageinfo extends Model
+class SiteDetailPageinfo extends Model
 {
+    //
     //只读字段
     protected $readonly=["node_id"];
     /**
@@ -15,7 +16,6 @@ class SitePageinfo extends Model
      * @param $where
      * @return array
      * @author guozhen
-     *
      */
     //TODO oldfunction
     public function getAll($limit, $rows, $where)
@@ -23,7 +23,6 @@ class SitePageinfo extends Model
         $count = $this->where($where)->count();
         $data = $this->limit($limit, $rows)->where($where)->field('update_time',true)->order('id','desc')->select();
         return [
-
             "total" => $count,
             "rows" => $data
         ];
