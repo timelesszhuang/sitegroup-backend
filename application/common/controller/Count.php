@@ -387,28 +387,13 @@ class Count extends CommonLogin
         if (!empty($param["site_id"])) {
             $where['site_id'] = $param['site_id'];
         }
-        $userpv = Db::name("pv")->where($where)->field("node_id,create_time")->select();
+        $userpv = Db::name("pv")->where($where)->field("node_id,from_unixtime(create_time,'%m-%d') as m_d,count('m_d') as count")->group('node_id,m_d')->select();
         //循环$userpv 组织成vue前台series所需要的数据
         //二维数组 名字为键值 里面一层时间为键值 下面时间所拥有的值
         $Pv = [];
         $pv = [];
         foreach ($userpv as $v) {
-            $pvid = $v['node_id'];
-            //in_array判断$pv是否在$Pv,数组递加
-            if (!in_array($pvid, $pv)) {
-                array_push($pv, $pvid);
-            }
-            //格式化时间
-            $date = date('m-d', $v['create_time']);
-            //array_key_exists 判断数组里是否有这个数据 没有的话置为空
-            if (!array_key_exists($pvid, $Pv)) {
-                $Pv[$pvid] = [];
-            }
-            if (array_key_exists($date, $Pv[$pvid])) {
-                $Pv[$pvid][$date] += 1;
-            } else {
-                $Pv[$pvid][$date] = 1;
-            }
+            $Pv[$v['node_id']][$v['m_d']] = $v['count'];
         }
         //格式化时间
         $date_diff = $this->get_date_diff($starttime, $stoptime);
