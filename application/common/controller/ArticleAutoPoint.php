@@ -17,7 +17,11 @@ class ArticleAutoPoint extends CommonLogin
         $where["node_id"] = $user_info["node_id"];
         $where["type_name"] = $type_name;
         $return = (new \app\common\model\ArticleAutoPoint())->field("head as value")->where($where)->select();
-        return $this->resultArray($return);
+        $data=[];
+        foreach ($return as $value){
+            $data[]=['value'=>$value['value']];
+        }
+        return $this->resultArray($data);
     }
 
     /**
