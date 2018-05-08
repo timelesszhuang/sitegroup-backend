@@ -16,7 +16,7 @@ class ArticleAutoPoint extends CommonLogin
         $user_info = $this->getSessionUserInfo();
         $where["node_id"] = $user_info["node_id"];
         $where["type_name"] = $type_name;
-        $return = (new \app\common\model\ArticleAutoPoint())->field("type_name")->where($where)->select();
+        $return = (new \app\common\model\ArticleAutoPoint())->field("head")->where($where)->select();
         return $this->resultArray($return);
     }
 
