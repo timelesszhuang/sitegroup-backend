@@ -82,6 +82,7 @@ class Article extends CommonLogin
      */
     public function save(Request $request)
     {
+        $ArticleAutoPoint = new ArticleAutoPoint();
         try {
             $rule = [
                 ["title", "require", "请输入标题"],
@@ -106,6 +107,9 @@ class Article extends CommonLogin
                 $data['flag'] = ',' . implode(',', $data['flag']) . ',';
             }else{
                 $data['flag'] = '';
+            }
+            if(!($ArticleAutoPoint->save($data['auther'],'auther')&&$ArticleAutoPoint->save($data['come_from'],'come_from'))){
+                Common::processException('添加失败');
             }
             unset($data['tag_id']);
             if (!$this->model->create($data)) {
@@ -184,6 +188,10 @@ class Article extends CommonLogin
                 $data['flag'] = ',' . implode(',', $data['flag']) . ',';
             }else{
                 $data['flag'] = '';
+            }
+            $ArticleAutoPoint = new ArticleAutoPoint();
+            if(!($ArticleAutoPoint->save($data['auther'],'auther')&&$ArticleAutoPoint->save($data['come_from'],'come_from'))){
+                Common::processException('修改失败');
             }
             unset($data['tag_id']);
             if (!$this->model->save($data, ["id" => $id])) {

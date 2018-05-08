@@ -28,7 +28,7 @@ return [
     'common/TypeTag/save' => [1, 2,3],
     'common/TypeTag/update' => [1, 2,3],
     'common/TypeTag/read' => [1, 2,3],
-    //'common/TypeTag/delete' => [1,2],
+    'common/TypeTag/delete' => [1,2],
     'common/Question/index' => [1, 2, 3],
     'wx/Question/index' => [1, 2, 3],
     'common/Question/save' => [1, 2, 3],
