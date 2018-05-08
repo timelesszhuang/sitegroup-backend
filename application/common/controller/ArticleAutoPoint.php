@@ -11,9 +11,8 @@ class ArticleAutoPoint extends CommonLogin
     /**
      * 显示资源列表
      */
-    public function index()
+    public function index($type_name)
     {
-        $type_name = $this->request->get('type');
         $user_info = $this->getSessionUserInfo();
         $where["node_id"] = $user_info["node_id"];
         $where["type_name"] = $type_name;

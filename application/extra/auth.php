@@ -136,6 +136,7 @@ return [
     'common/SystemNotice/error_status' => [2,3],
     'common/SystemNotice/getErrorStatus' => [2],
     'common/SystemNotice/readerror'=>[2,3],
+    'common/ArticleAutoPoint/index'=>[2,3],
     'common/VoiceCdr/index' => [1,2],
     'common/User/index' => [1],
     'common/User/read' => [1],

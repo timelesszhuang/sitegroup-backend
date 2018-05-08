@@ -50,6 +50,7 @@ Route::get('root_pv_show', 'common/Home/root_pv_show');//获取前4条 营销图
 Route::get('get_type_list','common/Types/getType');
 Route::resource('type','common/Types');
 //文章相关
+Route::get('articleautopoint/:type_name','common/ArticleAutoPoint/index');
 Route::resource('article','common/Article');
 Route::post('article_csv_import','common/Article/csvimport');
 Route::post('article_show_html','common/Article/articleShowHtml');
