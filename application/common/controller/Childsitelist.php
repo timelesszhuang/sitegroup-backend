@@ -106,9 +106,10 @@ class Childsitelist extends CommonLogin
         $Childsitelist = new this_model();
         try {
             $rule = [
-                ["title", "require", "请输入标题"],
-                ["content", "require", "请输入内容"],
-                ["articletype_id", "require", "请选择文章分类"],
+                ["name", "require", "请输入子站点名称"],
+                ["en_name", "require|unique:childsitelist,en_name^site_id", "请输入子站点英文名/二级域名|子站点英文名/二级域名重复"],
+                ["detail", "require", "请输入详情"],
+                ["site_id", "require", "未知参数错误"],
             ];
             $validate = new Validate($rule);
             $data = $request->post();
@@ -117,23 +118,86 @@ class Childsitelist extends CommonLogin
             if (!$validate->check($data)) {
                 Common::processException($validate->getError());
             }
-            $add_data[$data['pinyin']] = [
+            $add_data= [
                 'en_name' => $data['en_name'],
                 'site_id' => $data['site_id'],
                 'name' => $data['name'],
                 'detail' => $data['detail'],
                 'node_id' => $user['node_id'],
             ];
-            $old_childsitelist = $Childsitelist->where(['en_name' => ['in', array_keys($add_data)], 'site_id' => $site_id])->select();
-            if ($old_childsitelist) {
-                Common::processException('子站点重复');
-            }
             if (!$Childsitelist->create($add_data)) {
                 Common::processException('添加失败');
             }
             return $this->resultArray('success', '添加成功');
         } catch (ProcessException $exception) {
             return $this->resultArray("failed", $exception->getMessage());
+        }
+    }
+
+    /**
+     * 保存新建的资源
+     *
+     * @param  \think\Request $request
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
+    public function update(Request $request)
+    {
+        $Childsitelist = new this_model();
+        try {
+            $rule = [
+                ["name", "require", "请输入子站点名称"],
+                ["en_name", "require|unique:childsitelist,en_name^site_id", "请输入子站点英文名/二级域名|子站点英文名/二级域名重复"],
+                ["detail", "require", "请输入详情"],
+                ["site_id", "require", "未知参数错误"],
+                ["id", "require", "未知参数错误"],
+            ];
+            $validate = new Validate($rule);
+            $data = $request->put();
+            $user = $this->getSessionUserInfo();
+            $data['node_id'] = $user['node_id'];
+            if (!$validate->check($data)) {
+                Common::processException($validate->getError());
+            }
+            $add_data= [
+                'id' => $data['id'],
+                'en_name' => $data['en_name'],
+                'site_id' => $data['site_id'],
+                'name' => $data['name'],
+                'detail' => $data['detail'],
+                'node_id' => $user['node_id'],
+            ];
+            if (!$Childsitelist->save($add_data)) {
+                Common::processException('修改失败');
+            }
+            return $this->resultArray('success', '修改成功');
+        } catch (ProcessException $exception) {
+            return $this->resultArray("failed", $exception->getMessage());
+        }
+    }
+
+    /**
+     * 删除指定资源
+     * @param  int $id
+     * @return array
+     */
+    public function delete($id)
+    {
+
+        try {
+            $user = $this->getSessionUserInfo();
+            $where = [
+                "id" => $id,
+                "node_id" => $user["node_id"]
+            ];
+            if (!$this->model->where($where)->delete()) {
+                Common::processException('删除失败');
+            }
+        } catch (ProcessException $e) {
+            return $this->resultArray('failed', $e->getMessage());
         }
     }
 }
