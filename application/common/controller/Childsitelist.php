@@ -57,7 +57,7 @@ class Childsitelist extends CommonLogin
         //站点信息
         $Childsitelist = new this_model();
         $District = new District();
-        $field = 'id,name,pinyin,parent_id,suffix,level';
+        $field = 'id,name,pinyin,parent_id,path,suffix,level';
         $parent = $District->where(['id' => $area_id, "level" => ['<=', $level]])->field($field)->find();
         $sitelist = $District->where(["level" => ['<=', $level], 'path' => ['like', "%,{$area_id},%"]])->field($field)->select();
         if ($parent) {
