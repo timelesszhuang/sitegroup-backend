@@ -15,8 +15,8 @@ use think\Route;
 Route::get('get_session', 'common/Login/getSession');//获取当前用户数据
 Route::get('clear_session', 'common/Login/clearSession');//清楚当前用户登录session信息
 //测试接口
-Route::get('test',"admin/Oschina/test");
-Route::get('test1',"common/Common/test");
+Route::get('test', "admin/Oschina/test");
+Route::get('test1', "common/Common/test");
 //登录
 Route::post('login', 'common/Login/login');//用户登录
 Route::post('unlock', 'common/Login/unlock');//用户解锁
@@ -27,18 +27,18 @@ Route::post('auto_login', 'common/Login/autoLogin');//自动登录
 //更新密码
 Route::post('change_password', 'common/AccountOperation/changePassword');//用户修改密码
 //退出登录
-Route::get('logout','common/Login/logout');//退出登录
+Route::get('logout', 'common/Login/logout');//退出登录
 //分类标签
 Route::resource('type_tag', 'common/TypeTag');
 //登陆后获取站点列表
-Route::get('get_site_list','common/Login/siteList');//登陆后获取站点列表
+Route::get('get_site_list', 'common/Login/siteList');//登陆后获取站点列表
 //登陆后设置站点信息
-Route::post('set_site_info','common/Login/setSiteInfo');//登陆后设置站点信息
+Route::post('set_site_info', 'common/Login/setSiteInfo');//登陆后设置站点信息
 /** 获取主页信息*/
-Route::get('home_info','common/Home/getLanderInfo');//登陆后获取首页信息
-Route::get('home_count','common/Home/countDatas');
-Route::get('root_count','common/Home/RootCountDatas');
-Route::get('site_count','common/Home/siteCountDatas');
+Route::get('home_info', 'common/Home/getLanderInfo');//登陆后获取首页信息
+Route::get('home_count', 'common/Home/countDatas');
+Route::get('root_count', 'common/Home/RootCountDatas');
+Route::get('site_count', 'common/Home/siteCountDatas');
 Route::get('home_marketmode', 'common/Home/getMarketMode');//获取前6条 营销模式图片和id
 Route::get('home_casecenter', 'common/Home/getCaseCenter');//获取前6条 案例中心图片和id
 
@@ -47,21 +47,21 @@ Route::get('pv_show', 'common/Home/show');//获取前4条 营销图片和id
 Route::get('root_pv_show', 'common/Home/root_pv_show');//获取前4条 营销图片和id
 /** 内容管理*/
 //获取分类列表
-Route::get('get_type_list','common/Types/getType');
-Route::resource('type','common/Types');
+Route::get('get_type_list', 'common/Types/getType');
+Route::resource('type', 'common/Types');
 //文章相关
-Route::get('articleautopoint/:type_name','common/ArticleAutoPoint/index');
-Route::resource('article','common/Article');
-Route::post('article_csv_import','common/Article/csvimport');
-Route::post('article_show_html','common/Article/articleShowHtml');
+Route::get('articleautopoint/:type_name', 'common/ArticleAutoPoint/index');
+Route::resource('article', 'common/Article');
+Route::post('article_csv_import', 'common/Article/csvimport');
+Route::post('article_show_html', 'common/Article/articleShowHtml');
 //问答相关
-Route::resource('question','common/Question');
-Route::resource('wx_question','wx/Question');
-Route::post('question_show_html','common/Question/questionShowHtml');
+Route::resource('question', 'common/Question');
+Route::resource('wx_question', 'wx/Question');
+Route::post('question_show_html', 'common/Question/questionShowHtml');
 //产品相关
-Route::resource('product','admin/Product');
+Route::resource('product', 'admin/Product');
 
-Route::post('product_show_html','admin/Product/productShowHtml');
+Route::post('product_show_html', 'admin/Product/productShowHtml');
 Route::post('upload_product_ser_img', 'admin/Product/uploadImgSer');
 Route::get('get_product_img_list/:id', 'admin/Product/getImgSer');
 Route::get('delete_product_img/:id/:index', 'admin/Product/deleteImgser');
@@ -73,93 +73,99 @@ Route::post('upload_img_list_imgser', 'admin/ImgList/uploadImgSer');
 Route::get('delete_imgser/:id/:index', 'admin/ImgList/deleteImgser');
 Route::post('save_imglist_info', 'admin/ImgList/saveInfo');
 //图片上传
-Route::post('image_upload',function(){
+Route::post('image_upload', function () {
     Request::instance()->module('common');
     Request::instance()->controller('OssUpload');
     Request::instance()->action('imageUpload');
-    return (new \app\common\controller\OssUpload())->imageUpload('pic');});
-Route::post('article_image_upload',function(){
+    return (new \app\common\controller\OssUpload())->imageUpload('pic');
+});
+Route::post('article_image_upload', function () {
     Request::instance()->module('common');
     Request::instance()->controller('OssUpload');
     Request::instance()->action('imageUpload');
-    return (new \app\common\controller\OssUpload())->imageUpload('article');});
-Route::post('question_image_upload',function(){
+    return (new \app\common\controller\OssUpload())->imageUpload('article');
+});
+Route::post('question_image_upload', function () {
     Request::instance()->module('common');
     Request::instance()->controller('OssUpload');
     Request::instance()->action('imageUpload');
-    return (new \app\common\controller\OssUpload())->imageUpload('question');});
-Route::post('product_image_upload',function(){
+    return (new \app\common\controller\OssUpload())->imageUpload('question');
+});
+Route::post('product_image_upload', function () {
     Request::instance()->module('common');
     Request::instance()->controller('OssUpload');
     Request::instance()->action('imageUpload');
-    return (new \app\common\controller\OssUpload())->imageUpload('product/mainimg');});
-Route::post('library_image_upload',function(){
+    return (new \app\common\controller\OssUpload())->imageUpload('product/mainimg');
+});
+Route::post('library_image_upload', function () {
     Request::instance()->module('common');
     Request::instance()->controller('OssUpload');
     Request::instance()->action('imageUpload');
-    return (new \app\common\controller\OssUpload())->imageUpload('libraryimgset');});
+    return (new \app\common\controller\OssUpload())->imageUpload('libraryimgset');
+});
 //csv上传
-Route::post('article_csv_upload',function(){
+Route::post('article_csv_upload', function () {
     Request::instance()->module('common');
     Request::instance()->controller('OssUpload');
     Request::instance()->action('csvUpload');
-    return (new \app\common\controller\OssUpload())->csvUpload('article/csv');});
+    return (new \app\common\controller\OssUpload())->csvUpload('article/csv');
+});
 //标签获取
 Route::get('get_tags', 'common/Tags/getTagList');
 Route::resource('tags', 'common/Tags');
 //公共图片资源路由
-Route::resource('library_imgset',"common/LibraryImgset");
+Route::resource('library_imgset', "common/LibraryImgset");
 /** 资源聚合*/
 //搜狐新闻
-Route::resource('souhu',"common/Souhu");
+Route::resource('souhu', "common/Souhu");
 //搜狐分类列表
-Route::get('souhu_type_list',"common/Souhu/getTypes");
+Route::get('souhu_type_list', "common/Souhu/getTypes");
 //腾讯新闻
-Route::resource('qicq',"common/Qicq");
+Route::resource('qicq', "common/Qicq");
 //腾讯分类列表
-Route::get('qicq_type_list',"common/Qicq/getTypes");
+Route::get('qicq_type_list', "common/Qicq/getTypes");
 //网易新闻
-Route::resource('wangyi',"common/Wangyi");
+Route::resource('wangyi', "common/Wangyi");
 //网易分类列表
-Route::get('wangyi_type_list',"common/Wangyi/getTypes");
+Route::get('wangyi_type_list', "common/Wangyi/getTypes");
 //热点新闻
-Route::resource('hot_news',"common/Hotnews");
+Route::resource('hot_news', "common/Hotnews");
 /** 素材库*/
-Route::resource('public_article',"common/LibraryArticle");
-Route::resource('public_image',"common/LibraryImgset");
+Route::resource('public_article', "common/LibraryArticle");
+Route::resource('public_image', "common/LibraryImgset");
 /** 关键词*/
-Route::resource('keyword',"admin/Keyword");
-Route::resource('district',"admin/District");
-Route::post('keyword_file',"admin/Keyword/getKeywordByFile");
-Route::post('delete_keywords',"admin/Keyword/deleteAll");
-Route::get('keyword_count',"admin/Keyword/keywordCount");
+Route::resource('keyword', "admin/Keyword");
+Route::resource('district', "admin/District");
+Route::post('keyword_file', "admin/Keyword/getKeywordByFile");
+Route::post('delete_keywords', "admin/Keyword/deleteAll");
+Route::get('keyword_count', "admin/Keyword/keywordCount");
 /** 行业*/
-Route::resource('industry',"common/Industry");
-Route::get('industries',"common/Industry/getIndustry");
+Route::resource('industry', "common/Industry");
+Route::get('industries', "common/Industry/getIndustry");
 /** 营销模式*/
-Route::resource('marketing_mode',"common/Marketingmode");
+Route::resource('marketing_mode', "common/Marketingmode");
 /** 案例中心*/
-Route::resource('case_center',"common/CaseCenter");
+Route::resource('case_center', "common/CaseCenter");
 //系统推送
-Route::resource('system_notice',"common/SystemNotice");
+Route::resource('system_notice', "common/SystemNotice");
 //获取节点下拉
-Route::get('getNodelist',"common/Node/nodeList");
+Route::get('getNodelist', "common/Node/nodeList");
 //递加阅读
-Route::get('readcount/:id',"common/SystemNotice/readcount");
+Route::get('readcount/:id', "common/SystemNotice/readcount");
 //节点数据
-Route::get('nodenotice',"common/SystemNotice/nodenotice");
+Route::get('nodenotice', "common/SystemNotice/nodenotice");
 //阅读状态修改
-Route::post('readstatus',"common/SystemNotice/readstatus");
+Route::post('readstatus', "common/SystemNotice/readstatus");
 //首页未读信息数量
-Route::get('unreadnum',"common/SystemNotice/unreadnum");
+Route::get('unreadnum', "common/SystemNotice/unreadnum");
 //获取错误信息
-Route::get('getErrorInfo',"common/SystemNotice/getErrorInfo");
+Route::get('getErrorInfo', "common/SystemNotice/getErrorInfo");
 //错误信息状态修改
-Route::post('errorStatus',"common/SystemNotice/error_status");
+Route::post('errorStatus', "common/SystemNotice/error_status");
 //获取错误信息数量
-Route::get('getErrorStatus',"common/SystemNotice/getErrorStatus");
+Route::get('getErrorStatus', "common/SystemNotice/getErrorStatus");
 //读取当前错误信息
-Route::get('readError/:id',"common/SystemNotice/readerror");
+Route::get('readError/:id', "common/SystemNotice/readerror");
 //录音
 Route::resource('voice_cdr', 'common/VoiceCdr');
 //用户
@@ -172,9 +178,9 @@ Route::rule('node/status', 'common/Node/status');
 //模板相关操作(index公用,添加为node添加修改)
 Route::resource('template', 'common/template');
 //总后台模板（表单）添加
-Route::post('addTemp',"common/Template/addTemp");
+Route::post('addTemp', "common/Template/addTemp");
 //总后台模板（表单）修改
-Route::put('oldTemplate',"common/Template/oldTemplate");
+Route::put('oldTemplate', "common/Template/oldTemplate");
 //原始模板（预览的模板）上传
 Route::post('uploadOldtemplate', "common/Template/uploadOldtemplate");
 //上传模板php模板
@@ -192,9 +198,9 @@ Route::rule('getCompany', 'common/Company/getAll');
 //栏目
 Route::resource('menu', 'common/Menu');
 Route::get('getMenu', 'common/Menu/getMenu');
-Route::put('menuSort/:id','common/Menu/sort');
+Route::put('menuSort/:id', 'common/Menu/sort');
 //获取上级菜单
-Route::get('upMenu/:flag/:id','common/Menu/getUpMenu');
+Route::get('upMenu/:flag/:id', 'common/Menu/getUpMenu');
 //栏目分类
 Route::resource('menuTag', 'common/Menutag');
 //获取分类列表
@@ -220,17 +226,17 @@ Route::resource('code', 'common/Code');
 Route::resource('contactway', 'common/Contactway');
 Route::get('getContactway', 'common/Contactway/getContactway');
 //站点logo
-Route::resource('siteLogo','common/SiteLogo');
+Route::resource('siteLogo', 'common/SiteLogo');
 //站点logo列表
-Route::get('getsitelogolist',"common/SiteLogo/logoList");
+Route::get('getsitelogolist', "common/SiteLogo/logoList");
 //站点ico
-Route::resource('siteIco','common/SiteIco');
+Route::resource('siteIco', 'common/SiteIco');
 //站点ico列表
-Route::get('getsiteIcolist',"common/SiteIco/icoList");
+Route::get('getsiteIcolist', "common/SiteIco/icoList");
 //站点water_image
-Route::resource('siteWaterImage','common/SiteWaterImage');
+Route::resource('siteWaterImage', 'common/SiteWaterImage');
 //站点water_image 列表
-Route::get('getsitewaterimagelist',"common/SiteWaterImage/waterimageList");
+Route::get('getsitewaterimagelist', "common/SiteWaterImage/waterimageList");
 //站点分类
 Route::resource('siteType', 'common/Sitetype');
 Route::get('getSiteType', 'common/Sitetype/getSiteType');
@@ -357,22 +363,21 @@ Route::post('producttdkedit', 'common/PageInfo/producttdkedit');
 //修改a类关键词pageinfo
 Route::post('editpageinfo', 'common/PageInfo/editpageinfo');
 //获取站点联系方式
-Route::get('siteResource','common/Site/siteResource');
-Route::get('readuser','common/User/readuser');
-Route::post('siteResource','common/Site/editResource');
-Route::any('wxlogin','common/Wxapp/login');
-Route::any('wxbind','common/Wxapp/bindopenid');
+Route::get('siteResource', 'common/Site/siteResource');
+Route::get('readuser', 'common/User/readuser');
+Route::post('siteResource', 'common/Site/editResource');
+Route::any('wxlogin', 'common/Wxapp/login');
+Route::any('wxbind', 'common/Wxapp/bindopenid');
 
 //crontab任务,每天定时执行更新所有网站的静态页面
 Route::get('crontab', 'common/CrontabTask/index');
-
 
 
 Route::resource('wxarticle', 'common/wx/WxArticle');
 Route::resource('wxproduct', 'common/wx/WxProduct');
 Route::get('wximglistenname', 'common/wx/WxImgList');
 Route::get('oldtonew', 'common/shell/index1');
-Route::resource('childsitelist', 'common/Childsitelist/index');
+Route::resource('childsitelist', 'common/Childsitelist');
 Route::get('bulkaddchildsitelist', 'common/Childsitelist/set_childsitelist');
 
 
