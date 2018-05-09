@@ -126,6 +126,7 @@ class Childsitelist extends CommonLogin
                 'name' => $data['name'],
                 'detail' => $data['detail'],
                 'node_id' => $user['node_id'],
+                'sort' => $user['sort'],
             ];
             if (!$Childsitelist->create($add_data)) {
                 Common::processException('添加失败');
@@ -184,6 +185,7 @@ class Childsitelist extends CommonLogin
                 'name' => $data['name'],
                 'detail' => $data['detail'],
                 'node_id' => $user['node_id'],
+                'sort' => $user['sort'],
             ];
             if (!$Childsitelist->update($add_data)) {
                 Common::processException('修改失败');
