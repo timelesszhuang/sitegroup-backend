@@ -8,6 +8,7 @@
 namespace app\common\controller;
 
 
+use app\common\exception\ProcessException;
 use app\common\model\District;
 use app\common\traits\Obtrait;
 use app\common\model\Childsitelist as this_model;
@@ -37,6 +38,18 @@ class Childsitelist extends CommonLogin
             "rows" => $data
         ];
         return $this->resultArray($data);
+    }
+
+    public function setchildsitelist(){
+        $site_id = $this->request->post('site_id');
+        $area_id = $this->request->post('district_id');
+        $level = $this->request->post('level');
+        try{
+            $this->set_childsitelist($site_id, $area_id, $level);
+            return $this->resultArray('success', '添加成功');
+        } catch (ProcessException $exception) {
+            return $this->resultArray("failed", $exception->getMessage());
+        }
     }
 
     public function set_childsitelist($site_id, $area_id, $level)

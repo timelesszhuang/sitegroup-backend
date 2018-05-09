@@ -378,7 +378,7 @@ Route::resource('wxproduct', 'common/wx/WxProduct');
 Route::get('wximglistenname', 'common/wx/WxImgList');
 Route::get('oldtonew', 'common/shell/index1');
 Route::resource('childsitelist', 'common/Childsitelist');
-Route::get('bulkaddchildsitelist', 'common/Childsitelist/set_childsitelist');
+Route::post('bulkaddchildsitelist', 'common/Childsitelist/setchildsitelist');
 
 
 
