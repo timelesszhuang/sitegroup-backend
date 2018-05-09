@@ -90,4 +90,50 @@ class Childsitelist extends CommonLogin
             Common::processException('添加失败');
         }
     }
+
+    /**
+     * 保存新建的资源
+     *
+     * @param  \think\Request $request
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
+    public function save(Request $request)
+    {
+        $Childsitelist = new this_model();
+        try {
+            $rule = [
+                ["title", "require", "请输入标题"],
+                ["content", "require", "请输入内容"],
+                ["articletype_id", "require", "请选择文章分类"],
+            ];
+            $validate = new Validate($rule);
+            $data = $request->post();
+            $user = $this->getSessionUserInfo();
+            $data['node_id'] = $user['node_id'];
+            if (!$validate->check($data)) {
+                Common::processException($validate->getError());
+            }
+            $add_data[$data['pinyin']] = [
+                'en_name' => $data['pinyin'],
+                'site_id' => $data['site_id'],
+                'name' => $data['name'],
+                'detail' => $data['name'],
+                'node_id' => $user['node_id'],
+            ];
+            $old_childsitelist = $Childsitelist->where(['en_name' => ['in', array_keys($add_data)], 'site_id' => $site_id])->select();
+            if ($old_childsitelist) {
+                Common::processException('子站点重复');
+            }
+            if (!$Childsitelist->create($data)) {
+                Common::processException('添加失败');
+            }
+            return $this->resultArray('success', '添加成功');
+        } catch (ProcessException $exception) {
+            return $this->resultArray("failed", $exception->getMessage());
+        }
+    }
 }
