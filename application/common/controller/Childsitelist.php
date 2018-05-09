@@ -222,4 +222,15 @@ class Childsitelist extends CommonLogin
             return $this->resultArray('failed', $e->getMessage());
         }
     }
+
+    public function childsitelist()
+    {
+        $site_id = $this->request->get('site_id');
+        $where = [];
+        $user_info = $this->getSessionUserInfo();
+        $where["node_id"] = $user_info["node_id"];
+        $where["site_id"] = $site_id;
+        $data = $this->model->where($where)->order('id desc')->select();
+        return $this->resultArray($data);
+    }
 }

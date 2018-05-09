@@ -67,6 +67,7 @@ class Article extends CommonLogin
         $data = $this->getread((new this_model), $id);
         $data['data']['tags'] = implode(',', array_filter(explode(',', $data['data']['tags'])));
         $data['data']['flag'] = implode(',', array_filter(explode(',', $data['data']['flag'])));
+        $data['data']['stations_ids'] = implode(',', array_filter(explode(',', $data['data']['stations_ids'])));
         return $data;
     }
 
@@ -103,6 +104,13 @@ class Article extends CommonLogin
             } else {
                 $data['tags'] = "";
             }
+
+            if (isset($data['stations_ids']) && is_array($data['stations_ids'])) {
+                $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
+            } else {
+                $data['stations_ids'] = "";
+            }
+
             if(!empty($data['flag'])){
                 $data['flag'] = ',' . implode(',', $data['flag']) . ',';
             }else{
@@ -184,6 +192,13 @@ class Article extends CommonLogin
             } else {
                 $data['tags'] = "";
             }
+
+            if (isset($data['stations_ids']) && is_array($data['stations_ids'])) {
+                $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
+            } else {
+                $data['stations_ids'] = "";
+            }
+
             if(!empty($data['flag'])){
                 $data['flag'] = ',' . implode(',', $data['flag']) . ',';
             }else{
