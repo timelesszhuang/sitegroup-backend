@@ -185,7 +185,7 @@ class Childsitelist extends CommonLogin
                 'detail' => $data['detail'],
                 'node_id' => $user['node_id'],
             ];
-            if (!$Childsitelist->save($add_data)) {
+            if (!$Childsitelist->update($add_data)) {
                 Common::processException('修改失败');
             }
             return $this->resultArray('success', '修改成功');
