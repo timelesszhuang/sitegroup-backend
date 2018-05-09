@@ -328,5 +328,6 @@ return [
     'common/Childsitelist/update'=>[2],
     'common/Childsitelist/delete'=>[2],
     'common/Childsitelist/setchildsitelist'=>[2],
+    'common/Childsitelist/childsitelist'=>[2],
 
 ];
