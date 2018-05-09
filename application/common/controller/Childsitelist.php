@@ -159,7 +159,7 @@ class Childsitelist extends CommonLogin
      * @throws \think\exception\DbException
      * @throws \think\exception\PDOException
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $Childsitelist = new this_model();
         try {
