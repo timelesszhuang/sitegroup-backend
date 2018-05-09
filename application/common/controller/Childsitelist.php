@@ -118,17 +118,17 @@ class Childsitelist extends CommonLogin
                 Common::processException($validate->getError());
             }
             $add_data[$data['pinyin']] = [
-                'en_name' => $data['pinyin'],
+                'en_name' => $data['en_name'],
                 'site_id' => $data['site_id'],
                 'name' => $data['name'],
-                'detail' => $data['name'],
+                'detail' => $data['detail'],
                 'node_id' => $user['node_id'],
             ];
             $old_childsitelist = $Childsitelist->where(['en_name' => ['in', array_keys($add_data)], 'site_id' => $site_id])->select();
             if ($old_childsitelist) {
                 Common::processException('子站点重复');
             }
-            if (!$Childsitelist->create($data)) {
+            if (!$Childsitelist->create($add_data)) {
                 Common::processException('添加失败');
             }
             return $this->resultArray('success', '添加成功');

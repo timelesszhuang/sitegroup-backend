@@ -323,6 +323,7 @@ return [
     'common/Site/editResource'=> [3],
     'common/Pv/acount'=>[3],
     'common/Childsitelist/index'=>[2],
+    'common/Childsitelist/save'=>[2],
     'common/Childsitelist/setchildsitelist'=>[2],
 
 ];
