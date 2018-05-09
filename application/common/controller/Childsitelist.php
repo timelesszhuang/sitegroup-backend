@@ -77,7 +77,7 @@ class Childsitelist extends CommonLogin
                 'node_id' => $user_info['node_id'],
             ];
         }
-        if (!sizeof($add_data) > 0) {
+        if (!(count($add_data) > 0)) {
             Common::processException('请正确选择需要添加的站点');
         }
         $old_childsitelist = $Childsitelist->where(['en_name' => ['in', array_keys($add_data)], 'site_id' => $site_id])->select();
@@ -86,7 +86,7 @@ class Childsitelist extends CommonLogin
                 unset($add_data[$childsitelist['en_name']]);
             }
         }
-        if (!$Childsitelist->insertAll($add_data)) {
+        if ((count($add_data) > 0)&&(!$Childsitelist->insertAll($add_data))) {
             Common::processException('添加失败');
         }
     }
