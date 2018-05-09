@@ -213,6 +213,7 @@ class Childsitelist extends CommonLogin
             if (!$this->model->where($where)->delete()) {
                 Common::processException('删除失败');
             }
+            return $this->resultArray('success', '删除成功');
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());
         }
