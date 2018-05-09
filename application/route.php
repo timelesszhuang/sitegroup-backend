@@ -379,7 +379,7 @@ Route::get('wximglistenname', 'common/wx/WxImgList');
 Route::get('oldtonew', 'common/shell/index1');
 Route::resource('childsitelist', 'common/Childsitelist');
 Route::post('bulkaddchildsitelist', 'common/Childsitelist/setchildsitelist');
-Route::get('childsitelistbysiteid', 'common/Childsitelist/setchildsitelist');
+Route::get('childsitelistbysiteid', 'common/Childsitelist/childsitelist');
 
 
 
