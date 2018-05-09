@@ -107,6 +107,7 @@ class Article extends CommonLogin
 
             if (isset($data['stations_ids']) && is_array($data['stations_ids'])) {
                 $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
+                $data['stations'] = 20;
             } else {
                 $data['stations_ids'] = "";
             }
@@ -195,6 +196,7 @@ class Article extends CommonLogin
 
             if (isset($data['stations_ids']) && is_array($data['stations_ids'])) {
                 $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
+                $data['stations'] = 20;
             } else {
                 $data['stations_ids'] = "";
             }

@@ -13,6 +13,7 @@ use app\common\model\Articletype;
 use app\common\model\Producttype;
 use app\common\model\QuestionType;
 use app\common\model\TypeTag;
+use app\common\model\Site;
 
 class Types extends CommonLogin
 {
@@ -201,9 +202,16 @@ class Types extends CommonLogin
     {
         $user_info = $this->getSessionUserInfo();
         if ($user_info['user_type_name'] == 'node') {
-            $data = $this->getTypeByNodeId($user_info['node_id']);
+            $site_id = $this->request->get('site_id');
+            if ($site_id) {
+                $site_info = (new Site)->where(["id" => $site_id])->find();
+                $type_ids = (new Menu())->getSiteTypeIds(array_unique(array_filter(explode(",", $site_info["menu"]))), $this->menu_flag);
+                $data = $this->getTypeByIdArray($type_ids);
+            } else {
+                $data = $this->getTypeByNodeId($user_info['node_id']);
+            }
         } elseif ($user_info['user_type_name'] == 'site') {
-            if(!is_array($user_info['menu'])){
+            if (!is_array($user_info['menu'])) {
                 Common::processException('未知错误');
             }
             $type_ids = (new Menu())->getSiteTypeIds($user_info['menu'], $this->menu_flag);
@@ -245,7 +253,7 @@ class Types extends CommonLogin
      */
     public function getTypeByIdArray($ids)
     {
-        $where['type.id'] = ['in',$ids];
+        $where['type.id'] = ['in', $ids];
         return $this->getTypeByWhere($where);
     }
 
@@ -256,8 +264,9 @@ class Types extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    private function getTypeByWhere($where){
-        $data =$this->model->alias('type')->field('type.id,name,tag_id,tag')->join('type_tag','type_tag.id = tag_id','LEFT')->where($where)->select();
+    private function getTypeByWhere($where)
+    {
+        $data = $this->model->alias('type')->field('type.id,name,tag_id,tag')->join('type_tag', 'type_tag.id = tag_id', 'LEFT')->where($where)->select();
         return $data;
     }
 
