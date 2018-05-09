@@ -29,7 +29,15 @@ class Childsitelist extends CommonLogin
     {
         $request = $this->getLimit();
         $site_id = $this->request->get('site_id');
+        $en_name = $this->request->get('en_name');
+        $name = $this->request->get('name');
         $where = [];
+        if($name){
+            $where["name"] = $name;
+        }
+        if($en_name){
+            $where["en_name"] = $en_name;
+        }
         $user_info = $this->getSessionUserInfo();
         $where["node_id"] = $user_info["node_id"];
         $where["site_id"] = $site_id;
