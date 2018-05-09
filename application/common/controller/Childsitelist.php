@@ -137,6 +137,19 @@ class Childsitelist extends CommonLogin
     }
 
     /**
+     * @param $id
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function read($id)
+    {
+        $data = $this->getread((new this_model), $id);
+        return $data;
+    }
+
+    /**
      * 保存新建的资源
      *
      * @param  \think\Request $request
