@@ -230,7 +230,7 @@ class Childsitelist extends CommonLogin
         $user_info = $this->getSessionUserInfo();
         $where["node_id"] = $user_info["node_id"];
         $where["site_id"] = $site_id;
-        $data = $this->model->where($where)->order('sort desc,id desc')->select();
+        $data = $this->model->where($where)->order('sort desc,district_id asc')->select();
         return $this->resultArray($data);
     }
 }
