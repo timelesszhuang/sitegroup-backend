@@ -78,8 +78,8 @@ class Childsitelist extends CommonLogin
                 'path' => $district['path'],
                 'en_name' => $district['pinyin'],
                 'site_id' => $site_id,
-                'name' => $district['name'],
-                'detail' => $district['name'],
+                'name' => $district['name'].$district['suffix'],
+                'detail' => $district['name'].$district['suffix'],
                 'node_id' => $user_info['node_id'],
             ];
         }
