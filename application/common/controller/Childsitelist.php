@@ -67,6 +67,10 @@ class Childsitelist extends CommonLogin
         $parent = $District->where(['id' => $area_id, "level" => ['<=', $level]])->field($field)->find();
         $sitelist = $District->where(["level" => ['<=', $level], 'path' => ['like', "%,{$area_id},%"]])->field($field)->select();
         if ($parent) {
+            $parents = $District->where(['id' => ['in',array_filter(explode(',', $parent['path']))], "level" => ['<=', $level]])->field($field)->select();
+            if ($parents){
+                $sitelist = array_merge($sitelist,$parents);
+            }
             array_push($sitelist, $parent);
         }
         $add_data = [];
