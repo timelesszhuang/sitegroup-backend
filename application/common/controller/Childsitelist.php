@@ -38,7 +38,7 @@ class Childsitelist extends CommonLogin
         $where["node_id"] = $user_info["node_id"];
         $where["site_id"] = $site_id;
         $count = $this->model->where($where)->count();
-        $data = $this->model->where($where)->order('id desc')->limit($request["limit"], $request["rows"])->select();
+        $data = $this->model->where($where)->order('sort desc,district_id asc')->limit($request["limit"], $request["rows"])->select();
         $data = [
             "total" => $count,
             "rows" => $data
