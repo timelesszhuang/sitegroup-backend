@@ -130,6 +130,7 @@ class Question extends CommonLogin
         $data = $this->getread($this->model, $id);
         $data['data']['tags'] = implode(',', array_filter(explode(',', $data['data']['tags'])));
         $data['data']['flag'] = implode(',', array_filter(explode(',', $data['data']['flag'])));
+        $data['data']['stations_ids'] = implode(',', array_filter(explode(',', $data['data']['stations_ids'])));
         return $data;
     }
 

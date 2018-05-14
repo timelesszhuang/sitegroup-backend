@@ -137,10 +137,10 @@ class Product extends CommonLogin
             } else {
                 $post['tags'] = "";
             }
-            if(empty($data['stations'])||$data['stations']<40){
-                $data['stations_ids'] = '';
+            if(empty($post['stations'])||$post['stations']<40){
+                $post['stations_ids'] = '';
             }else{
-                $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
+                $post['stations_ids'] = ',' . implode(',', $post['stations_ids']) . ',';
             }
             if(!empty($post['flag'])){
                 $post['flag'] = ',' . implode(',', $post['flag']) . ',';
@@ -176,6 +176,7 @@ class Product extends CommonLogin
         $data = $this->model->where(["id" => $id])->field("create_time,update_time,imgser", true)->find();
         $data['tags'] = implode(',', array_filter(explode(',', $data['tags'])));
         $data['flag'] = implode(',', array_filter(explode(',', $data['flag'])));
+        $data['stations_ids'] = implode(',', array_filter(explode(',', $data['data']['stations_ids'])));
         return $this->resultArray('', '', $data);
     }
 
@@ -228,10 +229,10 @@ class Product extends CommonLogin
             } else {
                 $post['tags'] = "";
             }
-            if(empty($data['stations'])||$data['stations']<40){
-                $data['stations_ids'] = '';
+            if(empty($post['stations'])||$post['stations']<40){
+                $post['stations_ids'] = '';
             }else{
-                $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
+                $post['stations_ids'] = ',' . implode(',', $post['stations_ids']) . ',';
             }
             if(!empty($post['flag'])){
                 $post['flag'] = ',' . implode(',', $post['flag']) . ',';
