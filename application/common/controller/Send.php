@@ -60,7 +60,7 @@ class Send extends Common
         }
 
         foreach ($send as $k => $v) {
-            $sendname = count($v['nodename'])>1?$v['nodename'][0]. "等共":$v['nodename'][0];
+            $sendname = count($v['nodename'])."个";
             $sendcount = array_sum($v['nodecount']);
             echo $sendname;
             echo $sendcount;
@@ -128,7 +128,7 @@ class Send extends Common
         }
 
         foreach ($send as $k => $v) {
-            $sendname = count($v['nodename'])>1?$v['nodename'][0]. "等共":$v['nodename'][0];
+            $sendname = count($v['nodename'])."个";
             $sendcount = array_sum($v['nodecount']);
             echo $sendname;
             echo $sendcount;
@@ -193,7 +193,7 @@ class Send extends Common
         }
 
         foreach ($send as $k => $v) {
-            $sendname = count($v['nodename'])>1?$v['nodename'][0]. "等共":$v['nodename'][0];
+            $sendname = count($v['nodename'])."个";
             $sendcount = 7;
             echo $sendname;
             echo $sendcount;
