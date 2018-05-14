@@ -138,7 +138,7 @@ class Send extends Common
     public function notaddsend()
     {
         $SmsTemplateCode = 'SMS_122000046';
-        $node_id = (new Node())->where(['node_id'=>68])->field('id')->select();
+        $node_id = (new Node())->where(['id'=>68])->field('id')->select();
         foreach ($node_id as $k => $v) {
             $article[$v['id']] = (new Article())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
             $question[$v['id']] = (new Question())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
