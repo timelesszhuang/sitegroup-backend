@@ -22,7 +22,6 @@ trait Smsali
      * @param $phone 手机
      * @return mixed|\ResultSet|\SimpleXMLElement
      */
-    //TODO oldfunction
     public function send($name, $count, $phone,$SmsTemplateCode)
     {
         $c = new TopClient;

@@ -21,12 +21,14 @@ class Send extends Common
     /**
      * 小站点短信发送
      */
-    //TODO oldfunction
     public function site_send()
     {
         $SmsTemplateCode='SMS_118715177';
         $where['update_time'] = ['between', [time() - 60 * 5, time()]];
         $where['status'] = 20;
+
+        $where['node_id'] = 68;
+
         $rejection = new Rejection();
         $sitearr = $rejection->where($where)->select();
         $sarr = [];
@@ -70,12 +72,14 @@ class Send extends Common
     /**
      * 节点短信发送
      */
-    //TODO oldfunction
     public function node_send()
     {
         $SmsTemplateCode='SMS_118715177';
         $where['update_time'] = ['between', [time() - 60 * 5, time()]];
         $where['nodestatus'] = 20;
+
+        $where['node_id'] = 68;
+
         $rejection = new Rejection();
         $sitearr = $rejection->where($where)->select();
         $node = [];
@@ -122,11 +126,10 @@ class Send extends Common
     /**
      * 7天未添加内容发送短信
      */
-    //TODO oldfunction
     public function notaddsend()
     {
         $SmsTemplateCode = 'SMS_122000046';
-        $node_id = (new Node())->field('id')->select();
+        $node_id = (new Node())->where(['node_id'=>68])->field('id')->select();
         foreach ($node_id as $k => $v) {
             $article[$v['id']] = (new Article())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
             $question[$v['id']] = (new Question())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
