@@ -61,7 +61,7 @@ class Send extends Common
             $sendname = implode(',', $v['nodename']) . "共";
             $sendcount = array_sum($v['nodecount']);
             $siteerr = $this->send($sendname, $sendcount, $k, $SmsTemplateCode);
-
+            echo json_encode($siteerr);
             if (!isset($siteerr->result)) {
                 $code = $siteerr->code;
             } else {
@@ -126,6 +126,7 @@ class Send extends Common
                 $content = "【乐销易】您的" . $sendname . "共有" . $sendcount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163";
                 $this->phpmailerSend($email['email'], $email['password'], $email["host"], $nodename . "您有新的线索", $mobile['email'], $content, $email["email"]);
             }
+            echo json_encode($nodeerr);
             if (!isset($nodeerr->result)) {
                 $code = $nodeerr->code;
             } else {
@@ -188,6 +189,7 @@ class Send extends Common
             $sendname=implode(',',$v['nodename']);
             $sendcount=7;
             $nodeerr = $this->send($sendname, $sendcount, $k,$SmsTemplateCode);
+            echo json_encode($nodeerr);
             if (!isset($nodeerr->result)) {
                 $code = $nodeerr->code;
             } else {
