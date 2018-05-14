@@ -62,6 +62,8 @@ class Send extends Common
         foreach ($send as $k => $v) {
             $sendname = count($v['nodename'])>1?$v['nodename'][0]. "等共":$v['nodename'][0];
             $sendcount = array_sum($v['nodecount']);
+            echo $sendname;
+            echo $sendcount;
             $siteerr = $this->send($sendname, $sendcount, $v['mobile'], $SmsTemplateCode);
             echo json_encode($siteerr);
             if (!isset($siteerr->result)) {
@@ -128,6 +130,8 @@ class Send extends Common
         foreach ($send as $k => $v) {
             $sendname = count($v['nodename'])>1?$v['nodename'][0]. "等共":$v['nodename'][0];
             $sendcount = array_sum($v['nodecount']);
+            echo $sendname;
+            echo $sendcount;
             $nodeerr = $this->send($sendname, $sendcount, $v['mobile'], $SmsTemplateCode);
             if (!isset($nodeerr->result)) {
                 $code = $nodeerr->code;
@@ -191,6 +195,8 @@ class Send extends Common
         foreach ($send as $k => $v) {
             $sendname = count($v['nodename'])>1?$v['nodename'][0]. "等共":$v['nodename'][0];
             $sendcount = 7;
+            echo $sendname;
+            echo $sendcount;
             $nodeerr = $this->send($sendname, $sendcount, $v['mobile'], $SmsTemplateCode);
             if (!isset($nodeerr->result)) {
                 $code = $nodeerr->code;
