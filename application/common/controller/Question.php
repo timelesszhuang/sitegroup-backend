@@ -89,6 +89,8 @@ class Question extends CommonLogin
 
             if (empty($data['stations']) || $data['stations'] < 40) {
                 $data['stations_ids'] = '';
+            }else{
+                $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
             }
 
             if (!empty($data['flag'])) {
@@ -165,6 +167,8 @@ class Question extends CommonLogin
 
             if (empty($data['stations']) || $data['stations'] < 40) {
                 $data['stations_ids'] = '';
+            }else{
+                $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
             }
 
             if (!empty($data['flag'])) {

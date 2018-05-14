@@ -139,6 +139,8 @@ class Product extends CommonLogin
             }
             if(empty($data['stations'])||$data['stations']<40){
                 $data['stations_ids'] = '';
+            }else{
+                $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
             }
             if(!empty($post['flag'])){
                 $post['flag'] = ',' . implode(',', $post['flag']) . ',';
@@ -228,6 +230,8 @@ class Product extends CommonLogin
             }
             if(empty($data['stations'])||$data['stations']<40){
                 $data['stations_ids'] = '';
+            }else{
+                $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
             }
             if(!empty($post['flag'])){
                 $post['flag'] = ',' . implode(',', $post['flag']) . ',';
