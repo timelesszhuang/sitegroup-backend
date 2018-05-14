@@ -64,6 +64,7 @@ class Send extends Common
             $siteerr = $this->send($sendname, $sendcount, $k, $SmsTemplateCode);
             echo json_encode($siteerr);
             echo $k;
+            echo \PHPSTORM_META\type($k);
             if (!isset($siteerr->result)) {
                 $code = $siteerr->code;
             } else {
@@ -85,7 +86,7 @@ class Send extends Common
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
-                echo("发送成功");
+                echo("发送成功1");
             }
         }
     }
@@ -130,6 +131,7 @@ class Send extends Common
             }
             echo json_encode($nodeerr);
             echo $k;
+            echo \PHPSTORM_META\type($k);
             if (!isset($nodeerr->result)) {
                 $code = $nodeerr->code;
             } else {
@@ -151,7 +153,7 @@ class Send extends Common
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
-                echo("发送成功");
+                echo("发送成功2");
             }
         }
     }
@@ -194,6 +196,7 @@ class Send extends Common
             $nodeerr = $this->send($sendname, $sendcount, $k, $SmsTemplateCode);
             echo json_encode($nodeerr);
             echo $k;
+            echo \PHPSTORM_META\type($k);
             if (!isset($nodeerr->result)) {
                 $code = $nodeerr->code;
             } else {
@@ -215,7 +218,7 @@ class Send extends Common
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
-                echo("发送成功");
+                echo("发送成功3");
             }
         }
 
