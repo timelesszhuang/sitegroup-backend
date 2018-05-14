@@ -41,6 +41,7 @@ class Send extends Common
         $rejection = new Rejection();
         $sitearr = $rejection->where($where)->select();
         $sarr = [];
+        $send=[];
         foreach ($sitearr as $k => $v) {
             $sarr[$v['site_id']][$v['id']] = $v['id'];
         };
@@ -50,7 +51,16 @@ class Send extends Common
             $sitename = $name['site_name'];
             $phone = $name['mobile'];
             $sitecount = count($v);
-            $siteerr = $this->send($sitename, $sitecount, $phone,$SmsTemplateCode);
+            $send[$phone]['nodename'][]=$sitename;
+            $send[$phone]['nodecount'][]=$sitecount;
+            $send[$phone]['nodeid'][]=$node_id;
+            $send[$phone]['rejection_id'][]=key($v);
+        }
+
+        foreach ($send as $k => $v) {
+            $sendname = implode(',', $v['nodename']) . "共";
+            $sendcount = array_sum($v['nodecount']);
+            $siteerr = $this->send($sendname, $sendcount, $k, $SmsTemplateCode);
 
             if (!isset($siteerr->result)) {
                 $code = $siteerr->code;
@@ -59,17 +69,17 @@ class Send extends Common
                 $rejection->where($where)->setField('status', 10);
             }
             $newdata[] = [
-                'tel_num' => $name['mobile'],
+                'tel_num' => $k,
                 'content' => "【乐销易】您的" . $sitename . "有" . $sitecount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163",
                 "send_status" => $code,
-                'node_id'=>$node_id,
+                'node_id' => ",".implode(',',$v['nodeid']).",",
                 'send_time' => time(),
-                'sg_rejection_id' => key($v),
-                'tag_id'=>10,
-                'tag_name'=>'甩单接收提醒',
+                'sg_rejection_id' => ",".implode(',',$v['rejection_id']).",",
+                'tag_id' => 10,
+                'tag_name' => '甩单接收提醒',
             ];
-
         }
+
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
@@ -92,6 +102,7 @@ class Send extends Common
         $rejection = new Rejection();
         $sitearr = $rejection->where($where)->select();
         $node = [];
+        $send=[];
         foreach ($sitearr as $k => $v) {
             $node[$v['node_id']][$v['id']] = $v['id'];
         };
@@ -100,11 +111,20 @@ class Send extends Common
             $mobile = (new User())->where(['node_id' => $k])->field('mobile,email')->find();
             $nodename = $name['name'];
             $nodecount = count($v);
-            $nodeerr = $this->send($nodename, $nodecount, $mobile['mobile'],$SmsTemplateCode);
+            $send[$mobile['mobile']]['nodename'][]=$nodename;
+            $send[$mobile['mobile']]['nodecount'][]=$nodecount;
+            $send[$mobile['mobile']]['nodeid'][]=$k;
+            $send[$mobile['mobile']]['rejection_id'][]=key($v);
+        }
+
+        foreach ($send as $k => $v) {
+            $sendname = implode(',', $v['nodename'])."共";
+            $sendcount = array_sum($v['nodecount']);
+            $nodeerr = $this->send($sendname, $sendcount, $k, $SmsTemplateCode);
             $email = $this->getEmailAccount();
             if ($email) {
-                $content = "【乐销易】您的" . $nodename . "有" . $nodecount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163";
-                $this->phpmailerSend($email['email'], $email['password'], $email["host"], $nodename . "您有新的线索",$mobile['email'], $content, $email["email"]);
+                $content = "【乐销易】您的" . $sendname . "共有" . $sendcount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163";
+                $this->phpmailerSend($email['email'], $email['password'], $email["host"], $nodename . "您有新的线索", $mobile['email'], $content, $email["email"]);
             }
             if (!isset($nodeerr->result)) {
                 $code = $nodeerr->code;
@@ -113,16 +133,17 @@ class Send extends Common
                 $rejection->where($where)->setField('nodestatus', 10);
             }
             $newdata[] = [
-                'tel_num' => $mobile['mobile'],
-                'content' => "【乐销易】您的" . $nodename . "有" . $nodecount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163",
+                'tel_num' => $k,
+                'content' => "【乐销易】您的" . $sendname . "有" . $sendcount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163",
                 "send_status" => $code,
                 'send_time' => time(),
-                'sg_rejection_id' => key($v),
-                'tag_id'=>10,
-                'node_id'=>$k,
-                'tag_name'=>'甩单接收提醒',
+                'sg_rejection_id' => ",".implode(',',$v['rejection_id']).",",
+                'tag_id' => 10,
+                'node_id' => ",".implode(',',$v['nodeid']).",",
+                'tag_name' => '甩单接收提醒',
             ];
         }
+
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
@@ -145,6 +166,7 @@ class Send extends Common
             $product[$v['id']] = (new Product())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
             $lasttime[$v['id']] = (new SmsLog())->where(['node_id' => $v['id'],'send_status'=>0])->field('send_time')->order('send_time desc')->find();
         }
+        $send=[];
         foreach ($node_id as $k => $v) {
             $articletime =strtotime($article[$v['id']]['create_time']);
             $questiontime = strtotime($question[$v['id']]['create_time']);
@@ -156,24 +178,34 @@ class Send extends Common
                 $mobile = (new User())->where(['node_id' => $v['id']])->field('mobile')->find();
                 $nodename = $name['name'];
                 $nodecount = 7;
-                $nodeerr = $this->send($nodename, $nodecount, $mobile['mobile'],$SmsTemplateCode);
-                if (!isset($nodeerr->result)) {
-                    $code = $nodeerr->code;
-                } else {
-                    $code = 0;
-                }
-                $newdata[] = [
-                    'tel_num' => $mobile['mobile'],
-                    'content' =>"您的". $nodename ."网站，超过".$nodecount ."天未添加内容，请及时添加，如有疑问请联系：4006-360-163",
-                    "send_status" => $code,
-                    'send_time' => time(),
-                    'sg_rejection_id' => 0,
-                    'tag_id'=>20,
-                    'node_id'=>$v['id'],
-                    'tag_name'=>'内容添加提醒',
-                    ];
+                $send[$mobile['mobile']]['nodename'][]=$nodename;
+                $send[$mobile['mobile']]['nodecount'][]=$nodecount;
+                $send[$mobile['mobile']]['nodeid'][]=$v['id'];
             }
         }
+
+        foreach ($send as $k => $v){
+            $sendname=implode(',',$v['nodename']);
+            $sendcount=7;
+            $nodeerr = $this->send($sendname, $sendcount, $k,$SmsTemplateCode);
+            if (!isset($nodeerr->result)) {
+                $code = $nodeerr->code;
+            } else {
+                $code = 0;
+            }
+            $newdata[] = [
+                'tel_num' => $k,
+                'content' =>"您的". $sendname ."网站，超过".$sendcount ."天未添加内容，请及时添加，如有疑问请联系：4006-360-163",
+                "send_status" => $code,
+                'send_time' => time(),
+                'sg_rejection_id' => 0,
+                'tag_id'=>20,
+                'node_id'=>",".implode(',',$v['nodeid']).",",
+                'tag_name'=>'内容添加提醒',
+            ];
+        }
+
+
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
