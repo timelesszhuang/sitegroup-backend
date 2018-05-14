@@ -73,7 +73,7 @@ class Send extends Common
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
-                exit ("发送成功");
+                echo ("发送成功");
             }
         }
     }
@@ -126,7 +126,7 @@ class Send extends Common
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
-                exit("发送成功");
+                echo("发送成功");
             }
         }
     }
@@ -177,7 +177,7 @@ class Send extends Common
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
-                exit("发送成功");
+                echo("发送成功");
             }
         }
 
