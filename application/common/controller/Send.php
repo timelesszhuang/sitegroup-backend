@@ -63,6 +63,7 @@ class Send extends Common
             $sendname = implode(',', $v['nodename']) . "共";
             $sendcount = array_sum($v['nodecount']);
             $siteerr = $this->send($sendname, $sendcount, $v['mobile'], $SmsTemplateCode);
+            echo json_encode($sitearr);
             if (!isset($siteerr->result)) {
                 $code = $siteerr->code;
             } else {
