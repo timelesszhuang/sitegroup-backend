@@ -167,17 +167,14 @@ class Send extends Common
             $article[$v['id']] = (new Article())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
             $question[$v['id']] = (new Question())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
             $product[$v['id']] = (new Product())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
-            $lasttime[$v['id']] = (new SmsLog())->where(['node_id' => ["like","%,".$v['id'].',%'], 'send_status' => 0])->field('send_time')->order('send_time desc')->find();
-            echo json_encode(['node_id' => ["like","%,".$v['id'].',%'], 'send_status' => 0]);
+            $lasttime[$v['id']] = (new SmsLog())->where(['node_id' => ['like','%'.$v['id'].'%'], 'send_status' => 0])->field('send_time')->order('send_time desc')->find();
         }
         $send = [];
         foreach ($node_id as $k => $v) {
             $articletime = strtotime($article[$v['id']]['create_time']);
             $questiontime = strtotime($question[$v['id']]['create_time']);
             $producttime = strtotime($product[$v['id']]['create_time']);
-            $lastsendtime = strtotime($lasttime[$v['id']]['send_time']);
-            echo $lastsendtime;
-            echo $lasttime;
+            $lastsendtime = $lasttime[$v['id']]['send_time'];
             $seventime = time() - 86400 * 7;
             if (($articletime < $seventime) && ($questiontime < $seventime) && ($producttime < $seventime) && ($lastsendtime < $seventime)) {
                 $name = (new Node())->where(['id' => $v['id']])->field('name')->find();
