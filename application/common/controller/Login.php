@@ -87,7 +87,7 @@ class Login extends Common
             }
 //            验证验证码
             if (!captcha_check($data["verify_code"])) {
-                exception('验证码错误');
+                Common::processException('验证码错误');
             };
             //返回结果容器
             $return = [];
