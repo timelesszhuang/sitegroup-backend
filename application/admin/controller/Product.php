@@ -176,7 +176,7 @@ class Product extends CommonLogin
         $data = $this->model->where(["id" => $id])->field("create_time,update_time,imgser", true)->find();
         $data['tags'] = implode(',', array_filter(explode(',', $data['tags'])));
         $data['flag'] = implode(',', array_filter(explode(',', $data['flag'])));
-        $data['stations_ids'] = implode(',', array_filter(explode(',', $data['data']['stations_ids'])));
+        $data['stations_ids'] = implode(',', array_filter(explode(',', $data['stations_ids'])));
         return $this->resultArray('', '', $data);
     }
 
