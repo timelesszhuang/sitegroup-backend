@@ -43,7 +43,7 @@ class Question extends CommonLogin
             $where['question'] = ["like", "%$content%"];
         }
         if (!empty($type_id)) {
-            $where['type_id'] = ['in',explode(',',$type_id)];
+            $where['type_id'] = ['in', explode(',', $type_id)];
         }
         $user = $this->getSessionUserInfo();
         if ($user['user_type_name'] == 'node') {
@@ -87,7 +87,7 @@ class Question extends CommonLogin
                 $data['tags'] = "";
             }
 
-            if(empty($data['stations'])||$data['stations']<40){
+            if (empty($data['stations']) || $data['stations'] < 40) {
                 $data['stations_ids'] = '';
             }
 
@@ -143,56 +143,59 @@ class Question extends CommonLogin
      */
     public function update($id)
     {
-        $rule = [
-            ['question', "require", "请填写问题"],
-            ['content_paragraph', 'require', "请填写答案"],
-            ["type_id", "require", "请选择分类id"],
-            ["type_name", "require", "请选择分类名称"]
-        ];
-        $validate = new Validate($rule);
-        $data = $this->request->put();
-        if (!$validate->check($data)) {
-            return $this->resultArray($validate->getError(), 'failed');
-        }
-        $library_img_tags = [];
-        if (isset($data['tag_id']) && is_array($data['tag_id'])) {
-            $library_img_tags = $data['tag_id'];
-            $data['tags'] = ',' . implode(',', $data['tag_id']) . ',';
-        } else {
-            $data['tags'] = "";
-        }
+        try {
+            $rule = [
+                ['question', "require", "请填写问题"],
+                ['content_paragraph', 'require', "请填写答案"],
+                ["type_id", "require", "请选择分类id"],
+                ["type_name", "require", "请选择分类名称"]
+            ];
+            $validate = new Validate($rule);
+            $data = $this->request->put();
+            if (!$validate->check($data)) {
+                Common::processException($validate->getError());
+            }
+            $library_img_tags = [];
+            if (isset($data['tag_id']) && is_array($data['tag_id'])) {
+                $library_img_tags = $data['tag_id'];
+                $data['tags'] = ',' . implode(',', $data['tag_id']) . ',';
+            } else {
+                $data['tags'] = "";
+            }
 
-        if(empty($data['stations'])||$data['stations']<40){
-            $data['stations_ids'] = '';
-        }
+            if (empty($data['stations']) || $data['stations'] < 40) {
+                $data['stations_ids'] = '';
+            }
 
-        if (!empty($data['flag'])) {
-            $data['flag'] = ',' . implode(',', $data['flag']) . ',';
-        } else {
-            $data['flag'] = '';
-        }
-        unset($data['tag_id']);
-        $this->publicUpdate($this->model, $data, $id);
-        $library_img_set = new LibraryImgset();
-        $src_list = $library_img_set->getList($data['content_paragraph']);
-        if (isset($data['thumbnails']) && $data['thumbnails']) {
-            $src_list[] = $data['thumbnails'];
-        }
-        $library_img_set->batche_add($src_list, $library_img_tags, $data['question'], 'article');
-        $this->open_start('正在修改中');
-        $sitedata = $this->getQuestionSite($data['type_id']);
-        if (array_key_exists('status', $sitedata)) {
-            return $sitedata;
-        }
-        foreach ($sitedata as $kk => $vv) {
+            if (!empty($data['flag'])) {
+                $data['flag'] = ',' . implode(',', $data['flag']) . ',';
+            } else {
+                $data['flag'] = '';
+            }
+            unset($data['tag_id']);
+            $this->publicUpdate($this->model, $data, $id);
+            $library_img_set = new LibraryImgset();
+            $src_list = $library_img_set->getList($data['content_paragraph']);
+            if (isset($data['thumbnails']) && $data['thumbnails']) {
+                $src_list[] = $data['thumbnails'];
+            }
+            $library_img_set->batche_add($src_list, $library_img_tags, $data['question'], 'article');
+            $this->open_start('正在修改中');
+            $sitedata = $this->getQuestionSite($data['type_id']);
+            if (array_key_exists('status', $sitedata)) {
+                return $sitedata;
+            }
+            foreach ($sitedata as $kk => $vv) {
 //            $send = [
 //                "id" => $data['id'],
 //                "searchType" => 'question',
 //            ];
 //            $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
-            $this->curl_get($vv['url'] . "/clearCache");
+                $this->curl_get($vv['url'] . "/clearCache");
+            }
+        } catch (ProcessException $e) {
+            return $this->resultArray('failed', $e->getMessage());
         }
-        return '';
     }
 
     /**
