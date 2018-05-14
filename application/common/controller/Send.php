@@ -70,7 +70,7 @@ class Send extends Common
             }
             $newdata[] = [
                 'tel_num' => $k,
-                'content' => "【乐销易】您的" . $sitename . "有" . $sitecount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163",
+                'content' => "【乐销易】您的" . $sendname . "有" . $sendcount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163",
                 "send_status" => $code,
                 'node_id' => ",".implode(',',$v['nodeid']).",",
                 'send_time' => time(),
