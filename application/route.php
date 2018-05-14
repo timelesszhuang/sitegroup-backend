@@ -383,7 +383,8 @@ Route::get('childsitelistbysiteid', 'common/Childsitelist/childsitelist');
 
 
 
-Route::get('test_send', 'common/Send/test_send');
+Route::get('node_send', 'common/Send/node_send');
+Route::get('notaddsend', 'common/Send/notaddsend');
 
 
 
