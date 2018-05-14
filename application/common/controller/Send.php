@@ -20,7 +20,8 @@ class Send extends Common
     use SendMail;
 
 
-    public function test_send(){
+    public function test_send()
+    {
         $this->site_send();
         $this->node_send();
         $this->notaddsend();
@@ -32,7 +33,7 @@ class Send extends Common
      */
     public function site_send()
     {
-        $SmsTemplateCode='SMS_118715177';
+        $SmsTemplateCode = 'SMS_118715177';
         $where['update_time'] = ['between', [time() - 60 * 5, time()]];
         $where['status'] = 20;
 
@@ -41,7 +42,7 @@ class Send extends Common
         $rejection = new Rejection();
         $sitearr = $rejection->where($where)->select();
         $sarr = [];
-        $send=[];
+        $send = [];
         foreach ($sitearr as $k => $v) {
             $sarr[$v['site_id']][$v['id']] = $v['id'];
         };
@@ -51,10 +52,10 @@ class Send extends Common
             $sitename = $name['site_name'];
             $phone = $name['mobile'];
             $sitecount = count($v);
-            $send[$phone]['nodename'][]=$sitename;
-            $send[$phone]['nodecount'][]=$sitecount;
-            $send[$phone]['nodeid'][]=$node_id;
-            $send[$phone]['rejection_id'][]=key($v);
+            $send[$phone]['nodename'][] = $sitename;
+            $send[$phone]['nodecount'][] = $sitecount;
+            $send[$phone]['nodeid'][] = $node_id;
+            $send[$phone]['rejection_id'][] = key($v);
         }
 
         foreach ($send as $k => $v) {
@@ -62,6 +63,7 @@ class Send extends Common
             $sendcount = array_sum($v['nodecount']);
             $siteerr = $this->send($sendname, $sendcount, $k, $SmsTemplateCode);
             echo json_encode($siteerr);
+            echo $k;
             if (!isset($siteerr->result)) {
                 $code = $siteerr->code;
             } else {
@@ -72,9 +74,9 @@ class Send extends Common
                 'tel_num' => $k,
                 'content' => "【乐销易】您的" . $sendname . "有" . $sendcount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163",
                 "send_status" => $code,
-                'node_id' => ",".implode(',',$v['nodeid']).",",
+                'node_id' => "," . implode(',', $v['nodeid']) . ",",
                 'send_time' => time(),
-                'sg_rejection_id' => ",".implode(',',$v['rejection_id']).",",
+                'sg_rejection_id' => "," . implode(',', $v['rejection_id']) . ",",
                 'tag_id' => 10,
                 'tag_name' => '甩单接收提醒',
             ];
@@ -83,7 +85,7 @@ class Send extends Common
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
-                echo ("发送成功");
+                echo("发送成功");
             }
         }
     }
@@ -93,7 +95,7 @@ class Send extends Common
      */
     public function node_send()
     {
-        $SmsTemplateCode='SMS_118715177';
+        $SmsTemplateCode = 'SMS_118715177';
         $where['update_time'] = ['between', [time() - 60 * 5, time()]];
         $where['nodestatus'] = 20;
 
@@ -102,7 +104,7 @@ class Send extends Common
         $rejection = new Rejection();
         $sitearr = $rejection->where($where)->select();
         $node = [];
-        $send=[];
+        $send = [];
         foreach ($sitearr as $k => $v) {
             $node[$v['node_id']][$v['id']] = $v['id'];
         };
@@ -111,14 +113,14 @@ class Send extends Common
             $mobile = (new User())->where(['node_id' => $k])->field('mobile,email')->find();
             $nodename = $name['name'];
             $nodecount = count($v);
-            $send[$mobile['mobile']]['nodename'][]=$nodename;
-            $send[$mobile['mobile']]['nodecount'][]=$nodecount;
-            $send[$mobile['mobile']]['nodeid'][]=$k;
-            $send[$mobile['mobile']]['rejection_id'][]=key($v);
+            $send[$mobile['mobile']]['nodename'][] = $nodename;
+            $send[$mobile['mobile']]['nodecount'][] = $nodecount;
+            $send[$mobile['mobile']]['nodeid'][] = $k;
+            $send[$mobile['mobile']]['rejection_id'][] = key($v);
         }
 
         foreach ($send as $k => $v) {
-            $sendname = implode(',', $v['nodename'])."共";
+            $sendname = implode(',', $v['nodename']) . "共";
             $sendcount = array_sum($v['nodecount']);
             $nodeerr = $this->send($sendname, $sendcount, $k, $SmsTemplateCode);
             $email = $this->getEmailAccount();
@@ -127,6 +129,7 @@ class Send extends Common
                 $this->phpmailerSend($email['email'], $email['password'], $email["host"], $nodename . "您有新的线索", $mobile['email'], $content, $email["email"]);
             }
             echo json_encode($nodeerr);
+            echo $k;
             if (!isset($nodeerr->result)) {
                 $code = $nodeerr->code;
             } else {
@@ -138,9 +141,9 @@ class Send extends Common
                 'content' => "【乐销易】您的" . $sendname . "有" . $sendcount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163",
                 "send_status" => $code,
                 'send_time' => time(),
-                'sg_rejection_id' => ",".implode(',',$v['rejection_id']).",",
+                'sg_rejection_id' => "," . implode(',', $v['rejection_id']) . ",",
                 'tag_id' => 10,
-                'node_id' => ",".implode(',',$v['nodeid']).",",
+                'node_id' => "," . implode(',', $v['nodeid']) . ",",
                 'tag_name' => '甩单接收提醒',
             ];
         }
@@ -160,36 +163,37 @@ class Send extends Common
     public function notaddsend()
     {
         $SmsTemplateCode = 'SMS_122000046';
-        $node_id = (new Node())->where(['id'=>68])->field('id')->select();
+        $node_id = (new Node())->where(['id' => 68])->field('id')->select();
         foreach ($node_id as $k => $v) {
             $article[$v['id']] = (new Article())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
             $question[$v['id']] = (new Question())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
             $product[$v['id']] = (new Product())->where(['node_id' => $v['id']])->field('create_time')->order('create_time desc')->find();
-            $lasttime[$v['id']] = (new SmsLog())->where(['node_id' => $v['id'],'send_status'=>0])->field('send_time')->order('send_time desc')->find();
+            $lasttime[$v['id']] = (new SmsLog())->where(['node_id' => $v['id'], 'send_status' => 0])->field('send_time')->order('send_time desc')->find();
         }
-        $send=[];
+        $send = [];
         foreach ($node_id as $k => $v) {
-            $articletime =strtotime($article[$v['id']]['create_time']);
+            $articletime = strtotime($article[$v['id']]['create_time']);
             $questiontime = strtotime($question[$v['id']]['create_time']);
             $producttime = strtotime($product[$v['id']]['create_time']);
             $lastsendtime = strtotime($lasttime[$v['id']]['send_time']);
-            $seventime = time()-86400*7;
-            if(($articletime < $seventime) && ($questiontime < $seventime) && ($producttime < $seventime)&& ($lastsendtime < $seventime)){
+            $seventime = time() - 86400 * 7;
+            if (($articletime < $seventime) && ($questiontime < $seventime) && ($producttime < $seventime) && ($lastsendtime < $seventime)) {
                 $name = (new Node())->where(['id' => $v['id']])->field('name')->find();
                 $mobile = (new User())->where(['node_id' => $v['id']])->field('mobile')->find();
                 $nodename = $name['name'];
                 $nodecount = 7;
-                $send[$mobile['mobile']]['nodename'][]=$nodename;
-                $send[$mobile['mobile']]['nodecount'][]=$nodecount;
-                $send[$mobile['mobile']]['nodeid'][]=$v['id'];
+                $send[$mobile['mobile']]['nodename'][] = $nodename;
+                $send[$mobile['mobile']]['nodecount'][] = $nodecount;
+                $send[$mobile['mobile']]['nodeid'][] = $v['id'];
             }
         }
 
-        foreach ($send as $k => $v){
-            $sendname=implode(',',$v['nodename']);
-            $sendcount=7;
-            $nodeerr = $this->send($sendname, $sendcount, $k,$SmsTemplateCode);
+        foreach ($send as $k => $v) {
+            $sendname = implode(',', $v['nodename']);
+            $sendcount = 7;
+            $nodeerr = $this->send($sendname, $sendcount, $k, $SmsTemplateCode);
             echo json_encode($nodeerr);
+            echo $k;
             if (!isset($nodeerr->result)) {
                 $code = $nodeerr->code;
             } else {
@@ -197,13 +201,13 @@ class Send extends Common
             }
             $newdata[] = [
                 'tel_num' => $k,
-                'content' =>"您的". $sendname ."网站，超过".$sendcount ."天未添加内容，请及时添加，如有疑问请联系：4006-360-163",
+                'content' => "您的" . $sendname . "网站，超过" . $sendcount . "天未添加内容，请及时添加，如有疑问请联系：4006-360-163",
                 "send_status" => $code,
                 'send_time' => time(),
                 'sg_rejection_id' => 0,
-                'tag_id'=>20,
-                'node_id'=>",".implode(',',$v['nodeid']).",",
-                'tag_name'=>'内容添加提醒',
+                'tag_id' => 20,
+                'node_id' => "," . implode(',', $v['nodeid']) . ",",
+                'tag_name' => '内容添加提醒',
             ];
         }
 
