@@ -60,7 +60,7 @@ class Send extends Common
         }
 
         foreach ($send as $k => $v) {
-            $sendname = implode(',', $v['nodename']) . "共";
+            $sendname = count($v['nodename'])>1?$v['nodename'][0]. "等共":$v['nodename'][0];
             $sendcount = array_sum($v['nodecount']);
             $siteerr = $this->send($sendname, $sendcount, $v['mobile'], $SmsTemplateCode);
             echo json_encode($siteerr);
@@ -120,13 +120,13 @@ class Send extends Common
             $send[$mobile['mobile']]['rejection_id'][] = key($v);
             $email = $this->getEmailAccount();
             if ($email) {
-                $content = "【乐销易】您的" . $nodename . "共有" . $nodecount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163";
+                $content = "【乐销易】您的" . $nodename . "有" . $nodecount . "条新的线索,请及时联系，如有疑问请联系：4006-360-163";
                 $this->phpmailerSend($email['email'], $email['password'], $email["host"], $nodename . "您有新的线索", $mobile['email'], $content, $email["email"]);
             }
         }
 
         foreach ($send as $k => $v) {
-            $sendname = implode(',', $v['nodename']) . "共";
+            $sendname = count($v['nodename'])>1?$v['nodename'][0]. "等共":$v['nodename'][0];
             $sendcount = array_sum($v['nodecount']);
             $nodeerr = $this->send($sendname, $sendcount, $v['mobile'], $SmsTemplateCode);
             if (!isset($nodeerr->result)) {
@@ -189,7 +189,7 @@ class Send extends Common
         }
 
         foreach ($send as $k => $v) {
-            $sendname = implode(',', $v['nodename']);
+            $sendname = count($v['nodename'])>1?$v['nodename'][0]. "等共":$v['nodename'][0];
             $sendcount = 7;
             $nodeerr = $this->send($sendname, $sendcount, $v['mobile'], $SmsTemplateCode);
             if (!isset($nodeerr->result)) {
