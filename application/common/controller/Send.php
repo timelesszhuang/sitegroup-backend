@@ -175,6 +175,7 @@ class Send extends Common
             $questiontime = strtotime($question[$v['id']]['create_time']);
             $producttime = strtotime($product[$v['id']]['create_time']);
             $lastsendtime = strtotime($lasttime[$v['id']]['send_time']);
+            echo $lastsendtime;
             $seventime = time() - 86400 * 7;
             if (($articletime < $seventime) && ($questiontime < $seventime) && ($producttime < $seventime) && ($lastsendtime < $seventime)) {
                 $name = (new Node())->where(['id' => $v['id']])->field('name')->find();
