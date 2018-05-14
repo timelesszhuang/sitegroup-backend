@@ -183,7 +183,7 @@ class Send extends Common
                 $nodename = $name['name'];
                 $nodecount = 7;
                 $send[$mobile['mobile']]['nodename'][] = $nodename;
-                $send[$mobile['mobile']]['mobile'][] = $mobile['mobile'];
+                $send[$mobile['mobile']]['mobile'] = $mobile['mobile'];
                 $send[$mobile['mobile']]['nodecount'][] = $nodecount;
                 $send[$mobile['mobile']]['nodeid'][] = $v['id'];
             }
