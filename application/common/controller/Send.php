@@ -18,6 +18,15 @@ class Send extends Common
 {
     use Smsali;
     use SendMail;
+
+
+    public function test_send(){
+        $this->site_send();
+        $this->node_send();
+        $this->notaddsend();
+    }
+
+
     /**
      * 小站点短信发送
      */

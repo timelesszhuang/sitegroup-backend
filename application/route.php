@@ -383,6 +383,12 @@ Route::get('childsitelistbysiteid', 'common/Childsitelist/childsitelist');
 
 
 
+Route::get('test_send', 'common/Send/test_send');
+
+
+
+
+
 /*//用户电话记录数据管理
 Route::resource('voice_cdr', 'admin/VoiceCdr');
 Route::resource('sys/voice_cdr', 'sysadmin/VoiceCdr');
