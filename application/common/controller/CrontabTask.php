@@ -150,7 +150,7 @@ class CrontabTask extends Common
                 }
                 $dates = [];
                 if ($product_count_info) {
-                    $dates['id'] = $product_count_info;
+                    $dates['id'] = $product_count_info['id'];
                     $product_count = $product_count_info['count'];
                     $is_update = true;
                 } else {
@@ -181,7 +181,7 @@ class CrontabTask extends Common
                 }
                 $dates = [];
                 if ($question_count_info) {
-                    $dates['id'] = $question_count_info;
+                    $dates['id'] = $question_count_info['id'];
                     $question_count = $question_count_info['count'];
                     $is_update = true;
                 } else {
