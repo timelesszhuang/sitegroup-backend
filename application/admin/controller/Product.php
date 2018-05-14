@@ -137,11 +137,8 @@ class Product extends CommonLogin
             } else {
                 $post['tags'] = "";
             }
-            if (isset($data['stations_ids']) && is_array($data['stations_ids'])) {
-                $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
-                $data['stations'] = 20;
-            } else {
-                $data['stations_ids'] = "";
+            if(empty($data['stations'])||$data['stations']<40){
+                $data['stations_ids'] = '';
             }
             if(!empty($post['flag'])){
                 $post['flag'] = ',' . implode(',', $post['flag']) . ',';
@@ -229,11 +226,8 @@ class Product extends CommonLogin
             } else {
                 $post['tags'] = "";
             }
-            if (isset($post['stations_ids']) && is_array($post['stations_ids'])) {
-                $post['stations_ids'] = ',' . implode(',', $post['stations_ids']) . ',';
-                $post['stations'] = 20;
-            } else {
-                $data['stations_ids'] = "";
+            if(empty($data['stations'])||$data['stations']<40){
+                $data['stations_ids'] = '';
             }
             if(!empty($post['flag'])){
                 $post['flag'] = ',' . implode(',', $post['flag']) . ',';

@@ -105,11 +105,8 @@ class Article extends CommonLogin
                 $data['tags'] = "";
             }
 
-            if (isset($data['stations_ids']) && is_array($data['stations_ids'])) {
-                $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
-                $data['stations'] = 20;
-            } else {
-                $data['stations_ids'] = "";
+            if(empty($data['stations'])||$data['stations']<40){
+                $data['stations_ids'] = '';
             }
 
             if(!empty($data['flag'])){
@@ -194,11 +191,8 @@ class Article extends CommonLogin
                 $data['tags'] = "";
             }
 
-            if (isset($data['stations_ids']) && is_array($data['stations_ids'])) {
-                $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
-                $data['stations'] = 20;
-            } else {
-                $data['stations_ids'] = "";
+            if(empty($data['stations'])||$data['stations']<40){
+                $data['stations_ids'] = '';
             }
 
             if(!empty($data['flag'])){
