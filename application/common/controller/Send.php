@@ -183,6 +183,7 @@ class Send extends Common
                 $nodename = $name['name'];
                 $nodecount = 7;
                 $send[$mobile['mobile']]['nodename'][] = $nodename;
+                $send[$mobile['mobile']]['mobile'][] = $mobile['mobile'];
                 $send[$mobile['mobile']]['nodecount'][] = $nodecount;
                 $send[$mobile['mobile']]['nodeid'][] = $v['id'];
             }
@@ -191,17 +192,17 @@ class Send extends Common
         foreach ($send as $k => $v) {
             $sendname = implode(',', $v['nodename']);
             $sendcount = 7;
-            $nodeerr = $this->send($sendname, $sendcount, $k, $SmsTemplateCode);
+            $nodeerr = $this->send($sendname, $sendcount, $v['mobile'], $SmsTemplateCode);
             echo json_encode($nodeerr);
-            echo $k;
-            print_r($k);
+            echo $v['mobile'];
+            print_r($v['mobile']);
             if (!isset($nodeerr->result)) {
                 $code = $nodeerr->code;
             } else {
                 $code = 0;
             }
             $newdata[] = [
-                'tel_num' => $k,
+                'tel_num' => $v['mobile'],
                 'content' => "您的" . $sendname . "网站，超过" . $sendcount . "天未添加内容，请及时添加，如有疑问请联系：4006-360-163",
                 "send_status" => $code,
                 'send_time' => time(),
