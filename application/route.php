@@ -363,9 +363,7 @@ Route::post('producttdkedit', 'common/PageInfo/producttdkedit');
 //修改a类关键词pageinfo
 Route::post('editpageinfo', 'common/PageInfo/editpageinfo');
 //获取站点联系方式
-Route::get('siteResource', 'common/Site/siteResource');
 Route::get('readuser', 'common/User/readuser');
-Route::post('siteResource', 'common/Site/editResource');
 Route::any('wxlogin', 'common/Wxapp/login');
 Route::any('wxbind', 'common/Wxapp/bindopenid');
 
