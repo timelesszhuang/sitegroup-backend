@@ -124,7 +124,7 @@ return [
     'common/Home/en' => [2, 1,3],
     'common/Home/show' => [2, 1,3],
     'common/Home/root_pv_show' => [2, 1,3],
-    'admin/Keyword/keywordCount' => [2, 1],
+    'admin/Keyword/keywordCount' => [2, 1,3],
     'common/Node/nodeList' => [2, 1],
     'common/Home/getMarketMode' => [2, 3],
     'common/Home/getCaseCenter' => [2, 3],

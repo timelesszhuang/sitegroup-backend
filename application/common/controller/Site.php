@@ -578,45 +578,9 @@ class Site extends Common
     }
 
 
-    /**
-     * 显示资源列表
-     *
-     * @return \think\Response
-     */
-    public function siteResource()
-    {
-        $user_info = $this->getSessionUserInfo();
-        $site_id=$user_info["site_id"];
-        if(empty($site_id)){
-            return $this->resultArray("获取站点错误","failed");
-        }
-        $site=\app\common\model\Site::get($site_id);
-        if(empty($site)){
-            return $this->resultArray("获取站点错误","failed");
-        }
-        return $this->resultArray("","",$site);
-    }
 
 
 
-    /**
-     * 保存新建的资源
-     * @param  \think\Request  $request
-     * @return \think\Response
-     */
-    public function editResource(Request $request)
-    {
-        $user_info = $this->getSessionUserInfo();
-        $site_id=$user_info["site_id"];
-        if(empty($site_id)){
-            return $this->resultArray("获取站点错误","failed");
-        }
-        $data = \request()->post();
-        unset($data['id']);
-        if(!\app\common\model\Site::update($data,["id"=>$site_id])){
-            return $this->resultArray("修改站点失败!!","failed");
-        }
-        return $this->resultArray("修改成功!!");
-    }
+
 
 }
