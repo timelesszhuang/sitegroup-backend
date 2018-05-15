@@ -90,7 +90,7 @@ class Childsitelist extends CommonLogin
         if (!(count($add_data) > 0)) {
             Common::processException('请正确选择需要添加的站点');
         }
-        $old_childsitelist = $Childsitelist->where(['en_name' => ['in', array_keys($add_data)], 'site_id' => $site_id])->select();
+        $old_childsitelist = $Childsitelist->where(['site_id' => $site_id,'en_name' => ['in', array_keys($add_data)]])->select();
         if ($old_childsitelist) {
             foreach ($old_childsitelist as $childsitelist) {
                 unset($add_data[$childsitelist['en_name']]);
