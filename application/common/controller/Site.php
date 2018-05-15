@@ -100,6 +100,12 @@ class Site extends Common
         }else{
             $data["url"] = $data["domain"];
         }
+
+        if ($data['is_mobile']!=10) {
+            $data["m_site_id"] = "";
+        }
+
+
         if (!empty($data["link_id"])) {
             $data["link_id"] = "," . implode(",", $data["link_id"]) . ",";
         }
@@ -201,6 +207,11 @@ class Site extends Common
         }else{
             $data["url"] = $data["domain"];
         }
+
+        if ($data['is_mobile']!=10) {
+            $data["m_site_id"] = "";
+        }
+
         //公共代码
         if (!empty($data["public_code"])) {
             $data["public_code"] = implode(",", $data["public_code"]);
