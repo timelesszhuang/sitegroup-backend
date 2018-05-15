@@ -410,8 +410,20 @@ class Count extends CommonLogin
         }
         //array_walk() 数组的键名和键值是参数。
         array_walk($Pv, [$this, "for1"]);
-        $temp = ["time" => $date_diff, "type" => $this->count];
+        $temp = ["time" => array_column($userpv,'m_d'), "type" => $this->count];
         return $this->resultArray($temp);
+    }
+
+    /**
+     * @param $value
+     * 格式化数据
+     */
+    public function for1($value)
+    {
+        $this->count[] = [
+            "data" => array_values($value),
+            "type" => "line",
+        ];
     }
 
     /**
@@ -464,17 +476,7 @@ class Count extends CommonLogin
         return $this->resultArray($temp);
     }
 
-    /**
-     * @param $value
-     * 格式化数据
-     */
-    public function for1($value)
-    {
-        $this->count[] = [
-            "data" => array_values($value),
-            "type" => "line",
-        ];
-    }
+
 
     /**
      * @param $value
