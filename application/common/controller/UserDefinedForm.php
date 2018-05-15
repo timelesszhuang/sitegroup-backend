@@ -23,7 +23,7 @@ class UserDefinedForm extends CommonLogin
             $where["detail"] = ["like", "%$detail%"];
         }
         $user_info = $this->getSessionUserInfo();
-        $where["node_id"] =$user_info["node_id"];
+        $where["node_id"] = $user_info["node_id"];
         $data = (new UserForm())->getAll($request["limit"], $request["rows"], $where);
 
         return $this->resultArray('', '', $data);
@@ -53,7 +53,7 @@ class UserDefinedForm extends CommonLogin
         $validate = new Validate($rule);
         $pdata = $request->post();
         if (!$validate->check($pdata)) {
-            return $this->resultArray( 'failed',$validate->getError());
+            return $this->resultArray('failed', $validate->getError());
         }
         $data = [];
         $field = [];
@@ -69,7 +69,7 @@ class UserDefinedForm extends CommonLogin
         $user_info = $this->getSessionUserInfo();
         $data["node_id"] = $user_info["node_id"];
         if (!UserForm::create($data)) {
-            return $this->resultArray( 'failed','添加失败');
+            return $this->resultArray('failed', '添加失败');
         }
         return $this->resultArray('添加成功');
     }
@@ -113,7 +113,7 @@ class UserDefinedForm extends CommonLogin
         $validate = new Validate($rule);
         $pdata = $request->post();
         if (!$validate->check($pdata)) {
-            return $this->resultArray('failed',$validate->getError());
+            return $this->resultArray('failed', $validate->getError());
         }
         $data = [];
         $field = [];
@@ -148,13 +148,22 @@ class UserDefinedForm extends CommonLogin
         //唯一id
         $defined_info = UserForm::get($id);
         if (!$defined_info) {
-            return $this->resultArray( 'failed','该条记录不存在，请查证', []);
+            return $this->resultArray('failed', '该条记录不存在，请查证', []);
         }
         $tag = $defined_info->tag;
         $form_info = unserialize($defined_info->form_info);
+        $field5 = [
+            'code' => [
+                'name' => '验证码',
+                'type' => 'text',
+                'placeholder' => '请输入验证码',
+                'require' => true,
+            ]
+        ];
+        $form_info1 = array_merge($form_info, $field5);
         $form_field = '';
         $js_field = '';
-        foreach ($form_info as $k => $v) {
+        foreach ($form_info1 as $k => $v) {
             $type = $v['type'];
             $name = $v['name'];
             $placeholder = $v['placeholder'];
@@ -221,7 +230,7 @@ code;
             });
             </script>
 code;
-        return $this->resultArray( 'success','获取自定义表单代码成功', $form);
+        return $this->resultArray('success', '获取自定义表单代码成功', $form);
     }
 
 }
