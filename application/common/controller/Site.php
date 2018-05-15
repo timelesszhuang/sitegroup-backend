@@ -95,8 +95,10 @@ class Site extends Common
         if (!$validate->check($data)) {
             return $this->resultArray('failed',$validate->getError() );
         }
-        if (!$this->searchHttp($data["url"])) {
-            $data["url"] = "http://" . $data["url"];
+        if (!$this->searchHttp($data["domain"])) {
+            $data["url"] = "http://" . $data["domain"];
+        }else{
+            $data["url"] = $data["domain"];
         }
         if (!empty($data["link_id"])) {
             $data["link_id"] = "," . implode(",", $data["link_id"]) . ",";
@@ -193,6 +195,11 @@ class Site extends Common
         ];
         if (!empty($data["link_id"])) {
             $data["link_id"] = "," . implode(",", $data["link_id"]) . ",";
+        }
+        if (!$this->searchHttp($data["domain"])) {
+            $data["url"] = "http://" . $data["domain"];
+        }else{
+            $data["url"] = $data["domain"];
         }
         //公共代码
         if (!empty($data["public_code"])) {
