@@ -84,9 +84,10 @@ class Send extends Common
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
-                echo("发送成功1");
+                exit("发送成功1");
             }
         }
+        exit();
     }
 
     /**
@@ -148,9 +149,10 @@ class Send extends Common
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
-                echo("发送成功2");
+                exit("发送成功2");
             }
         }
+        exit();
     }
 
 
@@ -211,10 +213,10 @@ class Send extends Common
         if (isset($newdata)) {
             $newstatus = (new SmsLog())->insertAll($newdata);
             if ($newstatus) {
-                echo("发送成功3");
+                exit("发送成功3");
             }
         }
-
+        exit();
     }
 
 
