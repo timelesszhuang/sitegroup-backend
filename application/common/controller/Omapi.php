@@ -19,6 +19,7 @@ class Omapi extends Common
     public function index()
     {
         $xmldata = file_get_contents('php://input');
+        file_put_contents('11111.txt', $xmldata, FILE_APPEND);
         $this->analyse_data($xmldata);
     }
 
