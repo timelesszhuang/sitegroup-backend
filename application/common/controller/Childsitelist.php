@@ -73,6 +73,7 @@ class Childsitelist extends CommonLogin
             }
             array_push($sitelist, $parent);
         }
+        Common::processException(count($sitelist));
         $add_data = [];
         $user_info = $this->getSessionUserInfo();
         foreach ($sitelist as $district) {
