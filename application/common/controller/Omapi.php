@@ -19,6 +19,28 @@ class Omapi extends Common
     public function index()
     {
         $xmldata = file_get_contents('php://input');
+        $xmldata = '544545';
+//
+//                $xmldata = <<<xmldata
+//<Cdr id="20920150929140022-0">
+//      <callid>49394</callid>
+//      <TimeStart>20150929135957</TimeStart>
+//      <Type>IN</Type>
+//      <Route>OP</Route>
+//      <CPN>13698612743</CPN>
+//      <CDPN>334</CDPN>
+//      <TimeEnd>20150929140022</TimeEnd>
+//      <Duration>4</Duration>
+//      <TrunkNumber>13698612743</TrunkNumber>
+//      <Recording>20150929/13698612743_316_20150929-140018_49394</Recording>
+//      </Cdr>
+//xmldata;
+//        $xmldata = <<<xmldata
+//          <Event attribute="ANSWER">
+//          <ext id="334" />
+//          <visitor from="13698612743" />
+//          </Event>
+//xmldata;
         file_put_contents('11111.txt', $xmldata, FILE_APPEND);
         $this->analyse_data($xmldata);
     }
