@@ -114,7 +114,7 @@ class Omapi extends Common
 
             }
         } else {
-            //telnum  打入的或者打出的客户 s首先把金色雨林站点整好，这个节点下面有两个站点，模板用的一样的      打入打出的电话要交换顺序
+            //telnum  打入的或者打出的客户      打入打出的电话要交换顺序
             $cdr_data['telnum'] = $data['CPN']['val'];
             //分机号码
             $cdr_data['ext_num'] = $data['CDPN']['val'];
