@@ -19,7 +19,7 @@ class Omapi extends Common
     public function index()
     {
         $xmldata = file_get_contents('php://input');
-        $xmldata = '544545';
+        //$xmldata = '544545';
 //
 //                $xmldata = <<<xmldata
 //<Cdr id="20920150929140022-0">
@@ -28,13 +28,33 @@ class Omapi extends Common
 //      <Type>IN</Type>
 //      <Route>OP</Route>
 //      <CPN>13698612743</CPN>
-//      <CDPN>334</CDPN>
+//      <CDPN>801</CDPN>
 //      <TimeEnd>20150929140022</TimeEnd>
 //      <Duration>4</Duration>
 //      <TrunkNumber>13698612743</TrunkNumber>
 //      <Recording>20150929/13698612743_316_20150929-140018_49394</Recording>
 //      </Cdr>
 //xmldata;
+
+//
+//$xmldata = <<<xmldata
+//<Cdr id="25920180530091121-0">
+//  <callid>61557</callid>
+//  <outer id="117" />
+//  <TimeStart>20180530091057</TimeStart>
+//  <Type>OU</Type>
+//  <Route>IP</Route>
+//  <CPN>801</CPN>
+//  <CDPN>013759405182</CDPN>
+//  <TimeEnd>20180530091121</TimeEnd>
+//  <Duration>527</Duration>
+//  <TrunkNumber>053188899463</TrunkNumber>
+//</Cdr>
+//xmldata;
+
+
+
+
 //        $xmldata = <<<xmldata
 //          <Event attribute="ANSWER">
 //          <ext id="334" />
@@ -72,6 +92,7 @@ class Omapi extends Common
         }
     }
 
+
     /**
      * 解析话单数据
      * @access private
@@ -102,12 +123,14 @@ class Omapi extends Common
             }
             $data[$name]['val'] = empty($val) ? '' : $val;
         }
+        dump($data);die;
         //获取   分机号码=>array(userid,flag)  跨分组调用模块
         file_put_contents('test.log', "load", FILE_APPEND);
         $extnum_nodeid_arr = Cache::remember('extnum_nodeid_arr',function(){
             file_put_contents('test.log', "load_new", FILE_APPEND);
             return  $this->get_extnum_nodeid_arr();
         });
+        //dump($extnum_nodeid_arr);
         file_put_contents('test.log', "load_over", FILE_APPEND);
         //通话的唯一标识
         $cdr_data['callid'] = $data['callid']['val'];
@@ -134,13 +157,13 @@ class Omapi extends Common
                 $cdr_data['telnum'] = $data['CDPN']['val'];
                 //分机号码
                 $cdr_data['ext_num'] = $data['CPN']['val'];
+
             }
         } else {
-            //telnum  打入的或者打出的客户       打入打出的电话要交换顺序
+            //telnum  打入的或者打出的客户 s首先把金色雨林站点整好，这个节点下面有两个站点，模板用的一样的      打入打出的电话要交换顺序
             $cdr_data['telnum'] = $data['CPN']['val'];
             //分机号码
             $cdr_data['ext_num'] = $data['CDPN']['val'];
-            exit;
         }
         //还需要判断一下是不是存在这个信息
         $ext_num = $cdr_data['ext_num'];
@@ -149,6 +172,7 @@ class Omapi extends Common
             $cdr_data['node_id'] = $extnum_nodeid_arr[$ext_num]['node_id'];
         } else {
             $cdr_data['node_id'] = 0;
+            exit();
 //            file_put_contents('error.log', "{$flag} 地址，memcache 或者 数据库获取{$cdr_data['ext_num']}=>user_id  失败。\r\n", FILE_APPEND);
             //以后可以发送邮件报警  说明问题。
         }
@@ -164,6 +188,7 @@ class Omapi extends Common
             $cdr_data['rec_name'] = '';
         }
         $cdr_data['create_time'] = time();
+        dump($cdr_data);
         return $cdr_data;
     }
 
