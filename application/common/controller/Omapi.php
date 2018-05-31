@@ -19,6 +19,7 @@ class Omapi extends Common
     public function index()
     {
         $xmldata = file_get_contents('php://input');
+        //$xmldata = '544545';
         file_put_contents('11111.txt', $xmldata, FILE_APPEND);
         $this->analyse_data($xmldata);
     }
@@ -30,6 +31,9 @@ class Omapi extends Common
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     *
+     *
+     *
      */
     //TODO oldfunction
     private function analyse_data($xmldata)
