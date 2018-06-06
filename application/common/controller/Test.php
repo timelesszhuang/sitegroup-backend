@@ -24,7 +24,7 @@ class Test extends Controller
        // $redirect_url = urlencode('http://salesman.cc');
         //dump($redirect_url);
         //die;
-        $redirect_url = urlencode('http://admin.salesman.cc');
+        $redirect_url = urlencode('http://salesman.cc/index.php/Companywechat/Writedailyreport/entry_writereport');
         //$url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxba3dd8d2bdf50774&redirect_uri=http%3A%2F%2Fsalesman.cc&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
         $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxba3dd8d2bdf50774&redirect_uri={$redirect_url}&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
         header("Location: {$url}");
