@@ -223,9 +223,7 @@ code;
             <script>
             $('#imgcode').click(function(){
         var el =document.getElementById("imgcode");
-            el.src=el.src+'?v=' + Math.random();
-        
-
+            el.src='/captcha.html?v='+ Math.random();
 });
             $('#submit_bottom').click(function () {
                 {$js_field}
