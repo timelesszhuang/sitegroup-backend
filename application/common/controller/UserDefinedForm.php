@@ -164,6 +164,7 @@ class UserDefinedForm extends CommonLogin
         $form_field = '';
         $js_field = '';
         foreach ($form_info1 as $k => $v) {
+
             $type = $v['type'];
             $name = $v['name'];
             $placeholder = $v['placeholder'];
@@ -199,8 +200,18 @@ code;
 code;
                 $js_field .= $js_code;
             }
+            if ($k == 'code') {
+                $per_field .= <<<code
+                <div>
+                     <input name="code" class="k" id="code" type="text" placeholder="请输入验证码">
+  <img id='imgcode' src="/captcha.html" >
+                </div>
+code;
+
+            }
             $form_field .= $per_field;
         }
+
         $form = <<<code
             <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.js"></script>
             <!--请首先判断 页面中是否已经引用了 jquery-->
@@ -210,6 +221,12 @@ code;
                 <input name="submit_bottom" class="submit_bottom" id="submit_bottom" value="提交数据" type="button">
             </form>
             <script>
+            $('#imgcode').click(function(){
+        var el =document.getElementById("imgcode");
+            el.src=el.src+'?v=' + Math.random();
+        
+
+});
             $('#submit_bottom').click(function () {
                 {$js_field}
                 var data = $('#userdefinedform').serialize();
