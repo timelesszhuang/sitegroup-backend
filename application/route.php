@@ -383,8 +383,10 @@ Route::get('childsitelistbysiteid', 'common/Childsitelist/childsitelist');
 
 Route::get('node_send', 'common/Send/node_send');
 Route::get('notaddsend', 'common/Send/notaddsend');
+Route::get('test', 'common/Test/test');
 
-
+//用户电话记录数据获取api
+Route::get('omapi','common/Omapi/index');
 
 
 
