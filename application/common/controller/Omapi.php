@@ -19,6 +19,8 @@ class Omapi extends Common
     public function index()
     {
         $xmldata = file_get_contents('php://input');
+        //$xmldata = '544545';
+        file_put_contents('11111.txt', $xmldata, FILE_APPEND);
         $this->analyse_data($xmldata);
     }
 
@@ -29,6 +31,9 @@ class Omapi extends Common
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     *
+     *
+     *
      */
     //TODO oldfunction
     private function analyse_data($xmldata)
@@ -48,6 +53,7 @@ class Omapi extends Common
                 break;
         }
     }
+
 
     /**
      * 解析话单数据
@@ -79,13 +85,11 @@ class Omapi extends Common
             }
             $data[$name]['val'] = empty($val) ? '' : $val;
         }
+        //dump($data);
         //获取   分机号码=>array(userid,flag)  跨分组调用模块
-        file_put_contents('test.log', "load", FILE_APPEND);
-        $extnum_nodeid_arr = Cache::remember('extnum_nodeid_arr',function(){
-            file_put_contents('test.log', "load_new", FILE_APPEND);
-            return  $this->get_extnum_nodeid_arr();
-        });
-        file_put_contents('test.log', "load_over", FILE_APPEND);
+        //file_put_contents('test.log', "load", FILE_APPEND);
+        $extnum_nodeid_arr = $this->get_extnum_nodeid_arr();
+        //file_put_contents('test.log', "load_over", FILE_APPEND);
         //通话的唯一标识
         $cdr_data['callid'] = $data['callid']['val'];
         //$cdr_data['visitor'] = $data['visitor']['attr']['id'];
@@ -111,13 +115,13 @@ class Omapi extends Common
                 $cdr_data['telnum'] = $data['CDPN']['val'];
                 //分机号码
                 $cdr_data['ext_num'] = $data['CPN']['val'];
+
             }
         } else {
-            //telnum  打入的或者打出的客户       打入打出的电话要交换顺序
+            //telnum  打入的或者打出的客户      打入打出的电话要交换顺序
             $cdr_data['telnum'] = $data['CPN']['val'];
             //分机号码
             $cdr_data['ext_num'] = $data['CDPN']['val'];
-            exit;
         }
         //还需要判断一下是不是存在这个信息
         $ext_num = $cdr_data['ext_num'];
@@ -126,6 +130,7 @@ class Omapi extends Common
             $cdr_data['node_id'] = $extnum_nodeid_arr[$ext_num]['node_id'];
         } else {
             $cdr_data['node_id'] = 0;
+            //exit();
 //            file_put_contents('error.log', "{$flag} 地址，memcache 或者 数据库获取{$cdr_data['ext_num']}=>user_id  失败。\r\n", FILE_APPEND);
             //以后可以发送邮件报警  说明问题。
         }
@@ -141,6 +146,7 @@ class Omapi extends Common
             $cdr_data['rec_name'] = '';
         }
         $cdr_data['create_time'] = time();
+        //dump($cdr_data);
         return $cdr_data;
     }
 

@@ -262,12 +262,12 @@ class Article extends CommonLogin
             if (!$this->model->where($where)->delete()) {
                 Common::processException('删除失败');
             }
-            $this->open_start('正在修改中');
+            $this->open_start(' 删除成功');
             $type_id = $data['articletype_id'];
             $sitedata = $this->getArticleSite($type_id);
             if (array_key_exists('status', $sitedata)) {
                 return $sitedata;
-            }
+           }
             foreach ($sitedata as $kk => $vv) {
 //                $send = [
 //                    "id" => $id,

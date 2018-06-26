@@ -154,17 +154,17 @@ class Common extends Controller
         $private = self::getCrypt();
         return md5($id . $salt . $private);
     }
+
     /***
      * @return string
      * 获取SYSTEM_CRYPT
      */
-    static public function getCrypt(){
+    static public function getCrypt()
+    {
         $SystemConfig = new \app\common\model\SystemConfig();
         $auth_data = $SystemConfig->where(["name" => 'SYSTEM_CRYPT'])->find();
         return $auth_data['value'];
     }
-
-
 
 
     /***
@@ -395,7 +395,7 @@ class Common extends Controller
     //TODO oldfunction
     public function searchHttp($http)
     {
-        return strrchr("http", $http);
+        return strpos($http, "http") === FALSE ? false : true;
     }
 
 
