@@ -84,7 +84,6 @@ class Site extends Common
             ['domain_id', 'require', '请选择域名'],
             ['domain', 'require', '请选择域名'],
             ['site_type', 'require', '请选择网站类型'],
-            ['user_id', "require", "请选择用户"],
             ["user_name", "require", "请选择用户名"],
             ["site_type_name", "require", "请填写网站类型名称"],
             ["keyword_ids", "require", "请填写关键字"],
