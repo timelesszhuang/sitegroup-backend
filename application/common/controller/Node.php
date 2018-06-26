@@ -47,6 +47,8 @@ class Node extends CommonLogin
         $user=\app\common\model\User::get($nodeTemp->user_id);
         $user->node_id=$nodeTemp["id"];
         $user->node_name = $data['name'];
+        //防止密码重复加密
+        unset($user->pwd);
         if(!$user->save()){
             $node->rollback();
         }
