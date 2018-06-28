@@ -19,7 +19,6 @@ class Test extends Controller
     public function test()
     {
 
-
 //        http://salesman.cc/index.php/Companywechat/Writedailyreport/index.html?flag=write
        // $redirect_url = urlencode('http://salesman.cc');
         //dump($redirect_url);

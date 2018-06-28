@@ -42,7 +42,7 @@ class Article extends CommonLogin
             $where["title"] = ["like", "%$title%"];
         }
         if (!empty($article_type)) {
-            $where['articletype_id'] = ['in',explode(',',$article_type)];
+            $where['articletype_id'] = ['in', explode(',', $article_type)];
         }
         $user_info = $this->getSessionUserInfo();
         if ($user_info['user_type_name'] == 'node') {
@@ -105,18 +105,18 @@ class Article extends CommonLogin
                 $data['tags'] = "";
             }
 
-            if(empty($data['stations'])||$data['stations']<40){
+            if (empty($data['stations']) || $data['stations'] < 40) {
                 $data['stations_ids'] = '';
-            }else{
+            } else {
                 $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
             }
 
-            if(!empty($data['flag'])){
+            if (!empty($data['flag'])) {
                 $data['flag'] = ',' . implode(',', $data['flag']) . ',';
-            }else{
+            } else {
                 $data['flag'] = '';
             }
-            if(!($ArticleAutoPoint->save($data['auther'],'auther')&&$ArticleAutoPoint->save($data['come_from'],'come_from'))){
+            if (!($ArticleAutoPoint->save($data['auther'], 'auther') && $ArticleAutoPoint->save($data['come_from'], 'come_from'))) {
                 Common::processException('添加失败');
             }
             unset($data['tag_id']);
@@ -193,35 +193,31 @@ class Article extends CommonLogin
                 $data['tags'] = "";
             }
 
-            if(empty($data['stations'])||$data['stations']<40){
+            if (empty($data['stations']) || $data['stations'] < 40) {
                 $data['stations_ids'] = '';
-            }else{
+            } else {
                 $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
             }
 
-            if(!empty($data['flag'])){
+            if (!empty($data['flag'])) {
                 $data['flag'] = ',' . implode(',', $data['flag']) . ',';
-            }else{
+            } else {
                 $data['flag'] = '';
             }
             $ArticleAutoPoint = new ArticleAutoPoint();
-            if(!($ArticleAutoPoint->save($data['auther'],'auther')&&$ArticleAutoPoint->save($data['come_from'],'come_from'))){
+            if (!($ArticleAutoPoint->save($data['auther'], 'auther') && $ArticleAutoPoint->save($data['come_from'], 'come_from'))) {
                 Common::processException('修改失败');
             }
             unset($data['tag_id']);
             if (!$this->model->save($data, ["id" => $id])) {
                 Common::processException('修改失败');
             }
-
-
             $library_img_set = new LibraryImgset();
             $src_list = $library_img_set->getList($data['content']);
             if ($data['thumbnails']) {
                 $src_list[] = $data['thumbnails'];
             }
             $library_img_set->batche_add($src_list, $library_img_tags, $data['title'], 'article');
-
-
             //先返回给前台 然后去后端 重新生成页面 这块暂时有问题
             $this->open_start('正在修改中');
             //找出有这篇  文章的菜单
@@ -231,23 +227,20 @@ class Article extends CommonLogin
                 return $sitedata;
             }
             foreach ($sitedata as $kk => $vv) {
-                /*$send = [
-                    "id" => $data['id'],
-                    "searchType" => 'article',
-                ];
-                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);*/
-                $this->curl_get($vv['url']."/clearCache");
+                $this->curlget($vv['url'] . "/index.php/clearPageCache/article/{$id}");
             }
         } catch (ProcessException $exception) {
             return $this->resultArray("failed", $exception->getMessage());
         }
-
     }
 
     /**
      * 删除指定资源
      * @param  int $id
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function delete($id)
     {
@@ -267,15 +260,9 @@ class Article extends CommonLogin
             $sitedata = $this->getArticleSite($type_id);
             if (array_key_exists('status', $sitedata)) {
                 return $sitedata;
-           }
+            }
             foreach ($sitedata as $kk => $vv) {
-//                $send = [
-//                    "id" => $id,
-//                    "type_id" => $type_id,
-//                    "searchType" => 'article',
-//                ];
-//                $this->curl_post($vv['url'] . "/index.php/removeHtml", $send);
-                $this->curl_get($vv['url']."/clearCache");
+                $this->curlget($vv['url'] . "/index.php/clearPageCache/article/{$id}");
             }
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());

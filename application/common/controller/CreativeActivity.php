@@ -34,7 +34,7 @@ class CreativeActivity extends CommonLogin
             $where["id"] = $id;
         }
         $user_info = $this->getSessionUserInfo();
-        $where["node_id"] =$user_info["node_id"];
+        $where["node_id"] = $user_info["node_id"];
         $data = (new creative())->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray('', '', $data);
     }
@@ -71,27 +71,30 @@ class CreativeActivity extends CommonLogin
         $data = $request->post();
         $data["node_id"] = $user_info["node_id"];
         if (!$validate->check($data)) {
-            return $this->resultArray( "failed",$validate->getError());
+            return $this->resultArray("failed", $validate->getError());
         }
         //本地图片位置
         $type = $this->analyseUrlFileType($data['oss_img_src']);
         //生成随机的文件名
         $data['img_name'] = $this->formUniqueString() . ".{$type}";
-        if($data['smalloss_img_src']){
+        if ($data['smalloss_img_src']) {
             $type = $this->analyseUrlFileType($data['smalloss_img_src']);
             $data['small_img_name'] = $this->formUniqueString() . ".{$type}";
         }
         if (creative::create($data)) {
             return $this->resultArray("添加成功");
         }
-        return $this->resultArray( "failed","添加失败");
+        return $this->resultArray("failed", "添加失败");
     }
 
     /**
      * 显示指定的资源
      *
      * @param  int $id
-     * @return \think\Response
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function read($id)
     {
@@ -114,7 +117,10 @@ class CreativeActivity extends CommonLogin
      *
      * @param  \think\Request $request
      * @param  int $id
-     * @return \think\Response
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function update(Request $request, $id)
     {
@@ -133,37 +139,32 @@ class CreativeActivity extends CommonLogin
         $data = $request->put();
         $data["node_id"] = $user_info["node_id"];
         if (!$validate->check($data)) {
-            return $this->resultArray("failed",$validate->getError());
+            return $this->resultArray("failed", $validate->getError());
         }
         //本地图片位置
         //生成随机的文件名
         $old_data = Model('creative_activity')->find($id);
-        if($old_data['oss_img_src']!=$data['oss_img_src']){
+        if ($old_data['oss_img_src'] != $data['oss_img_src']) {
             $type = $this->analyseUrlFileType($data['oss_img_src']);
             $data['img_name'] = $this->formUniqueString() . ".{$type}";
         }
-        if($old_data['smalloss_img_src']!=$data['smalloss_img_src']){
+        if ($old_data['smalloss_img_src'] != $data['smalloss_img_src']) {
             $type = $this->analyseUrlFileType($data['smalloss_img_src']);
             $data['small_img_name'] = $this->formUniqueString() . ".{$type}";
         }
         if (!creative::update($data, ["id" => $id])) {
-            return $this->resultArray( "failed","修改失败");
+            return $this->resultArray("failed", "修改失败");
         }
         $this->open_start('正在修改中');
         $where = [];
-        $where['node_id'] =  $user_info["node_id"];
+        $where['node_id'] = $user_info["node_id"];
         $site = (new \app\common\model\Site())->where($where)->select();
         foreach ($site as $k => $v) {
             if ($v['sync_id']) {
-                //print_r($v['url'] . '/regenerateactivity/'.$data['id']);
-//                $this->curl_get($v['url'] . '/regenerateactivity/' . $data['id']);
-                $this->curl_get($v['url']."/clearCache");
+                $this->curlget($v['url'] . "/index.php/clearPageCache/activity/{$id}");
             }
         }
     }
-
-
-
 
 
     /**
@@ -181,10 +182,10 @@ class CreativeActivity extends CommonLogin
         $validate = new Validate($rule);
         $data = $request->post();
         if (!$validate->check($data)) {
-            return $this->resultArray('failed',$validate->getError());
+            return $this->resultArray('failed', $validate->getError());
         }
         $user_info = $this->getSessionUserInfo();
-        $data["node_id"] =$user_info["node_id"];
+        $data["node_id"] = $user_info["node_id"];
         //本地图片位置
         $type = $this->analyseUrlFileType($data['oss_img_src']);
         //生成随机的文件名
@@ -216,7 +217,7 @@ class CreativeActivity extends CommonLogin
         if (creative::update($data, ["id" => $id])) {
             return $this->resultArray("修改成功");
         }
-        return $this->resultArray( "failed","修改失败");
+        return $this->resultArray("failed", "修改失败");
     }
 
 
@@ -265,7 +266,7 @@ class CreativeActivity extends CommonLogin
             //需要截取掉之前的路径
             $result = $this->ossDeleteObject($deleteobject);
         }
-        return $this->resultArray( 'success','删除图片完成', $imglist);
+        return $this->resultArray('success', '删除图片完成', $imglist);
     }
 
 
@@ -370,7 +371,7 @@ class CreativeActivity extends CommonLogin
         if (creative::where(["id" => $id])->update(["status" => $status])) {
             return $this->resultArray("修改成功");
         }
-        return $this->resultArray( "failed","修改失败");
+        return $this->resultArray("failed", "修改失败");
     }
 
 }

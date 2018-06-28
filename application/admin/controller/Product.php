@@ -44,7 +44,7 @@ class Product extends CommonLogin
             $where["name"] = ["like", "%$name%"];
         }
         if (!empty($type_id)) {
-            $where["type_id"] = ['in',explode(',',$type_id)];
+            $where["type_id"] = ['in', explode(',', $type_id)];
         }
         $user = $this->getSessionUserInfo();
         if ($user['user_type_name'] == 'node') {
@@ -55,17 +55,18 @@ class Product extends CommonLogin
         }
         $data = $this->model->getAll($request["limit"], $request["rows"], $where);
         return $this->resultArray($data);
-
     }
 
     /**
      * 删除指定资源
      * @param  int $id
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function delete($id)
     {
-
         try {
             $user = $this->getSessionUserInfo();
             $where = [
@@ -83,13 +84,7 @@ class Product extends CommonLogin
                 return $sitedata;
             }
             foreach ($sitedata as $kk => $vv) {
-//                $send = [
-//                    "id" => $id,
-//                    "type_id" => $type_id,
-//                    "searchType" => 'product',
-//                ];
-//                $this->curl_post($vv['url'] . "/index.php/removeHtml", $send);
-                $this->curl_get($vv['url']."/clearCache");
+                $this->curlget($vv['url'] . "/index.php/clearPageCache/product/{$id}");
             }
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());
@@ -137,14 +132,14 @@ class Product extends CommonLogin
             } else {
                 $post['tags'] = "";
             }
-            if(empty($post['stations'])||$post['stations']<40){
+            if (empty($post['stations']) || $post['stations'] < 40) {
                 $post['stations_ids'] = '';
-            }else{
+            } else {
                 $post['stations_ids'] = ',' . implode(',', $post['stations_ids']) . ',';
             }
-            if(!empty($post['flag'])){
+            if (!empty($post['flag'])) {
                 $post['flag'] = ',' . implode(',', $post['flag']) . ',';
-            }else{
+            } else {
                 $post['flag'] = '';
             }
             unset($post['tag_id']);
@@ -162,6 +157,7 @@ class Product extends CommonLogin
             return $this->resultArray('failed', $e->getMessage());
         }
     }
+
     /***
      * 显示指定的资源
      *
@@ -229,14 +225,14 @@ class Product extends CommonLogin
             } else {
                 $post['tags'] = "";
             }
-            if(empty($post['stations'])||$post['stations']<40){
+            if (empty($post['stations']) || $post['stations'] < 40) {
                 $post['stations_ids'] = '';
-            }else{
+            } else {
                 $post['stations_ids'] = ',' . implode(',', $post['stations_ids']) . ',';
             }
-            if(!empty($post['flag'])){
+            if (!empty($post['flag'])) {
                 $post['flag'] = ',' . implode(',', $post['flag']) . ',';
-            }else{
+            } else {
                 $post['flag'] = '';
             }
             unset($post['tag_id']);
@@ -259,12 +255,7 @@ class Product extends CommonLogin
                 return $sitedata;
             }
             foreach ($sitedata as $kk => $vv) {
-                /*$send = [
-                    "id" => $post['id'],
-                    "searchType" => 'product',
-                ];
-                $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);*/
-                $this->curl_get($vv['url']."/clearCache");
+                $this->curlget($vv['url'] . "/index.php/clearPageCache/product/{$id}");
             }
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());

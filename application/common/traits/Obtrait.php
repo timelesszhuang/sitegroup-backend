@@ -10,7 +10,6 @@ namespace app\common\traits;
 
 use app\common\controller\Common;
 use app\common\model\SiteUser;
-use app\common\model\User;
 use think\Db;
 
 trait Obtrait
@@ -62,35 +61,33 @@ trait Obtrait
 
     /**
      * curl get请求
-     * @param $url
+     * @param $oldurl
      * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @todo  这个地方 生成带token 的可以提取出来
      */
-    //TODO oldfunction
     public function curl_get($oldurl)
     {
         $user_info = $this->getSessionUserInfo();
-        //dump($user_info);die;
         if ($user_info['user_type_name'] == 'node') {
             $id = $user_info["user_id"];
             $type = 'node';
-            $salt = Db::name('user')->where(['id'=>$id])->find()['salt'];
-        } else if($user_info['user_type_name'] == 'site') {
+            $salt = Db::name('user')->where(['id' => $id])->find()['salt'];
+        } else if ($user_info['user_type_name'] == 'site') {
             $id = $user_info["user_id"];
             $type = 'site';
-            $salt = (new SiteUser())->where(['id'=>$id])->field('salt')->find()['salt'];
-        };
-        $rememberstr =  Common::getRememberStr($id,$salt);
+            $salt = (new SiteUser())->where(['id' => $id])->field('salt')->find()['salt'];
+        }
+        $rememberstr = Common::getRememberStr($id, $salt);
         $check = strpos($oldurl, '?');
-        if($check !== false)
-        {
-            $url = $oldurl.'&token='.$rememberstr.'&type='.$type;
+        if ($check !== false) {
+            $url = $oldurl . '&token=' . $rememberstr . '&type=' . $type;
+        } else {
+            //如果不存在 ?
+            $url = $oldurl . '?token=' . $rememberstr . '&type=' . $type;
         }
-         //如果不存在 ?
-        else
-        {
-            $url = $oldurl.'?token='.$rememberstr.'&type='.$type;
-        }
-        //print_r($url);die;
         //初始化
         $curl = curl_init();
         //设置抓取的url
@@ -108,9 +105,36 @@ trait Obtrait
         return $data;
     }
 
+    /**
+     * 微信相关
+     * @access public
+     */
     public function curl_getwx($url)
     {
-        //print_r($url);die;
+        //初始化
+        $curl = curl_init();
+        //设置抓取的url
+        curl_setopt($curl, CURLOPT_URL, $url);
+        //设置头文件的信息作为数据流输出
+        curl_setopt($curl, CURLOPT_HEADER, 0);
+        //设置获取的信息以文件流的形式返回，而不是直接输出。
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 5);
+        //执行命令
+        $data = curl_exec($curl);
+        //关闭URL请求
+        curl_close($curl);
+        //显示获得的数据
+        return $data;
+    }
+
+    /**
+     * 发送curl 请求
+     * @access public
+     * @todo 因为上个 curl_get 函数封装 部分必须带着token
+     */
+    public function curlget($url)
+    {
         //初始化
         $curl = curl_init();
         //设置抓取的url
@@ -263,6 +287,7 @@ trait Obtrait
      * 解析文件路径 获取文件的后缀
      * @param string $fileurl 要获取后缀的文件url 路径
      * @access public
+     * @return string
      */
     //TODO oldfunction
     public function analyseUrlFileType($fileurl)

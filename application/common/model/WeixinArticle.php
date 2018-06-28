@@ -14,7 +14,14 @@ class WeixinArticle extends Model
 
     /**
      * 获取所有关键字
-     * @return false|\PDOStatement|string|\think\Collection
+     * @param $limit
+     * @param $rows
+     * @param int $where
+     * @return array
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     //TODO oldfunction
     public function getArticle($limit, $rows, $where = 0)

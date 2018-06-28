@@ -21,7 +21,7 @@ class Count extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-//TODO oldfunction
+    //TODO oldfunction
     public function index()
     {
         $param = $this->request->get();
@@ -62,7 +62,7 @@ class Count extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-//TODO oldfunction
+    //TODO oldfunction
     public function enginecount()
     {
         $param = $this->request->get();
@@ -264,7 +264,7 @@ class Count extends CommonLogin
      * @param $key
      * 格式化数据
      */
-//TODO oldfunction
+    //TODO oldfunction
     public function formatter($value, $key)
     {
         $this->all_count[] = [
@@ -282,7 +282,7 @@ class Count extends CommonLogin
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-//TODO oldfunction
+    //TODO oldfunction
     public function pvStatistic()
     {
         $param = $this->request->get();
@@ -410,7 +410,7 @@ class Count extends CommonLogin
         }
         //array_walk() 数组的键名和键值是参数。
         array_walk($Pv, [$this, "for1"]);
-        $temp = ["time" => array_column($userpv,'m_d'), "type" => $this->count];
+        $temp = ["time" => array_column($userpv, 'm_d'), "type" => $this->count];
         return $this->resultArray($temp);
     }
 
@@ -444,7 +444,6 @@ class Count extends CommonLogin
         } else {
             $starttime = time() - 86400 * 14;
             $stoptime = time();
-
         }
         $where["create_time"] = ['between', [$starttime, $stoptime]];
         $userpv = Db::name("pv")->field("from_unixtime(create_time,'%m-%d') as m_d,count('m_d') as count")->where($where)->group('m_d')->select();
@@ -475,7 +474,6 @@ class Count extends CommonLogin
         ]]];
         return $this->resultArray($temp);
     }
-
 
 
     /**

@@ -89,7 +89,7 @@ class Question extends CommonLogin
 
             if (empty($data['stations']) || $data['stations'] < 40) {
                 $data['stations_ids'] = '';
-            }else{
+            } else {
                 $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
             }
 
@@ -168,7 +168,7 @@ class Question extends CommonLogin
 
             if (empty($data['stations']) || $data['stations'] < 40) {
                 $data['stations_ids'] = '';
-            }else{
+            } else {
                 $data['stations_ids'] = ',' . implode(',', $data['stations_ids']) . ',';
             }
 
@@ -191,12 +191,7 @@ class Question extends CommonLogin
                 return $sitedata;
             }
             foreach ($sitedata as $kk => $vv) {
-//            $send = [
-//                "id" => $data['id'],
-//                "searchType" => 'question',
-//            ];
-//            $this->curl_post($vv['url'] . "/index.php/generateHtml", $send);
-                $this->curl_get($vv['url'] . "/clearCache");
+                $this->curlget($vv['url'] . "/index.php/clearPageCache/question/{$id}");
             }
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());
@@ -207,6 +202,9 @@ class Question extends CommonLogin
      * 删除指定资源
      * @param  int $id
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function delete($id)
     {
@@ -228,13 +226,7 @@ class Question extends CommonLogin
                 return $sitedata;
             }
             foreach ($sitedata as $kk => $vv) {
-//                $send = [
-//                    "id" => $id,
-//                    "type_id" => $type_id,
-//                    "searchType" => 'question',
-//                ];
-//                $this->curl_post($vv['url'] . "/index.php/removeHtml", $send);
-                $this->curl_get($vv['url'] . "/clearCache");
+                $this->curlget($vv['url'] . "/index.php/clearPageCache/question/{$id}");
             }
         } catch (ProcessException $e) {
             return $this->resultArray('failed', $e->getMessage());

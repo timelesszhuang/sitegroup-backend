@@ -26,7 +26,7 @@ class Article extends Model
     public static function init()
     {
         parent::init();
-    //TODO oldfunction
+        //TODO oldfunction
         $common_func = function ($article) {
             if (isset($article->content)) {
                 //提取summary

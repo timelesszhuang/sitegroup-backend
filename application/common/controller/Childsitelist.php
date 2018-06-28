@@ -31,8 +31,8 @@ class Childsitelist extends CommonLogin
         $site_id = $this->request->get('site_id');
         $all = $this->request->get('all');
         $where = [];
-        if($all){
-            $where["name|en_name"] = ['like',"%".$all."%"];
+        if ($all) {
+            $where["name|en_name"] = ['like', "%" . $all . "%"];
         }
         $user_info = $this->getSessionUserInfo();
         $where["node_id"] = $user_info["node_id"];
@@ -46,11 +46,12 @@ class Childsitelist extends CommonLogin
         return $this->resultArray($data);
     }
 
-    public function setchildsitelist(){
+    public function setchildsitelist()
+    {
         $site_id = $this->request->post('site_id');
         $area_id = $this->request->post('district_id');
         $level = $this->request->post('level');
-        try{
+        try {
             $this->set_childsitelist($site_id, $area_id, $level);
             return $this->resultArray('success', '添加成功');
         } catch (ProcessException $exception) {
@@ -60,16 +61,15 @@ class Childsitelist extends CommonLogin
 
     public function set_childsitelist($site_id, $area_id, $level)
     {
-        //站点信息
         $Childsitelist = new this_model();
         $District = new District();
         $field = 'id,name,pinyin,parent_id,path,suffix,level';
         $parent = $District->where(['id' => $area_id, "level" => ['<=', $level]])->field($field)->find();
         $sitelist = $District->where(["level" => ['<=', $level], 'path' => ['like', "%,{$area_id},%"]])->field($field)->select();
         if ($parent) {
-            $parents = $District->where(['id' => ['in',array_filter(explode(',', $parent['path']))], "level" => ['<=', $level]])->field($field)->select();
-            if ($parents){
-                $sitelist = array_merge($sitelist,$parents);
+            $parents = $District->where(['id' => ['in', array_filter(explode(',', $parent['path']))], "level" => ['<=', $level]])->field($field)->select();
+            if ($parents) {
+                $sitelist = array_merge($sitelist, $parents);
             }
             array_push($sitelist, $parent);
         }
@@ -82,21 +82,21 @@ class Childsitelist extends CommonLogin
                 'path' => $district['path'],
                 'en_name' => $district['pinyin'],
                 'site_id' => $site_id,
-                'name' => $district['name'].$district['suffix'],
-                'detail' => $district['name'].$district['suffix'],
+                'name' => $district['name'] . $district['suffix'],
+                'detail' => $district['name'] . $district['suffix'],
                 'node_id' => $user_info['node_id'],
             ];
         }
         if (!(count($add_data) > 0)) {
             Common::processException('请正确选择需要添加的站点');
         }
-        $old_childsitelist = $Childsitelist->where(['site_id' => $site_id,'en_name' => ['in', array_keys($add_data)]])->select();
+        $old_childsitelist = $Childsitelist->where(['site_id' => $site_id, 'en_name' => ['in', array_keys($add_data)]])->select();
         if ($old_childsitelist) {
             foreach ($old_childsitelist as $childsitelist) {
                 unset($add_data[$childsitelist['en_name']]);
             }
         }
-        if ((count($add_data) > 0)&&(!$Childsitelist->insertAll($add_data))) {
+        if ((count($add_data) > 0) && (!$Childsitelist->insertAll($add_data))) {
             Common::processException('添加失败');
         }
     }
@@ -128,7 +128,7 @@ class Childsitelist extends CommonLogin
             if (!$validate->check($data)) {
                 Common::processException($validate->getError());
             }
-            $add_data= [
+            $add_data = [
                 'en_name' => $data['en_name'],
                 'site_id' => $data['site_id'],
                 'name' => $data['name'],
@@ -186,7 +186,7 @@ class Childsitelist extends CommonLogin
             if (!$validate->check($data)) {
                 Common::processException($validate->getError());
             }
-            $add_data= [
+            $add_data = [
                 'id' => $data['id'],
                 'en_name' => $data['en_name'],
                 'site_id' => $data['site_id'],
@@ -211,7 +211,6 @@ class Childsitelist extends CommonLogin
      */
     public function delete($id)
     {
-
         try {
             $user = $this->getSessionUserInfo();
             $where = [
