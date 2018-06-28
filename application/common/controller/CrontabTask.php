@@ -126,8 +126,10 @@ class CrontabTask extends Common
                     $article_count = 0;
                     $is_update = false;
                 }
+                $now_article_count = $Article->where(['articletype_id' => ['in', $article_type_id_arr], 'id' => ['>', $article_count]])->limit($a_limit)->order('id asc')->field('id')->fetchSql(true)->max('id');
+                echo $now_article_count;
                 $now_article_count = $Article->where(['articletype_id' => ['in', $article_type_id_arr], 'id' => ['>', $article_count]])->limit($a_limit)->order('id asc')->field('id')->max('id');
-                file_put_contents("last_sql.log",$Article->getLastsql(),8);
+                echo $Article->getLastsql();
                 //根据情况判断同步数量
                 if ($now_article_count) {
                     $dates['count'] = $now_article_count;
