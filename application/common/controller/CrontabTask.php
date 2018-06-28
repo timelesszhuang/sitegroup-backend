@@ -126,12 +126,14 @@ class CrontabTask extends Common
                     $article_count = 0;
                     $is_update = false;
                 }
-                $now_article_count = $Article->where(['articletype_id' => ['in', $article_type_id_arr], 'id' => ['>', $article_count]])->limit($a_limit)->order('id asc')->field('id')->fetchSql(true)->max('id');
-                echo $now_article_count;
-                $now_article_count = $Article->where(['articletype_id' => ['in', $article_type_id_arr], 'id' => ['>', $article_count]])->limit($a_limit)->order('id asc')->field('id')->max('id');
+                $now_article_count_list = $Article->where(['articletype_id' => ['in', $article_type_id_arr], 'id' => ['>', $article_count]])->limit($a_limit)->order('id asc')->field('id')->select();
                 echo $Article->getLastsql();
                 //根据情况判断同步数量
-                if ($now_article_count) {
+                if ($now_article_count_list) {
+                    $now_article_count=$article_count;
+                    foreach($now_article_count_list as $value){
+                        $now_article_count=$now_article_count<$value['id']?$value['id']:$now_article_count;
+                    }
                     $dates['count'] = $now_article_count;
                 } else {
                     $dates['count'] = $article_count;
@@ -162,8 +164,12 @@ class CrontabTask extends Common
                     $product_count = 0;
                     $is_update = false;
                 }
-                $now_product_count = $Product->where(['type_id' => ['in', $product_type_id_arr], 'id' => ['>', $product_count]])->limit($p_limit)->order('id asc')->field('id')->max('id');
-                if ($now_product_count) {
+                $now_product_count_list = $Product->where(['type_id' => ['in', $product_type_id_arr], 'id' => ['>', $product_count]])->limit($p_limit)->order('id asc')->field('id')->select();
+                if ($now_product_count_list) {
+                    $now_product_count=$product_count;
+                    foreach($now_product_count_list as $value){
+                        $now_product_count=$now_product_count<$value['id']?$value['id']:$now_product_count;
+                    }
                     $dates['count'] = $now_product_count;
                 } else {
                     $dates['count'] = $product_count;
@@ -193,8 +199,12 @@ class CrontabTask extends Common
                     $question_count = 0;
                     $is_update = false;
                 }
-                $now_question_count = $Question->where(['type_id' => ['in', $question_type_id_arr], 'id' => ['>', $question_count]])->limit($q_limit)->order('id asc')->field('id')->max('id');
-                if ($now_question_count) {
+                $now_question_count_list = $Question->where(['type_id' => ['in', $question_type_id_arr], 'id' => ['>', $question_count]])->limit($q_limit)->order('id asc')->field('id')->select();
+                if ($now_question_count_list) {
+                    $now_question_count=$question_count;
+                    foreach($now_question_count_list as $value){
+                        $now_question_count=$now_question_count<$value['id']?$value['id']:$now_question_count;
+                    }
                     $dates['count'] = $now_question_count;
                 } else {
                     $dates['count'] = $question_count;
