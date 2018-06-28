@@ -127,7 +127,6 @@ class CrontabTask extends Common
                     $is_update = false;
                 }
                 $now_article_count_list = $Article->where(['articletype_id' => ['in', $article_type_id_arr], 'id' => ['>', $article_count]])->limit($a_limit)->order('id asc')->field('id')->select();
-                echo $Article->getLastsql();
                 //根据情况判断同步数量
                 if ($now_article_count_list) {
                     $now_article_count=$article_count;
