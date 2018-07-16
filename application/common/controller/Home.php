@@ -27,6 +27,7 @@ class Home extends CommonLogin
      */
     public function countDatas()
     {
+        (new \app\common\model\Pv())->where('create_time','<',time()-86400*90)->delete();
         $user = $this->getSessionUserInfo();
         if ($user['user_type_name'] == 'site' && $user['user_type'] == 3) {
            $data =  $this->siteCountDatas();
