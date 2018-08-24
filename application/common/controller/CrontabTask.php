@@ -216,7 +216,8 @@ class CrontabTask extends Common
                 }
             }
             //清除当前网站缓存
-            pclose(popen("curl $item->url/clearCache &", "r"));
+            pclose(popen("curl $item->url/clearAllCache &", "r"));
+            file_put_contents('clearCache.log',"$item->url",8);
         }
     }
 }
